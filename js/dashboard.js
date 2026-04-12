@@ -563,6 +563,15 @@ function initDocuments() {
 
     document.getElementById('btn-new-folder')?.addEventListener('click', openFolderModal);
 
+    document.getElementById('btn-export-docs')?.addEventListener('click', exportDocsJson);
+
+    const importInput = document.getElementById('import-json-input');
+    document.getElementById('btn-import-docs')?.addEventListener('click', () => importInput?.click());
+    importInput?.addEventListener('change', (e) => {
+        importDocsJson(e.target.files[0]);
+        e.target.value = ''; // reset so same file can be re-imported
+    });
+
     document.getElementById('btn-new-doc')?.addEventListener('click', () => {
         // Open editor panel
         const editorItem = document.querySelector('[data-panel="editeur"]');
@@ -789,9 +798,8 @@ function renderFolderNodes(parentId, depth, container) {
             <span class="folder-item-name">${escapeHtml(f.name)}</span>
             <div class="folder-item-actions">
                 <button class="folder-item-btn folder-item-gear" title="Renommer">
-                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-                        <circle cx="8" cy="8" r="2.5"/>
-                        <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/>
+                    <svg viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
                     </svg>
                 </button>
                 <button class="folder-item-btn folder-item-delete" title="Supprimer">×</button>
@@ -944,10 +952,9 @@ function renderDocumentsList() {
             <span class="doc-item-title">${escapeHtml(doc.title)}</span>
             <span class="doc-item-date">${dateStr}</span>
             <div class="doc-item-actions">
-                <button class="doc-item-btn doc-item-gear" title="Renommer">
-                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-                        <circle cx="8" cy="8" r="2.5"/>
-                        <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/>
+                <button class="doc-item-btn doc-item-gear" title="Options">
+                    <svg viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
                     </svg>
                 </button>
                 <button class="doc-item-btn doc-item-del" title="Supprimer">×</button>
@@ -960,10 +967,10 @@ function renderDocumentsList() {
             openDocument(doc.id);
         });
 
-        // Gear → rename
+        // Gear → options dropdown
         div.querySelector('.doc-item-gear').addEventListener('click', (e) => {
             e.stopPropagation();
-            openRenameModal('doc', doc.id, doc.title);
+            openDocOptions(doc.id, doc.title, e.currentTarget);
         });
 
         // × → delete
@@ -1212,6 +1219,114 @@ function showGithubStatus(msg, ok, el) {
     el.style.display = 'block';
     el.className = `github-status github-status--${ok ? 'ok' : 'err'}`;
     el.textContent = msg;
+}
+
+/* ════════════════════════════════════════════
+   DOCUMENT OPTIONS DROPDOWN
+   ════════════════════════════════════════════ */
+let _activeDocMenu = null;
+
+function closeDocOptions() {
+    if (_activeDocMenu) {
+        _activeDocMenu.remove();
+        _activeDocMenu = null;
+    }
+}
+
+function openDocOptions(docId, docTitle, gearBtn) {
+    closeDocOptions();
+
+    const menu = document.createElement('div');
+    menu.className = 'doc-options-menu';
+    menu.innerHTML = `
+        <button class="doc-options-item" id="doc-opt-edit">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 14l2-5L11 2.5l3 3L9 12.5 2 14z"/>
+                <path d="M9 4l3 3"/>
+            </svg>
+            Modifier
+        </button>
+        <button class="doc-options-item" id="doc-opt-rename">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <path d="M3 4h10M8 4v8M6 12h4"/>
+            </svg>
+            Renommer
+        </button>
+    `;
+
+    // Position relative to the gear button
+    const rect = gearBtn.getBoundingClientRect();
+    menu.style.top    = `${rect.bottom + 4}px`;
+    menu.style.right  = `${window.innerWidth - rect.right}px`;
+    document.body.appendChild(menu);
+    _activeDocMenu = menu;
+
+    // Modifier — open doc in editor
+    menu.querySelector('#doc-opt-edit').addEventListener('click', () => {
+        closeDocOptions();
+        const docs = getDocs();
+        const doc  = docs.find(d => d.id === docId);
+        if (!doc) return;
+        currentDocId = docId;
+        const editorItem = document.querySelector('[data-panel="editeur"]');
+        if (editorItem) editorItem.click();
+        const ta      = document.getElementById('editor-textarea');
+        const titleIn = document.getElementById('editor-title-input');
+        if (ta)      { ta.value = doc.content; updateCharCount(); ta.focus(); }
+        if (titleIn) titleIn.value = doc.title;
+    });
+
+    // Renommer
+    menu.querySelector('#doc-opt-rename').addEventListener('click', () => {
+        closeDocOptions();
+        openRenameModal('doc', docId, docTitle);
+    });
+
+    // Close on any outside click
+    setTimeout(() => {
+        document.addEventListener('click', closeDocOptions, { once: true });
+    }, 0);
+}
+
+/* ════════════════════════════════════════════
+   JSON EXPORT / IMPORT
+   ════════════════════════════════════════════ */
+function exportDocsJson() {
+    const data = {
+        version:    1,
+        exportedAt: new Date().toISOString(),
+        folders:    getFolders(),
+        docs:       getDocs()
+    };
+    const json = JSON.stringify(data, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `empire-hussein-docs-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('Sauvegarde exportée');
+}
+
+function importDocsJson(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const data = JSON.parse(e.target.result);
+            if (!Array.isArray(data.docs)) throw new Error('Format invalide');
+            saveDocs(data.docs);
+            if (Array.isArray(data.folders)) saveFolders(data.folders);
+            if (typeof currentFolderId !== 'undefined') currentFolderId = null;
+            renderFolderList();
+            renderDocumentsList();
+            showToast(`${data.docs.length} document${data.docs.length !== 1 ? 's' : ''} importé${data.docs.length !== 1 ? 's' : ''}`);
+        } catch (err) {
+            showToast(`Erreur d'importation : ${err.message}`);
+        }
+    };
+    reader.readAsText(file);
 }
 
 /* ════════════════════════════════════════════

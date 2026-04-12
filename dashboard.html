@@ -377,11 +377,26 @@
                         <aside class="docs-sidebar">
                             <div class="docs-sidebar-header">
                                 <span>DOSSIERS</span>
-                                <button class="btn-icon" id="btn-new-folder" title="Nouveau dossier">
-                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                                        <path d="M8 3v10M3 8h10" stroke-linecap="round"/>
-                                    </svg>
-                                </button>
+                                <div class="docs-sidebar-actions">
+                                    <button class="btn-icon" id="btn-new-folder" title="Nouveau dossier">
+                                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                            <path d="M8 3v10M3 8h10" stroke-linecap="round"/>
+                                        </svg>
+                                    </button>
+                                    <button class="btn-icon" id="btn-export-docs" title="Exporter les sauvegardes (JSON)">
+                                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M8 2v9M5 8l3 3 3-3"/>
+                                            <path d="M3 13h10"/>
+                                        </svg>
+                                    </button>
+                                    <button class="btn-icon" id="btn-import-docs" title="Importer des sauvegardes (JSON)">
+                                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M8 11V2M5 5l3-3 3 3"/>
+                                            <path d="M3 13h10"/>
+                                        </svg>
+                                    </button>
+                                    <input type="file" id="import-json-input" accept=".json" style="display:none;">
+                                </div>
                             </div>
                             <div class="folder-list" id="folder-list">
                                 <div class="folder-item active" data-folder="">
