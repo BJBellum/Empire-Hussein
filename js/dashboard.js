@@ -4,12 +4,6 @@
  *          document storage, GitHub API integration
  */
 
-/* Remove .html from the browser's address bar */
-if (window.location.pathname.endsWith('.html')) {
-    history.replaceState(null, document.title,
-        window.location.pathname.replace(/\.html$/, ''));
-}
-
 /* ════════════════════════════════════════════
    STATE
    ════════════════════════════════════════════ */

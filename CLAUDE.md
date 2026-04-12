@@ -108,3 +108,34 @@ Respecter le même design system que `index.html` : variables CSS, polices, anim
 - Pas de frameworks JS (pas de React, Vue, etc.) — vanilla JS uniquement
 - Optimisé pour la performance : `requestAnimationFrame` pour le scroll, `IntersectionObserver` pour les révélations, `font-display: swap`, `prefers-reduced-motion` respecté
 - La vidéo de fond a un fallback CSS gradient si elle ne charge pas
+
+---
+
+## Convention URLs propres (sans `.html`)
+
+GitHub Pages sert les fichiers `.html` uniquement via leur chemin complet (ex: `dashboard.html`). Pour afficher des URLs propres dans la barre d'adresse du navigateur, chaque page utilise un script inline dans le `<head>` qui retire l'extension immédiatement au chargement.
+
+### Règle obligatoire : script à placer dans le `<head>` de chaque page
+
+```html
+<!-- Clean URL: retire .html de la barre d'adresse instantanément -->
+<script>if(location.pathname.endsWith('.html'))history.replaceState(null,'',location.pathname.replace('.html',''));</script>
+```
+
+Ce script doit être **dans le `<head>`**, après les balises `<meta>` et `<link>`, pour s'exécuter avant tout rendu visible.
+
+### Règles de liens internes
+
+- Les liens `href` utilisent **toujours l'extension `.html`** pour que GitHub Pages serve correctement les fichiers.
+  - ✅ `href="dashboard.html"` — fonctionne, GitHub Pages trouve le fichier
+  - ❌ `href="dashboard"` — GitHub Pages retourne 404 (pas de réécriture serveur)
+- Le script retire `.html` de l'URL **affichée** sans rechargement via `history.replaceState`
+- **GitHub Pages ne fait pas de réécriture d'URL côté serveur** — ne pas essayer de configurer `.htaccess` ou `_redirects` (non supportés)
+
+### Pages actuellement équipées
+
+| Page | Script dans `<head>` |
+|---|---|
+| `dashboard.html` | ✅ |
+| `index.html` | Non nécessaire (servi comme `/` par GitHub Pages) |
+| Autres pages | À ajouter lors de leur construction |
