@@ -510,10 +510,10 @@ function getFolders() { return JSON.parse(localStorage.getItem(FOLDERS_KEY) || '
 function saveDocs(docs)       { localStorage.setItem(DOCS_KEY,    JSON.stringify(docs)); }
 function saveFolders(folders) { localStorage.setItem(FOLDERS_KEY, JSON.stringify(folders)); }
 
-function createFolder(name) {
+function createFolder(name, parentId = null) {
     const folders = getFolders();
     const id = 'folder_' + Date.now();
-    folders.push({ id, name, createdAt: Date.now() });
+    folders.push({ id, name, parentId, createdAt: Date.now() });
     saveFolders(folders);
     return id;
 }
@@ -558,6 +558,8 @@ function initDocuments() {
     renderDocumentsList();
     initFolderModal();
     initFolderDeleteModal();
+    initRenameModal();
+    initDocDeleteModal();
 
     document.getElementById('btn-new-folder')?.addEventListener('click', openFolderModal);
 
@@ -624,21 +626,23 @@ function initFolderDeleteModal() {
 
     confirmBtn?.addEventListener('click', () => {
         if (!_pendingDeleteFolderId) return;
-        // Delete all documents in this folder
+        // Collect this folder + all nested descendants
+        const allIds = getAllDescendantFolderIds(_pendingDeleteFolderId);
+        // Delete all docs inside any of those folders
         let docs = getDocs();
-        docs = docs.filter(d => d.folderId !== _pendingDeleteFolderId);
+        docs = docs.filter(d => !allIds.includes(d.folderId));
         saveDocs(docs);
-        // Delete the folder itself
+        // Delete all those folders
         let folders = getFolders();
         const deleted = folders.find(f => f.id === _pendingDeleteFolderId);
-        folders = folders.filter(f => f.id !== _pendingDeleteFolderId);
+        folders = folders.filter(f => !allIds.includes(f.id));
         saveFolders(folders);
-        // Reset state if needed
-        if (currentFolderId === _pendingDeleteFolderId) currentFolderId = null;
+        // Reset selection if it was inside deleted tree
+        if (allIds.includes(currentFolderId)) currentFolderId = null;
         close();
         renderFolderList();
         renderDocumentsList();
-        showToast(`Dossier « ${deleted?.name || '' } » supprimé`);
+        showToast(`Dossier « ${deleted?.name || ''} » supprimé`);
     });
 }
 
@@ -650,55 +654,256 @@ function openFolderDeleteModal(folderId, folderName) {
     if (modal) modal.style.display = 'flex';
 }
 
+/* ════════════════════════════════════════════
+   RENAME MODAL (folders + documents)
+   ════════════════════════════════════════════ */
+let _renameContext = null; // { type: 'folder'|'doc', id }
+
+function openRenameModal(type, id, currentName) {
+    _renameContext = { type, id };
+    const modal    = document.getElementById('rename-modal');
+    const input    = document.getElementById('rename-input');
+    const titleEl  = document.getElementById('rename-modal-title');
+    const labelEl  = document.getElementById('rename-modal-label');
+    if (titleEl) titleEl.textContent = type === 'folder' ? 'RENOMMER LE DOSSIER' : 'RENOMMER LE DOCUMENT';
+    if (labelEl) labelEl.textContent = type === 'folder' ? 'Nouveau nom du dossier' : 'Nouveau titre';
+    if (input)   input.value = currentName;
+    if (modal)   modal.style.display = 'flex';
+    setTimeout(() => { input?.select(); }, 50);
+}
+
+function initRenameModal() {
+    const modal      = document.getElementById('rename-modal');
+    const cancelBtn  = document.getElementById('btn-rename-cancel');
+    const confirmBtn = document.getElementById('btn-rename-confirm');
+    const input      = document.getElementById('rename-input');
+    if (!modal) return;
+
+    const close = () => { modal.style.display = 'none'; _renameContext = null; };
+
+    cancelBtn?.addEventListener('click', close);
+    modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+
+    const doRename = () => {
+        const newName = input?.value.trim();
+        if (!newName) { input?.focus(); showToast('Entrez un nouveau nom'); return; }
+        if (!_renameContext) return;
+
+        if (_renameContext.type === 'folder') {
+            const folders = getFolders();
+            const folder  = folders.find(f => f.id === _renameContext.id);
+            if (folder) { folder.name = newName; saveFolders(folders); renderFolderList(); }
+        } else {
+            const docs = getDocs();
+            const doc  = docs.find(d => d.id === _renameContext.id);
+            if (doc) {
+                doc.title     = newName;
+                doc.updatedAt = Date.now();
+                saveDocs(docs);
+                renderDocumentsList();
+                // Sync editor title input if this doc is currently open
+                if (currentDocId === doc.id) {
+                    const titleIn = document.getElementById('editor-title-input');
+                    if (titleIn) titleIn.value = newName;
+                }
+            }
+        }
+        showToast(`Renommé en « ${newName} »`);
+        close();
+    };
+
+    confirmBtn?.addEventListener('click', doRename);
+    input?.addEventListener('keydown', (e) => { if (e.key === 'Enter') doRename(); });
+}
+
+/* ════════════════════════════════════════════
+   DOCUMENT DELETE MODAL
+   ════════════════════════════════════════════ */
+let _pendingDeleteDocId = null;
+
+function openDocDeleteModal(docId, docTitle) {
+    _pendingDeleteDocId = docId;
+    const modal  = document.getElementById('doc-delete-modal');
+    const textEl = document.getElementById('doc-delete-text');
+    if (textEl) textEl.textContent = `Supprimer « ${docTitle} » définitivement ?`;
+    if (modal)   modal.style.display = 'flex';
+}
+
+function initDocDeleteModal() {
+    const modal      = document.getElementById('doc-delete-modal');
+    const cancelBtn  = document.getElementById('btn-doc-delete-cancel');
+    const confirmBtn = document.getElementById('btn-doc-delete-confirm');
+    if (!modal) return;
+
+    const close = () => { modal.style.display = 'none'; _pendingDeleteDocId = null; };
+
+    cancelBtn?.addEventListener('click', close);
+    modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+
+    confirmBtn?.addEventListener('click', () => {
+        if (!_pendingDeleteDocId) return;
+        const docs  = getDocs();
+        const doc   = docs.find(d => d.id === _pendingDeleteDocId);
+        deleteDocument(_pendingDeleteDocId);
+        renderDocumentsList();
+        showToast(`Document « ${doc?.title || ''} » supprimé`);
+        close();
+    });
+}
+
 function renderFolderList() {
     const list = document.getElementById('folder-list');
     if (!list) return;
+    list.innerHTML = '';
 
-    const folders = getFolders();
-    list.innerHTML = `
-        <div class="folder-item ${currentFolderId === null ? 'active' : ''}" data-folder="">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M2 12V5l3-2h6l3 2v7H2z" stroke-linejoin="round"/>
-            </svg>
-            <span>Tous les documents</span>
-        </div>
+    // Root "Tous les documents" item
+    const rootDiv = document.createElement('div');
+    rootDiv.className = `folder-item${currentFolderId === null ? ' active' : ''}`;
+    rootDiv.dataset.folder = '';
+    rootDiv.innerHTML = `
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M2 12V5l3-2h6l3 2v7H2z" stroke-linejoin="round"/>
+        </svg>
+        <span class="folder-item-name">Tous les documents</span>
     `;
+    rootDiv.addEventListener('click', () => selectFolder(null, 'Tous les documents', rootDiv));
+    setupFolderDrop(rootDiv, null);
+    list.appendChild(rootDiv);
 
+    // Recursive tree from root
+    renderFolderNodes(null, 0, list);
+}
+
+function renderFolderNodes(parentId, depth, container) {
+    const folders = getFolders().filter(f => (f.parentId || null) === parentId);
     folders.forEach(f => {
         const div = document.createElement('div');
         div.className = `folder-item${currentFolderId === f.id ? ' active' : ''}`;
         div.dataset.folder = f.id;
+        div.draggable = true;
+        div.style.paddingLeft = `${14 + depth * 14}px`;
         div.innerHTML = `
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                 <path d="M2 13V6l2.5-2h3L9 5.5h5V13H2z" stroke-linejoin="round"/>
             </svg>
             <span class="folder-item-name">${escapeHtml(f.name)}</span>
-            <button class="folder-item-delete" title="Supprimer ce dossier" aria-label="Supprimer">×</button>
+            <div class="folder-item-actions">
+                <button class="folder-item-btn folder-item-gear" title="Renommer">
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                        <circle cx="8" cy="8" r="2.5"/>
+                        <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/>
+                    </svg>
+                </button>
+                <button class="folder-item-btn folder-item-delete" title="Supprimer">×</button>
+            </div>
         `;
-        div.addEventListener('click', () => {
-            currentFolderId = f.id || null;
-            document.querySelectorAll('.folder-item').forEach(i => i.classList.remove('active'));
-            div.classList.add('active');
-            const titleEl = document.getElementById('docs-folder-title');
-            if (titleEl) titleEl.textContent = f.name;
-            renderDocumentsList();
+
+        // Click to select folder (ignore clicks on action buttons)
+        div.addEventListener('click', (e) => {
+            if (e.target.closest('.folder-item-actions')) return;
+            selectFolder(f.id, f.name, div);
         });
-        div.querySelector('.folder-item-delete')?.addEventListener('click', (e) => {
+
+        // Gear → rename
+        div.querySelector('.folder-item-gear').addEventListener('click', (e) => {
+            e.stopPropagation();
+            openRenameModal('folder', f.id, f.name);
+        });
+
+        // × → delete
+        div.querySelector('.folder-item-delete').addEventListener('click', (e) => {
             e.stopPropagation();
             openFolderDeleteModal(f.id, f.name);
         });
-        list.appendChild(div);
-    });
 
-    // "All docs" click
-    list.querySelector('[data-folder=""]')?.addEventListener('click', () => {
-        currentFolderId = null;
-        document.querySelectorAll('.folder-item').forEach(i => i.classList.remove('active'));
-        list.querySelector('[data-folder=""]').classList.add('active');
-        const titleEl = document.getElementById('docs-folder-title');
-        if (titleEl) titleEl.textContent = 'Tous les documents';
-        renderDocumentsList();
+        // Drag this folder
+        div.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', JSON.stringify({ type: 'folder', id: f.id }));
+            e.dataTransfer.effectAllowed = 'move';
+            setTimeout(() => div.classList.add('dragging'), 0);
+        });
+        div.addEventListener('dragend', () => div.classList.remove('dragging'));
+
+        // Accept drops onto this folder
+        setupFolderDrop(div, f.id);
+
+        container.appendChild(div);
+
+        // Render children immediately after the parent
+        renderFolderNodes(f.id, depth + 1, container);
     });
+}
+
+/* ── Folder selection ───────────────────────── */
+function selectFolder(folderId, name, clickedEl) {
+    currentFolderId = folderId;
+    document.querySelectorAll('.folder-item').forEach(i => i.classList.remove('active'));
+    clickedEl.classList.add('active');
+    const titleEl = document.getElementById('docs-folder-title');
+    if (titleEl) titleEl.textContent = name;
+    renderDocumentsList();
+}
+
+/* ── Drop target setup ──────────────────────── */
+function setupFolderDrop(el, targetFolderId) {
+    el.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        el.classList.add('drag-over');
+    });
+    el.addEventListener('dragleave', (e) => {
+        if (!el.contains(e.relatedTarget)) el.classList.remove('drag-over');
+    });
+    el.addEventListener('drop', (e) => {
+        e.preventDefault();
+        el.classList.remove('drag-over');
+        let payload;
+        try { payload = JSON.parse(e.dataTransfer.getData('text/plain')); } catch { return; }
+
+        if (payload.type === 'doc') {
+            const docs = getDocs();
+            const doc = docs.find(d => d.id === payload.id);
+            if (doc && doc.folderId !== targetFolderId) {
+                doc.folderId = targetFolderId;
+                saveDocs(docs);
+                renderFolderList();
+                renderDocumentsList();
+                showToast('Document déplacé');
+            }
+        } else if (payload.type === 'folder') {
+            if (payload.id === targetFolderId) return;
+            // Prevent dropping a folder into one of its own descendants
+            if (targetFolderId && isFolderDescendantOf(targetFolderId, payload.id)) return;
+            const folders = getFolders();
+            const folder = folders.find(f => f.id === payload.id);
+            if (folder && (folder.parentId || null) !== targetFolderId) {
+                folder.parentId = targetFolderId;
+                saveFolders(folders);
+                if (currentFolderId === payload.id) currentFolderId = null;
+                renderFolderList();
+                renderDocumentsList();
+                showToast('Dossier déplacé');
+            }
+        }
+    });
+}
+
+/* ── Folder ancestry check ──────────────────── */
+function isFolderDescendantOf(folderId, potentialAncestorId) {
+    let current = getFolders().find(f => f.id === folderId);
+    while (current) {
+        if ((current.parentId || null) === potentialAncestorId) return true;
+        current = getFolders().find(f => f.id === current.parentId);
+    }
+    return false;
+}
+
+function getAllDescendantFolderIds(folderId) {
+    const ids = [folderId];
+    getFolders()
+        .filter(f => f.parentId === folderId)
+        .forEach(child => ids.push(...getAllDescendantFolderIds(child.id)));
+    return ids;
 }
 
 function renderDocumentsList() {
@@ -730,6 +935,7 @@ function renderDocumentsList() {
         const d = new Date(doc.updatedAt);
         const dateStr = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
 
+        div.draggable = true;
         div.innerHTML = `
             <svg class="doc-item-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                 <path d="M4 2h6l3 3v9H4V2z" stroke-linejoin="round"/>
@@ -737,9 +943,42 @@ function renderDocumentsList() {
             </svg>
             <span class="doc-item-title">${escapeHtml(doc.title)}</span>
             <span class="doc-item-date">${dateStr}</span>
+            <div class="doc-item-actions">
+                <button class="doc-item-btn doc-item-gear" title="Renommer">
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                        <circle cx="8" cy="8" r="2.5"/>
+                        <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/>
+                    </svg>
+                </button>
+                <button class="doc-item-btn doc-item-del" title="Supprimer">×</button>
+            </div>
         `;
 
-        div.addEventListener('click', () => openDocument(doc.id));
+        // Open doc on click (not on action buttons)
+        div.addEventListener('click', (e) => {
+            if (e.target.closest('.doc-item-actions')) return;
+            openDocument(doc.id);
+        });
+
+        // Gear → rename
+        div.querySelector('.doc-item-gear').addEventListener('click', (e) => {
+            e.stopPropagation();
+            openRenameModal('doc', doc.id, doc.title);
+        });
+
+        // × → delete
+        div.querySelector('.doc-item-del').addEventListener('click', (e) => {
+            e.stopPropagation();
+            openDocDeleteModal(doc.id, doc.title);
+        });
+
+        // Drag this document
+        div.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', JSON.stringify({ type: 'doc', id: doc.id }));
+            e.dataTransfer.effectAllowed = 'move';
+            setTimeout(() => div.classList.add('dragging'), 0);
+        });
+        div.addEventListener('dragend', () => div.classList.remove('dragging'));
         listEl.appendChild(div);
     });
 }

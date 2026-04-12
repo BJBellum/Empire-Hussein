@@ -990,31 +990,68 @@
     white-space: nowrap;
 }
 
-.folder-item-delete {
+/* Action buttons container on folder items */
+.folder-item-actions {
     display: none;
     align-items: center;
-    justify-content: center;
-    width: 16px;
-    height: 16px;
+    gap: 2px;
     flex-shrink: 0;
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    font-size: 14px;
-    line-height: 1;
-    cursor: pointer;
-    padding: 0;
-    border-radius: 2px;
-    transition: color 0.2s ease, background 0.2s ease;
+    margin-left: 2px;
 }
 
-.folder-item:hover .folder-item-delete {
+.folder-item:hover .folder-item-actions {
     display: flex;
 }
 
+.folder-item-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    border-radius: 2px;
+    color: var(--text-muted);
+    transition: color 0.15s ease, background 0.15s ease;
+    flex-shrink: 0;
+}
+
+.folder-item-btn svg {
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+}
+
+.folder-item-gear:hover {
+    color: var(--gold);
+    background: rgba(201, 168, 76, 0.1);
+}
+
+.folder-item-delete {
+    font-size: 14px;
+    line-height: 1;
+}
+
 .folder-item-delete:hover {
-    color: #c0392b;
+    color: #e74c3c;
     background: rgba(192, 57, 43, 0.12);
+}
+
+/* Drag & drop states */
+.folder-item.drag-over {
+    background: rgba(201, 168, 76, 0.14);
+    outline: 1px dashed var(--gold-dark);
+    outline-offset: -1px;
+    color: var(--gold);
+}
+
+.folder-item.dragging,
+.doc-item.dragging {
+    opacity: 0.35;
+    pointer-events: none;
 }
 
 .docs-main {
@@ -1115,6 +1152,64 @@
     font-size: 10px;
     color: var(--text-muted);
     flex-shrink: 0;
+}
+
+/* Action buttons on doc items */
+.doc-item-actions {
+    display: none;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+    margin-left: 4px;
+}
+
+.doc-item:hover .doc-item-actions {
+    display: flex;
+}
+
+.doc-item-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    border-radius: 2px;
+    color: var(--text-muted);
+    transition: color 0.15s ease, background 0.15s ease;
+    flex-shrink: 0;
+}
+
+.doc-item-btn svg {
+    width: 11px;
+    height: 11px;
+    flex-shrink: 0;
+}
+
+.doc-item-gear:hover {
+    color: var(--gold);
+    background: rgba(201, 168, 76, 0.1);
+}
+
+.doc-item-del {
+    font-size: 15px;
+    line-height: 1;
+}
+
+.doc-item-del:hover {
+    color: #e74c3c;
+    background: rgba(192, 57, 43, 0.12);
+}
+
+.doc-item[draggable="true"] {
+    cursor: grab;
+}
+
+.doc-item[draggable="true"]:active {
+    cursor: grabbing;
 }
 
 .doc-viewer {

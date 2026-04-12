@@ -546,6 +546,33 @@
         </div>
     </div>
 
+    <!-- Modal: Renommer un dossier ou document -->
+    <div class="modal-overlay" id="rename-modal" style="display:none;">
+        <div class="modal">
+            <h3 class="modal-title" id="rename-modal-title">RENOMMER</h3>
+            <div class="form-group">
+                <label class="form-label" id="rename-modal-label">Nouveau nom</label>
+                <input class="form-input" type="text" id="rename-input" placeholder="Nom…" autocomplete="off">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="btn-rename-cancel">Annuler</button>
+                <button class="btn-primary" id="btn-rename-confirm">Renommer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Confirmer la suppression d'un document -->
+    <div class="modal-overlay" id="doc-delete-modal" style="display:none;">
+        <div class="modal">
+            <h3 class="modal-title">SUPPRIMER LE DOCUMENT</h3>
+            <p class="modal-text" id="doc-delete-text">Supprimer ce document définitivement ?</p>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="btn-doc-delete-cancel">Annuler</button>
+                <button class="btn-danger" id="btn-doc-delete-confirm">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal: Nouveau dossier -->
     <div class="modal-overlay" id="folder-modal" style="display:none;">
         <div class="modal">
