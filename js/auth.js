@@ -12,7 +12,7 @@
 
 const DISCORD_CONFIG = {
     // ── REPLACE THIS with your Discord Application Client ID ──
-    clientId: 'YOUR_CLIENT_ID_HERE',
+    clientId: '1492884020202045480',
 
     // ── REPLACE THIS with your GitHub Pages URL ──
     redirectUri: window.location.origin + window.location.pathname,
