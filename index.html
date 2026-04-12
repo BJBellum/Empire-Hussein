@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Site officiel de l'Empire Hussein - Monarchie théocratique absolue dirigée par le Lisan Al-Gaib">
+    <title>L'Empire Hussein</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>">
+</head>
+<body>
+    <!-- Page load curtain -->
+    <div class="page-curtain" id="page-curtain">
+        <div class="page-curtain-content">
+            <div class="page-curtain-title">EMPIRE HUSSEIN</div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- HEADER / NAVIGATION                     -->
+    <!-- ═══════════════════════════════════════ -->
+    <header id="header">
+        <div class="header-inner">
+            <nav class="nav-links">
+                <a href="#empire" class="nav-link" data-scroll>
+                    <span class="nav-link-text">L'EMPIRE</span>
+                    <span class="nav-link-line"></span>
+                </a>
+                <a href="#prophete" class="nav-link" data-scroll>
+                    <span class="nav-link-text">PROPHETE</span>
+                    <span class="nav-link-line"></span>
+                </a>
+                <a href="economie.html" class="nav-link">
+                    <span class="nav-link-text">ECONOMIE</span>
+                    <span class="nav-link-line"></span>
+                </a>
+                <a href="catalogues.html" class="nav-link">
+                    <span class="nav-link-text">CATALOGUES</span>
+                    <span class="nav-link-line"></span>
+                </a>
+                <a href="energie.html" class="nav-link">
+                    <span class="nav-link-text">ENERGIE</span>
+                    <span class="nav-link-line"></span>
+                </a>
+                <a href="forces-armees.html" class="nav-link nav-link--locked" id="nav-forces">
+                    <span class="nav-link-text">FORCES ARMEES</span>
+                    <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0110 0v4"/>
+                    </svg>
+                    <span class="nav-link-line"></span>
+                </a>
+                <button class="btn-discord" id="btn-discord" aria-label="Connexion Discord">
+                    <svg class="discord-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286z"/>
+                    </svg>
+                    <span class="btn-discord-text">CONNEXION</span>
+                </button>
+            </nav>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile nav overlay -->
+    <div class="mobile-nav" id="mobile-nav">
+        <a href="#empire" class="mobile-nav-link" data-scroll>L'EMPIRE</a>
+        <a href="#prophete" class="mobile-nav-link" data-scroll>PROPHETE</a>
+        <a href="economie.html" class="mobile-nav-link">ECONOMIE</a>
+        <a href="catalogues.html" class="mobile-nav-link">CATALOGUES</a>
+        <a href="energie.html" class="mobile-nav-link">ENERGIE</a>
+        <a href="forces-armees.html" class="mobile-nav-link mobile-nav-link--locked" id="nav-forces-mobile">FORCES ARMEES
+            <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0110 0v4"/>
+            </svg>
+        </a>
+        <button class="btn-discord btn-discord--mobile" id="btn-discord-mobile" aria-label="Connexion Discord">
+            <svg class="discord-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286z"/>
+            </svg>
+            <span>CONNEXION</span>
+        </button>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- HERO SECTION                            -->
+    <!-- ═══════════════════════════════════════ -->
+    <section id="hero" class="hero">
+        <div class="hero-video-container">
+            <video class="hero-video" autoplay muted loop playsinline preload="metadata"
+                   poster="assets/poster.jpg">
+                <source src="assets/bg.mp4" type="video/mp4">
+            </video>
+            <div class="hero-overlay"></div>
+            <div class="hero-grain"></div>
+        </div>
+
+        <div class="hero-content">
+            <div class="hero-badge reveal-up">
+                <span class="hero-badge-line"></span>
+                <span class="hero-badge-text">MONARCHIE THEOCRATIQUE ABSOLUE</span>
+                <span class="hero-badge-line"></span>
+            </div>
+            <h1 class="hero-title" id="hero-title">
+                <span class="hero-title-line">
+                    <span class="hero-title-word" data-letter-animate>L'EMPIRE</span>
+                </span>
+                <span class="hero-title-line">
+                    <span class="hero-title-word" data-letter-animate>HUSSEIN</span>
+                </span>
+            </h1>
+            <p class="hero-subtitle reveal-up" id="hero-subtitle">
+                Sous la guidance éternelle du Lisan Al-Gaib
+            </p>
+            <div class="hero-divider reveal-up">
+                <span class="hero-divider-line"></span>
+                <span class="hero-divider-diamond"></span>
+                <span class="hero-divider-line"></span>
+            </div>
+            <a href="#empire" class="hero-scroll reveal-up" data-scroll>
+                <span class="hero-scroll-text">DECOUVRIR</span>
+                <svg class="hero-scroll-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 5v14M5 12l7 7 7-7"/>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Floating dust particles (CSS only) -->
+        <div class="dust-container" aria-hidden="true">
+            <div class="dust dust-1"></div>
+            <div class="dust dust-2"></div>
+            <div class="dust dust-3"></div>
+            <div class="dust dust-4"></div>
+            <div class="dust dust-5"></div>
+            <div class="dust dust-6"></div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- L'EMPIRE SECTION                        -->
+    <!-- ═══════════════════════════════════════ -->
+    <section id="empire" class="section section-empire">
+        <div class="section-bg-pattern" aria-hidden="true"></div>
+        <div class="container">
+            <div class="section-header">
+                <span class="section-number reveal-up">I</span>
+                <h2 class="section-title reveal-up">L'EMPIRE</h2>
+                <div class="section-title-line reveal-up"></div>
+            </div>
+
+            <div class="empire-grid">
+                <div class="empire-main reveal-up">
+                    <p class="empire-intro">
+                        L'Empire Hussein est une <strong>monarchie théocratique absolue</strong>,
+                        fondée sur les principes sacrés du Mahdisme et gouvernée d'une main
+                        indéfectible par la dynastie Hussein.
+                    </p>
+                    <p class="empire-text">
+                        Le pouvoir suprême est concentré entre les mains du <strong>Lisan Al-Gaib</strong>,
+                        titre sacré hérité au sein de la famille Hussein depuis les origines de l'Empire.
+                        Cette autorité est considérée comme divine par les fidèles, conférant au dirigeant
+                        un mandat céleste sur l'ensemble des territoires et des sujets.
+                    </p>
+                    <p class="empire-text">
+                        L'Empire ne reconnaît aucune séparation entre le spirituel et le temporel.
+                        La parole du Lisan Al-Gaib est loi, prophétie et vérité. Son règne incarne
+                        l'accomplissement d'une promesse millénaire, guidant le peuple vers un avenir
+                        de grandeur et de prospérité éternelle.
+                    </p>
+                </div>
+
+                <div class="empire-cards">
+                    <div class="empire-card reveal-up">
+                        <div class="empire-card-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M24 4l6 8h12l-6 8 6 8H30l-6 8-6-8H6l6-8-6-8h12z"/>
+                            </svg>
+                        </div>
+                        <h3 class="empire-card-title">POUVOIR ABSOLU</h3>
+                        <p class="empire-card-text">
+                            Le Lisan Al-Gaib détient l'autorité suprême, législative,
+                            exécutive et judiciaire, sans limitation ni contestation possible.
+                        </p>
+                    </div>
+                    <div class="empire-card reveal-up">
+                        <div class="empire-card-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="24" cy="14" r="10"/>
+                                <path d="M24 28c-12 0-20 6-20 12v4h40v-4c0-6-8-12-20-12z"/>
+                            </svg>
+                        </div>
+                        <h3 class="empire-card-title">DYNASTIE HUSSEIN</h3>
+                        <p class="empire-card-text">
+                            La lignée Hussein règne sans interruption, chaque successeur
+                            étant choisi par révélation divine parmi les descendants directs.
+                        </p>
+                    </div>
+                    <div class="empire-card reveal-up">
+                        <div class="empire-card-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M24 4v16M16 12l8 8 8-8M8 24h32M12 32l12 12 12-12"/>
+                            </svg>
+                        </div>
+                        <h3 class="empire-card-title">LOI DIVINE</h3>
+                        <p class="empire-card-text">
+                            Toute législation émane de la volonté prophétique du dirigeant,
+                            unifiant le droit civil et la loi sacrée en un seul corpus.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- LE PROPHETE SECTION                     -->
+    <!-- ═══════════════════════════════════════ -->
+    <section id="prophete" class="section section-prophete">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-number reveal-up">II</span>
+                <h2 class="section-title reveal-up">LE PROPHETE</h2>
+                <div class="section-title-line reveal-up"></div>
+            </div>
+
+            <div class="prophete-layout">
+                <div class="prophete-portrait reveal-up">
+                    <div class="prophete-portrait-frame">
+                        <div class="prophete-portrait-inner">
+                            <div class="prophete-portrait-symbol">
+                                <svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="0.8">
+                                    <circle cx="60" cy="60" r="55"/>
+                                    <circle cx="60" cy="60" r="45"/>
+                                    <circle cx="60" cy="60" r="35"/>
+                                    <path d="M60 5v110M5 60h110M17 17l86 86M103 17L17 103"/>
+                                    <polygon points="60,15 68,40 95,40 73,55 80,80 60,65 40,80 47,55 25,40 52,40" stroke-width="1"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="prophete-portrait-corner prophete-portrait-corner--tl"></div>
+                        <div class="prophete-portrait-corner prophete-portrait-corner--tr"></div>
+                        <div class="prophete-portrait-corner prophete-portrait-corner--bl"></div>
+                        <div class="prophete-portrait-corner prophete-portrait-corner--br"></div>
+                    </div>
+                    <div class="prophete-portrait-name">
+                        <span class="prophete-name-ar">صلاح الدين حسين</span>
+                    </div>
+                </div>
+
+                <div class="prophete-content">
+                    <div class="prophete-name-block reveal-up">
+                        <h3 class="prophete-name">Salah ad-Din Hussein</h3>
+                        <span class="prophete-title-label">Lisan Al-Gaib &mdash; La Voix de l'Invisible</span>
+                    </div>
+
+                    <blockquote class="prophete-quote reveal-up">
+                        <span class="prophete-quote-mark">&laquo;</span>
+                        Celui qui voit au-delà des sables du temps, dont la parole est le
+                        souffle qui façonne les destinées de l'Empire.
+                        <span class="prophete-quote-mark">&raquo;</span>
+                    </blockquote>
+
+                    <div class="prophete-description reveal-up">
+                        <p>
+                            <strong>Salah ad-Din Hussein</strong> est le dirigeant suprême de l'Empire Hussein
+                            et le porteur du titre sacré de <strong>Lisan Al-Gaib</strong> &mdash; La Voix
+                            de l'Invisible. Aux yeux des croyants du Mahdisme, il est bien plus qu'un
+                            souverain : il est un <strong>prophète</strong>, l'élu dont la venue fut annoncée
+                            par les textes anciens.
+                        </p>
+                        <p>
+                            Sa légitimité ne repose pas sur la conquête ni sur l'héritage dynastique seul,
+                            mais sur la <strong>révélation divine</strong> qui l'a désigné comme guide absolu.
+                            Les fidèles voient en lui l'incarnation de la promesse millénaire, celui qui
+                            mène l'Empire vers son destin prophétique.
+                        </p>
+                        <p>
+                            Sous son règne, l'Empire connaît une ère de transformation profonde.
+                            Chaque décret est reçu comme parole sacrée, chaque vision comme une
+                            prophétie en cours d'accomplissement. Le Lisan Al-Gaib ne gouverne pas
+                            &mdash; il <strong>révèle</strong>.
+                        </p>
+                    </div>
+
+                    <div class="prophete-attributes reveal-up">
+                        <div class="prophete-attr">
+                            <span class="prophete-attr-label">Titre</span>
+                            <span class="prophete-attr-value">Lisan Al-Gaib</span>
+                        </div>
+                        <div class="prophete-attr">
+                            <span class="prophete-attr-label">Dynastie</span>
+                            <span class="prophete-attr-value">Maison Hussein</span>
+                        </div>
+                        <div class="prophete-attr">
+                            <span class="prophete-attr-label">Régime</span>
+                            <span class="prophete-attr-value">Monarchie théocratique</span>
+                        </div>
+                        <div class="prophete-attr">
+                            <span class="prophete-attr-label">Foi</span>
+                            <span class="prophete-attr-value">Mahdisme</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- FOOTER                                  -->
+    <!-- ═══════════════════════════════════════ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <span class="footer-logo">EMPIRE HUSSEIN</span>
+                <span class="footer-text">Sous l'autorité éternelle du Lisan Al-Gaib</span>
+                <span class="footer-copy">&copy; Empire Hussein &mdash; Tous droits réservés</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast notification -->
+    <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+    <!-- Discord user badge (shown when logged in) -->
+    <div class="user-badge" id="user-badge" style="display:none;">
+        <img class="user-badge-avatar" id="user-avatar" alt="Avatar" width="32" height="32">
+        <span class="user-badge-name" id="user-name"></span>
+        <button class="user-badge-logout" id="btn-logout" aria-label="Déconnexion">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/>
+            </svg>
+        </button>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
