@@ -53,7 +53,7 @@ Empire-Hussein/
 - `--bg-card` : `#111111`
 - `--text-primary` : `#F5F0E8`
 - `--text-secondary` : `#A09888`
-- `--text-muted` : `#605848`
+- `--text-muted` : `#9A8B7A`
 
 ### Conventions visuelles
 - Thème : cinématique, désert, Dune — sombre, doré, dramatique
@@ -99,6 +99,28 @@ Les pages suivantes sont des placeholders et doivent être développées :
 - `forces-armees.html` (accessible uniquement aux admins Discord)
 
 Respecter le même design system que `index.html` : variables CSS, polices, animations reveal-up, header identique.
+
+---
+
+## Accessibilité — Contraste des couleurs
+
+### Ratios de contraste (WCAG AA : 4.5:1 texte normal, 3:1 grand texte)
+
+| Variable | Valeur | Ratio sur `--bg-deep` | Ratio sur `--bg-card` | Statut |
+|---|---|---|---|---|
+| `--text-primary` | `#F5F0E8` | ~18:1 | ~16:1 | ✅ AAA |
+| `--text-secondary` | `#A09888` | ~7.3:1 | ~6.8:1 | ✅ AA |
+| `--text-muted` | `#9A8B7A` | ~6.3:1 | ~5.9:1 | ✅ AA |
+| `--gold` | `#C9A84C` | ~8.6:1 | ~8.0:1 | ✅ AA |
+| `--gold-dark` | `#8B6914` | ~4.1:1 | ~3.8:1 | ⚠️ Décoratif uniquement |
+
+### Règles d'usage
+
+- **`--text-muted`** est le niveau minimum pour du texte lisible — utiliser uniquement pour les métadonnées (dates, labels, hints). Ne jamais aller plus bas.
+- **`--gold-dark`** (`#8B6914`) ne doit **pas** être utilisé comme couleur de texte sur fond sombre — il est réservé aux **bordures, icônes décoratifs et éléments visuels**. Pour du texte en doré, utiliser `--gold` à la place.
+- **`--gold-dark` comme texte** : si un cas spécifique l'exige (ex: badge, hash de commit), compenser avec un fond clair ou utiliser directement `--gold`.
+- `#ffffff` (blanc pur) est acceptable pour les compteurs et indicateurs techniques (ex: compteur de caractères de l'éditeur).
+- Ne jamais introduire une nouvelle couleur de texte sans vérifier son ratio de contraste avec les fonds possibles (`--bg-deep`, `--bg-section`, `--bg-card`).
 
 ---
 
