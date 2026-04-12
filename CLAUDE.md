@@ -52,7 +52,7 @@ Empire-Hussein/
 - `--bg-section` : `#0A0A0A`
 - `--bg-card` : `#111111`
 - `--text-primary` : `#F5F0E8`
-- `--text-secondary` : `#A09888`
+- `--text-secondary` : `#C0B2A0`
 - `--text-muted` : `#9A8B7A`
 
 ### Conventions visuelles
@@ -109,10 +109,20 @@ Respecter le même design system que `index.html` : variables CSS, polices, anim
 | Variable | Valeur | Ratio sur `--bg-deep` | Ratio sur `--bg-card` | Statut |
 |---|---|---|---|---|
 | `--text-primary` | `#F5F0E8` | ~18:1 | ~16:1 | ✅ AAA |
-| `--text-secondary` | `#A09888` | ~7.3:1 | ~6.8:1 | ✅ AA |
+| `--text-secondary` | `#C0B2A0` | ~10.0:1 | ~9.4:1 | ✅ AAA |
 | `--text-muted` | `#9A8B7A` | ~6.3:1 | ~5.9:1 | ✅ AA |
 | `--gold` | `#C9A84C` | ~8.6:1 | ~8.0:1 | ✅ AA |
 | `--gold-dark` | `#8B6914` | ~4.1:1 | ~3.8:1 | ⚠️ Décoratif uniquement |
+
+### Hiérarchie visuelle des niveaux de texte
+
+Les trois niveaux de texte doivent rester **visuellement distincts** les uns des autres. Ne jamais les rapprocher au point qu'ils se confondent à l'œil :
+
+| Niveau | Variable | Ratio | Écart minimal avec le niveau suivant |
+|---|---|---|---|
+| Principal | `--text-primary` #F5F0E8 | ~18:1 | ≥ 5 pts de ratio |
+| Secondaire | `--text-secondary` #C0B2A0 | ~10:1 | ≥ 3 pts de ratio |
+| Atténué | `--text-muted` #9A8B7A | ~6.3:1 | — |
 
 ### Règles d'usage
 
