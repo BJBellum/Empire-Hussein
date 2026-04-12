@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Empire Hussein</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="icon" type="image/png" href="assets/Hussein Empire Coat of Arms.png">
+</head>
+<body class="dashboard-body">
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- ACCÈS REFUSÉ (non-admin)                -->
+    <!-- ═══════════════════════════════════════ -->
+    <div id="access-denied" class="access-overlay" style="display:none;">
+        <div class="access-box">
+            <svg class="access-lock" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="8" y="28" width="48" height="32" rx="4"/>
+                <path d="M20 28V20a12 12 0 0124 0v8"/>
+                <circle cx="32" cy="44" r="4" fill="currentColor" stroke="none"/>
+                <line x1="32" y1="48" x2="32" y2="54"/>
+            </svg>
+            <h2 class="access-title">ACCES REFUSE</h2>
+            <p class="access-text">Ce tableau de bord est réservé aux administrateurs de l'Empire Hussein.</p>
+            <div class="access-actions">
+                <a href="index.html" class="btn-access-return">RETOUR AU SITE</a>
+                <button class="btn-access-login" id="btn-access-login">SE CONNECTER</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- DASHBOARD PRINCIPAL                     -->
+    <!-- ═══════════════════════════════════════ -->
+    <div id="dashboard-root" class="dashboard-root" style="display:none;">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <img src="assets/Hussein Empire Coat of Arms.png" width="28" height="28" alt="">
+                <span class="sidebar-brand-text">EMPIRE HUSSEIN</span>
+            </div>
+
+            <nav class="sidebar-nav" id="sidebar-nav">
+
+                <!-- TABLEAU DE BORD -->
+                <div class="nav-group">
+                    <span class="nav-group-label">TABLEAU DE BORD</span>
+                    <a class="nav-item active" data-panel="apercu" data-title="APERCU">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="2" y="2" width="7" height="7" rx="1"/>
+                            <rect x="11" y="2" width="7" height="7" rx="1"/>
+                            <rect x="11" y="11" width="7" height="7" rx="1"/>
+                            <rect x="2" y="11" width="7" height="7" rx="1"/>
+                        </svg>
+                        <span>APERCU</span>
+                    </a>
+                    <a class="nav-item" data-panel="updates" data-title="MISES A JOUR">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M10 2v16M2 10h16" stroke-linecap="round"/>
+                            <circle cx="10" cy="10" r="8"/>
+                        </svg>
+                        <span>MISES A JOUR</span>
+                    </a>
+                    <a class="nav-item nav-item--wip" data-panel="restore" data-title="RESTAURATION">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M2 10a8 8 0 108-8" stroke-linecap="round"/>
+                            <path d="M2 4v6h6" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>RESTAURATION</span>
+                        <span class="nav-badge">À VENIR</span>
+                    </a>
+                </div>
+
+                <!-- ECONOMIE -->
+                <div class="nav-group">
+                    <span class="nav-group-label">ECONOMIE</span>
+                    <a class="nav-item" data-panel="bourse" data-title="BOURSE DU CAIRE">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <polyline points="2,14 6,9 10,12 14,6 18,8" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>BOURSE DU CAIRE</span>
+                    </a>
+                    <a class="nav-item" data-panel="canal" data-title="CANAL DE SUEZ">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M2 10h16M2 7h16M2 13h16" stroke-linecap="round"/>
+                        </svg>
+                        <span>CANAL DE SUEZ</span>
+                    </a>
+                </div>
+
+                <!-- CATALOGUES -->
+                <div class="nav-group">
+                    <span class="nav-group-label">CATALOGUES</span>
+                    <a class="nav-item" data-panel="cat-militaire" data-title="CATALOGUES — MILITAIRE">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M10 2l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z"/>
+                        </svg>
+                        <span>MILITAIRE</span>
+                    </a>
+                    <a class="nav-item" data-panel="cat-civil" data-title="CATALOGUES — CIVIL">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M4 17V9l6-6 6 6v8H4z" stroke-linejoin="round"/>
+                            <rect x="8" y="12" width="4" height="5"/>
+                        </svg>
+                        <span>CIVIL</span>
+                    </a>
+                </div>
+
+                <!-- ECRITURE -->
+                <div class="nav-group">
+                    <span class="nav-group-label">ECRITURE</span>
+                    <a class="nav-item" data-panel="editeur" data-title="ESPACE D'ECRITURE">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M3 17l1.5-4L14 3.5a2 2 0 013 3L7.5 16.5 3 17z" stroke-linejoin="round"/>
+                        </svg>
+                        <span>ESPACE D'ECRITURE</span>
+                    </a>
+                    <a class="nav-item" data-panel="documents" data-title="DOCUMENTS">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M4 2h8l4 4v12H4V2z" stroke-linejoin="round"/>
+                            <polyline points="12,2 12,6 16,6" stroke-linejoin="round"/>
+                        </svg>
+                        <span>DOCUMENTS</span>
+                    </a>
+                </div>
+
+                <!-- FORCES ARMEES -->
+                <div class="nav-group">
+                    <span class="nav-group-label">FORCES ARMEES IMPERIALES</span>
+                    <a class="nav-item" data-panel="equipements" data-title="EQUIPEMENTS">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M6 2h8l2 4H4L6 2z"/>
+                            <rect x="3" y="6" width="14" height="12" rx="1"/>
+                        </svg>
+                        <span>EQUIPEMENTS</span>
+                    </a>
+                    <a class="nav-item" data-panel="unites" data-title="UNITES MILITAIRES">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="7" cy="6" r="3"/>
+                            <circle cx="13" cy="6" r="3"/>
+                            <path d="M1 18c0-4 3-6 6-6h6c3 0 6 2 6 6"/>
+                        </svg>
+                        <span>UNITES MILITAIRES</span>
+                    </a>
+                </div>
+
+                <!-- GITHUB -->
+                <div class="nav-group">
+                    <span class="nav-group-label">GITHUB</span>
+                    <a class="nav-item" data-panel="github" data-title="CONFIGURATION GITHUB">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M10 2C5.6 2 2 5.7 2 10.2c0 3.6 2.3 6.7 5.5 7.8.4.1.5-.2.5-.4v-1.4c-2.2.5-2.7-1.1-2.7-1.1-.4-.9-.9-1.2-.9-1.2-.7-.5.1-.5.1-.5.8.1 1.2.8 1.2.8.7 1.2 1.9.8 2.3.6.1-.5.3-.8.5-1-1.8-.2-3.6-.9-3.6-4 0-.9.3-1.6.8-2.2-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8.6-.2 1.3-.3 2-.3s1.4.1 2 .3c1.5-1 2.2-.8 2.2-.8.4 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.2 0 3.1-1.9 3.8-3.7 4 .3.3.6.8.6 1.6v2.3c0 .2.1.5.6.4C15.7 16.9 18 13.8 18 10.2 18 5.7 14.4 2 10 2z" stroke="none" fill="currentColor"/>
+                        </svg>
+                        <span>CONFIGURATION</span>
+                    </a>
+                </div>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user" id="sidebar-user"></div>
+                <a href="index.html" class="sidebar-back">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 4l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>RETOUR AU SITE</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <div class="dashboard-main" id="dashboard-main">
+            <header class="dash-header">
+                <button class="sidebar-toggle-btn" id="sidebar-toggle" aria-label="Menu">
+                    <span></span><span></span><span></span>
+                </button>
+                <h1 class="dash-header-title" id="current-panel-title">APERCU</h1>
+            </header>
+
+            <div class="panels-wrapper" id="panels-wrapper">
+
+                <!-- ══════════════════════════ -->
+                <!-- APERCU                     -->
+                <!-- ══════════════════════════ -->
+                <div class="panel" id="panel-apercu">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+                            </svg>
+                            <div class="stat-value">2 847</div>
+                            <div class="stat-label">Visiteurs ce mois</div>
+                            <div class="stat-trend stat-trend--up">+12.4 %</div>
+                        </div>
+                        <div class="stat-card">
+                            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12,6 12,12 16,14"/>
+                            </svg>
+                            <div class="stat-value">156</div>
+                            <div class="stat-label">Actifs aujourd'hui</div>
+                            <div class="stat-trend stat-trend--up">+3.2 %</div>
+                        </div>
+                        <div class="stat-card">
+                            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            <div class="stat-value">12 403</div>
+                            <div class="stat-label">Pages vues</div>
+                            <div class="stat-trend stat-trend--up">+8.7 %</div>
+                        </div>
+                        <div class="stat-card">
+                            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
+                            </svg>
+                            <div class="stat-value">3 891</div>
+                            <div class="stat-label">Sessions</div>
+                            <div class="stat-trend stat-trend--down">-1.3 %</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-card-header">
+                            <h3 class="chart-card-title">VISITEURS — 30 DERNIERS JOURS</h3>
+                            <span class="chart-card-note">Données simulées</span>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="visitor-chart" height="200"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="activity-card">
+                        <h3 class="activity-card-title">ACTIVITE RECENTE</h3>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <span class="activity-dot activity-dot--gold"></span>
+                                <span class="activity-time">Aujourd'hui</span>
+                                <span class="activity-desc">Dashboard administrateur créé</span>
+                            </div>
+                            <div class="activity-item">
+                                <span class="activity-dot activity-dot--gold"></span>
+                                <span class="activity-time">12 avr. 2026</span>
+                                <span class="activity-desc">Favicon blason de l'Empire ajouté</span>
+                            </div>
+                            <div class="activity-item">
+                                <span class="activity-dot"></span>
+                                <span class="activity-time">11 avr. 2026</span>
+                                <span class="activity-desc">Authentification Discord OAuth2 mise à jour</span>
+                            </div>
+                            <div class="activity-item">
+                                <span class="activity-dot"></span>
+                                <span class="activity-time">10 avr. 2026</span>
+                                <span class="activity-desc">Commit initial — Site Empire Hussein</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ══════════════════════════ -->
+                <!-- MISES A JOUR              -->
+                <!-- ══════════════════════════ -->
+                <div class="panel hidden" id="panel-updates">
+                    <div class="updates-list">
+                        <div class="update-entry">
+                            <div class="update-header">
+                                <span class="update-tag update-tag--new">NOUVEAU</span>
+                                <span class="update-date">12 avril 2026</span>
+                            </div>
+                            <h3 class="update-title">Dashboard administrateur</h3>
+                            <p class="update-desc">Création du tableau de bord admin avec graphiques, espace d'écriture, gestion des documents et intégration GitHub.</p>
+                            <div class="update-files">
+                                <span class="update-file">dashboard.html</span>
+                                <span class="update-file">css/dashboard.css</span>
+                                <span class="update-file">js/dashboard.js</span>
+                            </div>
+                        </div>
+                        <div class="update-entry">
+                            <div class="update-header">
+                                <span class="update-tag update-tag--update">MISE À JOUR</span>
+                                <span class="update-date">12 avril 2026</span>
+                            </div>
+                            <h3 class="update-title">Favicon — Blason de l'Empire</h3>
+                            <p class="update-desc">Ajout du blason de l'Empire Hussein comme favicon sur toutes les pages.</p>
+                            <div class="update-files">
+                                <span class="update-file">index.html</span>
+                                <span class="update-file">assets/Hussein Empire Coat of Arms.png</span>
+                            </div>
+                        </div>
+                        <div class="update-entry">
+                            <div class="update-header">
+                                <span class="update-tag update-tag--update">MISE À JOUR</span>
+                                <span class="update-date">11 avril 2026</span>
+                            </div>
+                            <h3 class="update-title">Authentification Discord</h3>
+                            <p class="update-desc">Mise à jour du flux OAuth2 Discord. IDs admin configurés. Token stocké en localStorage (7 jours).</p>
+                            <div class="update-files">
+                                <span class="update-file">js/auth.js</span>
+                            </div>
+                        </div>
+                        <div class="update-entry">
+                            <div class="update-header">
+                                <span class="update-tag update-tag--init">INITIAL</span>
+                                <span class="update-date">10 avril 2026</span>
+                            </div>
+                            <h3 class="update-title">Commit initial</h3>
+                            <p class="update-desc">Création du site Empire Hussein — design system, hero, sections Empire et Prophète, animations, glassmorphism.</p>
+                            <div class="update-files">
+                                <span class="update-file">index.html</span>
+                                <span class="update-file">css/style.css</span>
+                                <span class="update-file">js/main.js</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ══════════════════════════ -->
+                <!-- RESTAURATION              -->
+                <!-- ══════════════════════════ -->
+                <div class="panel hidden" id="panel-restore">
+                    <div class="wip-banner">
+                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M4 24a20 20 0 1040 0H4z"/>
+                            <path d="M4 24A20 20 0 0024 4" stroke-dasharray="4 4"/>
+                            <path d="M4 18v6h6" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <h2 class="wip-title">RESTAURATION DE VERSION</h2>
+                        <p class="wip-text">Cette fonctionnalité permettra de restaurer une version antérieure du site à partir de l'historique GitHub. En cours de développement.</p>
+                    </div>
+                    <div class="restore-list">
+                        <div class="restore-commit">
+                            <span class="restore-hash">3b0253b</span>
+                            <span class="restore-msg">Add coat of arms favicon + CLAUDE.md</span>
+                            <span class="restore-date">12 avr. 2026</span>
+                            <button class="restore-btn" disabled>Restaurer</button>
+                        </div>
+                        <div class="restore-commit">
+                            <span class="restore-hash">e16d12c</span>
+                            <span class="restore-msg">Update auth.js</span>
+                            <span class="restore-date">11 avr. 2026</span>
+                            <button class="restore-btn" disabled>Restaurer</button>
+                        </div>
+                        <div class="restore-commit">
+                            <span class="restore-hash">6c9af28</span>
+                            <span class="restore-msg">Initial commit — Empire Hussein site</span>
+                            <span class="restore-date">10 avr. 2026</span>
+                            <button class="restore-btn" disabled>Restaurer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ══════════════════════════ -->
+                <!-- BOURSE DU CAIRE           -->
+                <!-- ══════════════════════════ -->
+                <div class="panel hidden" id="panel-bourse">
+                    <div class="placeholder-section">
+                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                            <polyline points="4,36 12,24 20,28 30,16 38,20 44,10"/>
+                            <line x1="4" y1="44" x2="44" y2="44"/>
+                            <line x1="4" y1="10" x2="4" y2="44"/>
+                        </svg>
+                        <h2 class="placeholder-title">BOURSE DU CAIRE</h2>
+                        <p class="placeholder-text">Tableau de bord des marchés financiers de l'Empire. Cours des matières premières, obligations impériales, indices boursiers. Section en construction.</p>
+                    </div>
+                </div>
+
+                <!-- ══════════════════════════ -->
+                <!-- CANAL DE SUEZ             -->
+                <!-- ══════════════════════════ -->
+                <div class="panel hidden" id="panel-canal">
+                    <div class="placeholder-section">
+                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                            <path d="M4 20h40M4 28h40"/>
+                            <path d="M8 20v8M16 20v8M24 20v8M32 20v8M40 20v8"/>
+                            <rect x="4" y="12" width="12" height="8"/>
+                            <rect x="20" y="12" width="12" height="8"/>
+                        </svg>
+                        <h2 class="placeholder-title">CANAL DE SUEZ</h2>
+                        <p class="placeholder-text">Suivi du trafic maritime, taxes de transit et revenus du Canal de Suez. Données de passage des convois impériaux. Section en construction.</p>
+                    </div>
+                </div>
+
+                <!-- ══════════════════════════ -->
+                <!-- CATALOGUE MILITAIRE       -->
+                <!-- ══════════════════════════ -->
+                <div class="panel hidden" id="panel-cat-militaire">
+                    <div class="placeholder-section">
+                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                            <path d="M24 4l3 8h8l-6.5 5 2.5 8L24 20l-7 5 2.5-8L13 12h8z"/>
+                        </svg>
+                        <h2 class="placeholder-title">CATALOGUE MILITAIRE</h2>
+                        <p class="placeholder-text">Inventaire des équipements militaires, armements, véhicules et matériels des Forces Armées Impériales. Accès restreint. Section en construction.</p>
+                    </div>
+                </div>
+
+                <!-- ══════════════════════════ -->
+                <!-- CATALOGUE CIVIL           -->
+                <!-- ══════════════════════════ -->
+                <div class="panel hidden" id="panel-cat-civil">
+                    <div class="placeholder-section">
+                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                            <path d="M8 44V20l16-14 16 14v24H8z"/>
+                            <rect x="18" y="30" width="12" height="14"/>
+                            <rect x="14" y="22" width="8" height="8"/>
+                            <rect x="26" y="22" width="8" height="8"/>
+                        </svg>
+                        <h2 class="placeholder-title">CATALOGUE CIVIL</h2>
+                        <p class="placeholder-text">Registre des infrastructures civiles, bâtiments administratifs et propriétés de l'Empire Hussein. Section en construction.</p>
+                    </div>
+                </div>
+
+                <!-- ══════════════════════════ -->
+                <!-- ESPACE D'ECRITURE         -->
+                <!-- ══════════════════════════ -->
+                <div class="panel panel--editor hidden" id="panel-editeur">
+                    <div class="editor-container">
+
+                        <!-- Toolbar -->
+                        <div class="editor-toolbar">
+                            <div class="toolbar-group">
+                                <button class="toolbar-btn" data-format="bold" title="Gras — **texte**"><strong>B</strong></button>
+                                <button class="toolbar-btn" data-format="italic" title="Italique — *texte*"><em>I</em></button>
+                                <button class="toolbar-btn toolbar-btn--underline" data-format="underline" title="Souligné — __texte__">U</button>
+                                <button class="toolbar-btn toolbar-btn--strike" data-format="strike" title="Barré — ~~texte~~">S</button>
+                                <button class="toolbar-btn toolbar-btn--spoiler" data-format="spoiler" title="Spoiler — ||texte||">||</button>
+                            </div>
+                            <div class="toolbar-sep"></div>
+                            <div class="toolbar-group">
+                                <button class="toolbar-btn toolbar-btn--mono" data-format="code" title="Code inline — `code`">`c`</button>
+                                <button class="toolbar-btn toolbar-btn--mono" data-format="codeblock" title="Bloc de code — ```code```">```</button>
+                            </div>
+                            <div class="toolbar-sep"></div>
+                            <div class="toolbar-group">
+                                <button class="toolbar-btn" data-format="quote" title="Citation — &gt; texte">&gt;</button>
+                                <button class="toolbar-btn" data-format="h1" title="Titre 1 — # texte">H1</button>
+                                <button class="toolbar-btn" data-format="h2" title="Titre 2 — ## texte">H2</button>
+                                <button class="toolbar-btn" data-format="h3" title="Titre 3 — ### texte">H3</button>
+                                <button class="toolbar-btn toolbar-btn--mono" data-format="small" title="Petit texte — -# texte">-#</button>
+                            </div>
+                            <div class="toolbar-sep"></div>
+                            <div class="toolbar-group">
+                                <button class="toolbar-btn toolbar-btn--omega" id="toggle-chars" title="Caractères spéciaux">Ω</button>
+                            </div>
+                        </div>
+
+                        <!-- Caractères spéciaux -->
+                        <div class="special-chars" id="special-chars" style="display:none;">
+                            <div class="chars-row">
+                                <span class="chars-cat">Flèches</span>
+                                <div class="chars-group">
+                                    <button class="char-btn">←</button><button class="char-btn">→</button>
+                                    <button class="char-btn">↑</button><button class="char-btn">↓</button>
+                                    <button class="char-btn">↔</button><button class="char-btn">↕</button>
+                                    <button class="char-btn">⇒</button><button class="char-btn">⇐</button>
+                                    <button class="char-btn">⟹</button><button class="char-btn">⟸</button>
+                                    <button class="char-btn">➜</button><button class="char-btn">➤</button>
+                                </div>
+                            </div>
+                            <div class="chars-row">
+                                <span class="chars-cat">Symboles</span>
+                                <div class="chars-group">
+                                    <button class="char-btn">©</button><button class="char-btn">®</button>
+                                    <button class="char-btn">™</button><button class="char-btn">°</button>
+                                    <button class="char-btn">•</button><button class="char-btn">·</button>
+                                    <button class="char-btn">…</button><button class="char-btn">—</button>
+                                    <button class="char-btn">–</button><button class="char-btn">§</button>
+                                    <button class="char-btn">¶</button><button class="char-btn">†</button>
+                                </div>
+                            </div>
+                            <div class="chars-row">
+                                <span class="chars-cat">Géométrie</span>
+                                <div class="chars-group">
+                                    <button class="char-btn">★</button><button class="char-btn">☆</button>
+                                    <button class="char-btn">◆</button><button class="char-btn">◇</button>
+                                    <button class="char-btn">●</button><button class="char-btn">○</button>
+                                    <button class="char-btn">■</button><button class="char-btn">□</button>
+                                    <button class="char-btn">▲</button><button class="char-btn">▼</button>
+                                    <button class="char-btn">◀</button><button class="char-btn">▶</button>
+                                </div>
+                            </div>
+                            <div class="chars-row">
+                                <span class="chars-cat">Traits</span>
+                                <div class="chars-group">
+                                    <button class="char-btn">─</button><button class="char-btn">│</button>
+                                    <button class="char-btn">┌</button><button class="char-btn">┐</button>
+                                    <button class="char-btn">└</button><button class="char-btn">┘</button>
+                                    <button class="char-btn">├</button><button class="char-btn">┤</button>
+                                    <button class="char-btn">┬</button><button class="char-btn">┴</button>
+                                    <button class="char-btn">┼</button><button class="char-btn">═</button>
+                                    <button class="char-btn">║</button><button class="char-btn">╔</button>
+                                    <button class="char-btn">╗</button><button class="char-btn">╚</button>
+                                    <button class="char-btn">╝</button><button class="char-btn">╠</button>
+                                    <button class="char-btn">╣</button><button class="char-btn">╦</button>
+                                    <button class="char-btn">╩</button><button class="char-btn">╬</button>
+                                </div>
+                            </div>
+                            <div class="chars-row">
+                                <span class="chars-cat">Math</span>
+                                <div class="chars-group">
+                                    <button class="char-btn">±</button><button class="char-btn">×</button>
+                                    <button class="char-btn">÷</button><button class="char-btn">≠</button>
+                                    <button class="char-btn">≤</button><button class="char-btn">≥</button>
+                                    <button class="char-btn">∞</button><button class="char-btn">√</button>
+                                    <button class="char-btn">∑</button><button class="char-btn">∏</button>
+                                    <button class="char-btn">∂</button><button class="char-btn">π</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Zone de texte -->
+                        <textarea class="editor-textarea" id="editor-textarea"
+                            placeholder="Écrivez votre texte ici…&#10;Sélectionnez du texte puis cliquez sur un bouton de la barre d'outils pour le formater.&#10;&#10;Exemples Discord :&#10;**gras**  *italique*  __souligné__  ~~barré~~  ||spoiler||&#10;`code` ```bloc``` > citation&#10;# Titre 1   ## Titre 2   ### Titre 3"></textarea>
+
+                        <!-- Pied de l'éditeur -->
+                        <div class="editor-footer">
+                            <span class="char-count" id="char-count">0 caractère</span>
+                            <div class="editor-footer-btns">
+                                <button class="btn-editor btn-editor--clear" id="btn-editor-clear">Effacer</button>
+                                <button class="btn-editor btn-editor--save" id="btn-editor-save">
+                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M13 13H3V3h7l3 3v7z" stroke-linejoin="round"/>
+                                        <rect x="5" y="8" width="6" height="5"/>
+                                        <rect x="5" y="3" width="4" height="3"/>
+                                    </svg>
+                                    Enregistrer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ══════════════════════════ -->
+                <!-- DOCUMENTS                 -->
+                <!-- ══════════════════════════ -->
+                <div class="panel hidden" id="panel-documents">
+                    <div class="docs-layout">
+                        <aside class="docs-sidebar">
+                            <div class="docs-sidebar-header">
+                                <span>DOSSIERS</span>
+                                <button class="btn-icon" id="btn-new-folder" title="Nouveau dossier">
+                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M8 3v10M3 8h10" stroke-linecap="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="folder-list" id="folder-list">
+                                <div class="folder-item active" data-folder="">
+                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M2 12V5l3-2h6l3 2v7H2z" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>Tous les documents</span>
+                                </div>
+                            </div>
+                        </aside>
+                        <div class="docs-main">
+                            <div class="docs-list-header">
+                                <span id="docs-folder-title">Tous les documents</span>
+                                <button class="btn-icon" id="btn-new-doc" title="Nouveau document">
+                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M8 3v10M3 8h10" stroke-linecap="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div id="docs-content">
+                                <div class="docs-empty" id="docs-empty">
+                                    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                                        <path d="M10 4h20l8 8v32H10V4z" stroke-linejoin="round"/>
+                                        <polyline points="28,4 28,12 38,12" stroke-linejoin="round"/>
+                                    </svg>
+                                    <p>Aucun document enregistré.<br>Créez votre premier document depuis l'Espace d'Écriture.</p>
+                                </div>
+                                <div class="docs-list" id="docs-list" style="display:none;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ══════════════════════════ -->
+                <!-- EQUIPEMENTS               -->
+                <!-- ══════════════════════════ -->
+                <div class="panel hidden" id="panel-equipements">
+                    <div class="placeholder-section">
+                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                            <rect x="4" y="20" width="40" height="20" rx="2"/>
+                            <path d="M8 20V16h32v4"/>
+                            <circle cx="14" cy="44" r="4"/><circle cx="34" cy="44" r="4"/>
+                            <rect x="18" y="24" width="12" height="8"/>
+                        </svg>
+                        <h2 class="placeholder-title">EQUIPEMENTS</h2>
+                        <p class="placeholder-text">Inventaire des équipements des Forces Armées Impériales — véhicules, armements, matériels et systèmes de défense. Section en construction.</p>
+                    </div>
+                </div>
+
+                <!-- ══════════════════════════ -->
+                <!-- UNITES MILITAIRES         -->
+                <!-- ══════════════════════════ -->
+                <div class="panel hidden" id="panel-unites">
+                    <div class="placeholder-section">
+                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                            <circle cx="12" cy="14" r="6"/><circle cx="24" cy="14" r="6"/><circle cx="36" cy="14" r="6"/>
+                            <path d="M2 40c0-8 4.5-12 10-12h24c5.5 0 10 4 10 12"/>
+                        </svg>
+                        <h2 class="placeholder-title">UNITES MILITAIRES</h2>
+                        <p class="placeholder-text">Ordre de bataille des Forces Armées Impériales, brigades, régiments, unités d'élite et commandements territoriaux. Section en construction.</p>
+                    </div>
+                </div>
+
+                <!-- ══════════════════════════ -->
+                <!-- GITHUB                    -->
+                <!-- ══════════════════════════ -->
+                <div class="panel hidden" id="panel-github">
+                    <div class="github-layout">
+
+                        <div class="github-section">
+                            <h3 class="github-section-title">CONFIGURATION DU DEPOT</h3>
+                            <p class="github-section-desc">Configurez l'accès à votre dépôt GitHub pour mettre à jour les fichiers du site directement depuis le dashboard.</p>
+
+                            <div class="form-group">
+                                <label class="form-label">Dépôt GitHub</label>
+                                <input class="form-input" type="text" id="github-repo" placeholder="BJBellum/Empire-Hussein">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Personal Access Token</label>
+                                <div class="input-row">
+                                    <input class="form-input" type="password" id="github-pat" placeholder="ghp_xxxxxxxxxxxx">
+                                    <button class="btn-icon btn-icon--toggle" id="btn-toggle-pat" title="Afficher/masquer">
+                                        <svg id="pat-eye-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                            <path d="M1 8s3-5 7-5 7 5 7 5-3 5-7 5-7-5-7-5z"/>
+                                            <circle cx="8" cy="8" r="2"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <small class="form-hint">Requiert les droits <code>repo</code>. Stocké localement dans votre navigateur.</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Branche cible</label>
+                                <input class="form-input" type="text" id="github-branch" placeholder="main" value="main">
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn-primary" id="btn-github-save">Enregistrer la configuration</button>
+                                <button class="btn-secondary" id="btn-github-test">Tester la connexion</button>
+                            </div>
+                            <div class="github-status" id="github-status" style="display:none;"></div>
+                        </div>
+
+                        <div class="github-section" id="github-file-section" style="display:none;">
+                            <h3 class="github-section-title">EDITEUR DE FICHIERS</h3>
+                            <p class="github-section-desc">Chargez, modifiez et poussez des fichiers directement vers votre dépôt GitHub.</p>
+
+                            <div class="form-group">
+                                <label class="form-label">Chemin du fichier</label>
+                                <div class="input-row">
+                                    <input class="form-input" type="text" id="github-filepath" placeholder="data/config.json">
+                                    <button class="btn-secondary" id="btn-github-fetch">Charger</button>
+                                </div>
+                            </div>
+
+                            <div id="github-editor-block" style="display:none;">
+                                <textarea class="github-file-editor" id="github-file-content" spellcheck="false"></textarea>
+                                <div class="form-group">
+                                    <label class="form-label">Message de commit</label>
+                                    <input class="form-input" type="text" id="github-commit-msg" placeholder="Update file via dashboard">
+                                </div>
+                                <div class="form-actions">
+                                    <button class="btn-primary" id="btn-github-push">
+                                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                            <path d="M8 12V4M4 8l4-4 4 4" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        Pousser les modifications
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div><!-- /panels-wrapper -->
+        </div><!-- /dashboard-main -->
+    </div><!-- /dashboard-root -->
+
+    <!-- Modal: Enregistrer un document -->
+    <div class="modal-overlay" id="save-modal" style="display:none;">
+        <div class="modal">
+            <h3 class="modal-title">ENREGISTRER LE DOCUMENT</h3>
+            <div class="form-group">
+                <label class="form-label">Titre du document</label>
+                <input class="form-input" type="text" id="doc-title-input" placeholder="Titre…">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Dossier</label>
+                <select class="form-input" id="doc-folder-select">
+                    <option value="">Aucun dossier</option>
+                </select>
+            </div>
+            <div class="form-group" id="new-folder-group">
+                <label class="form-label form-label--checkbox">
+                    <input type="checkbox" id="doc-new-folder-check"> Créer un nouveau dossier
+                </label>
+                <input class="form-input" type="text" id="doc-new-folder-name" placeholder="Nom du dossier…" style="display:none; margin-top:8px;">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="btn-save-cancel">Annuler</button>
+                <button class="btn-primary" id="btn-save-confirm">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

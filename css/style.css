@@ -935,6 +935,20 @@ button {
     color: var(--text-primary);
 }
 
+.user-badge-dashboard {
+    padding: 4px;
+    color: var(--text-muted);
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+
+.user-badge-dashboard:hover {
+    color: var(--gold);
+}
+
 .user-badge-logout {
     padding: 4px;
     color: var(--text-muted);

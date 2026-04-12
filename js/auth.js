@@ -47,7 +47,7 @@ const Auth = {
         if (accessToken) {
             // Clean the URL (remove the token from the address bar)
             window.history.replaceState(null, '', window.location.pathname);
-            this.fetchUser(accessToken);
+            this.fetchUser(accessToken); // async — dispatches auth:ready when done
             return;
         }
 
@@ -61,6 +61,7 @@ const Auth = {
                     this.user = data.user;
                     this.isAdmin = DISCORD_CONFIG.adminIds.includes(data.user.id);
                     this.updateUI();
+                    this._dispatchReady();
                     return;
                 }
                 // Expired, clear it
@@ -72,6 +73,16 @@ const Auth = {
 
         // 3. Not logged in
         this.updateUI();
+        this._dispatchReady();
+    },
+
+    /**
+     * Dispatch auth:ready event for pages that depend on auth state (e.g. dashboard)
+     */
+    _dispatchReady() {
+        document.dispatchEvent(new CustomEvent('auth:ready', {
+            detail: { user: this.user, isAdmin: this.isAdmin }
+        }));
     },
 
     /**
@@ -121,6 +132,7 @@ const Auth = {
             }));
 
             this.updateUI();
+            this._dispatchReady();
             showToast(this.isAdmin
                 ? `Bienvenue, ${user.global_name || user.username} (Admin)`
                 : `Bienvenue, ${user.global_name || user.username}`
@@ -128,6 +140,7 @@ const Auth = {
         } catch (err) {
             console.error('Auth error:', err);
             showToast('Erreur de connexion Discord');
+            this._dispatchReady();
         }
     },
 
@@ -143,6 +156,8 @@ const Auth = {
         const navForces = document.getElementById('nav-forces');
         const navForcesMobile = document.getElementById('nav-forces-mobile');
 
+        const btnDashboard = document.getElementById('btn-dashboard');
+
         if (this.user) {
             // Show user badge
             if (badge) {
@@ -157,6 +172,11 @@ const Auth = {
                 if (userName) {
                     userName.textContent = this.user.global_name || this.user.username;
                 }
+            }
+
+            // Show dashboard button for admins only
+            if (btnDashboard) {
+                btnDashboard.style.display = this.isAdmin ? 'flex' : 'none';
             }
 
             // Update Discord buttons to show "connected"
@@ -179,6 +199,9 @@ const Auth = {
         } else {
             // Hide user badge
             if (badge) badge.style.display = 'none';
+
+            // Hide dashboard button
+            if (btnDashboard) btnDashboard.style.display = 'none';
 
             // Reset Discord buttons
             [btnDiscord, btnDiscordMobile].forEach(btn => {
