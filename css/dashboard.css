@@ -812,13 +812,21 @@
     color: var(--gold);
 }
 
+.char-btn--wide {
+    width: auto;
+    min-width: 36px;
+    padding: 0 8px;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+}
+
 .editor-textarea {
     flex: 1;
     padding: 16px 18px;
     background: transparent;
     border: none;
     outline: none;
-    resize: none;
+    resize: vertical;
     color: var(--text-primary);
     font-family: 'Courier New', Courier, monospace;
     font-size: 14px;
@@ -842,7 +850,7 @@
 
 .char-count {
     font-size: 11px;
-    color: var(--text-muted);
+    color: var(--text-primary);
     font-family: monospace;
 }
 

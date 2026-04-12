@@ -47,16 +47,7 @@
                 <!-- TABLEAU DE BORD -->
                 <div class="nav-group">
                     <span class="nav-group-label">TABLEAU DE BORD</span>
-                    <a class="nav-item active" data-panel="apercu" data-title="APERCU">
-                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <rect x="2" y="2" width="7" height="7" rx="1"/>
-                            <rect x="11" y="2" width="7" height="7" rx="1"/>
-                            <rect x="11" y="11" width="7" height="7" rx="1"/>
-                            <rect x="2" y="11" width="7" height="7" rx="1"/>
-                        </svg>
-                        <span>APERCU</span>
-                    </a>
-                    <a class="nav-item" data-panel="updates" data-title="MISES A JOUR">
+                    <a class="nav-item active" data-panel="updates" data-title="MISES A JOUR">
                         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
                             <path d="M10 2v16M2 10h16" stroke-linecap="round"/>
                             <circle cx="10" cy="10" r="8"/>
@@ -176,95 +167,15 @@
                 <button class="sidebar-toggle-btn" id="sidebar-toggle" aria-label="Menu">
                     <span></span><span></span><span></span>
                 </button>
-                <h1 class="dash-header-title" id="current-panel-title">APERCU</h1>
+                <h1 class="dash-header-title" id="current-panel-title">MISES A JOUR</h1>
             </header>
 
             <div class="panels-wrapper" id="panels-wrapper">
 
                 <!-- ══════════════════════════ -->
-                <!-- APERCU                     -->
-                <!-- ══════════════════════════ -->
-                <div class="panel" id="panel-apercu">
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
-                                <circle cx="9" cy="7" r="4"/>
-                                <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
-                            </svg>
-                            <div class="stat-value">2 847</div>
-                            <div class="stat-label">Visiteurs ce mois</div>
-                            <div class="stat-trend stat-trend--up">+12.4 %</div>
-                        </div>
-                        <div class="stat-card">
-                            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <circle cx="12" cy="12" r="10"/>
-                                <polyline points="12,6 12,12 16,14"/>
-                            </svg>
-                            <div class="stat-value">156</div>
-                            <div class="stat-label">Actifs aujourd'hui</div>
-                            <div class="stat-trend stat-trend--up">+3.2 %</div>
-                        </div>
-                        <div class="stat-card">
-                            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                <circle cx="12" cy="12" r="3"/>
-                            </svg>
-                            <div class="stat-value">12 403</div>
-                            <div class="stat-label">Pages vues</div>
-                            <div class="stat-trend stat-trend--up">+8.7 %</div>
-                        </div>
-                        <div class="stat-card">
-                            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
-                            </svg>
-                            <div class="stat-value">3 891</div>
-                            <div class="stat-label">Sessions</div>
-                            <div class="stat-trend stat-trend--down">-1.3 %</div>
-                        </div>
-                    </div>
-
-                    <div class="chart-card">
-                        <div class="chart-card-header">
-                            <h3 class="chart-card-title">VISITEURS — 30 DERNIERS JOURS</h3>
-                            <span class="chart-card-note">Données simulées</span>
-                        </div>
-                        <div class="chart-wrapper">
-                            <canvas id="visitor-chart" height="200"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="activity-card">
-                        <h3 class="activity-card-title">ACTIVITE RECENTE</h3>
-                        <div class="activity-list">
-                            <div class="activity-item">
-                                <span class="activity-dot activity-dot--gold"></span>
-                                <span class="activity-time">Aujourd'hui</span>
-                                <span class="activity-desc">Dashboard administrateur créé</span>
-                            </div>
-                            <div class="activity-item">
-                                <span class="activity-dot activity-dot--gold"></span>
-                                <span class="activity-time">12 avr. 2026</span>
-                                <span class="activity-desc">Favicon blason de l'Empire ajouté</span>
-                            </div>
-                            <div class="activity-item">
-                                <span class="activity-dot"></span>
-                                <span class="activity-time">11 avr. 2026</span>
-                                <span class="activity-desc">Authentification Discord OAuth2 mise à jour</span>
-                            </div>
-                            <div class="activity-item">
-                                <span class="activity-dot"></span>
-                                <span class="activity-time">10 avr. 2026</span>
-                                <span class="activity-desc">Commit initial — Site Empire Hussein</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ══════════════════════════ -->
                 <!-- MISES A JOUR              -->
                 <!-- ══════════════════════════ -->
-                <div class="panel hidden" id="panel-updates">
+                <div class="panel" id="panel-updates">
                     <div class="updates-list">
                         <div class="update-entry">
                             <div class="update-header">
@@ -477,9 +388,36 @@
                                     <button class="char-btn">★</button><button class="char-btn">☆</button>
                                     <button class="char-btn">◆</button><button class="char-btn">◇</button>
                                     <button class="char-btn">●</button><button class="char-btn">○</button>
+                                    <button class="char-btn">◎</button><button class="char-btn">◉</button>
                                     <button class="char-btn">■</button><button class="char-btn">□</button>
                                     <button class="char-btn">▲</button><button class="char-btn">▼</button>
                                     <button class="char-btn">◀</button><button class="char-btn">▶</button>
+                                </div>
+                            </div>
+                            <div class="chars-row">
+                                <span class="chars-cat">Simples</span>
+                                <div class="chars-group">
+                                    <button class="char-btn">\</button><button class="char-btn">/</button>
+                                    <button class="char-btn">|</button><button class="char-btn">≠</button>
+                                    <button class="char-btn">=</button><button class="char-btn">×</button>
+                                    <button class="char-btn">+</button><button class="char-btn">~</button>
+                                    <button class="char-btn">'</button><button class="char-btn">°</button>
+                                    <button class="char-btn">«</button><button class="char-btn">»</button>
+                                </div>
+                            </div>
+                            <div class="chars-row">
+                                <span class="chars-cat">Chiffres romains</span>
+                                <div class="chars-group">
+                                    <button class="char-btn char-btn--wide">𝐈</button>
+                                    <button class="char-btn char-btn--wide">𝐈𝐈</button>
+                                    <button class="char-btn char-btn--wide">𝐈𝐈𝐈</button>
+                                    <button class="char-btn char-btn--wide">𝐈𝐕</button>
+                                    <button class="char-btn char-btn--wide">𝐕</button>
+                                    <button class="char-btn char-btn--wide">𝐕𝐈</button>
+                                    <button class="char-btn char-btn--wide">𝐕𝐈𝐈</button>
+                                    <button class="char-btn char-btn--wide">𝐕𝐈𝐈𝐈</button>
+                                    <button class="char-btn char-btn--wide">𝐈𝐗</button>
+                                    <button class="char-btn char-btn--wide">𝐗</button>
                                 </div>
                             </div>
                             <div class="chars-row">
@@ -496,6 +434,8 @@
                                     <button class="char-btn">╝</button><button class="char-btn">╠</button>
                                     <button class="char-btn">╣</button><button class="char-btn">╦</button>
                                     <button class="char-btn">╩</button><button class="char-btn">╬</button>
+                                    <button class="char-btn">—</button><button class="char-btn">−</button>
+                                    <button class="char-btn">━</button><button class="char-btn">▬</button>
                                 </div>
                             </div>
                             <div class="chars-row">

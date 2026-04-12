@@ -1,8 +1,14 @@
 /**
  * Empire Hussein — Dashboard JS
- * Handles: auth guard, sidebar nav, visitor chart, text editor,
+ * Handles: auth guard, sidebar nav, text editor,
  *          document storage, GitHub API integration
  */
+
+/* Remove .html from the browser's address bar */
+if (window.location.pathname.endsWith('.html')) {
+    history.replaceState(null, document.title,
+        window.location.pathname.replace(/\.html$/, ''));
+}
 
 /* ════════════════════════════════════════════
    STATE
@@ -54,7 +60,6 @@ function initDashboard(user) {
     renderSidebarUser(user);
     initNav();
     initSidebarToggle();
-    initVisitorChart();
     initEditor();
     initDocuments();
     initGithub();
@@ -104,11 +109,6 @@ function initNav() {
 
             // Close mobile sidebar
             document.getElementById('sidebar')?.classList.remove('open');
-
-            // Lazy-init canvas if needed
-            if (panelId === 'apercu') {
-                setTimeout(drawVisitorChart, 50);
-            }
         });
     });
 }
@@ -326,8 +326,6 @@ function updateCharCount() {
     if (!textarea || !countEl) return;
     const n = textarea.value.length;
     countEl.textContent = `${n.toLocaleString('fr-FR')} caractère${n !== 1 ? 's' : ''}`;
-    // Discord limit warning
-    countEl.style.color = n > 1900 ? '#e05252' : n > 1500 ? '#e09a52' : '';
 }
 
 /* ── Format applicator ──────────────────────── */
