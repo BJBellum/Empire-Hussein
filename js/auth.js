@@ -163,7 +163,7 @@ const Auth = {
             [btnDiscord, btnDiscordMobile].forEach(btn => {
                 if (!btn) return;
                 const textEl = btn.querySelector('span:last-child, .btn-discord-text');
-                if (textEl) textEl.textContent = 'CONNECTÉ';
+                if (textEl) textEl.textContent = 'CONNECTE';
                 btn.style.borderColor = 'rgba(88, 101, 242, 0.4)';
                 btn.style.color = '#5865F2';
             });
