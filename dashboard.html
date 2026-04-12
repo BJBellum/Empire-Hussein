@@ -189,12 +189,159 @@
                 <!-- CATALOGUE MILITAIRE       -->
                 <!-- ══════════════════════════ -->
                 <div class="panel hidden" id="panel-cat-militaire">
-                    <div class="placeholder-section">
-                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
-                            <path d="M24 4l3 8h8l-6.5 5 2.5 8L24 20l-7 5 2.5-8L13 12h8z"/>
-                        </svg>
-                        <h2 class="placeholder-title">CATALOGUE MILITAIRE</h2>
-                        <p class="placeholder-text">Inventaire des équipements militaires, armements, véhicules et matériels des Forces Armées Impériales. Accès restreint. Section en construction.</p>
+                    <div class="cat-admin-layout">
+
+                        <!-- FORMULAIRE -->
+                        <section class="cat-admin-section" id="cat-form-section">
+                            <div class="cat-admin-section-head">
+                                <h3 class="cat-admin-section-title" id="cat-form-title">NOUVEL EQUIPEMENT</h3>
+                                <button class="btn-secondary" id="cat-form-reset" type="button">Annuler</button>
+                            </div>
+                            <p class="cat-admin-section-desc">Ajoutez, modifiez ou poussez un équipement vers GitHub. L'image est automatiquement redimensionnée au ratio 16:9.</p>
+
+                            <!-- Upload image 16:9 -->
+                            <div class="form-group">
+                                <label class="form-label">Image (ratio 16:9)</label>
+                                <div class="cat-img-uploader">
+                                    <div class="cat-img-preview" id="cat-img-preview">
+                                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                                            <rect x="6" y="10" width="36" height="28"/>
+                                            <path d="M6 30l12-10 10 8 14-12"/>
+                                            <circle cx="16" cy="18" r="2"/>
+                                        </svg>
+                                        <span class="cat-img-placeholder">Aucune image</span>
+                                    </div>
+                                    <div class="cat-img-actions">
+                                        <input type="file" id="cat-img-input" accept="image/*" style="display:none;">
+                                        <button type="button" class="btn-secondary" id="cat-img-btn">Choisir une image…</button>
+                                        <button type="button" class="btn-secondary" id="cat-img-clear" style="display:none;">Retirer</button>
+                                        <small class="form-hint">L'image est recadrée au centre en 16:9 avant envoi. Formats : JPG, PNG, WebP.</small>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="cat-image-path">
+                            </div>
+
+                            <!-- Infos générales -->
+                            <div class="cat-form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Nom</label>
+                                    <input class="form-input" type="text" id="cat-nom" placeholder="Ex: DB-110 « Al-Mansour »" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Catégorie</label>
+                                    <select class="form-input" id="cat-categorie">
+                                        <option value="">— Choisir —</option>
+                                        <option value="armes-feu">Armes à feu</option>
+                                        <option value="explosifs">Explosifs</option>
+                                        <option value="vehicules-terrestres">Véhicules terrestres</option>
+                                        <option value="artillerie">Artillerie</option>
+                                        <option value="aeronefs">Aéronefs</option>
+                                        <option value="navires">Navires</option>
+                                        <option value="sous-marins">Sous-marins</option>
+                                        <option value="missiles">Missiles</option>
+                                        <option value="missiles-strategiques">Missiles stratégiques</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Sous-type</label>
+                                    <select class="form-input" id="cat-soustype">
+                                        <option value="">— Choisir une catégorie d'abord —</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Niveau technologique</label>
+                                    <select class="form-input" id="cat-niveau">
+                                        <option value="">— Niveau —</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Fabricant</label>
+                                    <input class="form-input" type="text" id="cat-fabricant" placeholder="Yassin Heavy Industries" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Coût unitaire (§)</label>
+                                    <input class="form-input" type="text" id="cat-cout" placeholder="299999" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Inspiration</label>
+                                    <input class="form-input" type="text" id="cat-inspiration" placeholder="AMX-13 VCI" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Disponibilité</label>
+                                    <input class="form-input" type="text" id="cat-disponibilite" placeholder="Août 2306" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <!-- Fiche technique (champs dynamiques) -->
+                            <div class="cat-specs-block">
+                                <h4 class="cat-specs-title">FICHE TECHNIQUE</h4>
+                                <p class="cat-specs-hint" id="cat-specs-hint">Sélectionnez une catégorie pour afficher les champs.</p>
+                                <div class="cat-specs-fields" id="cat-specs-fields"></div>
+                                <div class="cat-specs-custom">
+                                    <button type="button" class="btn-secondary" id="cat-specs-add">+ Ajouter un champ personnalisé</button>
+                                </div>
+                            </div>
+
+                            <div class="form-actions cat-form-actions">
+                                <button class="btn-primary" id="cat-form-save" type="button">
+                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M13 13H3V3h7l3 3v7z" stroke-linejoin="round"/>
+                                        <rect x="5" y="8" width="6" height="5"/>
+                                        <rect x="5" y="3" width="4" height="3"/>
+                                    </svg>
+                                    Enregistrer localement
+                                </button>
+                                <button class="btn-primary cat-btn-push" id="cat-form-push" type="button">
+                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M8 12V4M4 8l4-4 4 4" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Enregistrer &amp; pousser sur GitHub
+                                </button>
+                            </div>
+                            <div class="github-status" id="cat-push-status" style="display:none;"></div>
+                        </section>
+
+                        <!-- LISTE DES EQUIPEMENTS -->
+                        <section class="cat-admin-section">
+                            <div class="cat-admin-section-head">
+                                <h3 class="cat-admin-section-title">INVENTAIRE (<span id="cat-list-count">0</span>)</h3>
+                                <div class="cat-admin-section-actions">
+                                    <button class="btn-secondary" id="cat-sync-btn" type="button">Recharger depuis GitHub</button>
+                                </div>
+                            </div>
+                            <div class="cat-admin-filters">
+                                <input class="form-input cat-admin-search" type="text" id="cat-list-search" placeholder="Rechercher…">
+                                <select class="form-input cat-admin-filter-cat" id="cat-list-filter">
+                                    <option value="all">Toutes catégories</option>
+                                    <option value="armes-feu">Armes à feu</option>
+                                    <option value="explosifs">Explosifs</option>
+                                    <option value="vehicules-terrestres">Véhicules terrestres</option>
+                                    <option value="artillerie">Artillerie</option>
+                                    <option value="aeronefs">Aéronefs</option>
+                                    <option value="navires">Navires</option>
+                                    <option value="sous-marins">Sous-marins</option>
+                                    <option value="missiles">Missiles</option>
+                                    <option value="missiles-strategiques">Missiles stratégiques</option>
+                                </select>
+                            </div>
+                            <div class="cat-admin-list" id="cat-admin-list">
+                                <div class="cat-admin-empty">Chargement de l'inventaire…</div>
+                            </div>
+                        </section>
+
+                    </div>
+                </div>
+
+                <!-- Modal: suppression équipement -->
+                <div class="modal-overlay" id="cat-delete-modal" style="display:none;">
+                    <div class="modal">
+                        <h3 class="modal-title">SUPPRIMER L'EQUIPEMENT</h3>
+                        <p class="modal-text" id="cat-delete-text">Supprimer cet équipement ?</p>
+                        <p class="modal-text" style="color:var(--text-muted);font-size:12px;margin-top:8px;">Cette suppression sera également poussée sur GitHub si une configuration est active.</p>
+                        <div class="modal-actions">
+                            <button class="btn-secondary" id="btn-cat-delete-cancel">Annuler</button>
+                            <button class="btn-danger" id="btn-cat-delete-confirm">Supprimer</button>
+                        </div>
                     </div>
                 </div>
 

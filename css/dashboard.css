@@ -1659,3 +1659,418 @@
         display: none;
     }
 }
+
+/* ════════════════════════════════════════════
+   CATALOGUE MILITAIRE — ADMIN PANEL
+   ════════════════════════════════════════════ */
+
+.cat-admin-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.cat-admin-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 22px 24px;
+}
+
+.cat-admin-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+}
+
+.cat-admin-section-title {
+    font-family: var(--font-display);
+    font-size: 13px;
+    letter-spacing: 0.22em;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.cat-admin-section-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0 0 18px 0;
+}
+
+.cat-admin-section-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* ── Image uploader ─────────────────────────── */
+.cat-img-uploader {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.cat-img-preview {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--text-muted);
+    overflow: hidden;
+}
+
+.cat-img-preview svg {
+    width: 40px;
+    height: 40px;
+    color: var(--gold-dark);
+    opacity: 0.7;
+}
+
+.cat-img-preview.has-image {
+    border-color: var(--gold-dark);
+}
+
+.cat-img-preview.has-image svg,
+.cat-img-preview.has-image .cat-img-placeholder {
+    display: none;
+}
+
+.cat-img-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.cat-img-placeholder {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    font-family: var(--font-display);
+}
+
+.cat-img-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.cat-img-actions .btn-secondary {
+    padding: 8px 16px;
+    font-size: 9px;
+}
+
+/* ── Form grid ─────────────────────────────── */
+.cat-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 18px;
+    margin-top: 8px;
+}
+
+.cat-form-grid .form-group {
+    margin-bottom: 14px;
+}
+
+.cat-form-actions {
+    margin-top: 8px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.cat-btn-push {
+    background: rgba(201, 168, 76, 0.18);
+}
+
+.cat-btn-push:hover {
+    background: rgba(201, 168, 76, 0.28);
+}
+
+/* ── Specs (fiche technique) ───────────────── */
+.cat-specs-block {
+    margin-top: 14px;
+    padding: 16px 18px;
+    background: var(--bg-section);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+}
+
+.cat-specs-title {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--gold);
+    margin: 0 0 6px 0;
+}
+
+.cat-specs-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin: 0 0 12px 0;
+}
+
+.cat-specs-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 16px;
+}
+
+.cat-specs-custom {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--border);
+}
+
+.cat-spec-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cat-spec-row--custom {
+    position: relative;
+    padding-right: 30px;
+}
+
+.cat-spec-label,
+.cat-spec-key {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.cat-spec-key {
+    padding: 6px 8px;
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 12px;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.cat-spec-key:focus {
+    outline: none;
+    border-color: var(--gold-dark);
+}
+
+.cat-spec-val {
+    padding: 8px 10px;
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 12px;
+}
+
+.cat-spec-val:focus {
+    outline: none;
+    border-color: var(--gold-dark);
+}
+
+.cat-spec-remove {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    transition: all 0.2s ease;
+}
+
+.cat-spec-remove:hover {
+    color: #e05252;
+    border-color: rgba(224, 82, 82, 0.4);
+    background: rgba(224, 82, 82, 0.08);
+}
+
+/* ── Filters row ───────────────────────────── */
+.cat-admin-filters {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+/* ── Inventory list ────────────────────────── */
+.cat-admin-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.cat-admin-empty {
+    padding: 28px 16px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    border: 1px dashed var(--border);
+    border-radius: 3px;
+}
+
+.cat-admin-item {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    gap: 14px;
+    align-items: center;
+    padding: 10px 12px;
+    background: var(--bg-section);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.cat-admin-item:hover {
+    border-color: var(--gold-dark);
+    background: rgba(201, 168, 76, 0.04);
+}
+
+.cat-admin-item-img {
+    aspect-ratio: 16 / 9;
+    width: 120px;
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cat-admin-item-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.cat-admin-item-noimg {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.cat-admin-item-body {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cat-admin-item-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.cat-admin-item-name {
+    font-family: var(--font-display);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    color: var(--text-primary);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cat-admin-item-niv {
+    font-family: var(--font-display);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    padding: 2px 7px;
+    border: 1px solid var(--gold-dark);
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.cat-admin-item-meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.cat-admin-item-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+/* ── Responsive ────────────────────────────── */
+@media (max-width: 900px) {
+    .cat-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cat-specs-fields {
+        grid-template-columns: 1fr;
+    }
+
+    .cat-img-uploader {
+        grid-template-columns: 1fr;
+    }
+
+    .cat-img-preview {
+        max-width: 340px;
+    }
+
+    .cat-admin-filters {
+        grid-template-columns: 1fr;
+    }
+
+    .cat-admin-item {
+        grid-template-columns: 90px 1fr auto;
+        gap: 10px;
+    }
+
+    .cat-admin-item-img {
+        width: 90px;
+    }
+}
+
+@media (max-width: 600px) {
+    .cat-admin-section {
+        padding: 16px 14px;
+    }
+
+    .cat-admin-item {
+        grid-template-columns: 1fr;
+    }
+
+    .cat-admin-item-img {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .cat-admin-item-actions {
+        justify-content: flex-end;
+    }
+}

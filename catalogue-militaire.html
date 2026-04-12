@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Catalogues de l'Empire Hussein — équipements militaires et civils">
-    <title>CATALOGUES — Empire Hussein</title>
+    <meta name="description" content="Catalogue militaire de l'Empire Hussein — inventaire des armements et équipements">
+    <title>CATALOGUE MILITAIRE — Empire Hussein</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/png" href="assets/Hussein Empire Coat of Arms.png">
     <!-- Clean URL: retire .html de la barre d'adresse instantanément -->
     <script>if(location.pathname.endsWith('.html'))history.replaceState(null,'',location.pathname.replace('.html',''));</script>
 </head>
-<body class="page-catalogues">
+<body class="page-catalogue">
 
     <!-- ═══════════════════════════════════════ -->
     <!-- HEADER / NAVIGATION                     -->
@@ -76,101 +76,122 @@
     </div>
 
     <!-- ═══════════════════════════════════════ -->
-    <!-- HERO PAGE                                -->
+    <!-- HEADER DE PAGE                          -->
     <!-- ═══════════════════════════════════════ -->
-    <main class="page-hub">
-        <section class="page-hub-header">
-            <div class="container">
-                <div class="page-hub-badge reveal-up">
-                    <span class="page-hub-badge-line"></span>
-                    <span class="page-hub-badge-text">ARCHIVES IMPERIALES</span>
-                    <span class="page-hub-badge-line"></span>
+    <section class="cat-header">
+        <div class="container">
+            <div class="cat-header-badge">CATALOGUE MILITAIRE</div>
+            <h1 class="cat-header-title">FORCES ARMEES IMPERIALES</h1>
+            <p class="cat-header-sub">
+                Inventaire des armements, véhicules, aéronefs et systèmes stratégiques
+                homologués par l'autorité militaire de l'Empire Hussein.
+            </p>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- LAYOUT                                  -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="cat-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="cat-sidebar">
+            <button class="cat-sidebar-toggle" id="cat-sidebar-toggle">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M2 4h12M2 8h12M2 12h12" stroke-linecap="round"/>
+                </svg>
+                FILTRER LES EQUIPEMENTS
+            </button>
+
+            <div class="cat-sidebar-body" id="cat-sidebar-body">
+                <div class="cat-search">
+                    <svg class="cat-search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="7" cy="7" r="5"/>
+                        <path d="M14 14l-3-3" stroke-linecap="round"/>
+                    </svg>
+                    <input type="text" class="cat-search-input" id="cat-search" placeholder="Rechercher un équipement…" autocomplete="off">
                 </div>
-                <h1 class="page-hub-title reveal-up">CATALOGUES</h1>
-                <p class="page-hub-subtitle reveal-up">
-                    Registres officiels des équipements et infrastructures de l'Empire Hussein,
-                    répertoriés sous l'autorité du Lisan Al-Gaib.
-                </p>
-                <div class="hero-divider reveal-up">
-                    <span class="hero-divider-line"></span>
-                    <span class="hero-divider-diamond"></span>
-                    <span class="hero-divider-line"></span>
+
+                <button class="cat-filter cat-filter-all active" data-filter="all">
+                    TOUS LES EQUIPEMENTS
+                    <span class="cat-filter-count" id="count-all">0</span>
+                </button>
+
+                <div class="cat-group">
+                    <span class="cat-group-label">TERRESTRE</span>
+                    <button class="cat-filter" data-filter="armes-feu">
+                        ARMES A FEU
+                        <span class="cat-filter-count" data-count="armes-feu">0</span>
+                    </button>
+                    <button class="cat-filter" data-filter="explosifs">
+                        EXPLOSIFS
+                        <span class="cat-filter-count" data-count="explosifs">0</span>
+                    </button>
+                    <button class="cat-filter" data-filter="vehicules-terrestres">
+                        VEHICULES
+                        <span class="cat-filter-count" data-count="vehicules-terrestres">0</span>
+                    </button>
+                    <button class="cat-filter" data-filter="artillerie">
+                        ARTILLERIE
+                        <span class="cat-filter-count" data-count="artillerie">0</span>
+                    </button>
+                </div>
+
+                <div class="cat-group">
+                    <span class="cat-group-label">AERIEN</span>
+                    <button class="cat-filter" data-filter="aeronefs">
+                        AERONEFS
+                        <span class="cat-filter-count" data-count="aeronefs">0</span>
+                    </button>
+                </div>
+
+                <div class="cat-group">
+                    <span class="cat-group-label">NAVAL</span>
+                    <button class="cat-filter" data-filter="navires">
+                        NAVIRES
+                        <span class="cat-filter-count" data-count="navires">0</span>
+                    </button>
+                    <button class="cat-filter" data-filter="sous-marins">
+                        SOUS-MARINS
+                        <span class="cat-filter-count" data-count="sous-marins">0</span>
+                    </button>
+                </div>
+
+                <div class="cat-group">
+                    <span class="cat-group-label">BALISTIQUE</span>
+                    <button class="cat-filter" data-filter="missiles">
+                        MISSILES
+                        <span class="cat-filter-count" data-count="missiles">0</span>
+                    </button>
+                    <button class="cat-filter" data-filter="missiles-strategiques">
+                        MISSILES STRATEGIQUES
+                        <span class="cat-filter-count" data-count="missiles-strategiques">0</span>
+                    </button>
                 </div>
             </div>
-        </section>
+        </aside>
 
-        <section class="page-hub-grid-section">
-            <div class="container">
-                <div class="hub-grid">
-
-                    <!-- MILITAIRE -->
-                    <a href="catalogue-militaire.html" class="hub-card reveal-up">
-                        <div class="hub-card-inner">
-                            <div class="hub-card-number">I</div>
-                            <div class="hub-card-icon">
-                                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
-                                    <path d="M24 4l3 8h8l-6.5 5 2.5 8L24 20l-7 5 2.5-8L13 12h8z"/>
-                                    <path d="M14 36h20M16 42h16" stroke-linecap="round"/>
-                                </svg>
-                            </div>
-                            <h2 class="hub-card-title">CATALOGUE MILITAIRE</h2>
-                            <p class="hub-card-text">
-                                Inventaire détaillé des armements, véhicules, aéronefs et systèmes
-                                stratégiques des Forces Armées Impériales. Fiches techniques complètes.
-                            </p>
-                            <div class="hub-card-meta">
-                                <span class="hub-card-status hub-card-status--open">ACCES OUVERT</span>
-                                <span class="hub-card-cta">
-                                    CONSULTER
-                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                                        <path d="M4 8h8M8 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                </span>
-                            </div>
-                        </div>
-                    </a>
-
-                    <!-- CIVIL -->
-                    <div class="hub-card hub-card--locked reveal-up" aria-disabled="true">
-                        <div class="hub-card-inner">
-                            <div class="hub-card-number">II</div>
-                            <div class="hub-card-icon">
-                                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
-                                    <path d="M8 44V20l16-14 16 14v24H8z" stroke-linejoin="round"/>
-                                    <rect x="18" y="30" width="12" height="14"/>
-                                    <rect x="14" y="22" width="8" height="8"/>
-                                    <rect x="26" y="22" width="8" height="8"/>
-                                </svg>
-                            </div>
-                            <h2 class="hub-card-title">CATALOGUE CIVIL</h2>
-                            <p class="hub-card-text">
-                                Registre des infrastructures civiles, bâtiments administratifs,
-                                équipements industriels et propriétés de l'Empire Hussein.
-                            </p>
-                            <div class="hub-card-meta">
-                                <span class="hub-card-status hub-card-status--locked">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="4" y="11" width="16" height="10" rx="1"/>
-                                        <path d="M8 11V7a4 4 0 018 0v4"/>
-                                    </svg>
-                                    VERROUILLE
-                                </span>
-                                <span class="hub-card-cta hub-card-cta--disabled">BIENTOT DISPONIBLE</span>
-                            </div>
-                        </div>
-                        <div class="hub-card-lock-overlay" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <rect x="4" y="11" width="16" height="10" rx="1"/>
-                                <path d="M8 11V7a4 4 0 018 0v4"/>
-                                <circle cx="12" cy="16" r="1.2" fill="currentColor"/>
-                            </svg>
-                        </div>
-                    </div>
-
-                </div>
+        <!-- MAIN -->
+        <main class="cat-main">
+            <div class="cat-results-header">
+                <h2 class="cat-results-title" id="cat-results-title">TOUS LES EQUIPEMENTS</h2>
+                <span class="cat-results-count" id="cat-results-count">0 équipement</span>
             </div>
-        </section>
-    </main>
+
+            <div class="cat-loading" id="cat-loading">Chargement des équipements…</div>
+
+            <div class="cat-items" id="cat-items" style="display:none;"></div>
+
+            <div class="cat-empty-state" id="cat-empty" style="display:none;">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                    <path d="M10 8h28v32H10z"/>
+                    <path d="M10 14h28M18 8v32"/>
+                </svg>
+                <div class="cat-empty-state-title">AUCUN EQUIPEMENT</div>
+                <p>Aucun équipement ne correspond à votre recherche.</p>
+            </div>
+        </main>
+    </div>
 
     <!-- ═══════════════════════════════════════ -->
     <!-- FOOTER                                  -->
@@ -209,5 +230,6 @@
 
     <script src="js/auth.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/catalogue-militaire.js"></script>
 </body>
 </html>

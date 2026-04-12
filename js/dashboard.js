@@ -58,6 +58,7 @@ function initDashboard(user) {
     initDocuments();
     initGithub();
     loadGithubConfig();
+    initCatalogueAdmin();
 }
 
 /* ── Sidebar user info ──────────────────────── */
@@ -1346,4 +1347,759 @@ function escapeHtml(str) {
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
+}
+
+/* ════════════════════════════════════════════
+   CATALOGUE MILITAIRE — ADMIN
+   ════════════════════════════════════════════ */
+const CAT_JSON_PATH   = 'data/catalogue-militaire.json';
+const CAT_IMG_DIR     = 'assets/images/catalogue';
+const CAT_CACHE_KEY   = 'empire_cat_militaire_v1';
+const CAT_SHA_KEY     = 'empire_cat_militaire_sha';
+
+const CAT_NIV_LABELS = {
+    1:  'I — 1910-1919',
+    2:  'II — 1920-1929',
+    3:  'III — 1930-1939',
+    4:  'IV — 1940-1949',
+    5:  'V — 1950-1959',
+    6:  'VI — 1960-1969',
+    7:  'VII — 1970-1979',
+    8:  'VIII — 1980-1989',
+    9:  'IX — 1990-1999',
+    10: 'X — 2000-2009',
+    11: 'XI — 2010-2019',
+    12: 'XII — 2020+'
+};
+
+const CAT_CATEGORY_LABELS = {
+    'armes-feu':             'Armes à feu',
+    'explosifs':             'Explosifs',
+    'vehicules-terrestres':  'Véhicules terrestres',
+    'artillerie':            'Artillerie',
+    'aeronefs':              'Aéronefs',
+    'navires':               'Navires',
+    'sous-marins':           'Sous-marins',
+    'missiles':              'Missiles',
+    'missiles-strategiques': 'Missiles stratégiques'
+};
+
+const CAT_SUBTYPES = {
+    'armes-feu': [
+        'Pistolet', 'Pistolet mitrailleur', 'Fusil', 'Fusil d\'assaut',
+        'Fusil de précision', 'Mitrailleuse', 'Fusil à pompe',
+        'Lance-roquette', 'Lance-grenade', 'Lance-flammes'
+    ],
+    'explosifs': [
+        'Grenade', 'Grenade fumigène', 'Mines (AP/AT/Autre)',
+        'Charge explosive', 'Dispositif improvisé', 'Torpille'
+    ],
+    'vehicules-terrestres': [
+        'Véhicule léger', 'Véhicule utilitaire', 'Transport de troupes blindé (APC)',
+        'Véhicule de Combat d\'infanterie (IFV)', 'Char léger (LT)',
+        'Char moyen (MT)', 'Char de Combat Principal (MBT)', 'Char lourd (HT)',
+        'Chasseur de chars', 'Canon automoteur', 'Obusier automoteur',
+        'Lance roquette multiple (LRM)', 'Véhicule de soutien', 'Véhicule du génie'
+    ],
+    'artillerie': [
+        'Mortier d\'infanterie (-7 cm)', 'Mortier de Campagne (7-12 cm)',
+        'Mortier Lourd (+12 cm)', 'Artillerie de Campagne (7-16 cm)',
+        'Artillerie Lourde (+16 cm)', 'Canon Anti-Char Léger (-8cm)',
+        'Canon Anti-Char Lourd (+ 8cm)', 'Canon Anti-Aérien Léger',
+        'Canon Anti-Aérien Lourd', 'Lance-roquettes remorqué'
+    ],
+    'aeronefs': [
+        'Avion à hélice (AH) - Chasse', 'Avion à hélice (AH) - Attaque',
+        'Avion à hélice (AH) - Bombardier', 'Avion à hélice (AH) - Transport',
+        'Avion à Réaction (AR) - Chasse', 'Avion à Réaction (AR) - Intercepteur',
+        'Avion à Réaction (AR) - Attaque', 'AR - Bombardier Tactique',
+        'AR - Bombardier Stratégique', 'AR - Bombardier Lourd',
+        'Avion de transport', 'Avion radar (AWACS)',
+        'Gyrocoptère/Hélicoptère', 'Hélicoptère d\'attaque',
+        'Drone / UAV'
+    ],
+    'navires': [
+        'Patrouilleur', 'Corvette', 'Frégate', 'Destroyer', 'Croiseur',
+        'Cuirassé', 'Porte-avions léger', 'Porte-avions',
+        'Navire amphibie', 'Navire de soutien', 'Navire logistique'
+    ],
+    'sous-marins': [
+        'Sous-marin côtier', 'Sous-marin d\'attaque conventionnel',
+        'Sous-marin d\'attaque nucléaire (SNA)',
+        'Sous-marin lance-missiles balistiques (SNLE)',
+        'Sous-marin de poche'
+    ],
+    'missiles': [
+        'Missile antichar', 'Missile anti-aérien (SAM)',
+        'Missile air-air', 'Missile air-sol', 'Missile de croisière',
+        'Missile antinavire', 'Roquette non guidée'
+    ],
+    'missiles-strategiques': [
+        'Missile balistique à courte portée (SRBM)',
+        'Missile balistique à moyenne portée (MRBM)',
+        'Missile balistique à portée intermédiaire (IRBM)',
+        'Missile balistique intercontinental (ICBM)',
+        'Missile balistique lancé en mer (SLBM)'
+    ]
+};
+
+const CAT_PRESETS = {
+    'armes-feu': [
+        'Calibre', 'Masse (non chargé)', 'Longueur', 'Longueur du canon',
+        'Cadence de tir', 'Vitesse initiale', 'Portée pratique', 'Portée maximale',
+        'Capacité', 'Type de munitions', 'Équipements possibles'
+    ],
+    'explosifs': [
+        'Délai', 'Portée de lancer', 'Poids', 'Longueur', 'Largeur/Diamètre',
+        'Portée létale', 'Type d\'explosif'
+    ],
+    'vehicules-terrestres': [
+        'Moteur', 'Carburant', 'Transmission', 'Poids à vide',
+        'Vitesse max. (Route)', 'Vitesse max. (Tout-terrain)',
+        'Autonomie (Route)', 'Autonomie (Tout-terrain)', 'Type de suspensions',
+        'Longueur', 'Largeur', 'Hauteur',
+        'Membres d\'équipage', 'Passagers', 'Cargaison',
+        'Blindage Caisse : Arrière', 'Blindage Caisse : Côté',
+        'Blindage Caisse : Front', 'Blindage Caisse : Plancher',
+        'Blindage Caisse : Toit',
+        'Blindage Tourelle : Arrière', 'Blindage Tourelle : Côté',
+        'Blindage Tourelle : Toit',
+        'Armement', 'Munitions'
+    ],
+    'artillerie': [
+        'Calibre', 'Équipage', 'Masse (non chargé)', 'Longueur',
+        'Longueur du canon', 'Cadence de tir', 'Vitesse initiale',
+        'Système de visée', 'Portée maximale', 'Munitions'
+    ],
+    'aeronefs': [
+        'Moteur', 'Carburant', 'Cargaison et équipage',
+        'Vitesse maximale', 'Vitesse ascensionnelle', 'Plafond', 'Rayon d\'action',
+        'Poids à vide', 'Poids chargé maximal',
+        'Envergure', 'Longueur', 'Hauteur', 'Surface alaire',
+        'Armement', 'Équipement'
+    ],
+    'navires': [
+        'Propulsion', 'Déplacement', 'Longueur', 'Largeur', 'Tirant d\'eau',
+        'Vitesse maximale', 'Autonomie', 'Équipage',
+        'Armement principal', 'Armement secondaire', 'Défense',
+        'Aéronefs embarqués', 'Équipement'
+    ],
+    'sous-marins': [
+        'Propulsion', 'Déplacement (surface)', 'Déplacement (immersion)',
+        'Longueur', 'Diamètre', 'Profondeur maximale',
+        'Vitesse (surface)', 'Vitesse (immersion)', 'Autonomie',
+        'Équipage', 'Armement', 'Équipement (sonar/guerre électronique)'
+    ],
+    'missiles': [
+        'Type', 'Longueur', 'Diamètre', 'Envergure', 'Masse', 'Charge utile',
+        'Propulsion', 'Portée minimale', 'Portée maximale',
+        'Vitesse maximale', 'Système de guidage', 'Plateforme de lancement'
+    ],
+    'missiles-strategiques': [
+        'Classe', 'Longueur', 'Diamètre', 'Masse au lancement',
+        'Propulsion (étages)', 'Charge utile', 'Type d\'ogive',
+        'Portée minimale', 'Portée maximale', 'Vitesse de rentrée',
+        'Précision (CEP)', 'Système de guidage', 'Plateforme de lancement'
+    ]
+};
+
+let _catItems = [];
+let _catEditingId = null;
+let _catPendingImage = null;        // { dataUrl, base64, filename }
+let _catDeleteTargetId = null;
+let _catCustomSpecFields = [];      // { key, value } — only for current form
+
+/* ── INIT ───────────────────────────────────── */
+function initCatalogueAdmin() {
+    if (!document.getElementById('panel-cat-militaire')) return;
+
+    document.getElementById('cat-categorie')?.addEventListener('change', onCatCategoryChange);
+    document.getElementById('cat-form-save')?.addEventListener('click', () => saveCatalogueItem(false));
+    document.getElementById('cat-form-push')?.addEventListener('click', () => saveCatalogueItem(true));
+    document.getElementById('cat-form-reset')?.addEventListener('click', resetCatForm);
+    document.getElementById('cat-specs-add')?.addEventListener('click', addCustomSpecField);
+    document.getElementById('cat-img-btn')?.addEventListener('click', () =>
+        document.getElementById('cat-img-input')?.click());
+    document.getElementById('cat-img-input')?.addEventListener('change', handleCatImageUpload);
+    document.getElementById('cat-img-clear')?.addEventListener('click', clearCatImage);
+    document.getElementById('cat-sync-btn')?.addEventListener('click', () => loadCatItemsFromGithub(true));
+    document.getElementById('cat-list-search')?.addEventListener('input', renderCatList);
+    document.getElementById('cat-list-filter')?.addEventListener('change', renderCatList);
+
+    // Populate niveau select
+    const nivSel = document.getElementById('cat-niveau');
+    if (nivSel && nivSel.options.length <= 1) {
+        Object.entries(CAT_NIV_LABELS).forEach(([n, label]) => {
+            const opt = document.createElement('option');
+            opt.value = n;
+            opt.textContent = label;
+            nivSel.appendChild(opt);
+        });
+    }
+
+    // Delete modal wiring
+    const delModal   = document.getElementById('cat-delete-modal');
+    const delCancel  = document.getElementById('btn-cat-delete-cancel');
+    const delConfirm = document.getElementById('btn-cat-delete-confirm');
+    const closeDel = () => {
+        if (delModal) delModal.style.display = 'none';
+        _catDeleteTargetId = null;
+    };
+    delCancel?.addEventListener('click', closeDel);
+    delModal?.addEventListener('click', e => { if (e.target === delModal) closeDel(); });
+    delConfirm?.addEventListener('click', () => deleteCatItem(_catDeleteTargetId));
+
+    // Preload cache, then refresh from GitHub if possible
+    const cached = getCatCache();
+    if (cached.items) {
+        _catItems = cached.items;
+        renderCatList();
+    } else {
+        renderCatList();
+    }
+    loadCatItemsFromGithub(false);
+}
+
+/* ── DATA LOADING ───────────────────────────── */
+function getCatCache() {
+    try {
+        return JSON.parse(localStorage.getItem(CAT_CACHE_KEY) || '{}');
+    } catch { return {}; }
+}
+
+function setCatCache(items) {
+    localStorage.setItem(CAT_CACHE_KEY, JSON.stringify({ items, ts: Date.now() }));
+}
+
+async function loadCatItemsFromGithub(showToastOnSuccess) {
+    const cfg = getGithubConfig();
+    try {
+        let data, sha = null;
+        if (cfg && cfg.repo && cfg.pat) {
+            const res = await fetch(
+                `https://api.github.com/repos/${cfg.repo}/contents/${CAT_JSON_PATH}?ref=${cfg.branch || 'main'}`,
+                { headers: { Authorization: `token ${cfg.pat}`, Accept: 'application/vnd.github.v3+json' } }
+            );
+            if (!res.ok) throw new Error((await res.json()).message || 'Erreur GitHub');
+            const payload = await res.json();
+            sha = payload.sha;
+            const raw = atob(payload.content.replace(/\n/g, ''));
+            data = JSON.parse(decodeURIComponent(escape(raw)));
+            localStorage.setItem(CAT_SHA_KEY, sha);
+        } else {
+            // Fallback: fetch local JSON directly
+            const res = await fetch(CAT_JSON_PATH + '?t=' + Date.now());
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            data = await res.json();
+        }
+        _catItems = Array.isArray(data) ? data : [];
+        setCatCache(_catItems);
+        renderCatList();
+        if (showToastOnSuccess) showToast(`Inventaire chargé — ${_catItems.length} équipement(s)`);
+    } catch (err) {
+        const listEl = document.getElementById('cat-admin-list');
+        if (listEl && _catItems.length === 0) {
+            listEl.innerHTML = `<div class="cat-admin-empty">Erreur de chargement : ${escapeHtml(err.message)}</div>`;
+        }
+        if (showToastOnSuccess) showToast(`Erreur : ${err.message}`);
+    }
+}
+
+/* ── FORM : CATEGORY CHANGE ─────────────────── */
+function onCatCategoryChange() {
+    const cat = document.getElementById('cat-categorie').value;
+    renderSubtypeOptions(cat);
+    renderSpecFields(cat);
+}
+
+function renderSubtypeOptions(cat, selectedVal = '') {
+    const sel = document.getElementById('cat-soustype');
+    if (!sel) return;
+    sel.innerHTML = '<option value="">— Aucun —</option>';
+    if (!cat) {
+        sel.innerHTML = '<option value="">— Choisir une catégorie d\'abord —</option>';
+        return;
+    }
+    const list = CAT_SUBTYPES[cat] || [];
+    list.forEach(s => {
+        const o = document.createElement('option');
+        o.value = s;
+        o.textContent = s;
+        if (s === selectedVal) o.selected = true;
+        sel.appendChild(o);
+    });
+    // If selectedVal exists but not in preset list, add it
+    if (selectedVal && !list.includes(selectedVal)) {
+        const o = document.createElement('option');
+        o.value = selectedVal;
+        o.textContent = selectedVal;
+        o.selected = true;
+        sel.appendChild(o);
+    }
+    // Allow custom entry
+    const customOpt = document.createElement('option');
+    customOpt.value = '__custom__';
+    customOpt.textContent = '+ Autre (texte libre)…';
+    sel.appendChild(customOpt);
+}
+
+function renderSpecFields(cat, existingSpecs = null) {
+    const container = document.getElementById('cat-specs-fields');
+    const hint = document.getElementById('cat-specs-hint');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const preset = CAT_PRESETS[cat];
+    if (!preset) {
+        if (hint) hint.style.display = 'block';
+        return;
+    }
+    if (hint) hint.style.display = 'none';
+
+    preset.forEach(key => {
+        container.appendChild(buildSpecRow(key, existingSpecs?.[key] || '', false));
+    });
+
+    // If editing and existing specs have keys not in preset, render them as custom rows
+    if (existingSpecs) {
+        Object.entries(existingSpecs).forEach(([k, v]) => {
+            if (!preset.includes(k)) {
+                container.appendChild(buildSpecRow(k, v, true));
+            }
+        });
+    }
+}
+
+function buildSpecRow(key, value, editableKey) {
+    const row = document.createElement('div');
+    row.className = 'cat-spec-row' + (editableKey ? ' cat-spec-row--custom' : '');
+    row.innerHTML = `
+        ${editableKey
+            ? `<input class="form-input cat-spec-key" type="text" placeholder="Nom du champ" value="${escapeHtml(key)}">`
+            : `<label class="cat-spec-label">${escapeHtml(key)}</label>`}
+        <input class="form-input cat-spec-val" type="text" placeholder="Valeur" value="${escapeHtml(value)}">
+        ${editableKey ? `<button type="button" class="btn-icon cat-spec-remove" title="Retirer"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5"/></svg></button>` : ''}
+    `;
+    if (editableKey) {
+        row.querySelector('.cat-spec-remove').addEventListener('click', () => row.remove());
+    }
+    return row;
+}
+
+function addCustomSpecField() {
+    const container = document.getElementById('cat-specs-fields');
+    if (!container) return;
+    container.appendChild(buildSpecRow('', '', true));
+}
+
+/* ── IMAGE UPLOAD (16:9 crop) ───────────────── */
+function handleCatImageUpload(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = ev => {
+        const img = new Image();
+        img.onload = () => {
+            const { canvas, dataUrl } = cropTo16x9(img);
+            _catPendingImage = {
+                dataUrl,
+                base64: dataUrl.split(',')[1],
+                filename: slugify(file.name).replace(/\.[^.]+$/, '') + '-' + Date.now() + '.jpg'
+            };
+            updateImagePreview(dataUrl);
+        };
+        img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+}
+
+function cropTo16x9(img) {
+    const ratio = 16 / 9;
+    const srcW = img.naturalWidth;
+    const srcH = img.naturalHeight;
+    const srcRatio = srcW / srcH;
+
+    let cropW, cropH, sx, sy;
+    if (srcRatio > ratio) {
+        cropH = srcH;
+        cropW = srcH * ratio;
+        sx = (srcW - cropW) / 2;
+        sy = 0;
+    } else {
+        cropW = srcW;
+        cropH = srcW / ratio;
+        sx = 0;
+        sy = (srcH - cropH) / 2;
+    }
+
+    const MAX_W = 1280;
+    const outW = Math.min(MAX_W, Math.round(cropW));
+    const outH = Math.round(outW / ratio);
+
+    const canvas = document.createElement('canvas');
+    canvas.width = outW;
+    canvas.height = outH;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, sx, sy, cropW, cropH, 0, 0, outW, outH);
+    return { canvas, dataUrl: canvas.toDataURL('image/jpeg', 0.88) };
+}
+
+function updateImagePreview(dataUrl) {
+    const preview = document.getElementById('cat-img-preview');
+    const clearBtn = document.getElementById('cat-img-clear');
+    if (!preview) return;
+    if (dataUrl) {
+        preview.innerHTML = `<img src="${dataUrl}" alt="Aperçu" style="width:100%;height:100%;object-fit:cover;">`;
+        preview.classList.add('has-image');
+        if (clearBtn) clearBtn.style.display = 'inline-flex';
+    } else {
+        preview.innerHTML = `
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                <rect x="6" y="10" width="36" height="28"/>
+                <path d="M6 30l12-10 10 8 14-12"/>
+                <circle cx="16" cy="18" r="2"/>
+            </svg>
+            <span class="cat-img-placeholder">Aucune image</span>`;
+        preview.classList.remove('has-image');
+        if (clearBtn) clearBtn.style.display = 'none';
+    }
+}
+
+function clearCatImage() {
+    _catPendingImage = null;
+    document.getElementById('cat-image-path').value = '';
+    updateImagePreview(null);
+}
+
+function slugify(str) {
+    return String(str || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+}
+
+/* ── FORM : READ + SAVE ─────────────────────── */
+function collectCatFormItem() {
+    const id = _catEditingId || 'cat_' + Date.now();
+    const specs = {};
+    document.querySelectorAll('#cat-specs-fields .cat-spec-row').forEach(row => {
+        const keyEl = row.querySelector('.cat-spec-key');
+        const labelEl = row.querySelector('.cat-spec-label');
+        const valEl = row.querySelector('.cat-spec-val');
+        const key = keyEl ? keyEl.value.trim() : (labelEl ? labelEl.textContent.trim() : '');
+        const val = valEl ? valEl.value.trim() : '';
+        if (key && val) specs[key] = val;
+    });
+
+    let sousType = document.getElementById('cat-soustype').value;
+    if (sousType === '__custom__') {
+        sousType = prompt('Sous-type personnalisé :') || '';
+    }
+
+    const nivRaw = document.getElementById('cat-niveau').value;
+
+    return {
+        id,
+        nom:           document.getElementById('cat-nom').value.trim(),
+        categorie:     document.getElementById('cat-categorie').value,
+        soustype:      sousType,
+        niveau:        nivRaw ? parseInt(nivRaw, 10) : null,
+        fabricant:     document.getElementById('cat-fabricant').value.trim(),
+        cout_unite:    document.getElementById('cat-cout').value.trim(),
+        inspiration:   document.getElementById('cat-inspiration').value.trim(),
+        disponibilite: document.getElementById('cat-disponibilite').value.trim(),
+        specs,
+        image_path:    document.getElementById('cat-image-path').value.trim() || null
+    };
+}
+
+async function saveCatalogueItem(pushToGh) {
+    const item = collectCatFormItem();
+    if (!item.nom) { showToast('Le nom est requis'); return; }
+    if (!item.categorie) { showToast('La catégorie est requise'); return; }
+
+    const saveBtn = document.getElementById('cat-form-save');
+    const pushBtn = document.getElementById('cat-form-push');
+    const statusEl = document.getElementById('cat-push-status');
+    if (saveBtn) saveBtn.disabled = true;
+    if (pushBtn) pushBtn.disabled = true;
+
+    try {
+        // 1. Upload image to GitHub if pending and pushing
+        if (pushToGh && _catPendingImage) {
+            showCatPushStatus('Téléversement de l\'image…', null, statusEl);
+            const path = await uploadCatImage(_catPendingImage);
+            item.image_path = path;
+            _catPendingImage = null;
+        } else if (_catPendingImage) {
+            // Save locally with data URL as preview only (not persisted to GitHub)
+            item.image_path = _catPendingImage.dataUrl;
+        }
+
+        // 2. Update _catItems
+        const idx = _catItems.findIndex(i => i.id === item.id);
+        if (idx >= 0) _catItems[idx] = item;
+        else _catItems.push(item);
+        setCatCache(_catItems);
+
+        // 3. Push JSON if requested
+        if (pushToGh) {
+            showCatPushStatus('Envoi de l\'inventaire…', null, statusEl);
+            await pushCatJson(`Update catalogue: ${item.nom}`);
+            showCatPushStatus(`Équipement « ${item.nom} » poussé sur GitHub`, true, statusEl);
+            showToast(`« ${item.nom} » poussé sur GitHub`);
+        } else {
+            showToast(`« ${item.nom} » enregistré localement`);
+        }
+
+        resetCatForm();
+        renderCatList();
+    } catch (err) {
+        showCatPushStatus(`Erreur : ${err.message}`, false, statusEl);
+        showToast(`Erreur : ${err.message}`);
+    } finally {
+        if (saveBtn) saveBtn.disabled = false;
+        if (pushBtn) pushBtn.disabled = false;
+    }
+}
+
+async function uploadCatImage(pending) {
+    const cfg = getGithubConfig();
+    if (!cfg || !cfg.repo || !cfg.pat) throw new Error('Configuration GitHub requise pour l\'upload d\'image');
+
+    const path = `${CAT_IMG_DIR}/${pending.filename}`;
+    const res = await fetch(
+        `https://api.github.com/repos/${cfg.repo}/contents/${path}`,
+        {
+            method: 'PUT',
+            headers: {
+                Authorization: `token ${cfg.pat}`,
+                Accept:        'application/vnd.github.v3+json',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                message: `Add catalogue image: ${pending.filename}`,
+                content: pending.base64,
+                branch:  cfg.branch || 'main'
+            })
+        }
+    );
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Erreur upload image');
+    return path;
+}
+
+async function pushCatJson(commitMessage) {
+    const cfg = getGithubConfig();
+    if (!cfg || !cfg.repo || !cfg.pat) throw new Error('Configuration GitHub requise');
+
+    // Always fetch the latest SHA before pushing
+    let sha = localStorage.getItem(CAT_SHA_KEY);
+    try {
+        const probe = await fetch(
+            `https://api.github.com/repos/${cfg.repo}/contents/${CAT_JSON_PATH}?ref=${cfg.branch || 'main'}`,
+            { headers: { Authorization: `token ${cfg.pat}`, Accept: 'application/vnd.github.v3+json' } }
+        );
+        if (probe.ok) {
+            sha = (await probe.json()).sha;
+            localStorage.setItem(CAT_SHA_KEY, sha);
+        }
+    } catch {}
+
+    const json = JSON.stringify(_catItems, null, 2);
+    const body = {
+        message: commitMessage,
+        content: btoa(unescape(encodeURIComponent(json))),
+        branch:  cfg.branch || 'main'
+    };
+    if (sha) body.sha = sha;
+
+    const res = await fetch(
+        `https://api.github.com/repos/${cfg.repo}/contents/${CAT_JSON_PATH}`,
+        {
+            method: 'PUT',
+            headers: {
+                Authorization: `token ${cfg.pat}`,
+                Accept:        'application/vnd.github.v3+json',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(body)
+        }
+    );
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Erreur push JSON');
+    if (data.content?.sha) localStorage.setItem(CAT_SHA_KEY, data.content.sha);
+}
+
+function showCatPushStatus(msg, ok, el) {
+    if (!el) return;
+    el.style.display = 'block';
+    el.className = 'github-status' + (ok === true ? ' github-status--ok' : ok === false ? ' github-status--err' : '');
+    el.textContent = msg;
+}
+
+/* ── FORM : RESET + EDIT ────────────────────── */
+function resetCatForm() {
+    _catEditingId = null;
+    _catPendingImage = null;
+    document.getElementById('cat-form-title').textContent = 'NOUVEL EQUIPEMENT';
+    document.getElementById('cat-nom').value = '';
+    document.getElementById('cat-categorie').value = '';
+    document.getElementById('cat-niveau').value = '';
+    document.getElementById('cat-fabricant').value = '';
+    document.getElementById('cat-cout').value = '';
+    document.getElementById('cat-inspiration').value = '';
+    document.getElementById('cat-disponibilite').value = '';
+    document.getElementById('cat-image-path').value = '';
+    renderSubtypeOptions('');
+    renderSpecFields('');
+    updateImagePreview(null);
+    const st = document.getElementById('cat-push-status');
+    if (st) st.style.display = 'none';
+}
+
+function editCatItem(id) {
+    const item = _catItems.find(i => i.id === id);
+    if (!item) return;
+    _catEditingId = item.id;
+
+    document.getElementById('cat-form-title').textContent = `MODIFIER — ${item.nom}`;
+    document.getElementById('cat-nom').value = item.nom || '';
+    document.getElementById('cat-categorie').value = item.categorie || '';
+    document.getElementById('cat-niveau').value = item.niveau || '';
+    document.getElementById('cat-fabricant').value = item.fabricant || '';
+    document.getElementById('cat-cout').value = item.cout_unite || '';
+    document.getElementById('cat-inspiration').value = item.inspiration || '';
+    document.getElementById('cat-disponibilite').value = item.disponibilite || '';
+    document.getElementById('cat-image-path').value = item.image_path || '';
+
+    renderSubtypeOptions(item.categorie || '', item.soustype || '');
+    renderSpecFields(item.categorie || '', item.specs || {});
+
+    _catPendingImage = null;
+    if (item.image_path) {
+        updateImagePreview(item.image_path);
+    } else {
+        updateImagePreview(null);
+    }
+
+    document.querySelector('.dashboard-main')?.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function openCatDeleteModal(id, name) {
+    _catDeleteTargetId = id;
+    const modal = document.getElementById('cat-delete-modal');
+    const text = document.getElementById('cat-delete-text');
+    if (text) text.textContent = `Supprimer « ${name} » ?`;
+    if (modal) modal.style.display = 'flex';
+}
+
+async function deleteCatItem(id) {
+    if (!id) return;
+    const modal = document.getElementById('cat-delete-modal');
+    const item = _catItems.find(i => i.id === id);
+    if (!item) { if (modal) modal.style.display = 'none'; return; }
+
+    const confirmBtn = document.getElementById('btn-cat-delete-confirm');
+    if (confirmBtn) confirmBtn.disabled = true;
+
+    try {
+        _catItems = _catItems.filter(i => i.id !== id);
+        setCatCache(_catItems);
+
+        const cfg = getGithubConfig();
+        if (cfg && cfg.repo && cfg.pat) {
+            await pushCatJson(`Remove catalogue: ${item.nom}`);
+            showToast(`« ${item.nom} » supprimé (local + GitHub)`);
+        } else {
+            showToast(`« ${item.nom} » supprimé localement`);
+        }
+        renderCatList();
+        if (_catEditingId === id) resetCatForm();
+    } catch (err) {
+        showToast(`Erreur suppression : ${err.message}`);
+    } finally {
+        if (confirmBtn) confirmBtn.disabled = false;
+        if (modal) modal.style.display = 'none';
+        _catDeleteTargetId = null;
+    }
+}
+
+/* ── LIST RENDER ────────────────────────────── */
+function renderCatList() {
+    const listEl = document.getElementById('cat-admin-list');
+    const countEl = document.getElementById('cat-list-count');
+    if (!listEl) return;
+
+    if (countEl) countEl.textContent = _catItems.length;
+
+    const filterCat = document.getElementById('cat-list-filter')?.value || 'all';
+    const search = (document.getElementById('cat-list-search')?.value || '').trim().toLowerCase();
+
+    let items = [..._catItems];
+    if (filterCat !== 'all') items = items.filter(i => i.categorie === filterCat);
+    if (search) {
+        items = items.filter(i =>
+            [i.nom, i.soustype, i.fabricant, i.inspiration].filter(Boolean)
+                .join(' ').toLowerCase().includes(search)
+        );
+    }
+
+    items.sort((a, b) => {
+        const c = (a.categorie || '').localeCompare(b.categorie || '');
+        return c !== 0 ? c : (a.nom || '').localeCompare(b.nom || '');
+    });
+
+    if (items.length === 0) {
+        listEl.innerHTML = `<div class="cat-admin-empty">Aucun équipement à afficher.</div>`;
+        return;
+    }
+
+    listEl.innerHTML = items.map(item => {
+        const catLabel = CAT_CATEGORY_LABELS[item.categorie] || item.categorie || '';
+        const niv = item.niveau ? `NIV ${CAT_NIV_LABELS[item.niveau]?.split(' ')[0] || item.niveau}` : '';
+        const imgBlock = item.image_path
+            ? `<img src="${escapeHtml(item.image_path)}" alt="" loading="lazy" onerror="this.style.display='none'">`
+            : `<div class="cat-admin-item-noimg">—</div>`;
+        return `
+            <div class="cat-admin-item" data-id="${escapeHtml(item.id)}">
+                <div class="cat-admin-item-img">${imgBlock}</div>
+                <div class="cat-admin-item-body">
+                    <div class="cat-admin-item-head">
+                        <h4 class="cat-admin-item-name">${escapeHtml(item.nom || '')}</h4>
+                        ${niv ? `<span class="cat-admin-item-niv">${escapeHtml(niv)}</span>` : ''}
+                    </div>
+                    <div class="cat-admin-item-meta">
+                        <span>${escapeHtml(catLabel)}</span>
+                        ${item.soustype ? `<span>·</span><span>${escapeHtml(item.soustype)}</span>` : ''}
+                        ${item.fabricant ? `<span>·</span><span>${escapeHtml(item.fabricant)}</span>` : ''}
+                    </div>
+                </div>
+                <div class="cat-admin-item-actions">
+                    <button class="btn-icon cat-edit" title="Modifier">
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 14l2-5L11 2.5l3 3L9 12.5 2 14z"/>
+                            <path d="M9 4l3 3"/>
+                        </svg>
+                    </button>
+                    <button class="btn-icon cat-del" title="Supprimer">
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                            <path d="M3 4h10M6 4V3a1 1 0 011-1h2a1 1 0 011 1v1M5 4l1 9a1 1 0 001 1h2a1 1 0 001-1l1-9"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    listEl.querySelectorAll('.cat-admin-item').forEach(el => {
+        const id = el.dataset.id;
+        const item = _catItems.find(i => i.id === id);
+        el.querySelector('.cat-edit')?.addEventListener('click', () => editCatItem(id));
+        el.querySelector('.cat-del')?.addEventListener('click', () => openCatDeleteModal(id, item?.nom || ''));
+    });
 }
