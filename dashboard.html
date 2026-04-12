@@ -46,26 +46,6 @@
 
             <nav class="sidebar-nav" id="sidebar-nav">
 
-                <!-- TABLEAU DE BORD -->
-                <div class="nav-group">
-                    <span class="nav-group-label">TABLEAU DE BORD</span>
-                    <a class="nav-item active" data-panel="updates" data-title="MISES A JOUR">
-                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M10 2v16M2 10h16" stroke-linecap="round"/>
-                            <circle cx="10" cy="10" r="8"/>
-                        </svg>
-                        <span>MISES A JOUR</span>
-                    </a>
-                    <a class="nav-item nav-item--wip" data-panel="restore" data-title="RESTAURATION">
-                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M2 10a8 8 0 108-8" stroke-linecap="round"/>
-                            <path d="M2 4v6h6" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        <span>RESTAURATION</span>
-                        <span class="nav-badge">À VENIR</span>
-                    </a>
-                </div>
-
                 <!-- ECONOMIE -->
                 <div class="nav-group">
                     <span class="nav-group-label">ECONOMIE</span>
@@ -104,7 +84,7 @@
                 <!-- ECRITURE -->
                 <div class="nav-group">
                     <span class="nav-group-label">ECRITURE</span>
-                    <a class="nav-item" data-panel="editeur" data-title="ESPACE D'ECRITURE">
+                    <a class="nav-item active" data-panel="editeur" data-title="ESPACE D'ECRITURE">
                         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
                             <path d="M3 17l1.5-4L14 3.5a2 2 0 013 3L7.5 16.5 3 17z" stroke-linejoin="round"/>
                         </svg>
@@ -169,102 +149,10 @@
                 <button class="sidebar-toggle-btn" id="sidebar-toggle" aria-label="Menu">
                     <span></span><span></span><span></span>
                 </button>
-                <h1 class="dash-header-title" id="current-panel-title">MISES A JOUR</h1>
+                <h1 class="dash-header-title" id="current-panel-title">ESPACE D'ECRITURE</h1>
             </header>
 
             <div class="panels-wrapper" id="panels-wrapper">
-
-                <!-- ══════════════════════════ -->
-                <!-- MISES A JOUR              -->
-                <!-- ══════════════════════════ -->
-                <div class="panel" id="panel-updates">
-                    <div class="updates-list">
-                        <div class="update-entry">
-                            <div class="update-header">
-                                <span class="update-tag update-tag--new">NOUVEAU</span>
-                                <span class="update-date">12 avril 2026</span>
-                            </div>
-                            <h3 class="update-title">Dashboard administrateur</h3>
-                            <p class="update-desc">Création du tableau de bord admin avec graphiques, espace d'écriture, gestion des documents et intégration GitHub.</p>
-                            <div class="update-files">
-                                <span class="update-file">dashboard.html</span>
-                                <span class="update-file">css/dashboard.css</span>
-                                <span class="update-file">js/dashboard.js</span>
-                            </div>
-                        </div>
-                        <div class="update-entry">
-                            <div class="update-header">
-                                <span class="update-tag update-tag--update">MISE À JOUR</span>
-                                <span class="update-date">12 avril 2026</span>
-                            </div>
-                            <h3 class="update-title">Favicon — Blason de l'Empire</h3>
-                            <p class="update-desc">Ajout du blason de l'Empire Hussein comme favicon sur toutes les pages.</p>
-                            <div class="update-files">
-                                <span class="update-file">index.html</span>
-                                <span class="update-file">assets/Hussein Empire Coat of Arms.png</span>
-                            </div>
-                        </div>
-                        <div class="update-entry">
-                            <div class="update-header">
-                                <span class="update-tag update-tag--update">MISE À JOUR</span>
-                                <span class="update-date">11 avril 2026</span>
-                            </div>
-                            <h3 class="update-title">Authentification Discord</h3>
-                            <p class="update-desc">Mise à jour du flux OAuth2 Discord. IDs admin configurés. Token stocké en localStorage (7 jours).</p>
-                            <div class="update-files">
-                                <span class="update-file">js/auth.js</span>
-                            </div>
-                        </div>
-                        <div class="update-entry">
-                            <div class="update-header">
-                                <span class="update-tag update-tag--init">INITIAL</span>
-                                <span class="update-date">10 avril 2026</span>
-                            </div>
-                            <h3 class="update-title">Commit initial</h3>
-                            <p class="update-desc">Création du site Empire Hussein — design system, hero, sections Empire et Prophète, animations, glassmorphism.</p>
-                            <div class="update-files">
-                                <span class="update-file">index.html</span>
-                                <span class="update-file">css/style.css</span>
-                                <span class="update-file">js/main.js</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ══════════════════════════ -->
-                <!-- RESTAURATION              -->
-                <!-- ══════════════════════════ -->
-                <div class="panel hidden" id="panel-restore">
-                    <div class="wip-banner">
-                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M4 24a20 20 0 1040 0H4z"/>
-                            <path d="M4 24A20 20 0 0024 4" stroke-dasharray="4 4"/>
-                            <path d="M4 18v6h6" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        <h2 class="wip-title">RESTAURATION DE VERSION</h2>
-                        <p class="wip-text">Cette fonctionnalité permettra de restaurer une version antérieure du site à partir de l'historique GitHub. En cours de développement.</p>
-                    </div>
-                    <div class="restore-list">
-                        <div class="restore-commit">
-                            <span class="restore-hash">3b0253b</span>
-                            <span class="restore-msg">Add coat of arms favicon + CLAUDE.md</span>
-                            <span class="restore-date">12 avr. 2026</span>
-                            <button class="restore-btn" disabled>Restaurer</button>
-                        </div>
-                        <div class="restore-commit">
-                            <span class="restore-hash">e16d12c</span>
-                            <span class="restore-msg">Update auth.js</span>
-                            <span class="restore-date">11 avr. 2026</span>
-                            <button class="restore-btn" disabled>Restaurer</button>
-                        </div>
-                        <div class="restore-commit">
-                            <span class="restore-hash">6c9af28</span>
-                            <span class="restore-msg">Initial commit — Empire Hussein site</span>
-                            <span class="restore-date">10 avr. 2026</span>
-                            <button class="restore-btn" disabled>Restaurer</button>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- ══════════════════════════ -->
                 <!-- BOURSE DU CAIRE           -->
@@ -329,8 +217,13 @@
                 <!-- ══════════════════════════ -->
                 <!-- ESPACE D'ECRITURE         -->
                 <!-- ══════════════════════════ -->
-                <div class="panel panel--editor hidden" id="panel-editeur">
+                <div class="panel panel--editor" id="panel-editeur">
                     <div class="editor-container">
+
+                        <!-- Titre du document -->
+                        <div class="editor-title-bar">
+                            <input class="editor-title-input" id="editor-title-input" type="text" placeholder="Titre du document…" autocomplete="off">
+                        </div>
 
                         <!-- Toolbar -->
                         <div class="editor-toolbar">
@@ -649,6 +542,33 @@
             <div class="modal-actions">
                 <button class="btn-secondary" id="btn-save-cancel">Annuler</button>
                 <button class="btn-primary" id="btn-save-confirm">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Nouveau dossier -->
+    <div class="modal-overlay" id="folder-modal" style="display:none;">
+        <div class="modal">
+            <h3 class="modal-title">NOUVEAU DOSSIER</h3>
+            <div class="form-group">
+                <label class="form-label">Nom du dossier</label>
+                <input class="form-input" type="text" id="folder-name-input" placeholder="Nom du dossier…" autocomplete="off">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="btn-folder-cancel">Annuler</button>
+                <button class="btn-primary" id="btn-folder-confirm">Créer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Confirmer la suppression d'un dossier -->
+    <div class="modal-overlay" id="folder-delete-modal" style="display:none;">
+        <div class="modal">
+            <h3 class="modal-title">SUPPRIMER LE DOSSIER</h3>
+            <p class="modal-text" id="folder-delete-text">Supprimer ce dossier et tous ses documents ?</p>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="btn-folder-delete-cancel">Annuler</button>
+                <button class="btn-danger" id="btn-folder-delete-confirm">Supprimer</button>
             </div>
         </div>
     </div>

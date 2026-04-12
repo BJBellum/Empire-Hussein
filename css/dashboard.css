@@ -706,6 +706,32 @@
     border-radius: 2px;
 }
 
+.editor-title-bar {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-section);
+    flex-shrink: 0;
+}
+
+.editor-title-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: var(--font-display);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: var(--text-primary);
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.editor-title-input::placeholder {
+    color: var(--text-muted);
+    font-family: var(--font-display);
+    letter-spacing: 0.08em;
+}
+
 .editor-toolbar {
     display: flex;
     align-items: center;
@@ -954,6 +980,41 @@
 .folder-item.active {
     background: rgba(201, 168, 76, 0.08);
     color: var(--gold);
+}
+
+.folder-item-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.folder-item-delete {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    border-radius: 2px;
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+.folder-item:hover .folder-item-delete {
+    display: flex;
+}
+
+.folder-item-delete:hover {
+    color: #c0392b;
+    background: rgba(192, 57, 43, 0.12);
 }
 
 .docs-main {
@@ -1342,11 +1403,36 @@
     margin-bottom: 20px;
 }
 
+.modal-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 4px;
+}
+
 .modal-actions {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
     margin-top: 20px;
+}
+
+.btn-danger {
+    padding: 9px 20px;
+    background: rgba(192, 57, 43, 0.12);
+    border: 1px solid rgba(192, 57, 43, 0.4);
+    font-family: var(--font-display);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: #e74c3c;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 1px;
+}
+
+.btn-danger:hover {
+    background: rgba(192, 57, 43, 0.22);
+    border-color: rgba(192, 57, 43, 0.7);
 }
 
 /* ── User badge dashboard button (in style.css badges) ── */

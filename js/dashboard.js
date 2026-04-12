@@ -291,6 +291,8 @@ function initEditor() {
             if (confirm('Effacer tout le contenu de l\'éditeur ?')) {
                 textarea.value = '';
                 currentDocId = null;
+                const titleIn = document.getElementById('editor-title-input');
+                if (titleIn) titleIn.value = '';
                 updateCharCount();
                 textarea.focus();
             }
@@ -464,13 +466,14 @@ function openSaveModal() {
     const titleInp  = document.getElementById('doc-title-input');
     const folderSel = document.getElementById('doc-folder-select');
 
-    // Pre-fill if editing existing doc
+    // Pre-fill from editor title input or existing doc
+    const editorTitleIn = document.getElementById('editor-title-input');
     if (currentDocId) {
         const docs = getDocs();
         const doc  = docs.find(d => d.id === currentDocId);
         if (doc && titleInp) titleInp.value = doc.title;
     } else {
-        if (titleInp) titleInp.value = '';
+        if (titleInp) titleInp.value = editorTitleIn?.value.trim() || '';
     }
 
     // Populate folder select
@@ -553,15 +556,10 @@ function deleteDocument(id) {
 function initDocuments() {
     renderFolderList();
     renderDocumentsList();
+    initFolderModal();
+    initFolderDeleteModal();
 
-    document.getElementById('btn-new-folder')?.addEventListener('click', () => {
-        const name = prompt('Nom du nouveau dossier :');
-        if (name?.trim()) {
-            createFolder(name.trim());
-            renderFolderList();
-            showToast(`Dossier « ${name.trim()} » créé`);
-        }
-    });
+    document.getElementById('btn-new-folder')?.addEventListener('click', openFolderModal);
 
     document.getElementById('btn-new-doc')?.addEventListener('click', () => {
         // Open editor panel
@@ -569,8 +567,87 @@ function initDocuments() {
         if (editorItem) editorItem.click();
         currentDocId = null;
         const ta = document.getElementById('editor-textarea');
+        const titleIn = document.getElementById('editor-title-input');
         if (ta) { ta.value = ''; updateCharCount(); ta.focus(); }
+        if (titleIn) titleIn.value = '';
     });
+}
+
+/* ── Folder creation modal ──────────────────── */
+function openFolderModal() {
+    const modal = document.getElementById('folder-modal');
+    const input = document.getElementById('folder-name-input');
+    if (!modal) return;
+    if (input) input.value = '';
+    modal.style.display = 'flex';
+    setTimeout(() => input?.focus(), 50);
+}
+
+function initFolderModal() {
+    const modal      = document.getElementById('folder-modal');
+    const cancelBtn  = document.getElementById('btn-folder-cancel');
+    const confirmBtn = document.getElementById('btn-folder-confirm');
+    const input      = document.getElementById('folder-name-input');
+    if (!modal) return;
+
+    const close = () => { modal.style.display = 'none'; };
+
+    cancelBtn?.addEventListener('click', close);
+    modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+
+    const doCreate = () => {
+        const name = input?.value.trim();
+        if (!name) { input?.focus(); showToast('Entrez un nom de dossier'); return; }
+        createFolder(name);
+        renderFolderList();
+        showToast(`Dossier « ${name} » créé`);
+        close();
+    };
+
+    confirmBtn?.addEventListener('click', doCreate);
+    input?.addEventListener('keydown', (e) => { if (e.key === 'Enter') doCreate(); });
+}
+
+/* ── Folder delete modal ────────────────────── */
+let _pendingDeleteFolderId = null;
+
+function initFolderDeleteModal() {
+    const modal      = document.getElementById('folder-delete-modal');
+    const cancelBtn  = document.getElementById('btn-folder-delete-cancel');
+    const confirmBtn = document.getElementById('btn-folder-delete-confirm');
+    if (!modal) return;
+
+    const close = () => { modal.style.display = 'none'; _pendingDeleteFolderId = null; };
+
+    cancelBtn?.addEventListener('click', close);
+    modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+
+    confirmBtn?.addEventListener('click', () => {
+        if (!_pendingDeleteFolderId) return;
+        // Delete all documents in this folder
+        let docs = getDocs();
+        docs = docs.filter(d => d.folderId !== _pendingDeleteFolderId);
+        saveDocs(docs);
+        // Delete the folder itself
+        let folders = getFolders();
+        const deleted = folders.find(f => f.id === _pendingDeleteFolderId);
+        folders = folders.filter(f => f.id !== _pendingDeleteFolderId);
+        saveFolders(folders);
+        // Reset state if needed
+        if (currentFolderId === _pendingDeleteFolderId) currentFolderId = null;
+        close();
+        renderFolderList();
+        renderDocumentsList();
+        showToast(`Dossier « ${deleted?.name || '' } » supprimé`);
+    });
+}
+
+function openFolderDeleteModal(folderId, folderName) {
+    _pendingDeleteFolderId = folderId;
+    const modal  = document.getElementById('folder-delete-modal');
+    const textEl = document.getElementById('folder-delete-text');
+    if (textEl) textEl.textContent = `Supprimer « ${folderName} » et tous ses documents ?`;
+    if (modal) modal.style.display = 'flex';
 }
 
 function renderFolderList() {
@@ -595,7 +672,8 @@ function renderFolderList() {
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                 <path d="M2 13V6l2.5-2h3L9 5.5h5V13H2z" stroke-linejoin="round"/>
             </svg>
-            <span>${escapeHtml(f.name)}</span>
+            <span class="folder-item-name">${escapeHtml(f.name)}</span>
+            <button class="folder-item-delete" title="Supprimer ce dossier" aria-label="Supprimer">×</button>
         `;
         div.addEventListener('click', () => {
             currentFolderId = f.id || null;
@@ -604,6 +682,10 @@ function renderFolderList() {
             const titleEl = document.getElementById('docs-folder-title');
             if (titleEl) titleEl.textContent = f.name;
             renderDocumentsList();
+        });
+        div.querySelector('.folder-item-delete')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openFolderDeleteModal(f.id, f.name);
         });
         list.appendChild(div);
     });
@@ -686,7 +768,9 @@ function openDocument(id) {
             const editorItem = document.querySelector('[data-panel="editeur"]');
             if (editorItem) editorItem.click();
             const ta = document.getElementById('editor-textarea');
+            const titleIn = document.getElementById('editor-title-input');
             if (ta) { ta.value = doc.content; updateCharCount(); ta.focus(); }
+            if (titleIn) titleIn.value = doc.title;
         }, { once: true });
 
         document.getElementById('btn-doc-delete')?.addEventListener('click', () => {
