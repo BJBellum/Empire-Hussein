@@ -191,6 +191,52 @@
                 <p>Aucun équipement ne correspond à votre recherche.</p>
             </div>
         </main>
+
+        <!-- PANIER -->
+        <aside class="cat-cart" id="cat-cart" aria-label="Panier de sélection">
+            <div class="cat-cart-header">
+                <!-- icones.js.org — tabler:shopping-cart -->
+                <svg class="cat-cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19a2 2 0 1 0 4 0a2 2 0 1 0-4 0m11 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0"/>
+                    <path d="M17 17H6V3H4"/>
+                    <path d="m6 5l14 1l-1 7H6"/>
+                </svg>
+                <span class="cat-cart-title">PANIER</span>
+                <span class="cat-cart-count" id="cat-cart-count">0</span>
+            </div>
+
+            <div class="cat-cart-body" id="cat-cart-body">
+                <div class="cat-cart-empty" id="cat-cart-empty">
+                    Aucun équipement<br>sélectionné.
+                </div>
+                <ul class="cat-cart-items" id="cat-cart-items"></ul>
+            </div>
+
+            <div class="cat-cart-footer">
+                <div class="cat-cart-total-row">
+                    <span class="cat-cart-total-label">TOTAL</span>
+                    <span class="cat-cart-total" id="cat-cart-total">$0</span>
+                </div>
+                <button class="cat-cart-clear" id="cat-cart-clear" type="button" disabled>
+                    <!-- icones.js.org — tabler:trash -->
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/>
+                    </svg>
+                    VIDER LE PANIER
+                </button>
+            </div>
+        </aside>
+
+        <!-- FAB panier mobile -->
+        <button class="cat-cart-fab" id="cat-cart-fab" type="button" aria-label="Ouvrir le panier">
+            <!-- icones.js.org — tabler:shopping-cart -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19a2 2 0 1 0 4 0a2 2 0 1 0-4 0m11 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0"/>
+                <path d="M17 17H6V3H4"/>
+                <path d="m6 5l14 1l-1 7H6"/>
+            </svg>
+            <span class="cat-cart-fab-count" id="cat-cart-fab-count">0</span>
+        </button>
     </div>
 
     <!-- ═══════════════════════════════════════ -->
