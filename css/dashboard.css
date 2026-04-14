@@ -1942,7 +1942,7 @@
 
 .cat-admin-item {
     display: grid;
-    grid-template-columns: 120px 1fr auto;
+    grid-template-columns: 140px 1fr auto;
     gap: 14px;
     align-items: center;
     padding: 10px 12px;

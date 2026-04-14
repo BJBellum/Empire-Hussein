@@ -412,15 +412,15 @@ function renderCart() {
 
     itemsEl.innerHTML = entries.map(e => `
         <li class="cat-cart-item" data-id="${esc(e.id)}">
-            <div class="cat-cart-item-info">
+            <button type="button" class="cat-cart-item-info" data-action="focus" data-id="${esc(e.id)}" aria-label="Voir ${esc(e.nom)} dans le catalogue">
                 <span class="cat-cart-item-name">${esc(e.nom)}</span>
                 <span class="cat-cart-item-unit">${formatDollar(e.prix)} / u.</span>
-            </div>
+            </button>
             <div class="cat-cart-item-qty">
                 <button class="cat-cart-qty-btn" data-action="dec" data-id="${esc(e.id)}" aria-label="Retirer une unité">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>
                 </button>
-                <span class="cat-cart-qty-value">${e.qty}</span>
+                <input type="text" inputmode="numeric" pattern="[0-9]*" class="cat-cart-qty-input" data-id="${esc(e.id)}" value="${e.qty}" aria-label="Quantité">
                 <button class="cat-cart-qty-btn" data-action="inc" data-id="${esc(e.id)}" aria-label="Ajouter une unité">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14m-7-7h14"/></svg>
                 </button>
@@ -438,8 +438,67 @@ function renderCart() {
             if (action === 'inc') incrementCart(id);
             else if (action === 'dec') decrementCart(id);
             else if (action === 'remove') removeFromCart(id);
+            else if (action === 'focus') focusCatalogueItem(id);
         });
     });
+
+    itemsEl.querySelectorAll('.cat-cart-qty-input').forEach(input => {
+        input.addEventListener('input', () => {
+            input.value = input.value.replace(/\D+/g, '');
+        });
+        input.addEventListener('change', () => commitQtyFromInput(input));
+        input.addEventListener('blur',   () => commitQtyFromInput(input));
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+        });
+        input.addEventListener('focus', () => input.select());
+    });
+}
+
+function commitQtyFromInput(input) {
+    const id = input.dataset.id;
+    const entry = cart.get(id);
+    if (!entry) return;
+    const n = parseInt(input.value, 10);
+    if (!Number.isFinite(n) || n <= 0) {
+        cart.delete(id);
+    } else {
+        entry.qty = Math.min(n, 9999);
+    }
+    afterCartMutation();
+}
+
+function focusCatalogueItem(id) {
+    const item = allItems.find(i => i.id === id);
+    if (!item) return;
+
+    let needsRender = false;
+    if (currentSearch) {
+        currentSearch = '';
+        const searchInput = document.getElementById('cat-search');
+        if (searchInput) searchInput.value = '';
+        needsRender = true;
+    }
+    if (currentFilter !== 'all' && currentFilter !== item.categorie) {
+        currentFilter = 'all';
+        document.querySelectorAll('.cat-filter').forEach(b => {
+            b.classList.toggle('active', b.dataset.filter === 'all');
+        });
+        needsRender = true;
+    }
+    if (needsRender) render();
+
+    const target = document.querySelector(`.cat-item[data-id="${CSS.escape(id)}"]`);
+    if (!target) return;
+
+    document.getElementById('cat-cart')?.classList.remove('cat-cart--open');
+
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    target.classList.add('cat-item--highlight');
+    clearTimeout(focusCatalogueItem._to);
+    focusCatalogueItem._to = setTimeout(() => {
+        target.classList.remove('cat-item--highlight');
+    }, 1800);
 }
 
 function syncAddButtons() {

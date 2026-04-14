@@ -1499,13 +1499,14 @@ button {
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 8px 12px;
+    padding: 10px 12px;
     background: transparent;
     border: none;
     border-left: 2px solid transparent;
     font-family: var(--font-display);
     font-size: 9.5px;
     letter-spacing: 0.18em;
+    line-height: 1.6;
     color: var(--text-secondary);
     text-align: left;
     cursor: pointer;
@@ -1994,6 +1995,18 @@ button {
     flex-direction: column;
     gap: 2px;
     min-width: 0;
+    background: none;
+    border: none;
+    padding: 0;
+    text-align: left;
+    cursor: pointer;
+    color: inherit;
+    font: inherit;
+    transition: color 0.2s ease;
+}
+
+.cat-cart-item-info:hover .cat-cart-item-name {
+    color: var(--gold-light);
 }
 
 .cat-cart-item-name {
@@ -2004,6 +2017,7 @@ button {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: color 0.2s ease;
 }
 
 .cat-cart-item-unit {
@@ -2068,6 +2082,43 @@ button {
     font-size: 11px;
     letter-spacing: 0.1em;
     color: var(--text-primary);
+}
+
+.cat-cart-qty-input {
+    width: 38px;
+    padding: 2px 4px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--text-primary);
+    -moz-appearance: textfield;
+    appearance: textfield;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.cat-cart-qty-input::-webkit-outer-spin-button,
+.cat-cart-qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.cat-cart-qty-input:hover {
+    border-color: var(--border);
+}
+
+.cat-cart-qty-input:focus {
+    outline: none;
+    border-color: var(--gold-dark);
+    background: rgba(201, 168, 76, 0.06);
+}
+
+.cat-item.cat-item--highlight {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 1px var(--gold-dark), 0 0 24px rgba(201, 168, 76, 0.18);
 }
 
 .cat-cart-item-remove {
