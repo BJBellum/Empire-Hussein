@@ -2085,19 +2085,27 @@ button {
 }
 
 .cat-cart-qty-input {
-    width: 38px;
-    padding: 2px 4px;
+    width: 60px;
+    padding: 4px 6px;
     background: transparent;
     border: 1px solid transparent;
     border-radius: 2px;
     text-align: center;
     font-family: var(--font-display);
-    font-size: 11px;
-    letter-spacing: 0.1em;
+    font-size: 12px;
+    letter-spacing: 0.08em;
     color: var(--text-primary);
     -moz-appearance: textfield;
     appearance: textfield;
     transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+@media (max-width: 1200px) {
+    .cat-cart-qty-input {
+        width: 48px;
+        padding: 3px 4px;
+        font-size: 11px;
+    }
 }
 
 .cat-cart-qty-input::-webkit-outer-spin-button,

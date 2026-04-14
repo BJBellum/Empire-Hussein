@@ -784,6 +784,17 @@
 .toolbar-btn--spoiler { font-size: 10px; letter-spacing: 0.05em; }
 .toolbar-btn--mono { font-family: monospace; font-size: 11px; }
 .toolbar-btn--omega { font-size: 14px; }
+.toolbar-btn--boldfont { font-size: 14px; }
+
+.toolbar-btn.is-active {
+    background: rgba(201, 168, 76, 0.18);
+    border-color: var(--gold-dark);
+    color: var(--gold);
+}
+
+.toolbar-btn.is-active:hover {
+    background: rgba(201, 168, 76, 0.24);
+}
 
 .special-chars {
     display: flex;

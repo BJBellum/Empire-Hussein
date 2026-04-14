@@ -252,6 +252,53 @@ window.addEventListener('resize', () => {
 /* ════════════════════════════════════════════
    TEXT EDITOR
    ════════════════════════════════════════════ */
+let boldFontActive = false;
+
+/* Mapping vers les caractères mathématiques gras Unicode
+   (Mathematical Bold Latin — U+1D400..U+1D433).
+   Les accentués français sont composés avec des diacritiques. */
+const BOLD_UPPER_BASE = 0x1D400; // 𝐀
+const BOLD_LOWER_BASE = 0x1D41A; // 𝐚
+const DIACRITIC_ACUTE      = '\u0301';
+const DIACRITIC_GRAVE      = '\u0300';
+const DIACRITIC_CIRCUMFLEX = '\u0302';
+const DIACRITIC_DIAERESIS  = '\u0308';
+
+const BOLD_ACCENTS = {
+    'é': 'e' + DIACRITIC_ACUTE,      'É': 'E' + DIACRITIC_ACUTE,
+    'à': 'a' + DIACRITIC_GRAVE,      'À': 'A' + DIACRITIC_GRAVE,
+    'è': 'e' + DIACRITIC_GRAVE,      'È': 'E' + DIACRITIC_GRAVE,
+    'ù': 'u' + DIACRITIC_GRAVE,      'Ù': 'U' + DIACRITIC_GRAVE,
+    'â': 'a' + DIACRITIC_CIRCUMFLEX, 'Â': 'A' + DIACRITIC_CIRCUMFLEX,
+    'ê': 'e' + DIACRITIC_CIRCUMFLEX, 'Ê': 'E' + DIACRITIC_CIRCUMFLEX,
+    'î': 'i' + DIACRITIC_CIRCUMFLEX, 'Î': 'I' + DIACRITIC_CIRCUMFLEX,
+    'ô': 'o' + DIACRITIC_CIRCUMFLEX, 'Ô': 'O' + DIACRITIC_CIRCUMFLEX,
+    'û': 'u' + DIACRITIC_CIRCUMFLEX, 'Û': 'U' + DIACRITIC_CIRCUMFLEX,
+    'ë': 'e' + DIACRITIC_DIAERESIS,  'Ë': 'E' + DIACRITIC_DIAERESIS,
+    'ï': 'i' + DIACRITIC_DIAERESIS,  'Ï': 'I' + DIACRITIC_DIAERESIS,
+    'ü': 'u' + DIACRITIC_DIAERESIS,  'Ü': 'U' + DIACRITIC_DIAERESIS
+};
+
+function boldLetter(ch) {
+    const code = ch.charCodeAt(0);
+    if (code >= 65 && code <= 90)  return String.fromCodePoint(BOLD_UPPER_BASE + (code - 65));
+    if (code >= 97 && code <= 122) return String.fromCodePoint(BOLD_LOWER_BASE + (code - 97));
+    return ch;
+}
+
+function toBoldFont(str) {
+    let out = '';
+    for (const ch of str) {
+        const accent = BOLD_ACCENTS[ch];
+        if (accent) {
+            out += boldLetter(accent[0]) + accent.slice(1);
+        } else {
+            out += boldLetter(ch);
+        }
+    }
+    return out;
+}
+
 function initEditor() {
     const textarea  = document.getElementById('editor-textarea');
     const countEl   = document.getElementById('char-count');
@@ -260,6 +307,7 @@ function initEditor() {
     const charsToggle = document.getElementById('toggle-chars');
     const charsPanel  = document.getElementById('special-chars');
     const blankBtn    = document.getElementById('btn-insert-blank');
+    const boldFontBtn = document.getElementById('toggle-boldfont');
 
     if (!textarea) return;
 
@@ -278,6 +326,35 @@ function initEditor() {
         blankBtn.addEventListener('mousedown', (e) => e.preventDefault());
         blankBtn.addEventListener('click', () => insertAtCursor('\u2800'));
     }
+
+    // Bold-font mode toggle (𝐚-𝐳, 𝐀-𝐙, diacritiques)
+    if (boldFontBtn) {
+        boldFontBtn.addEventListener('mousedown', (e) => e.preventDefault());
+        boldFontBtn.addEventListener('click', () => {
+            boldFontActive = !boldFontActive;
+            boldFontBtn.classList.toggle('is-active', boldFontActive);
+            boldFontBtn.setAttribute('aria-pressed', boldFontActive ? 'true' : 'false');
+            textarea.focus();
+        });
+    }
+
+    textarea.addEventListener('beforeinput', (e) => {
+        if (!boldFontActive) return;
+        if (typeof e.data !== 'string' || !e.data) return;
+        const INSERT_TYPES = ['insertText', 'insertFromPaste', 'insertFromDrop', 'insertCompositionText', 'insertReplacementText'];
+        if (!INSERT_TYPES.includes(e.inputType)) return;
+        const converted = toBoldFont(e.data);
+        if (converted === e.data) return;
+        e.preventDefault();
+        const ok = document.execCommand('insertText', false, converted);
+        if (!ok) {
+            const start = textarea.selectionStart;
+            const end   = textarea.selectionEnd;
+            textarea.value = textarea.value.substring(0, start) + converted + textarea.value.substring(end);
+            textarea.setSelectionRange(start + converted.length, start + converted.length);
+        }
+        updateCharCount();
+    });
 
     // Special characters toggle
     if (charsToggle && charsPanel) {
