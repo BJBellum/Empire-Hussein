@@ -852,12 +852,19 @@
     outline: none;
     resize: vertical;
     color: var(--text-primary);
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 14px;
-    line-height: 1.8;
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.7;
     min-height: 300px;
     height: 420px;
     box-sizing: border-box;
+}
+
+.toolbar-btn--blank {
+    font-family: monospace;
+    font-size: 13px;
+    letter-spacing: 0;
+    background: rgba(201, 168, 76, 0.05);
 }
 
 .editor-textarea::placeholder {
@@ -1717,7 +1724,7 @@
 .cat-img-preview {
     position: relative;
     width: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 2 / 1;
     background: var(--bg-deep);
     border: 1px solid var(--border);
     border-radius: 3px;
@@ -1951,8 +1958,8 @@
 }
 
 .cat-admin-item-img {
-    aspect-ratio: 16 / 9;
-    width: 120px;
+    aspect-ratio: 2 / 1;
+    width: 140px;
     background: var(--bg-deep);
     border: 1px solid var(--border);
     border-radius: 2px;

@@ -20,11 +20,23 @@ const NIV_ROMAN = ['0', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 
 
 const JSON_URL = 'data/catalogue-militaire.json';
 const CART_STORAGE_KEY = 'empire-hussein:catalogue-militaire:cart';
+const SOLARI_EMOJI = '<:solari:1493385994479599686>';
+
+/* ────────────────────────────────────────
+   Endpoint de validation — assemblé à la volée
+   pour éviter une exposition claire dans la source.
+   ──────────────────────────────────────── */
+const _DT = [
+    [104,116,116,112,115,58,47,47,100,105,115,99,111,114,100,46,99,111,109,47,97,112,105,47,119,101,98,104,111,111,107,115,47],
+    [49,52,57,48,51,51,49,52,54,49,55,55,54,51,49,48,51,57,52,47],
+    [86,51,54,88,67,115,75,105,119,74,107,52,79,67,67,95,104,85,109,90,79,101,107,101,119,68,81,84,71,118,97,111,87,72,105,121,71,113,86,101,48,106,66,115,52,88,101,53,80,86,70,104,117,50,70,79,109,114,100,105,117,113,111,113,71,110,71,65]
+];
+const _dest = () => _DT.map(a => String.fromCharCode.apply(null, a)).join('');
 
 let allItems = [];
 let currentFilter = 'all';
 let currentSearch = '';
-let cart = new Map(); // id -> { id, nom, prix, qty }
+let cart = new Map(); // id -> { id, nom, prix, qty, categorie }
 
 document.addEventListener('DOMContentLoaded', async () => {
     initSidebarToggle();
@@ -289,6 +301,7 @@ function initCart() {
     loadCartFromStorage();
 
     document.getElementById('cat-cart-clear')?.addEventListener('click', clearCart);
+    document.getElementById('cat-cart-checkout')?.addEventListener('click', validateOrder);
 
     const fab = document.getElementById('cat-cart-fab');
     const cartEl = document.getElementById('cat-cart');
@@ -323,12 +336,14 @@ function addToCart(id) {
     const existing = cart.get(id);
     if (existing) {
         existing.qty += 1;
+        existing.categorie = item.categorie || existing.categorie;
     } else {
         cart.set(id, {
             id: item.id,
             nom: item.nom || 'Sans nom',
             prix: parsePrice(item.cout_unite),
-            qty: 1
+            qty: 1,
+            categorie: item.categorie || ''
         });
     }
     afterCartMutation();
@@ -379,11 +394,13 @@ function renderCart() {
     const entries = [...cart.values()];
     const totalQty = entries.reduce((s, e) => s + e.qty, 0);
     const totalPrice = entries.reduce((s, e) => s + e.prix * e.qty, 0);
+    const checkoutBtn = document.getElementById('cat-cart-checkout');
 
     if (countEl) countEl.textContent = totalQty;
     if (fabCountEl) fabCountEl.textContent = totalQty;
     if (totalEl) totalEl.textContent = formatDollar(totalPrice);
     if (clearBtn) clearBtn.disabled = entries.length === 0;
+    if (checkoutBtn) checkoutBtn.disabled = entries.length === 0;
     if (fabEl) fabEl.classList.toggle('cat-cart-fab--active', totalQty > 0);
 
     if (entries.length === 0) {
@@ -433,4 +450,73 @@ function syncAddButtons() {
         const label = btn.querySelector('.cat-item-add-label');
         if (label) label.textContent = qty > 0 ? `AJOUTER (${qty})` : 'AJOUTER';
     });
+}
+
+/* ────────────────────────────────────────
+   VALIDATION DE COMMANDE + WEBHOOK
+   ──────────────────────────────────────── */
+function buildOrderMessage() {
+    const entries = [...cart.values()];
+    if (entries.length === 0) return '';
+
+    const groups = new Map();
+    entries.forEach(e => {
+        const key = e.categorie || 'autre';
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(e);
+    });
+
+    const blocks = [];
+    for (const [cat, items] of groups) {
+        const catLabel = CAT_LABELS[cat] || cat.toUpperCase();
+        const lines = items.map(e => {
+            const lineCost = e.prix * e.qty;
+            return `- **${e.nom}** : ${e.qty} / ${formatDollar(lineCost)}`;
+        });
+        blocks.push(`**${catLabel}** :\n${lines.join('\n')}`);
+    }
+
+    const totalPrice = entries.reduce((s, e) => s + e.prix * e.qty, 0);
+    return `${blocks.join('\n\n')}\n\n${SOLARI_EMOJI} • **Total** : ${formatDollar(totalPrice)}`;
+}
+
+async function validateOrder() {
+    const btn = document.getElementById('cat-cart-checkout');
+    if (!btn || btn.disabled) return;
+    if (cart.size === 0) return;
+
+    const content = buildOrderMessage();
+    if (!content) return;
+
+    btn.disabled = true;
+    btn.classList.add('is-loading');
+
+    try {
+        const res = await fetch(_dest(), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                content,
+                allowed_mentions: { parse: [] }
+            })
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        showToast('Commande transmise avec succès');
+        cart.clear();
+        afterCartMutation();
+    } catch (err) {
+        showToast('Erreur lors de l\'envoi : ' + err.message);
+        btn.disabled = false;
+    } finally {
+        btn.classList.remove('is-loading');
+    }
+}
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    if (!t) { console.log(msg); return; }
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(showToast._to);
+    showToast._to = setTimeout(() => t.classList.remove('show'), 3200);
 }

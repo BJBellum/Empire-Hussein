@@ -1593,7 +1593,7 @@ button {
 .cat-item-image {
     position: relative;
     width: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 2 / 1;
     background: var(--bg-section);
     overflow: hidden;
     border-right: 1px solid var(--border);
@@ -2122,6 +2122,49 @@ button {
     font-size: 18px;
     letter-spacing: 0.12em;
     color: var(--gold);
+}
+
+.cat-cart-checkout {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 11px 14px;
+    margin-bottom: 8px;
+    background: linear-gradient(180deg, var(--gold) 0%, var(--gold-dark) 100%);
+    border: 1px solid var(--gold);
+    border-radius: 2px;
+    font-family: var(--font-display);
+    font-size: 10.5px;
+    letter-spacing: 0.24em;
+    color: #0a0a0a;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.cat-cart-checkout:not(:disabled):hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(201, 168, 76, 0.35);
+}
+
+.cat-cart-checkout:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    background: transparent;
+    color: var(--text-muted);
+    border-color: var(--border);
+}
+
+.cat-cart-checkout svg {
+    width: 13px;
+    height: 13px;
+}
+
+.cat-cart-checkout.is-loading {
+    cursor: wait;
+    opacity: 0.7;
 }
 
 .cat-cart-clear {

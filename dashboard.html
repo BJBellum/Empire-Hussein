@@ -197,11 +197,11 @@
                                 <h3 class="cat-admin-section-title" id="cat-form-title">NOUVEL EQUIPEMENT</h3>
                                 <button class="btn-secondary" id="cat-form-reset" type="button">Annuler</button>
                             </div>
-                            <p class="cat-admin-section-desc">Ajoutez, modifiez ou poussez un équipement vers GitHub. L'image est automatiquement redimensionnée au ratio 16:9.</p>
+                            <p class="cat-admin-section-desc">Ajoutez, modifiez ou poussez un équipement vers GitHub. L'image est automatiquement redimensionnée au ratio 2:1.</p>
 
-                            <!-- Upload image 16:9 -->
+                            <!-- Upload image 2:1 -->
                             <div class="form-group">
-                                <label class="form-label">Image (ratio 16:9)</label>
+                                <label class="form-label">Image (ratio 2:1)</label>
                                 <div class="cat-img-uploader">
                                     <div class="cat-img-preview" id="cat-img-preview">
                                         <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
@@ -215,7 +215,7 @@
                                         <input type="file" id="cat-img-input" accept="image/*" style="display:none;">
                                         <button type="button" class="btn-secondary" id="cat-img-btn">Choisir une image…</button>
                                         <button type="button" class="btn-secondary" id="cat-img-clear" style="display:none;">Retirer</button>
-                                        <small class="form-hint">L'image est recadrée au centre en 16:9 avant envoi. Formats : JPG, PNG, WebP.</small>
+                                        <small class="form-hint">L'image est recadrée au centre en 2:1 avant envoi. Formats : JPG, PNG, WebP.</small>
                                     </div>
                                 </div>
                                 <input type="hidden" id="cat-image-path">
@@ -396,6 +396,7 @@
                             </div>
                             <div class="toolbar-sep"></div>
                             <div class="toolbar-group">
+                                <button class="toolbar-btn toolbar-btn--blank" id="btn-insert-blank" title="Caractère invisible ⠀ (braille blank)">⠀</button>
                                 <button class="toolbar-btn toolbar-btn--omega" id="toggle-chars" title="Caractères spéciaux">Ω</button>
                             </div>
                         </div>

@@ -259,6 +259,7 @@ function initEditor() {
     const saveBtn   = document.getElementById('btn-editor-save');
     const charsToggle = document.getElementById('toggle-chars');
     const charsPanel  = document.getElementById('special-chars');
+    const blankBtn    = document.getElementById('btn-insert-blank');
 
     if (!textarea) return;
 
@@ -268,8 +269,15 @@ function initEditor() {
 
     // Toolbar buttons
     document.querySelectorAll('.toolbar-btn[data-format]').forEach(btn => {
+        btn.addEventListener('mousedown', (e) => e.preventDefault());
         btn.addEventListener('click', () => applyFormat(btn.dataset.format));
     });
+
+    // Blank character button (⠀ U+2800)
+    if (blankBtn) {
+        blankBtn.addEventListener('mousedown', (e) => e.preventDefault());
+        blankBtn.addEventListener('click', () => insertAtCursor('\u2800'));
+    }
 
     // Special characters toggle
     if (charsToggle && charsPanel) {
@@ -282,6 +290,7 @@ function initEditor() {
 
     // Character buttons
     document.querySelectorAll('.char-btn').forEach(btn => {
+        btn.addEventListener('mousedown', (e) => e.preventDefault());
         btn.addEventListener('click', () => insertAtCursor(btn.textContent));
     });
 
@@ -290,12 +299,13 @@ function initEditor() {
         clearBtn.addEventListener('click', () => {
             if (textarea.value.trim() === '') return;
             if (confirm('Effacer tout le contenu de l\'éditeur ?')) {
-                textarea.value = '';
+                textarea.focus();
+                textarea.select();
+                document.execCommand('insertText', false, '');
                 currentDocId = null;
                 const titleIn = document.getElementById('editor-title-input');
                 if (titleIn) titleIn.value = '';
                 updateCharCount();
-                textarea.focus();
             }
         });
     }
@@ -305,11 +315,20 @@ function initEditor() {
         saveBtn.addEventListener('click', openSaveModal);
     }
 
-    // Tab key in textarea
+    // Tab + raccourcis clavier (Ctrl/Cmd + B, I, U, etc.)
     textarea.addEventListener('keydown', (e) => {
         if (e.key === 'Tab') {
             e.preventDefault();
             insertAtCursor('  ');
+            return;
+        }
+        const mod = e.ctrlKey || e.metaKey;
+        if (!mod || e.altKey) return;
+        const k = e.key.toLowerCase();
+        const map = { b: 'bold', i: 'italic', u: 'underline', e: 'code' };
+        if (map[k]) {
+            e.preventDefault();
+            applyFormat(map[k]);
         }
     });
 
@@ -326,15 +345,17 @@ function updateCharCount() {
 }
 
 /* ── Format applicator ──────────────────────── */
+/* Utilise document.execCommand('insertText') pour conserver la pile
+   d'annulation native (Ctrl+Z / Ctrl+Y). */
 function applyFormat(format) {
     const textarea = document.getElementById('editor-textarea');
     if (!textarea) return;
+    textarea.focus();
 
-    const start    = textarea.selectionStart;
-    const end      = textarea.selectionEnd;
-    const selected = textarea.value.substring(start, end);
-    const before   = textarea.value.substring(0, start);
-    const after    = textarea.value.substring(end);
+    const start = textarea.selectionStart;
+    const end   = textarea.selectionEnd;
+    const value = textarea.value;
+    const selected = value.substring(start, end);
 
     const LINE_FORMATS = {
         h1:    '# ',
@@ -356,31 +377,24 @@ function applyFormat(format) {
 
     if (LINE_FORMATS[format]) {
         const prefix   = LINE_FORMATS[format];
-        // Find line start
-        const lineStart = (before.lastIndexOf('\n') + 1);
-        const linePrefix = textarea.value.substring(lineStart, lineStart + prefix.length);
-
-        let newVal;
-        let newCursor;
+        const lineStart = value.lastIndexOf('\n', start - 1) + 1;
+        const linePrefix = value.substring(lineStart, lineStart + prefix.length);
 
         if (linePrefix === prefix) {
-            // Remove prefix
-            newVal = textarea.value.substring(0, lineStart)
-                   + textarea.value.substring(lineStart + prefix.length);
-            newCursor = start - prefix.length;
+            textarea.setSelectionRange(lineStart, lineStart + prefix.length);
+            document.execCommand('insertText', false, '');
+            const newStart = Math.max(lineStart, start - prefix.length);
+            const newEnd   = Math.max(lineStart, end - prefix.length);
+            textarea.setSelectionRange(newStart, newEnd);
         } else {
-            // Add prefix
-            newVal = textarea.value.substring(0, lineStart)
-                   + prefix
-                   + textarea.value.substring(lineStart);
-            newCursor = start + prefix.length;
+            textarea.setSelectionRange(lineStart, lineStart);
+            document.execCommand('insertText', false, prefix);
+            textarea.setSelectionRange(start + prefix.length, end + prefix.length);
         }
-        textarea.value = newVal;
-        textarea.setSelectionRange(newCursor, newCursor + (end - start));
     } else if (WRAP_FORMATS[format]) {
         const [pre, suf] = WRAP_FORMATS[format];
-        const newText = pre + (selected || '') + suf;
-        textarea.value = before + newText + after;
+        textarea.setSelectionRange(start, end);
+        document.execCommand('insertText', false, pre + (selected || '') + suf);
         if (selected) {
             textarea.setSelectionRange(start + pre.length, start + pre.length + selected.length);
         } else {
@@ -388,18 +402,21 @@ function applyFormat(format) {
         }
     }
 
-    textarea.focus();
     updateCharCount();
 }
 
 function insertAtCursor(text) {
     const textarea = document.getElementById('editor-textarea');
     if (!textarea) return;
-    const start = textarea.selectionStart;
-    const end   = textarea.selectionEnd;
-    textarea.value = textarea.value.substring(0, start) + text + textarea.value.substring(end);
-    textarea.setSelectionRange(start + text.length, start + text.length);
     textarea.focus();
+    const ok = document.execCommand('insertText', false, text);
+    if (!ok) {
+        // Fallback (pas de pile undo mais évite la perte de saisie)
+        const start = textarea.selectionStart;
+        const end   = textarea.selectionEnd;
+        textarea.value = textarea.value.substring(0, start) + text + textarea.value.substring(end);
+        textarea.setSelectionRange(start + text.length, start + text.length);
+    }
     updateCharCount();
 }
 
@@ -1692,7 +1709,7 @@ function addCustomSpecField() {
     container.appendChild(buildSpecRow('', '', true));
 }
 
-/* ── IMAGE UPLOAD (16:9 crop) ───────────────── */
+/* ── IMAGE UPLOAD (2:1 crop) ────────────────── */
 function handleCatImageUpload(e) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -1701,7 +1718,7 @@ function handleCatImageUpload(e) {
     reader.onload = ev => {
         const img = new Image();
         img.onload = () => {
-            const { canvas, dataUrl } = cropTo16x9(img);
+            const { canvas, dataUrl } = cropTo2x1(img);
             _catPendingImage = {
                 dataUrl,
                 base64: dataUrl.split(',')[1],
@@ -1715,8 +1732,8 @@ function handleCatImageUpload(e) {
     e.target.value = '';
 }
 
-function cropTo16x9(img) {
-    const ratio = 16 / 9;
+function cropTo2x1(img) {
+    const ratio = 2 / 1;
     const srcW = img.naturalWidth;
     const srcH = img.naturalHeight;
     const srcRatio = srcW / srcH;
@@ -1734,7 +1751,7 @@ function cropTo16x9(img) {
         sy = (srcH - cropH) / 2;
     }
 
-    const MAX_W = 1280;
+    const MAX_W = 1400;
     const outW = Math.min(MAX_W, Math.round(cropW));
     const outH = Math.round(outW / ratio);
 
