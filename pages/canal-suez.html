@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Économie de l'Empire Hussein — finances, commerce et infrastructures">
-    <title>Économie — Empire Hussein</title>
+    <meta name="description" content="Canal de Suez — Conditions de transit et taxes par nation">
+    <title>Canal de Suez — Empire Hussein</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="icon" type="image/png" href="../assets/Hussein Empire Coat of Arms.png">
     <!-- Clean URL: retire .html de la barre d'adresse instantanément -->
     <script>if(location.pathname.endsWith('.html'))history.replaceState(null,'',location.pathname.replace('.html',''));</script>
 </head>
-<body class="page-catalogues">
+<body class="page-catalogue">
 
     <!-- ═══════════════════════════════════════ -->
     <!-- HEADER / NAVIGATION                     -->
@@ -76,106 +76,44 @@
     </div>
 
     <!-- ═══════════════════════════════════════ -->
-    <!-- HERO PAGE                                -->
+    <!-- HEADER DE PAGE                          -->
     <!-- ═══════════════════════════════════════ -->
-    <main class="page-hub">
-        <section class="page-hub-header">
-            <div class="container">
-                <div class="page-hub-badge reveal-up">
-                    <span class="page-hub-badge-line"></span>
-                    <span class="page-hub-badge-text">FINANCES IMPERIALES</span>
-                    <span class="page-hub-badge-line"></span>
-                </div>
-                <h1 class="page-hub-title reveal-up">ECONOMIE</h1>
-                <p class="page-hub-subtitle reveal-up">
-                    Registres officiels des finances, du commerce et des infrastructures économiques
-                    de l'Empire Hussein, sous l'autorité du Lisan Al-Gaib.
-                </p>
-                <div class="hero-divider reveal-up">
-                    <span class="hero-divider-line"></span>
-                    <span class="hero-divider-diamond"></span>
-                    <span class="hero-divider-line"></span>
-                </div>
+    <section class="cat-header">
+        <div class="container">
+            <div class="cat-header-badge">ECONOMIE — TRANSIT</div>
+            <h1 class="cat-header-title">CANAL DE SUEZ</h1>
+            <p class="cat-header-sub">
+                Registre officiel des nations autorisées au transit et des taxes
+                applicables par catégorie de marchandise, sous l'autorité de l'Empire Hussein.
+            </p>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- CONTENU PRINCIPAL                       -->
+    <!-- ═══════════════════════════════════════ -->
+    <main class="canal-main">
+        <div class="container">
+
+            <div class="canal-loading" id="canal-loading">
+                Chargement des données de transit…
             </div>
-        </section>
 
-        <section class="page-hub-grid-section">
-            <div class="container">
-                <div class="hub-grid">
+            <div class="canal-grid" id="canal-grid" style="display:none;"></div>
 
-                    <!-- CANAL DE SUEZ -->
-                    <a href="canal-suez.html" class="hub-card reveal-up">
-                        <div class="hub-card-inner">
-                            <div class="hub-card-number">I</div>
-                            <div class="hub-card-icon">
-                                <!-- icones.js.org — tabler:ship -->
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M2 20a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1"/>
-                                    <path d="M4 18l-1 -3h18l-2 4"/>
-                                    <path d="M5 15v-6h3l3 3l3 -3h3v6"/>
-                                    <path d="M12 9v-4"/>
-                                    <path d="M11 5h2"/>
-                                </svg>
-                            </div>
-                            <h2 class="hub-card-title">CANAL DE SUEZ</h2>
-                            <p class="hub-card-text">
-                                Registre des nations autorisées au transit et conditions de passage.
-                                Taxes applicables par catégorie de marchandise — matières premières,
-                                industrie, matériel militaire et ressources énergétiques.
-                            </p>
-                            <div class="hub-card-meta">
-                                <span class="hub-card-status hub-card-status--open">ACCES OUVERT</span>
-                                <span class="hub-card-cta">
-                                    CONSULTER
-                                    <!-- icones.js.org — tabler:arrow-right -->
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M5 12h14m-6 6l6-6m-6-6l6 6"/>
-                                    </svg>
-                                </span>
-                            </div>
-                        </div>
-                    </a>
-
-                    <!-- BOURSE DU CAIRE -->
-                    <div class="hub-card hub-card--locked reveal-up" aria-disabled="true">
-                        <div class="hub-card-inner">
-                            <div class="hub-card-number">II</div>
-                            <div class="hub-card-icon">
-                                <!-- icones.js.org — tabler:chart-line -->
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M4 19l4-6 4 3 4-8 4 4"/>
-                                    <path d="M4 20h16"/>
-                                </svg>
-                            </div>
-                            <h2 class="hub-card-title">BOURSE DU CAIRE</h2>
-                            <p class="hub-card-text">
-                                Tableau de bord des marchés financiers de l'Empire. Cours des matières
-                                premières, obligations impériales et indices boursiers en temps réel.
-                            </p>
-                            <div class="hub-card-meta">
-                                <span class="hub-card-status hub-card-status--locked">
-                                    <!-- icones.js.org — tabler:lock -->
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M5 13a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/>
-                                        <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0-2 0m-3-5V7a4 4 0 1 1 8 0v4"/>
-                                    </svg>
-                                    VERROUILLE
-                                </span>
-                                <span class="hub-card-cta hub-card-cta--disabled">BIENTOT DISPONIBLE</span>
-                            </div>
-                        </div>
-                        <div class="hub-card-lock-overlay" aria-hidden="true">
-                            <!-- icones.js.org — tabler:lock -->
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M5 13a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/>
-                                <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0-2 0m-3-5V7a4 4 0 1 1 8 0v4"/>
-                            </svg>
-                        </div>
-                    </div>
-
-                </div>
+            <div class="canal-empty-state" id="canal-empty" style="display:none;">
+                <!-- icones.js.org — tabler:anchor -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3a2 2 0 1 0 4 0a2 2 0 0 0-4 0"/>
+                    <path d="M12 5v16"/>
+                    <path d="M5 12h14"/>
+                    <path d="M5 12a7 7 0 0 0 14 0"/>
+                </svg>
+                <div class="canal-empty-title">AUCUN PAYS ENREGISTRE</div>
+                <p class="canal-empty-text">Les conditions de transit n'ont pas encore été définies.</p>
             </div>
-        </section>
+
+        </div>
     </main>
 
     <!-- ═══════════════════════════════════════ -->
@@ -215,5 +153,6 @@
 
     <script src="../js/auth.js"></script>
     <script src="../js/main.js"></script>
+    <script src="../js/canal-suez.js"></script>
 </body>
 </html>

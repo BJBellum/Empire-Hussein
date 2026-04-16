@@ -59,6 +59,7 @@ function initDashboard(user) {
     initGithub();
     loadGithubConfig();
     initCatalogueAdmin();
+    initCanalAdmin();
 }
 
 /* ── Sidebar user info ──────────────────────── */
@@ -2237,4 +2238,484 @@ function moveCatItem(id, direction) {
     _catItems.splice(newIdx, 0, item);
     setCatCache(_catItems);
     renderCatList();
+}
+
+/* ════════════════════════════════════════════
+   CANAL DE SUEZ — ADMIN
+   ════════════════════════════════════════════ */
+const CANAL_JSON_PATH = 'data/canal-suez.json';
+const CANAL_IMG_DIR   = 'assets/drapeaux';
+const CANAL_CACHE_KEY = 'empire_canal_v1';
+const CANAL_SHA_KEY   = 'empire_canal_sha';
+
+const CANAL_TAXES = [
+    { id: 'matieres_premieres',      label: 'Matières Premières' },
+    { id: 'produits_manufactures',   label: 'Produits Manufacturés' },
+    { id: 'materiel_militaire',      label: 'Matériel Militaire' },
+    { id: 'materiel_industriel',     label: 'Matériel Industriel' },
+    { id: 'ressources_energetiques', label: 'Ressources Énergétiques' },
+];
+
+let _canalItems          = [];
+let _canalEditingId      = null;
+let _canalPendingFlag    = null;
+let _canalDeleteTargetId = null;
+
+/* ── INIT ───────────────────────────────────── */
+function initCanalAdmin() {
+    if (!document.getElementById('panel-canal')) return;
+
+    document.getElementById('canal-flag-btn')?.addEventListener('click', () =>
+        document.getElementById('canal-flag-input')?.click());
+    document.getElementById('canal-flag-input')?.addEventListener('change', handleCanalFlagUpload);
+    document.getElementById('canal-flag-clear')?.addEventListener('click', clearCanalFlag);
+    document.getElementById('canal-form-save')?.addEventListener('click', () => saveCanalItem(false));
+    document.getElementById('canal-form-push')?.addEventListener('click', () => saveCanalItem(true));
+    document.getElementById('canal-form-reset')?.addEventListener('click', resetCanalForm);
+    document.getElementById('canal-sync-btn')?.addEventListener('click', () => loadCanalItemsFromGithub(true));
+    document.getElementById('canal-list-search')?.addEventListener('input', renderCanalList);
+
+    CANAL_TAXES.forEach(cat => {
+        const cb  = document.getElementById(`canal-blocked-${cat.id}`);
+        const inp = document.getElementById(`canal-tax-${cat.id}`);
+        if (cb && inp) {
+            cb.addEventListener('change', () => {
+                inp.disabled = cb.checked;
+                inp.style.opacity = cb.checked ? '0.3' : '';
+            });
+        }
+    });
+
+    const delModal   = document.getElementById('canal-delete-modal');
+    const delCancel  = document.getElementById('btn-canal-delete-cancel');
+    const delConfirm = document.getElementById('btn-canal-delete-confirm');
+    const closeDel = () => {
+        if (delModal) delModal.style.display = 'none';
+        _canalDeleteTargetId = null;
+    };
+    delCancel?.addEventListener('click', closeDel);
+    delModal?.addEventListener('click', e => { if (e.target === delModal) closeDel(); });
+    delConfirm?.addEventListener('click', () => deleteCanalItem(_canalDeleteTargetId));
+
+    const cached = getCanalCache();
+    if (cached.items) { _canalItems = cached.items; renderCanalList(); } else { renderCanalList(); }
+    loadCanalItemsFromGithub(false);
+}
+
+/* ── DATA ───────────────────────────────────── */
+function getCanalCache() {
+    try { return JSON.parse(localStorage.getItem(CANAL_CACHE_KEY) || '{}'); }
+    catch { return {}; }
+}
+
+function setCanalCache(items) {
+    localStorage.setItem(CANAL_CACHE_KEY, JSON.stringify({ items, ts: Date.now() }));
+}
+
+async function loadCanalItemsFromGithub(showToastOnSuccess) {
+    const cfg = getGithubConfig();
+    try {
+        let data;
+        if (cfg && cfg.repo && cfg.pat) {
+            const res = await fetch(
+                `https://api.github.com/repos/${cfg.repo}/contents/${CANAL_JSON_PATH}?ref=${cfg.branch || 'main'}`,
+                { headers: { Authorization: `token ${cfg.pat}`, Accept: 'application/vnd.github.v3+json' } }
+            );
+            if (!res.ok) throw new Error((await res.json()).message || 'Erreur GitHub');
+            const payload = await res.json();
+            localStorage.setItem(CANAL_SHA_KEY, payload.sha);
+            const raw = atob(payload.content.replace(/\n/g, ''));
+            data = JSON.parse(decodeURIComponent(escape(raw)));
+        } else {
+            const res = await fetch('../data/canal-suez.json?t=' + Date.now());
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            data = await res.json();
+        }
+        _canalItems = Array.isArray(data) ? data : [];
+        setCanalCache(_canalItems);
+        renderCanalList();
+        if (showToastOnSuccess) showToast(`${_canalItems.length} pays chargé(s)`);
+    } catch (err) {
+        const listEl = document.getElementById('canal-admin-list');
+        if (listEl && _canalItems.length === 0) {
+            listEl.innerHTML = `<div class="cat-admin-empty">Erreur : ${escapeHtml(err.message)}</div>`;
+        }
+        if (showToastOnSuccess) showToast(`Erreur : ${err.message}`);
+    }
+}
+
+/* ── FLAG UPLOAD (1:1 crop) ─────────────────── */
+function handleCanalFlagUpload(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+        const img = new Image();
+        img.onload = () => {
+            const { dataUrl } = cropToSquare(img);
+            _canalPendingFlag = {
+                dataUrl,
+                base64: dataUrl.split(',')[1],
+                filename: slugify(file.name).replace(/\.[^.]+$/, '') + '-' + Date.now() + '.jpg'
+            };
+            updateFlagPreview(dataUrl);
+        };
+        img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+}
+
+function cropToSquare(img) {
+    const srcW = img.naturalWidth;
+    const srcH = img.naturalHeight;
+    const size = Math.min(srcW, srcH);
+    const sx = (srcW - size) / 2;
+    const sy = (srcH - size) / 2;
+    const outSize = Math.min(400, size);
+    const canvas = document.createElement('canvas');
+    canvas.width = outSize;
+    canvas.height = outSize;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, sx, sy, size, size, 0, 0, outSize, outSize);
+    return { dataUrl: canvas.toDataURL('image/jpeg', 0.88) };
+}
+
+function updateFlagPreview(dataUrl) {
+    const preview  = document.getElementById('canal-flag-preview');
+    const clearBtn = document.getElementById('canal-flag-clear');
+    if (!preview) return;
+    if (dataUrl) {
+        preview.innerHTML = `<img src="${dataUrl}" alt="Aperçu" style="width:150px;height:150px;object-fit:cover;">`;
+        preview.classList.add('has-image');
+        if (clearBtn) clearBtn.style.display = 'inline-flex';
+    } else {
+        preview.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="2" y="5" width="20" height="14" rx="1"/>
+                <path d="M2 9h20M2 13h20M7 5V3M17 5V3"/>
+            </svg>
+            <span class="canal-flag-placeholder">Aucun drapeau</span>`;
+        preview.classList.remove('has-image');
+        if (clearBtn) clearBtn.style.display = 'none';
+    }
+}
+
+function clearCanalFlag() {
+    _canalPendingFlag = null;
+    document.getElementById('canal-flag-path').value = '';
+    updateFlagPreview(null);
+}
+
+/* ── FORM SAVE ──────────────────────────────── */
+function collectCanalFormItem() {
+    const id   = _canalEditingId || 'canal_' + Date.now();
+    const taxes = {};
+    CANAL_TAXES.forEach(cat => {
+        const blocked = document.getElementById(`canal-blocked-${cat.id}`)?.checked;
+        const val     = document.getElementById(`canal-tax-${cat.id}`)?.value;
+        taxes[cat.id] = blocked ? null : Math.min(100, Math.max(0, parseFloat(val) || 0));
+    });
+    return {
+        id,
+        nom:     document.getElementById('canal-nom')?.value.trim() || '',
+        drapeau: document.getElementById('canal-flag-path')?.value.trim() || null,
+        taxes
+    };
+}
+
+async function saveCanalItem(pushToGh) {
+    const item    = collectCanalFormItem();
+    if (!item.nom) { showToast('Le nom du pays est requis'); return; }
+
+    const saveBtn  = document.getElementById('canal-form-save');
+    const pushBtn  = document.getElementById('canal-form-push');
+    const statusEl = document.getElementById('canal-push-status');
+    if (saveBtn) saveBtn.disabled = true;
+    if (pushBtn) pushBtn.disabled = true;
+
+    try {
+        if (pushToGh && _canalPendingFlag) {
+            showCatPushStatus('Téléversement du drapeau…', null, statusEl);
+            const path = await uploadCanalFlag(_canalPendingFlag);
+            item.drapeau = path;
+            _canalPendingFlag = null;
+        } else if (_canalPendingFlag) {
+            item.drapeau = _canalPendingFlag.dataUrl;
+        }
+
+        const idx = _canalItems.findIndex(i => i.id === item.id);
+        if (idx >= 0) _canalItems[idx] = item;
+        else _canalItems.push(item);
+        setCanalCache(_canalItems);
+
+        if (pushToGh) {
+            showCatPushStatus('Envoi de la liste des pays…', null, statusEl);
+            await pushCanalJson(`Update canal de suez: ${item.nom}`);
+            showCatPushStatus(`Pays « ${item.nom} » poussé sur GitHub`, true, statusEl);
+            showToast(`« ${item.nom} » poussé sur GitHub`);
+        } else {
+            showToast(`« ${item.nom} » enregistré localement`);
+        }
+
+        resetCanalForm();
+        renderCanalList();
+    } catch (err) {
+        showCatPushStatus(`Erreur : ${err.message}`, false, statusEl);
+        showToast(`Erreur : ${err.message}`);
+    } finally {
+        if (saveBtn) saveBtn.disabled = false;
+        if (pushBtn) pushBtn.disabled = false;
+    }
+}
+
+async function uploadCanalFlag(pending) {
+    const cfg = getGithubConfig();
+    if (!cfg || !cfg.repo || !cfg.pat) throw new Error('Configuration GitHub requise');
+    const path = `${CANAL_IMG_DIR}/${pending.filename}`;
+    const res = await fetch(
+        `https://api.github.com/repos/${cfg.repo}/contents/${path}`,
+        {
+            method: 'PUT',
+            headers: {
+                Authorization:  `token ${cfg.pat}`,
+                Accept:         'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: `Add drapeau: ${pending.filename}`,
+                content: pending.base64,
+                branch:  cfg.branch || 'main'
+            })
+        }
+    );
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Erreur upload drapeau');
+    return path;
+}
+
+async function pushCanalJson(commitMessage) {
+    const cfg = getGithubConfig();
+    if (!cfg || !cfg.repo || !cfg.pat) throw new Error('Configuration GitHub requise');
+
+    let sha = localStorage.getItem(CANAL_SHA_KEY);
+    try {
+        const probe = await fetch(
+            `https://api.github.com/repos/${cfg.repo}/contents/${CANAL_JSON_PATH}?ref=${cfg.branch || 'main'}`,
+            { headers: { Authorization: `token ${cfg.pat}`, Accept: 'application/vnd.github.v3+json' } }
+        );
+        if (probe.ok) { sha = (await probe.json()).sha; localStorage.setItem(CANAL_SHA_KEY, sha); }
+    } catch {}
+
+    const json = JSON.stringify(_canalItems, null, 2);
+    const body = {
+        message: commitMessage,
+        content: btoa(unescape(encodeURIComponent(json))),
+        branch:  cfg.branch || 'main'
+    };
+    if (sha) body.sha = sha;
+
+    const res = await fetch(
+        `https://api.github.com/repos/${cfg.repo}/contents/${CANAL_JSON_PATH}`,
+        {
+            method: 'PUT',
+            headers: {
+                Authorization:  `token ${cfg.pat}`,
+                Accept:         'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        }
+    );
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Erreur push JSON');
+    if (data.content?.sha) localStorage.setItem(CANAL_SHA_KEY, data.content.sha);
+}
+
+/* ── FORM RESET + EDIT ──────────────────────── */
+function resetCanalForm() {
+    _canalEditingId  = null;
+    _canalPendingFlag = null;
+    document.getElementById('canal-form-title').textContent = 'NOUVEAU PAYS';
+    document.getElementById('canal-nom').value = '';
+    document.getElementById('canal-flag-path').value = '';
+    updateFlagPreview(null);
+    CANAL_TAXES.forEach(cat => {
+        const cb  = document.getElementById(`canal-blocked-${cat.id}`);
+        const inp = document.getElementById(`canal-tax-${cat.id}`);
+        if (cb)  { cb.checked = false; }
+        if (inp) { inp.value = '0'; inp.disabled = false; inp.style.opacity = ''; }
+    });
+    const st = document.getElementById('canal-push-status');
+    if (st) st.style.display = 'none';
+}
+
+function editCanalItem(id) {
+    const item = _canalItems.find(i => i.id === id);
+    if (!item) return;
+    _canalEditingId = item.id;
+
+    document.getElementById('canal-form-title').textContent = `MODIFIER — ${item.nom}`;
+    document.getElementById('canal-nom').value = item.nom || '';
+    document.getElementById('canal-flag-path').value = item.drapeau || '';
+
+    _canalPendingFlag = null;
+    updateFlagPreview(item.drapeau || null);
+
+    CANAL_TAXES.forEach(cat => {
+        const cb  = document.getElementById(`canal-blocked-${cat.id}`);
+        const inp = document.getElementById(`canal-tax-${cat.id}`);
+        const val = item.taxes?.[cat.id];
+        if (cb && inp) {
+            const blocked = val === null || val === undefined;
+            cb.checked    = blocked;
+            inp.disabled  = blocked;
+            inp.style.opacity = blocked ? '0.3' : '';
+            inp.value     = blocked ? '0' : String(val ?? 0);
+        }
+    });
+
+    document.querySelector('.dashboard-main')?.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function openCanalDeleteModal(id, name) {
+    _canalDeleteTargetId = id;
+    const modal  = document.getElementById('canal-delete-modal');
+    const textEl = document.getElementById('canal-delete-text');
+    if (textEl) textEl.textContent = `Supprimer « ${name} » ?`;
+    if (modal)  modal.style.display = 'flex';
+}
+
+async function deleteCanalItem(id) {
+    if (!id) return;
+    const modal = document.getElementById('canal-delete-modal');
+    const item  = _canalItems.find(i => i.id === id);
+    if (!item) { if (modal) modal.style.display = 'none'; return; }
+
+    const confirmBtn = document.getElementById('btn-canal-delete-confirm');
+    if (confirmBtn) confirmBtn.disabled = true;
+
+    try {
+        _canalItems = _canalItems.filter(i => i.id !== id);
+        setCanalCache(_canalItems);
+
+        const cfg = getGithubConfig();
+        if (cfg && cfg.repo && cfg.pat) {
+            await pushCanalJson(`Remove canal de suez: ${item.nom}`);
+            showToast(`« ${item.nom} » supprimé (local + GitHub)`);
+        } else {
+            showToast(`« ${item.nom} » supprimé localement`);
+        }
+        renderCanalList();
+        if (_canalEditingId === id) resetCanalForm();
+    } catch (err) {
+        showToast(`Erreur suppression : ${err.message}`);
+    } finally {
+        if (confirmBtn) confirmBtn.disabled = false;
+        if (modal) modal.style.display = 'none';
+        _canalDeleteTargetId = null;
+    }
+}
+
+/* ── LIST RENDER ────────────────────────────── */
+function renderCanalList() {
+    const listEl  = document.getElementById('canal-admin-list');
+    const countEl = document.getElementById('canal-list-count');
+    if (!listEl) return;
+    if (countEl) countEl.textContent = _canalItems.length;
+
+    const search = (document.getElementById('canal-list-search')?.value || '').trim().toLowerCase();
+    let items = [..._canalItems];
+    if (search) items = items.filter(i => i.nom?.toLowerCase().includes(search));
+
+    if (items.length === 0) {
+        listEl.innerHTML = `<div class="cat-admin-empty">Aucun pays enregistré.</div>`;
+        return;
+    }
+
+    listEl.innerHTML = items.map(item => {
+        const flagHtml = item.drapeau
+            ? `<img src="${escapeHtml(item.drapeau)}" alt="" loading="lazy" onerror="this.style.display='none'">`
+            : '';
+
+        const taxSummary = CANAL_TAXES.map(cat => {
+            const val = item.taxes?.[cat.id];
+            return (val === null || val === undefined) ? '✕' : `${val}%`;
+        }).join(' / ');
+
+        return `
+            <div class="cat-admin-item" data-id="${escapeHtml(item.id)}">
+                <div class="cat-admin-item-img" style="width:40px;height:40px;overflow:hidden;">${flagHtml}</div>
+                <div class="cat-admin-item-body">
+                    <div class="cat-admin-item-head">
+                        <h4 class="cat-admin-item-name">${escapeHtml(item.nom || '')}</h4>
+                    </div>
+                    <div class="cat-admin-item-meta">
+                        <span style="font-size:11px;">${escapeHtml(taxSummary)}</span>
+                    </div>
+                </div>
+                <div class="cat-admin-item-actions">
+                    <button class="btn-icon canal-move-up" title="Monter (double-clic = en tête)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 5v14M5 12l7-7 7 7"/>
+                        </svg>
+                    </button>
+                    <button class="btn-icon canal-move-down" title="Descendre (double-clic = en fin)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 5v14M5 12l7 7 7-7"/>
+                        </svg>
+                    </button>
+                    <button class="btn-icon canal-edit" title="Modifier">
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 14l2-5L11 2.5l3 3L9 12.5 2 14z"/>
+                            <path d="M9 4l3 3"/>
+                        </svg>
+                    </button>
+                    <button class="btn-icon canal-del" title="Supprimer">
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                            <path d="M3 4h10M6 4V3a1 1 0 011-1h2a1 1 0 011 1v1M5 4l1 9a1 1 0 001 1h2a1 1 0 001-1l1-9"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    listEl.querySelectorAll('.cat-admin-item').forEach(el => {
+        const id   = el.dataset.id;
+        const item = _canalItems.find(i => i.id === id);
+        el.querySelector('.canal-edit')?.addEventListener('click', () => editCanalItem(id));
+        el.querySelector('.canal-del')?.addEventListener('click', () => openCanalDeleteModal(id, item?.nom || ''));
+        attachCanalMoveBtn(el.querySelector('.canal-move-up'),   id, 'up');
+        attachCanalMoveBtn(el.querySelector('.canal-move-down'), id, 'down');
+    });
+}
+
+function attachCanalMoveBtn(btn, id, dir) {
+    if (!btn) return;
+    let timer = null;
+    btn.addEventListener('click', () => {
+        if (timer !== null) return;
+        timer = setTimeout(() => { timer = null; moveCanalItem(id, dir); }, 220);
+    });
+    btn.addEventListener('dblclick', () => {
+        clearTimeout(timer);
+        timer = null;
+        moveCanalItem(id, dir === 'up' ? 'top' : 'bottom');
+    });
+}
+
+function moveCanalItem(id, direction) {
+    const idx = _canalItems.findIndex(i => i.id === id);
+    if (idx === -1) return;
+    let newIdx;
+    if      (direction === 'up')   newIdx = Math.max(0, idx - 1);
+    else if (direction === 'down') newIdx = Math.min(_canalItems.length - 1, idx + 1);
+    else if (direction === 'top')  newIdx = 0;
+    else                           newIdx = _canalItems.length - 1;
+    if (newIdx === idx) return;
+    const [item] = _canalItems.splice(idx, 1);
+    _canalItems.splice(newIdx, 0, item);
+    setCanalCache(_canalItems);
+    renderCanalList();
 }

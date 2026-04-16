@@ -173,15 +173,152 @@
                 <!-- CANAL DE SUEZ             -->
                 <!-- ══════════════════════════ -->
                 <div class="panel hidden" id="panel-canal">
-                    <div class="placeholder-section">
-                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
-                            <path d="M4 20h40M4 28h40"/>
-                            <path d="M8 20v8M16 20v8M24 20v8M32 20v8M40 20v8"/>
-                            <rect x="4" y="12" width="12" height="8"/>
-                            <rect x="20" y="12" width="12" height="8"/>
-                        </svg>
-                        <h2 class="placeholder-title">CANAL DE SUEZ</h2>
-                        <p class="placeholder-text">Suivi du trafic maritime, taxes de transit et revenus du Canal de Suez. Données de passage des convois impériaux. Section en construction.</p>
+                    <div class="cat-admin-layout">
+
+                        <!-- FORMULAIRE -->
+                        <section class="cat-admin-section" id="canal-form-section">
+                            <div class="cat-admin-section-head">
+                                <h3 class="cat-admin-section-title" id="canal-form-title">NOUVEAU PAYS</h3>
+                                <button class="btn-secondary" id="canal-form-reset" type="button">Annuler</button>
+                            </div>
+                            <p class="cat-admin-section-desc">Ajoutez ou modifiez un pays autorisé à transiter par le Canal de Suez. Définissez les taxes par catégorie de marchandise.</p>
+
+                            <!-- Upload drapeau 1:1 -->
+                            <div class="form-group">
+                                <label class="form-label">Drapeau (150×150)</label>
+                                <div class="canal-flag-uploader">
+                                    <div class="canal-flag-preview" id="canal-flag-preview">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                            <rect x="2" y="5" width="20" height="14" rx="1"/>
+                                            <path d="M2 9h20M2 13h20M7 5V3M17 5V3"/>
+                                        </svg>
+                                        <span class="canal-flag-placeholder">Aucun drapeau</span>
+                                    </div>
+                                    <div class="canal-flag-actions">
+                                        <input type="file" id="canal-flag-input" accept="image/*" style="display:none;">
+                                        <button type="button" class="btn-secondary" id="canal-flag-btn">Choisir un drapeau…</button>
+                                        <button type="button" class="btn-secondary" id="canal-flag-clear" style="display:none;">Retirer</button>
+                                        <small class="form-hint">Image recadrée en carré 1:1. Formats : JPG, PNG, WebP.</small>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="canal-flag-path">
+                            </div>
+
+                            <!-- Nom du pays -->
+                            <div class="form-group">
+                                <label class="form-label">Nom du pays</label>
+                                <input class="form-input" type="text" id="canal-nom" placeholder="Ex: France" autocomplete="off">
+                            </div>
+
+                            <!-- Taxes de transit -->
+                            <div class="canal-tax-admin-block">
+                                <h4 class="cat-specs-title">TAXES DE TRANSIT</h4>
+                                <p class="cat-admin-section-desc" style="margin-bottom:0;">Définissez une taxe de 0 à 100 % par catégorie, ou marquez-la comme non autorisée.</p>
+
+                                <div class="canal-tax-admin-row">
+                                    <span class="canal-tax-admin-label">Matières Premières</span>
+                                    <label class="canal-blocked-check">
+                                        <input type="checkbox" id="canal-blocked-matieres_premieres"> Non autorisé
+                                    </label>
+                                    <div class="canal-tax-number-group">
+                                        <input type="number" class="form-input" id="canal-tax-matieres_premieres" min="0" max="100" value="0">
+                                        <span>%</span>
+                                    </div>
+                                </div>
+
+                                <div class="canal-tax-admin-row">
+                                    <span class="canal-tax-admin-label">Produits Manufacturés</span>
+                                    <label class="canal-blocked-check">
+                                        <input type="checkbox" id="canal-blocked-produits_manufactures"> Non autorisé
+                                    </label>
+                                    <div class="canal-tax-number-group">
+                                        <input type="number" class="form-input" id="canal-tax-produits_manufactures" min="0" max="100" value="0">
+                                        <span>%</span>
+                                    </div>
+                                </div>
+
+                                <div class="canal-tax-admin-row">
+                                    <span class="canal-tax-admin-label">Matériel Militaire</span>
+                                    <label class="canal-blocked-check">
+                                        <input type="checkbox" id="canal-blocked-materiel_militaire"> Non autorisé
+                                    </label>
+                                    <div class="canal-tax-number-group">
+                                        <input type="number" class="form-input" id="canal-tax-materiel_militaire" min="0" max="100" value="0">
+                                        <span>%</span>
+                                    </div>
+                                </div>
+
+                                <div class="canal-tax-admin-row">
+                                    <span class="canal-tax-admin-label">Matériel Industriel</span>
+                                    <label class="canal-blocked-check">
+                                        <input type="checkbox" id="canal-blocked-materiel_industriel"> Non autorisé
+                                    </label>
+                                    <div class="canal-tax-number-group">
+                                        <input type="number" class="form-input" id="canal-tax-materiel_industriel" min="0" max="100" value="0">
+                                        <span>%</span>
+                                    </div>
+                                </div>
+
+                                <div class="canal-tax-admin-row">
+                                    <span class="canal-tax-admin-label">Ressources Énergétiques</span>
+                                    <label class="canal-blocked-check">
+                                        <input type="checkbox" id="canal-blocked-ressources_energetiques"> Non autorisé
+                                    </label>
+                                    <div class="canal-tax-number-group">
+                                        <input type="number" class="form-input" id="canal-tax-ressources_energetiques" min="0" max="100" value="0">
+                                        <span>%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-actions cat-form-actions">
+                                <button class="btn-primary" id="canal-form-save" type="button">
+                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M13 13H3V3h7l3 3v7z" stroke-linejoin="round"/>
+                                        <rect x="5" y="8" width="6" height="5"/>
+                                        <rect x="5" y="3" width="4" height="3"/>
+                                    </svg>
+                                    Enregistrer localement
+                                </button>
+                                <button class="btn-primary cat-btn-push" id="canal-form-push" type="button">
+                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M8 12V4M4 8l4-4 4 4" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Enregistrer &amp; pousser sur GitHub
+                                </button>
+                            </div>
+                            <div class="github-status" id="canal-push-status" style="display:none;"></div>
+                        </section>
+
+                        <!-- LISTE DES PAYS -->
+                        <section class="cat-admin-section">
+                            <div class="cat-admin-section-head">
+                                <h3 class="cat-admin-section-title">PAYS ENREGISTRES (<span id="canal-list-count">0</span>)</h3>
+                                <div class="cat-admin-section-actions">
+                                    <button class="btn-secondary" id="canal-sync-btn" type="button">Recharger depuis GitHub</button>
+                                </div>
+                            </div>
+                            <div class="cat-admin-filters">
+                                <input class="form-input cat-admin-search" type="text" id="canal-list-search" placeholder="Rechercher un pays…">
+                            </div>
+                            <div class="cat-admin-list" id="canal-admin-list">
+                                <div class="cat-admin-empty">Chargement des pays…</div>
+                            </div>
+                        </section>
+
+                    </div>
+                </div>
+
+                <!-- Modal: suppression pays canal -->
+                <div class="modal-overlay" id="canal-delete-modal" style="display:none;">
+                    <div class="modal">
+                        <h3 class="modal-title">SUPPRIMER LE PAYS</h3>
+                        <p class="modal-text" id="canal-delete-text">Supprimer ce pays ?</p>
+                        <p class="modal-text" style="color:var(--text-muted);font-size:12px;margin-top:8px;">Cette suppression sera également poussée sur GitHub si une configuration est active.</p>
+                        <div class="modal-actions">
+                            <button class="btn-secondary" id="btn-canal-delete-cancel">Annuler</button>
+                            <button class="btn-danger" id="btn-canal-delete-confirm">Supprimer</button>
+                        </div>
                     </div>
                 </div>
 
