@@ -150,12 +150,6 @@ function render() {
     listEl.style.display = 'flex';
     empty.style.display  = 'none';
 
-    items.sort((a, b) => {
-        const catCmp = (a.categorie || '').localeCompare(b.categorie || '');
-        if (catCmp !== 0) return catCmp;
-        return (a.nom || '').localeCompare(b.nom || '');
-    });
-
     listEl.innerHTML = items.map(itemTemplate).join('');
 
     listEl.querySelectorAll('.cat-item-specs-toggle').forEach(btn => {
