@@ -1682,7 +1682,7 @@ async function loadCatItemsFromGithub(showToastOnSuccess) {
             localStorage.setItem(CAT_SHA_KEY, sha);
         } else {
             // Fallback: fetch local JSON directly
-            const res = await fetch(CAT_JSON_PATH + '?t=' + Date.now());
+            const res = await fetch('../data/catalogue-militaire.json' + '?t=' + Date.now());
             if (!res.ok) throw new Error('HTTP ' + res.status);
             data = await res.json();
         }

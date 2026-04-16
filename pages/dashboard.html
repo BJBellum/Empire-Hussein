@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard — Empire Hussein</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/dashboard.css">
-    <link rel="icon" type="image/png" href="assets/Hussein Empire Coat of Arms.png">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="icon" type="image/png" href="../assets/Hussein Empire Coat of Arms.png">
     <!-- Clean URL: retire .html de la barre d'adresse instantanément -->
     <script>if(location.pathname.endsWith('.html'))history.replaceState(null,'',location.pathname.replace('.html',''));</script>
 </head>
@@ -26,7 +26,7 @@
             <h2 class="access-title">ACCES REFUSE</h2>
             <p class="access-text">Ce tableau de bord est réservé aux administrateurs de l'Empire Hussein.</p>
             <div class="access-actions">
-                <a href="./" class="btn-access-return">RETOUR AU SITE</a>
+                <a href="../" class="btn-access-return">RETOUR AU SITE</a>
                 <button class="btn-access-login" id="btn-access-login">SE CONNECTER</button>
             </div>
         </div>
@@ -40,7 +40,7 @@
         <!-- SIDEBAR -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-brand">
-                <img src="assets/Hussein Empire Coat of Arms.png" width="28" height="28" alt="">
+                <img src="../assets/Hussein Empire Coat of Arms.png" width="28" height="28" alt="">
                 <span class="sidebar-brand-text">EMPIRE HUSSEIN</span>
             </div>
 
@@ -134,7 +134,7 @@
 
             <div class="sidebar-footer">
                 <div class="sidebar-user" id="sidebar-user"></div>
-                <a href="./" class="sidebar-back">
+                <a href="../" class="sidebar-back">
                     <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
                         <path d="M12 4l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
@@ -767,7 +767,7 @@
     <!-- Toast -->
     <div class="toast" id="toast" role="alert" aria-live="polite"></div>
 
-    <script src="js/auth.js"></script>
-    <script src="js/dashboard.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/dashboard.js"></script>
 </body>
 </html>

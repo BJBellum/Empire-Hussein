@@ -18,7 +18,7 @@ const CAT_LABELS = {
 
 const NIV_ROMAN = ['0', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
 
-const JSON_URL = 'data/catalogue-militaire.json';
+const JSON_URL = '../data/catalogue-militaire.json';
 const CART_STORAGE_KEY = 'empire-hussein:catalogue-militaire:cart';
 const SOLARI_EMOJI = '<:solari:1493385994479599686>';
 
@@ -463,7 +463,7 @@ function commitQtyFromInput(input) {
     if (!Number.isFinite(n) || n <= 0) {
         cart.delete(id);
     } else {
-        entry.qty = Math.min(n, 9999);
+        entry.qty = n;
     }
     afterCartMutation();
 }
@@ -518,6 +518,9 @@ function buildOrderMessage() {
     const entries = [...cart.values()];
     if (entries.length === 0) return '';
 
+    const countryInput = document.getElementById('cat-cart-country-input');
+    const countryName = countryInput ? countryInput.value.trim() : '';
+
     const groups = new Map();
     entries.forEach(e => {
         const key = e.categorie || 'autre';
@@ -536,7 +539,8 @@ function buildOrderMessage() {
     }
 
     const totalPrice = entries.reduce((s, e) => s + e.prix * e.qty, 0);
-    return `${blocks.join('\n\n')}\n\n${SOLARI_EMOJI} • **Total** : ${formatDollar(totalPrice)}`;
+    const header = countryName ? `## ${countryName}\n\n` : '';
+    return `${header}${blocks.join('\n\n')}\n\n${SOLARI_EMOJI} • **Total** : ${formatDollar(totalPrice)}`;
 }
 
 async function validateOrder() {

@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Catalogue militaire de l'Empire Hussein — inventaire des armements et équipements">
     <title>Catalogue militaire — Empire Hussein</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" type="image/png" href="assets/Hussein Empire Coat of Arms.png">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" type="image/png" href="../assets/Hussein Empire Coat of Arms.png">
     <!-- Clean URL: retire .html de la barre d'adresse instantanément -->
     <script>if(location.pathname.endsWith('.html'))history.replaceState(null,'',location.pathname.replace('.html',''));</script>
 </head>
@@ -18,7 +18,7 @@
     <header id="header" class="header--solid">
         <div class="header-inner">
             <nav class="nav-links">
-                <a href="./" class="nav-link">
+                <a href="../" class="nav-link">
                     <span class="nav-link-text">ACCUEIL</span>
                     <span class="nav-link-line"></span>
                 </a>
@@ -57,7 +57,7 @@
 
     <!-- Mobile nav overlay -->
     <div class="mobile-nav" id="mobile-nav">
-        <a href="./" class="mobile-nav-link">ACCUEIL</a>
+        <a href="../" class="mobile-nav-link">ACCUEIL</a>
         <a href="economie.html" class="mobile-nav-link">ECONOMIE</a>
         <a href="catalogues.html" class="mobile-nav-link mobile-nav-link--active">CATALOGUES</a>
         <a href="energie.html" class="mobile-nav-link">ENERGIE</a>
@@ -205,6 +205,11 @@
                 <span class="cat-cart-count" id="cat-cart-count">0</span>
             </div>
 
+            <div class="cat-cart-country">
+                <label class="cat-cart-country-label" for="cat-cart-country-input">NOM DU PAYS</label>
+                <input type="text" id="cat-cart-country-input" class="cat-cart-country-input" placeholder="Entrez le nom de votre pays…" autocomplete="off">
+            </div>
+
             <div class="cat-cart-body" id="cat-cart-body">
                 <div class="cat-cart-empty" id="cat-cart-empty">
                     Aucun équipement<br>sélectionné.
@@ -281,8 +286,8 @@
         </button>
     </div>
 
-    <script src="js/auth.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/catalogue-militaire.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/catalogue-militaire.js"></script>
 </body>
 </html>
