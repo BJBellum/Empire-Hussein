@@ -1990,13 +1990,18 @@ button {
     align-items: center;
 }
 
-.cat-cart-item-select {
+.cat-cart-select-wrap {
+    position: relative;
     flex: 1;
     min-width: 0;
+}
+
+.cat-cart-item-select {
+    width: 100%;
     background: rgba(201, 168, 76, 0.05);
     border: 1px solid var(--border);
     border-radius: 2px;
-    padding: 7px 10px;
+    padding: 7px 28px 7px 10px;
     font-family: var(--font-body);
     font-size: 12px;
     color: var(--text-primary);
@@ -2005,11 +2010,14 @@ button {
     appearance: none;
     -webkit-appearance: none;
     transition: border-color 0.2s ease;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23C9A84C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
 }
 
 .cat-cart-item-select:focus { border-color: var(--gold-dark); }
 .cat-cart-item-select option,
-.cat-cart-item-select optgroup { background: var(--bg-card); color: var(--text-primary); }
+.cat-cart-item-select optgroup { background: #111111; color: #F5F0E8; }
 
 .cat-cart-select-add {
     width: 30px;

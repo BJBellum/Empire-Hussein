@@ -345,6 +345,8 @@ function initCart() {
         sel.value = '';
     });
 
+    document.getElementById('cat-cart-country-input')?.addEventListener('input', updateCheckoutState);
+
     if (getCooldownRemaining() > 0) initCooldownTick();
 
     const fab = document.getElementById('cat-cart-fab');
@@ -444,7 +446,7 @@ function renderCart() {
     if (fabCountEl) fabCountEl.textContent = totalQty;
     if (totalEl) totalEl.textContent = formatDollar(totalPrice);
     if (clearBtn) clearBtn.disabled = entries.length === 0;
-    if (checkoutBtn) checkoutBtn.disabled = entries.length === 0 || getCooldownRemaining() > 0;
+    if (checkoutBtn) updateCheckoutState();
     if (fabEl) fabEl.classList.toggle('cat-cart-fab--active', totalQty > 0);
 
     if (entries.length === 0) {
@@ -621,7 +623,7 @@ async function validateOrder() {
         afterCartMutation();
     } catch (err) {
         showToast('Erreur lors de l\'envoi : ' + err.message);
-        btn.disabled = cart.size === 0;
+        updateCheckoutState();
     } finally {
         btn.classList.remove('is-loading');
     }
@@ -630,6 +632,22 @@ async function validateOrder() {
 /* ────────────────────────────────────────
    COOLDOWN COMMANDE
    ──────────────────────────────────────── */
+function updateCheckoutState() {
+    const btn = document.getElementById('cat-cart-checkout');
+    const label = document.getElementById('cat-checkout-label');
+    if (!btn) return;
+    const remaining = getCooldownRemaining();
+    const countryFilled = !!(document.getElementById('cat-cart-country-input')?.value.trim());
+    const hasItems = cart.size > 0;
+    if (remaining > 0) {
+        btn.disabled = true;
+        if (label) label.textContent = `PATIENTER (${remaining}s)`;
+    } else {
+        btn.disabled = !hasItems || !countryFilled;
+        if (label) label.textContent = 'VALIDER LA COMMANDE';
+    }
+}
+
 function getCooldownRemaining() {
     const ts = parseInt(localStorage.getItem(CHECKOUT_CD_KEY) || '0', 10);
     if (!ts) return 0;
@@ -644,19 +662,12 @@ function startCooldown() {
 function initCooldownTick() {
     clearInterval(_cdInterval);
     _cdInterval = setInterval(() => {
-        const remaining = getCooldownRemaining();
-        const label = document.getElementById('cat-checkout-label');
-        const btn = document.getElementById('cat-cart-checkout');
-        if (remaining <= 0) {
+        if (getCooldownRemaining() <= 0) {
             clearInterval(_cdInterval);
             _cdInterval = null;
             localStorage.removeItem(CHECKOUT_CD_KEY);
-            if (label) label.textContent = 'VALIDER LA COMMANDE';
-            if (btn) btn.disabled = cart.size === 0;
-        } else {
-            if (label) label.textContent = `PATIENTER (${remaining}s)`;
-            if (btn) btn.disabled = true;
         }
+        updateCheckoutState();
     }, 500);
 }
 
