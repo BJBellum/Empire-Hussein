@@ -8,33 +8,6 @@ Le site est hébergé sur **GitHub Pages** (site statique pur : HTML / CSS / JS 
 **Repo GitHub :** https://github.com/BJBellum/Empire-Hussein
 **URL du site :** https://bjbellum.github.io/Empire-Hussein/
 
----
-
-## Structure des fichiers
-
-```
-Empire-Hussein/
-├── index.html              ← Page principale (hero + sections)
-├── economie.html           ← Placeholder — à construire
-├── catalogues.html         ← Placeholder — à construire
-├── energie.html            ← Placeholder — à construire
-├── forces-armees.html      ← Placeholder — accès admin uniquement
-├── .nojekyll               ← Requis pour GitHub Pages (pas de Jekyll)
-├── css/style.css           ← Feuille de styles principale
-├── js/auth.js              ← Authentification Discord OAuth2
-├── js/main.js              ← Animations, scroll, effets
-├── assets/
-│   ├── bg.mp4              ← Vidéo de fond (dunes du Sahara, Mixkit)
-│   ├── poster.jpg          ← Fallback poster pour la vidéo
-│   └── Hussein Empire Coat of Arms.png  ← Favicon / blason de l'Empire
-└── fonts/
-    ├── Dune_Rise.otf/.ttf  ← Police pour les titres (sans accents)
-    └── Nunito/
-        ├── Nunito-VariableFont_wght.ttf
-        └── Nunito-Italic-VariableFont_wght.ttf
-```
-
----
 
 ## Règles de design
 
@@ -77,60 +50,11 @@ Fichier : `js/auth.js`
 
 ---
 
-## Navigation
+## Accessibilité — Règles d'usage des couleurs
 
-| Bouton | Comportement |
-|---|---|
-| L'EMPIRE | Scroll vers la section `#empire` sur index.html |
-| PROPHETE | Scroll vers la section `#prophete` sur index.html |
-| ECONOMIE | Lien vers `economie.html` (à construire) |
-| CATALOGUES | Lien vers `catalogues.html` (à construire) |
-| ENERGIE | Lien vers `energie.html` (à construire) |
-| FORCES ARMEES | Lien vers `forces-armees.html` — verrouillé si non-admin |
-
----
-
-## Pages à construire
-
-Les pages suivantes sont des placeholders et doivent être développées :
-- `economie.html`
-- `catalogues.html`
-- `energie.html`
-- `forces-armees.html` (accessible uniquement aux admins Discord)
-
-Respecter le même design system que `index.html` : variables CSS, polices, animations reveal-up, header identique.
-
----
-
-## Accessibilité — Contraste des couleurs
-
-### Ratios de contraste (WCAG AA : 4.5:1 texte normal, 3:1 grand texte)
-
-| Variable | Valeur | Ratio sur `--bg-deep` | Ratio sur `--bg-card` | Statut |
-|---|---|---|---|---|
-| `--text-primary` | `#F5F0E8` | ~18:1 | ~16:1 | ✅ AAA |
-| `--text-secondary` | `#C0B2A0` | ~10.0:1 | ~9.4:1 | ✅ AAA |
-| `--text-muted` | `#9A8B7A` | ~6.3:1 | ~5.9:1 | ✅ AA |
-| `--gold` | `#C9A84C` | ~8.6:1 | ~8.0:1 | ✅ AA |
-| `--gold-dark` | `#8B6914` | ~4.1:1 | ~3.8:1 | ⚠️ Décoratif uniquement |
-
-### Hiérarchie visuelle des niveaux de texte
-
-Les trois niveaux de texte doivent rester **visuellement distincts** les uns des autres. Ne jamais les rapprocher au point qu'ils se confondent à l'œil :
-
-| Niveau | Variable | Ratio | Écart minimal avec le niveau suivant |
-|---|---|---|---|
-| Principal | `--text-primary` #F5F0E8 | ~18:1 | ≥ 5 pts de ratio |
-| Secondaire | `--text-secondary` #C0B2A0 | ~10:1 | ≥ 3 pts de ratio |
-| Atténué | `--text-muted` #9A8B7A | ~6.3:1 | — |
-
-### Règles d'usage
-
-- **`--text-muted`** est le niveau minimum pour du texte lisible — utiliser uniquement pour les métadonnées (dates, labels, hints). Ne jamais aller plus bas.
-- **`--gold-dark`** (`#8B6914`) ne doit **pas** être utilisé comme couleur de texte sur fond sombre — il est réservé aux **bordures, icônes décoratifs et éléments visuels**. Pour du texte en doré, utiliser `--gold` à la place.
-- **`--gold-dark` comme texte** : si un cas spécifique l'exige (ex: badge, hash de commit), compenser avec un fond clair ou utiliser directement `--gold`.
-- `#ffffff` (blanc pur) est acceptable pour les compteurs et indicateurs techniques (ex: compteur de caractères de l'éditeur).
-- Ne jamais introduire une nouvelle couleur de texte sans vérifier son ratio de contraste avec les fonds possibles (`--bg-deep`, `--bg-section`, `--bg-card`).
+- **`--text-muted`** (`#9A8B7A`) est le niveau minimum pour du texte lisible — métadonnées uniquement.
+- **`--gold-dark`** (`#8B6914`) est réservé aux bordures et éléments décoratifs — pas de texte sur fond sombre. Pour du texte doré, utiliser `--gold`.
+- Ne jamais introduire une nouvelle couleur de texte sans vérifier son ratio de contraste sur `--bg-deep`, `--bg-section`, `--bg-card`.
 
 ---
 
@@ -164,10 +88,4 @@ Ce script doit être **dans le `<head>`**, après les balises `<meta>` et `<link
 - Le script retire `.html` de l'URL **affichée** sans rechargement via `history.replaceState`
 - **GitHub Pages ne fait pas de réécriture d'URL côté serveur** — ne pas essayer de configurer `.htaccess` ou `_redirects` (non supportés)
 
-### Pages actuellement équipées
-
-| Page | Script dans `<head>` |
-|---|---|
-| `dashboard.html` | ✅ |
-| `index.html` | Non nécessaire (servi comme `/` par GitHub Pages) |
-| Autres pages | À ajouter lors de leur construction |
+Toute nouvelle page HTML doit recevoir ce script dans le `<head>` (sauf `index.html`, servi comme `/` par GitHub Pages).

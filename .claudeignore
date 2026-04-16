@@ -1,0 +1,8 @@
+# Binaires — inutiles à lire
+assets/bg.mp4
+assets/*.jpg
+assets/*.png
+fonts/
+
+# Git
+.git/
