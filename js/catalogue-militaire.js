@@ -20,6 +20,8 @@ const NIV_ROMAN = ['0', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 
 
 const JSON_URL = '../data/catalogue-militaire.json';
 const CART_STORAGE_KEY = 'empire-hussein:catalogue-militaire:cart';
+const CHECKOUT_CD_KEY  = 'empire-hussein:catalogue-militaire:checkout-cd';
+const CHECKOUT_CD_MS   = 60000;
 const SOLARI_EMOJI = '<:solari:1493385994479599686>';
 
 /* ────────────────────────────────────────
@@ -37,6 +39,7 @@ let allItems = [];
 let currentFilter = 'all';
 let currentSearch = '';
 let cart = new Map(); // id -> { id, nom, prix, qty, categorie }
+let _cdInterval = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
     initSidebarToggle();
@@ -64,6 +67,7 @@ async function loadItems() {
     container.style.display = 'flex';
     updateCounts();
     render();
+    populateItemDropdown();
 }
 
 /* ────────────────────────────────────────
@@ -188,6 +192,37 @@ function filterItems() {
 }
 
 /* ────────────────────────────────────────
+   DROPDOWN SELECTION DANS LE PANIER
+   ──────────────────────────────────────── */
+function populateItemDropdown() {
+    const sel = document.getElementById('cat-cart-item-select');
+    if (!sel) return;
+    const withPrice = allItems.filter(i => i.cout_unite);
+    withPrice.sort((a, b) => {
+        const c = (a.categorie || '').localeCompare(b.categorie || '');
+        return c !== 0 ? c : (a.nom || '').localeCompare(b.nom || '');
+    });
+    const groups = new Map();
+    withPrice.forEach(i => {
+        const g = CAT_LABELS[i.categorie] || i.categorie || 'AUTRE';
+        if (!groups.has(g)) groups.set(g, []);
+        groups.get(g).push(i);
+    });
+    sel.innerHTML = '<option value="">— Sélectionner —</option>';
+    for (const [grpLabel, items] of groups) {
+        const og = document.createElement('optgroup');
+        og.label = grpLabel;
+        items.forEach(item => {
+            const o = document.createElement('option');
+            o.value = item.id;
+            o.textContent = `${item.nom}  (${formatCost(item.cout_unite)})`;
+            og.appendChild(o);
+        });
+        sel.appendChild(og);
+    }
+}
+
+/* ────────────────────────────────────────
    TEMPLATE
    ──────────────────────────────────────── */
 function itemTemplate(item) {
@@ -303,6 +338,15 @@ function initCart() {
     document.getElementById('cat-cart-clear')?.addEventListener('click', clearCart);
     document.getElementById('cat-cart-checkout')?.addEventListener('click', validateOrder);
 
+    document.getElementById('cat-cart-select-add')?.addEventListener('click', () => {
+        const sel = document.getElementById('cat-cart-item-select');
+        if (!sel || !sel.value) return;
+        addToCart(sel.value);
+        sel.value = '';
+    });
+
+    if (getCooldownRemaining() > 0) initCooldownTick();
+
     const fab = document.getElementById('cat-cart-fab');
     const cartEl = document.getElementById('cat-cart');
     if (fab && cartEl) {
@@ -400,7 +444,7 @@ function renderCart() {
     if (fabCountEl) fabCountEl.textContent = totalQty;
     if (totalEl) totalEl.textContent = formatDollar(totalPrice);
     if (clearBtn) clearBtn.disabled = entries.length === 0;
-    if (checkoutBtn) checkoutBtn.disabled = entries.length === 0;
+    if (checkoutBtn) checkoutBtn.disabled = entries.length === 0 || getCooldownRemaining() > 0;
     if (fabEl) fabEl.classList.toggle('cat-cart-fab--active', totalQty > 0);
 
     if (entries.length === 0) {
@@ -548,6 +592,13 @@ async function validateOrder() {
     if (!btn || btn.disabled) return;
     if (cart.size === 0) return;
 
+    const countryInput = document.getElementById('cat-cart-country-input');
+    if (!countryInput || !countryInput.value.trim()) {
+        showToast('Veuillez entrer un nom de pays avant de valider.');
+        countryInput?.focus();
+        return;
+    }
+
     const content = buildOrderMessage();
     if (!content) return;
 
@@ -565,14 +616,48 @@ async function validateOrder() {
         });
         if (!res.ok) throw new Error('HTTP ' + res.status);
         showToast('Commande transmise avec succès');
+        startCooldown();
         cart.clear();
         afterCartMutation();
     } catch (err) {
         showToast('Erreur lors de l\'envoi : ' + err.message);
-        btn.disabled = false;
+        btn.disabled = cart.size === 0;
     } finally {
         btn.classList.remove('is-loading');
     }
+}
+
+/* ────────────────────────────────────────
+   COOLDOWN COMMANDE
+   ──────────────────────────────────────── */
+function getCooldownRemaining() {
+    const ts = parseInt(localStorage.getItem(CHECKOUT_CD_KEY) || '0', 10);
+    if (!ts) return 0;
+    return Math.max(0, Math.ceil((CHECKOUT_CD_MS - (Date.now() - ts)) / 1000));
+}
+
+function startCooldown() {
+    localStorage.setItem(CHECKOUT_CD_KEY, String(Date.now()));
+    initCooldownTick();
+}
+
+function initCooldownTick() {
+    clearInterval(_cdInterval);
+    _cdInterval = setInterval(() => {
+        const remaining = getCooldownRemaining();
+        const label = document.getElementById('cat-checkout-label');
+        const btn = document.getElementById('cat-cart-checkout');
+        if (remaining <= 0) {
+            clearInterval(_cdInterval);
+            _cdInterval = null;
+            localStorage.removeItem(CHECKOUT_CD_KEY);
+            if (label) label.textContent = 'VALIDER LA COMMANDE';
+            if (btn) btn.disabled = cart.size === 0;
+        } else {
+            if (label) label.textContent = `PATIENTER (${remaining}s)`;
+            if (btn) btn.disabled = true;
+        }
+    }, 500);
 }
 
 function showToast(msg) {

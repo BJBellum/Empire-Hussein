@@ -2143,11 +2143,6 @@ function renderCatList() {
         );
     }
 
-    items.sort((a, b) => {
-        const c = (a.categorie || '').localeCompare(b.categorie || '');
-        return c !== 0 ? c : (a.nom || '').localeCompare(b.nom || '');
-    });
-
     if (items.length === 0) {
         listEl.innerHTML = `<div class="cat-admin-empty">Aucun équipement à afficher.</div>`;
         return;
@@ -2174,6 +2169,18 @@ function renderCatList() {
                     </div>
                 </div>
                 <div class="cat-admin-item-actions">
+                    <button class="btn-icon cat-move-up" title="Monter (double-clic = en tête)">
+                        <!-- icones.js.org — tabler:arrow-up -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 5v14M5 12l7-7 7 7"/>
+                        </svg>
+                    </button>
+                    <button class="btn-icon cat-move-down" title="Descendre (double-clic = en fin)">
+                        <!-- icones.js.org — tabler:arrow-down -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 5v14M5 12l7 7 7-7"/>
+                        </svg>
+                    </button>
                     <button class="btn-icon cat-edit" title="Modifier">
                         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M2 14l2-5L11 2.5l3 3L9 12.5 2 14z"/>
@@ -2195,5 +2202,39 @@ function renderCatList() {
         const item = _catItems.find(i => i.id === id);
         el.querySelector('.cat-edit')?.addEventListener('click', () => editCatItem(id));
         el.querySelector('.cat-del')?.addEventListener('click', () => openCatDeleteModal(id, item?.nom || ''));
+        attachMoveBtn(el.querySelector('.cat-move-up'),   id, 'up');
+        attachMoveBtn(el.querySelector('.cat-move-down'), id, 'down');
     });
+}
+
+function attachMoveBtn(btn, id, dir) {
+    if (!btn) return;
+    let timer = null;
+    btn.addEventListener('click', () => {
+        if (timer !== null) return;
+        timer = setTimeout(() => {
+            timer = null;
+            moveCatItem(id, dir);
+        }, 220);
+    });
+    btn.addEventListener('dblclick', () => {
+        clearTimeout(timer);
+        timer = null;
+        moveCatItem(id, dir === 'up' ? 'top' : 'bottom');
+    });
+}
+
+function moveCatItem(id, direction) {
+    const idx = _catItems.findIndex(i => i.id === id);
+    if (idx === -1) return;
+    let newIdx;
+    if      (direction === 'up')     newIdx = Math.max(0, idx - 1);
+    else if (direction === 'down')   newIdx = Math.min(_catItems.length - 1, idx + 1);
+    else if (direction === 'top')    newIdx = 0;
+    else                             newIdx = _catItems.length - 1;
+    if (newIdx === idx) return;
+    const [item] = _catItems.splice(idx, 1);
+    _catItems.splice(newIdx, 0, item);
+    setCatCache(_catItems);
+    renderCatList();
 }

@@ -1979,6 +1979,64 @@ button {
     border-color: var(--gold-dark);
 }
 
+.cat-cart-select {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+.cat-cart-select-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.cat-cart-item-select {
+    flex: 1;
+    min-width: 0;
+    background: rgba(201, 168, 76, 0.05);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 7px 10px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--text-primary);
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color 0.2s ease;
+}
+
+.cat-cart-item-select:focus { border-color: var(--gold-dark); }
+.cat-cart-item-select option,
+.cat-cart-item-select optgroup { background: var(--bg-card); color: var(--text-primary); }
+
+.cat-cart-select-add {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: rgba(201, 168, 76, 0.08);
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.cat-cart-select-add:hover {
+    border-color: var(--gold);
+    background: rgba(201, 168, 76, 0.18);
+}
+
+.cat-cart-select-add svg {
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+}
+
 .cat-cart-body {
     flex: 1;
     overflow-y: auto;

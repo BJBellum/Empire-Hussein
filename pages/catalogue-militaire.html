@@ -210,6 +210,21 @@
                 <input type="text" id="cat-cart-country-input" class="cat-cart-country-input" placeholder="Entrez le nom de votre pays…" autocomplete="off">
             </div>
 
+            <div class="cat-cart-select">
+                <label class="cat-cart-country-label" for="cat-cart-item-select">AJOUTER UN EQUIPEMENT</label>
+                <div class="cat-cart-select-row">
+                    <select id="cat-cart-item-select" class="cat-cart-item-select">
+                        <option value="">— Sélectionner —</option>
+                    </select>
+                    <button class="cat-cart-select-add" id="cat-cart-select-add" type="button" aria-label="Ajouter au panier">
+                        <!-- icones.js.org — tabler:plus -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 5v14m-7-7h14"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
             <div class="cat-cart-body" id="cat-cart-body">
                 <div class="cat-cart-empty" id="cat-cart-empty">
                     Aucun équipement<br>sélectionné.
@@ -227,7 +242,7 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M5 12l5 5L20 7"/>
                     </svg>
-                    VALIDER LA COMMANDE
+                    <span id="cat-checkout-label">VALIDER LA COMMANDE</span>
                 </button>
                 <button class="cat-cart-clear" id="cat-cart-clear" type="button" disabled>
                     <!-- icones.js.org — tabler:trash -->
