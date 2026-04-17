@@ -10,6 +10,8 @@ const CANAL_CATS_PUBLIC = [
     { id: 'ressources_energetiques', label: 'Ressources Énergétiques' },
 ];
 
+const CANAL_RAW_URL = 'https://raw.githubusercontent.com/BJBellum/Empire-Hussein/main/data/canal-suez.json';
+
 async function initCanalPublic() {
     const grid    = document.getElementById('canal-grid');
     const loading = document.getElementById('canal-loading');
@@ -17,7 +19,7 @@ async function initCanalPublic() {
     if (!grid) return;
 
     try {
-        const res = await fetch('../data/canal-suez.json?t=' + Date.now());
+        const res = await fetch(CANAL_RAW_URL + '?t=' + Date.now());
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const data = await res.json();
 
