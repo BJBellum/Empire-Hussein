@@ -36,7 +36,7 @@ async function initCanalPublic() {
             return;
         }
 
-        grid.style.display = 'grid';
+        grid.style.display = 'flex';
         grid.innerHTML = data.map(renderCountryCard).join('');
 
         const io = new IntersectionObserver((entries) => {
@@ -55,22 +55,32 @@ async function initCanalPublic() {
     }
 }
 
+function taxColor(val) {
+    // 0 → vert vif, 50 → orange, 100 → rouge
+    const hue = Math.round(120 - (Math.min(val, 100) / 100) * 120);
+    return `hsl(${hue}, 80%, 52%)`;
+}
+
 function renderCountryCard(country) {
-    // Gère les data URLs (sauvegarde locale) et les chemins de fichiers (push GitHub)
     const flagSrc = country.drapeau
         ? (country.drapeau.startsWith('data:') ? country.drapeau : `../${escH(country.drapeau)}`)
         : null;
 
     const flagHtml = flagSrc
-        ? `<img src="${flagSrc}" alt="${escH(country.nom)}" loading="lazy" onerror="this.outerHTML='<svg viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'1.5\\' width=\\'48\\' height=\\'48\\' style=\\'color:var(--text-muted)\\'><rect x=\\'2\\' y=\\'5\\' width=\\'20\\' height=\\'14\\' rx=\\'1\\'/><path d=\\'M2 9h20M2 13h20\\'/></svg>'">`
-        : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48" style="color:var(--text-muted)"><rect x="2" y="5" width="20" height="14" rx="1"/><path d="M2 9h20M2 13h20"/></svg>`;
+        ? `<img src="${flagSrc}" alt="${escH(country.nom)}" loading="lazy" onerror="this.outerHTML='<svg viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'1.5\\' width=\\'56\\' height=\\'56\\' style=\\'color:var(--text-muted)\\'><rect x=\\'2\\' y=\\'5\\' width=\\'20\\' height=\\'14\\' rx=\\'1\\'/><path d=\\'M2 9h20M2 13h20\\'/></svg>'">`
+        : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="56" height="56" style="color:var(--text-muted)"><rect x="2" y="5" width="20" height="14" rx="1"/><path d="M2 9h20M2 13h20"/></svg>`;
 
     const taxRows = CANAL_CATS_PUBLIC.map(cat => {
         const val = country.taxes?.[cat.id];
         const blocked = val === null || val === undefined;
-        const valHtml = blocked
-            ? `<span class="canal-tax-blocked">NON AUTORISE</span>`
-            : `<span class="canal-tax-val">${val}%</span>`;
+        let valHtml;
+        if (blocked) {
+            valHtml = `<span class="canal-tax-blocked">NON AUTORISE</span>`;
+        } else if (val === 0) {
+            valHtml = `<span class="canal-tax-libre">LIBRE PASSAGE</span>`;
+        } else {
+            valHtml = `<span class="canal-tax-val" style="color:${taxColor(val)}">${val}%</span>`;
+        }
         return `<div class="canal-tax-row">
                     <span class="canal-tax-label">${cat.label}</span>
                     ${valHtml}
@@ -80,9 +90,11 @@ function renderCountryCard(country) {
     return `
         <div class="canal-card reveal-up">
             <div class="canal-flag">${flagHtml}</div>
-            <h3 class="canal-country-name">${escH(country.nom)}</h3>
-            <div class="canal-divider"></div>
-            <div class="canal-tax-table">${taxRows}</div>
+            <div class="canal-card-body">
+                <h3 class="canal-country-name">${escH(country.nom)}</h3>
+                <div class="canal-divider"></div>
+                <div class="canal-tax-table">${taxRows}</div>
+            </div>
         </div>
     `;
 }
