@@ -2,6 +2,7 @@
 assets/bg.mp4
 assets/*.jpg
 assets/*.png
+assets/*.geojson
 fonts/
 
 # Git
