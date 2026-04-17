@@ -67,8 +67,11 @@
             maxZoom: 20
         }).addTo(map);
 
-        fetch(GEOJSON_URL)
-            .then(function (r) { return r.json(); })
+        fetch(GEOJSON_URL, { mode: 'cors' })
+            .then(function (r) {
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                return r.json();
+            })
             .then(function (data) {
                 L.geoJSON(data, {
                     style: function (feature) {
@@ -113,7 +116,10 @@
                 }).addTo(map);
             })
             .catch(function (err) {
-                console.error('Carte : impossible de charger le GeoJSON', err);
+                console.error('Carte: GeoJSON load failed', err);
+                el.insertAdjacentHTML('afterend',
+                    '<p style="text-align:center;color:#9A8B7A;padding:1rem;font-family:var(--font-body);font-size:.85rem;">Impossible de charger les données cartographiques.</p>'
+                );
             });
     }
 
