@@ -6,6 +6,7 @@
     <meta name="description" content="Site officiel de l'Empire Hussein - Monarchie théocratique absolue dirigée par le Lisan Al-Gaib">
     <title>Accueil — Empire Hussein</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <link rel="icon" type="image/png" href="assets/Hussein Empire Coat of Arms.png">
 </head>
 <body>
@@ -22,6 +23,10 @@
     <header id="header">
         <div class="header-inner">
             <nav class="nav-links">
+                <a href="#carte" class="nav-link" data-scroll>
+                    <span class="nav-link-text">TERRITOIRES</span>
+                    <span class="nav-link-line"></span>
+                </a>
                 <a href="#empire" class="nav-link" data-scroll>
                     <span class="nav-link-text">L'EMPIRE</span>
                     <span class="nav-link-line"></span>
@@ -65,6 +70,7 @@
 
     <!-- Mobile nav overlay -->
     <div class="mobile-nav" id="mobile-nav">
+        <a href="#carte" class="mobile-nav-link" data-scroll>TERRITOIRES</a>
         <a href="#empire" class="mobile-nav-link" data-scroll>L'EMPIRE</a>
         <a href="#prophete" class="mobile-nav-link" data-scroll>PROPHETE</a>
         <a href="pages/economie.html" class="mobile-nav-link">ECONOMIE</a>
@@ -135,6 +141,37 @@
             <div class="dust dust-4"></div>
             <div class="dust dust-5"></div>
             <div class="dust dust-6"></div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- CARTE DES TERRITOIRES                   -->
+    <!-- ═══════════════════════════════════════ -->
+    <section id="carte" class="section section-carte">
+        <div class="section-bg-pattern" aria-hidden="true"></div>
+        <div class="container">
+            <div class="section-header">
+                <span class="section-number reveal-up">✦</span>
+                <h2 class="section-title reveal-up">TERRITOIRES</h2>
+                <div class="section-title-line reveal-up"></div>
+            </div>
+            <p class="carte-intro reveal-up">
+                Les territoires sous l'autorité du Lisan Al-Gaib s'étendent des rives du Nil aux îles de l'Océan Indien.
+                Cliquez sur une région pour consulter ses informations.
+            </p>
+            <div class="carte-wrapper reveal-up">
+                <div id="map-empire" class="map-empire"></div>
+                <div class="map-legend">
+                    <div class="map-legend-item">
+                        <span class="map-legend-dot map-legend-dot--empire"></span>
+                        <span class="map-legend-label">TERRITOIRE DE L'EMPIRE</span>
+                    </div>
+                    <div class="map-legend-item">
+                        <span class="map-legend-dot map-legend-dot--other"></span>
+                        <span class="map-legend-label">TERRITOIRE ETRANGER</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -342,7 +379,9 @@
         </button>
     </div>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN/pMgI=" crossorigin=""></script>
     <script src="js/auth.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/map.js"></script>
 </body>
 </html>

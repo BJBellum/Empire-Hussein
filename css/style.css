@@ -2724,3 +2724,190 @@ button {
         transform: none;
     }
 }
+
+/* ════════════════════════════════════════════
+   CARTE DES TERRITOIRES
+   ════════════════════════════════════════════ */
+.section-carte {
+    position: relative;
+    padding: var(--section-pad) 0;
+    background: var(--bg-deep);
+}
+
+.carte-intro {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+    max-width: 680px;
+    margin: 0 auto 2.5rem;
+}
+
+.carte-wrapper {
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    background: #080a08;
+}
+
+.map-empire {
+    width: 100%;
+    height: clamp(400px, 55vw, 640px);
+    background: #080a08;
+}
+
+/* Override Leaflet defaults for dark theme */
+.leaflet-container {
+    background: #080a08 !important;
+    font-family: var(--font-body) !important;
+}
+
+.leaflet-control-zoom a {
+    background: var(--bg-card) !important;
+    color: var(--text-secondary) !important;
+    border-color: var(--border) !important;
+    font-family: var(--font-body) !important;
+}
+
+.leaflet-control-zoom a:hover {
+    background: #1a1a1a !important;
+    color: var(--gold) !important;
+}
+
+.leaflet-control-attribution {
+    background: rgba(6, 6, 6, 0.8) !important;
+    color: var(--text-muted) !important;
+    font-size: 10px !important;
+}
+
+.leaflet-control-attribution a {
+    color: var(--text-muted) !important;
+}
+
+/* Custom popup */
+.leaflet-popup-content-wrapper {
+    background: var(--bg-card) !important;
+    border: 1px solid rgba(196, 169, 91, 0.4) !important;
+    border-radius: 2px !important;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(196, 169, 91, 0.1) !important;
+    padding: 0 !important;
+}
+
+.leaflet-popup-tip {
+    background: var(--bg-card) !important;
+    box-shadow: none !important;
+}
+
+.leaflet-popup-close-button {
+    color: var(--text-muted) !important;
+    font-size: 18px !important;
+    top: 8px !important;
+    right: 10px !important;
+    padding: 0 !important;
+}
+
+.leaflet-popup-close-button:hover {
+    color: var(--gold) !important;
+}
+
+.map-popup {
+    padding: 20px 24px;
+    min-width: 220px;
+}
+
+.map-popup-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(196, 169, 91, 0.2);
+}
+
+.map-popup-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.map-popup-dot--empire { background: #c4a95b; }
+.map-popup-dot--other  { background: var(--text-muted); opacity: 0.6; }
+
+.map-popup-name {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.map-popup-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.map-popup-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    font-size: 0.78rem;
+}
+
+.map-popup-label {
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.7rem;
+    white-space: nowrap;
+}
+
+.map-popup-value {
+    color: var(--text-secondary);
+    text-align: right;
+}
+
+.map-popup-empire-badge {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(196, 169, 91, 0.2);
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: #c4a95b;
+}
+
+/* Legend */
+.map-legend {
+    display: flex;
+    gap: 24px;
+    padding: 12px 20px;
+    background: rgba(6, 6, 6, 0.9);
+    border-top: 1px solid var(--border);
+}
+
+.map-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.map-legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.map-legend-dot--empire { background: #c4a95b; }
+.map-legend-dot--other  { background: #2a3020; border: 1px solid #3a4030; }
+
+.map-legend-label {
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+}
