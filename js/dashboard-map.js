@@ -1,67 +1,45 @@
 (function () {
     'use strict';
 
-    const GEOJSON_URL  = 'https://api.projet-resurgence.fr/geojson/regions?projection=mercator';
-    const REGIONS_PATH = 'data/empire-regions.json';
-    const REGIONS_SHA_KEY = 'empire_regions_sha';
-    const FALLBACK_IDS = [35, 38, 39, 40, 41, 42, 43, 44, 78, 169, 1152, 1194, 1195, 1198, 1199];
+    const GEOJSON_URL = 'https://api.projet-resurgence.fr/geojson/regions?projection=mercator';
+    const DATA_PREFIX = '../';
 
-    const COLOR_EMPIRE        = '#c4a95b';
-    const COLOR_EMPIRE_STROKE = '#e6cc7a';
-    const COLOR_EMPIRE_HOVER  = '#dbbf72';
-    const COLOR_OTHER         = '#33251a';
-    const COLOR_OTHER_STROKE  = '#4a3828';
-    const COLOR_OTHER_HOVER   = '#4a3020';
-    const ZOOM_MIN = 1, ZOOM_MAX = 20, ZOOM_STEP = 1.25;
+    const DATA_PATHS = {
+        federal:    'data/federal-regions.json',
+        claims:     'data/claims.json',
+        diplomacy:  'data/diplomacy.json',
+        economic:   'data/economic-accords.json',
+        scientific: 'data/scientific-accords.json'
+    };
+
+    const SHA_KEYS = {
+        federal:    'empire_federal_sha',
+        claims:     'empire_claims_sha',
+        diplomacy:  'empire_diplomacy_sha',
+        economic:   'empire_economic_sha',
+        scientific: 'empire_scientific_sha'
+    };
 
     let _geoData    = null;
     let _empireIds  = new Set();
-    let _savedIds   = new Set();
-    let _pathMap    = new Map(); /* region_id → SVG path element */
+    let _currentIdx = 0;
+    let _modeData   = {};
+    let _savedData  = {};
     let _mapBuilt   = false;
 
-    /* ── Utilities ──────────────────────────────── */
-    function formatPop(n) {
-        if (!n || n === 0) return 'Inhabité';
-        if (n >= 1e6) return (n / 1e6).toFixed(1).replace('.', ',') + ' M';
-        if (n >= 1e3) return Math.round(n / 1e3) + ' k';
-        return String(n);
-    }
+    function currentMode() { return MapModes[_currentIdx]; }
 
-    function* coords(geometry) {
-        function* ring(r) { for (const p of r) yield p; }
-        if (geometry.type === 'Polygon') {
-            for (const r of geometry.coordinates) yield* ring(r);
-        } else if (geometry.type === 'MultiPolygon') {
-            for (const poly of geometry.coordinates)
-                for (const r of poly) yield* ring(r);
-        }
-    }
-
-    function geomToPath(geometry, proj) {
-        const parts = [];
-        function ringPath(ring) {
-            let d = '';
-            for (let i = 0; i < ring.length; i++) {
-                const [px, py] = proj(ring[i]);
-                d += (i === 0 ? 'M' : 'L') + px.toFixed(2) + ' ' + py.toFixed(2);
-            }
-            return d + 'Z';
-        }
-        if (geometry.type === 'Polygon') {
-            for (const r of geometry.coordinates) parts.push(ringPath(r));
-        } else if (geometry.type === 'MultiPolygon') {
-            for (const poly of geometry.coordinates)
-                for (const r of poly) parts.push(ringPath(r));
-        }
-        return parts.join(' ');
+    function defaultData(id) {
+        if (id === 'claims')  return { region_ids: [] };
+        if (id === 'federal') return { regions: [] };
+        return { countries: {} };
     }
 
     function getGH() {
         try { return JSON.parse(localStorage.getItem('empire_github_config') || 'null'); } catch { return null; }
     }
 
-    function showCartoStatus(msg, type) {
+    function showStatus(msg, type) {
         const el = document.getElementById('carto-push-status');
         if (!el) return;
         el.style.display = 'flex';
@@ -69,362 +47,467 @@
         el.textContent = msg;
     }
 
-    /* ── UI state ───────────────────────────────── */
-    function updateUI() {
-        const countEl   = document.getElementById('carto-count');
-        const pushBtn   = document.getElementById('carto-btn-push');
-        const indicator = document.getElementById('carto-unsaved-indicator');
-        if (!countEl) return;
-
-        const dirty = !setsEqual(_empireIds, _savedIds);
-        countEl.textContent = _empireIds.size;
-        if (pushBtn) pushBtn.disabled = !dirty;
-        if (indicator) indicator.style.display = dirty ? 'flex' : 'none';
+    function isDirty(id) {
+        return JSON.stringify(_modeData[id] || {}) !== JSON.stringify(_savedData[id] || {});
     }
 
-    function setsEqual(a, b) {
-        if (a.size !== b.size) return false;
-        for (const v of a) if (!b.has(v)) return false;
-        return true;
+    function updatePushBtn() {
+        const btn = document.getElementById('carto-btn-push');
+        if (!btn) return;
+        btn.disabled = !isDirty(currentMode().id);
     }
 
-    /* ── Region styling ─────────────────────────── */
-    function applyStyle(path, isEmpire) {
-        path.setAttribute('fill',         isEmpire ? COLOR_EMPIRE : COLOR_OTHER);
-        path.setAttribute('stroke',       isEmpire ? COLOR_EMPIRE_STROKE : COLOR_OTHER_STROKE);
-        path.setAttribute('stroke-width', isEmpire ? '1' : '0.5');
-        path.setAttribute('fill-opacity', isEmpire ? '0.65' : '0.85');
-    }
-
-    /* ── Popup ──────────────────────────────────── */
-    function showPopup(wrapper, props, isEmpire, clientX, clientY) {
-        const existing = document.getElementById('carto-popup');
-        if (existing) existing.remove();
-
-        const pop = document.createElement('div');
-        pop.id = 'carto-popup';
-        pop.className = 'map-info-popup';
-
-        const dotCls = isEmpire ? 'map-popup-dot--empire' : 'map-popup-dot--other';
-        const countryRow = (!isEmpire && props.country_name)
-            ? `<div class="map-popup-row"><span class="map-popup-label">Pays</span><span class="map-popup-value">${props.country_name}</span></div>`
-            : '';
-        const action = isEmpire
-            ? '<div class="map-popup-empire-badge map-popup-action--remove">Clic droit pour retirer du territoire</div>'
-            : '<div class="map-popup-action--add">Clic gauche pour annexer à l\'Empire</div>';
-
-        pop.innerHTML = `
-            <button class="map-popup-close" aria-label="Fermer">✕</button>
-            <div class="map-popup-header">
-                <span class="map-popup-dot ${dotCls}"></span>
-                <span class="map-popup-name">${props.name || '—'}</span>
-            </div>
-            <div class="map-popup-rows">
-                ${countryRow}
-                <div class="map-popup-row"><span class="map-popup-label">Région géo.</span><span class="map-popup-value">${props.geographical_area || '—'}</span></div>
-                <div class="map-popup-row"><span class="map-popup-label">Continent</span><span class="map-popup-value">${props.continent || '—'}</span></div>
-                <div class="map-popup-row"><span class="map-popup-label">Climat</span><span class="map-popup-value">${props.climate || '—'}</span></div>
-                <div class="map-popup-row"><span class="map-popup-label">Population</span><span class="map-popup-value">${formatPop(props.population)}</span></div>
-            </div>
-            ${action}`;
-
-        wrapper.appendChild(pop);
-
-        const wRect = wrapper.getBoundingClientRect();
-        const rawX  = clientX - wRect.left;
-        const rawY  = clientY - wRect.top;
-        const pw    = pop.offsetWidth  || 240;
-        const ph    = pop.offsetHeight || 160;
-        let left = rawX + 14;
-        let top  = rawY - ph / 2;
-        if (left + pw > wRect.width  - 8) left = rawX - pw - 14;
-        if (top < 8)                       top  = 8;
-        if (top + ph > wRect.height - 8)   top  = wRect.height - ph - 8;
-        pop.style.left = left + 'px';
-        pop.style.top  = top  + 'px';
-
-        pop.querySelector('.map-popup-close').addEventListener('click', function (e) {
-            e.stopPropagation(); pop.remove();
-        });
-    }
-
-    /* ── Pan/zoom ───────────────────────────────── */
-    function addPanZoom(svg, VW, VH, prefix) {
-        let vx = 0, vy = 0, vw = VW, vh = VH;
-        function setVB() { svg.setAttribute('viewBox', `${vx} ${vy} ${vw} ${vh}`); }
-        function zoomAt(cx, cy, f) {
-            const nw = Math.min(Math.max(vw * f, VW / ZOOM_MAX), VW / ZOOM_MIN);
-            const nh = Math.min(Math.max(vh * f, VH / ZOOM_MAX), VH / ZOOM_MIN);
-            vx = cx - (cx - vx) * (nw / vw);
-            vy = cy - (cy - vy) * (nh / vh);
-            vw = nw; vh = nh;
-            vx = Math.max(0, Math.min(vx, VW - vw));
-            vy = Math.max(0, Math.min(vy, VH - vh));
-            setVB();
-        }
-        function c2s(cx, cy) {
-            const r = svg.getBoundingClientRect();
-            return [vx + (cx - r.left) / r.width * vw, vy + (cy - r.top) / r.height * vh];
-        }
-        svg.addEventListener('wheel', function (e) {
-            e.preventDefault();
-            const [cx, cy] = c2s(e.clientX, e.clientY);
-            zoomAt(cx, cy, e.deltaY < 0 ? 1 / ZOOM_STEP : ZOOM_STEP);
-        }, { passive: false });
-
-        let drag = false, lx = 0, ly = 0, moved = false;
-        svg.addEventListener('mousedown', function (e) { if (e.button) return; drag = true; moved = false; lx = e.clientX; ly = e.clientY; svg.style.cursor = 'grabbing'; });
-        window.addEventListener('mousemove', function (e) {
-            if (!drag) return;
-            const dx = e.clientX - lx, dy = e.clientY - ly;
-            if (Math.abs(dx) > 2 || Math.abs(dy) > 2) moved = true;
-            const r = svg.getBoundingClientRect();
-            vx -= dx / r.width * vw; vy -= dy / r.height * vh;
-            vx = Math.max(0, Math.min(vx, VW - vw));
-            vy = Math.max(0, Math.min(vy, VH - vh));
-            lx = e.clientX; ly = e.clientY; setVB();
-        });
-        window.addEventListener('mouseup', function () { drag = false; svg.style.cursor = ''; });
-
-        const btnIn  = document.getElementById(prefix + '-zoom-in');
-        const btnOut = document.getElementById(prefix + '-zoom-out');
-        const btnRst = document.getElementById(prefix + '-zoom-reset');
-        if (btnIn)  btnIn.addEventListener('click',  function () { zoomAt(vx + vw/2, vy + vh/2, 1/ZOOM_STEP); });
-        if (btnOut) btnOut.addEventListener('click',  function () { zoomAt(vx + vw/2, vy + vh/2, ZOOM_STEP);  });
-        if (btnRst) btnRst.addEventListener('click',  function () { vx=0; vy=0; vw=VW; vh=VH; setVB(); });
-
-        return { isMoved: function () { return moved; }, resetMoved: function () { moved = false; } };
-    }
-
-    /* ── Build editable map ─────────────────────── */
-    function buildCartoMap() {
-        const el = document.getElementById('carto-map');
+    /* ── Map rebuild ──────────────────────────────── */
+    function rebuildMap() {
+        const el      = document.getElementById('carto-map');
+        const wrapper = document.getElementById('carto-map-wrapper');
         if (!el || !_geoData) return;
         el.innerHTML = '';
-        _pathMap.clear();
 
-        let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-        for (const f of _geoData.features) {
-            if (!f.geometry) continue;
-            for (const [x, y] of coords(f.geometry)) {
-                if (x < minX) minX = x; if (x > maxX) maxX = x;
-                if (y < minY) minY = y; if (y > maxY) maxY = y;
-            }
-        }
-        const VW = 1200, VH = 600;
-        const scale = Math.min(VW / (maxX - minX), VH / (maxY - minY));
-        const offX  = (VW - (maxX - minX) * scale) / 2;
-        const offY  = (VH - (maxY - minY) * scale) / 2;
-        function proj([x, y]) { return [offX + (x - minX) * scale, offY + (maxY - y) * scale]; }
+        const mode    = currentMode();
+        const data    = _modeData[mode.id] || defaultData(mode.id);
+        const { onLeftClick, onRightClick } = getModeHandlers(mode, data);
 
-        const NS  = 'http://www.w3.org/2000/svg';
-        const svg = document.createElementNS(NS, 'svg');
-        svg.setAttribute('viewBox', `0 0 ${VW} ${VH}`);
-        svg.setAttribute('xmlns', NS);
-        svg.style.cssText = 'width:100%;height:100%;display:block;cursor:grab;';
-
-        const wrapper = document.getElementById('carto-map-wrapper');
-        const pz      = addPanZoom(svg, VW, VH, 'carto');
-
-        function addRegion(f) {
-            if (!f.geometry) return;
-            const props    = f.properties || {};
-            const id       = props.region_id;
-            const isEmpire = _empireIds.has(id);
-
-            const path = document.createElementNS(NS, 'path');
-            path.setAttribute('d', geomToPath(f.geometry, proj));
-            path.setAttribute('vector-effect', 'non-scaling-stroke');
-            path.style.cursor = 'pointer';
-            applyStyle(path, isEmpire);
-
-            if (id !== undefined) _pathMap.set(id, path);
-
-            path.addEventListener('mouseenter', function () {
-                path.setAttribute('fill', _empireIds.has(id) ? COLOR_EMPIRE_HOVER : COLOR_OTHER_HOVER);
-                if (_empireIds.has(id)) path.setAttribute('fill-opacity', '0.85');
-            });
-            path.addEventListener('mouseleave', function () {
-                applyStyle(path, _empireIds.has(id));
-            });
-            path.addEventListener('click', function (e) {
-                if (pz.isMoved()) { pz.resetMoved(); return; }
-                e.stopPropagation();
-
-                /* Left click: add if not empire, show info if already empire */
-                if (!_empireIds.has(id)) {
-                    _empireIds.add(id);
-                    applyStyle(path, true);
-                    svg.appendChild(path); /* move to top */
-                    updateUI();
-                }
-                showPopup(wrapper, props, _empireIds.has(id), e.clientX, e.clientY);
-            });
-
-            path.addEventListener('contextmenu', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-
-                /* Right click: remove from empire */
-                if (_empireIds.has(id)) {
-                    _empireIds.delete(id);
-                    applyStyle(path, false);
-                    updateUI();
-                    showPopup(wrapper, props, false, e.clientX, e.clientY);
-                }
-            });
-
-            svg.appendChild(path);
-        }
-
-        /* Pass 1: non-empire first */
-        for (const f of _geoData.features) { if (!_empireIds.has((f.properties || {}).region_id)) addRegion(f); }
-        /* Pass 2: empire on top */
-        for (const f of _geoData.features) { if ( _empireIds.has((f.properties || {}).region_id)) addRegion(f); }
-
-        el.appendChild(svg);
-        svg.addEventListener('contextmenu', function (e) { e.preventDefault(); });
-        svg.addEventListener('click', function () {
-            if (pz.isMoved()) { pz.resetMoved(); return; }
-            const pop = document.getElementById('carto-popup');
-            if (pop) pop.remove();
+        MapEngine.build({
+            mapEl:       el,
+            wrapperEl:   wrapper,
+            geoData:     _geoData,
+            empireIds:   _empireIds,
+            mode:        mode,
+            modeData:    data,
+            zoomPrefix:  'carto',
+            pathPrefix:  DATA_PREFIX,
+            onLeftClick,
+            onRightClick
         });
-
-        _mapBuilt = true;
-        updateUI();
     }
 
-    /* ── Push to GitHub ─────────────────────────── */
-    async function pushRegions() {
-        const cfg = getGH();
+    /* ── Click handlers per mode ──────────────────── */
+    function getModeHandlers(mode, data) {
+        if (mode.id === 'federal') {
+            return {
+                onLeftClick(f) {
+                    const props = f.properties || {};
+                    if (!_empireIds.has(props.region_id)) return;
+                    openFederalPanel(props);
+                },
+                onRightClick: null
+            };
+        }
+
+        if (mode.id === 'claims') {
+            return {
+                onLeftClick(f, path, svg) {
+                    const props = f.properties || {};
+                    if (_empireIds.has(props.region_id)) return;
+                    const d = _modeData['claims'] || defaultData('claims');
+                    if (!d.region_ids.includes(props.region_id)) {
+                        d.region_ids.push(props.region_id);
+                        _modeData['claims'] = d;
+                        const s = mode.getStyle(props, _empireIds, d);
+                        path.setAttribute('fill', s.fill);
+                        path.setAttribute('stroke', s.stroke);
+                        path.setAttribute('fill-opacity', s.opacity);
+                        svg.appendChild(path);
+                        updatePushBtn();
+                    }
+                },
+                onRightClick(f, path) {
+                    const props = f.properties || {};
+                    const d = _modeData['claims'] || defaultData('claims');
+                    const idx = d.region_ids.indexOf(props.region_id);
+                    if (idx !== -1) {
+                        d.region_ids.splice(idx, 1);
+                        _modeData['claims'] = d;
+                        const s = mode.getStyle(props, _empireIds, d);
+                        path.setAttribute('fill', s.fill);
+                        path.setAttribute('stroke', s.stroke);
+                        path.setAttribute('fill-opacity', s.opacity);
+                        updatePushBtn();
+                    }
+                }
+            };
+        }
+
+        return { onLeftClick: null, onRightClick: null };
+    }
+
+    /* ── Mode switch ──────────────────────────────── */
+    function switchMode(idx) {
+        _currentIdx = idx;
+
+        document.querySelectorAll('#carto-mode-switcher .map-mode-btn').forEach(function (btn, i) {
+            btn.classList.toggle('active', i === idx);
+        });
+
+        const mode   = MapModes[idx];
+        const hintEl = document.getElementById('carto-hint');
+        const hints  = {
+            federal:    'Clic : éditer la région fédérale',
+            claims:     'Clic gauche : revendiquer — Clic droit : retirer',
+            diplomacy:  'Éditer les reconnaissances ci-dessous',
+            economic:   'Éditer les accords économiques ci-dessous',
+            scientific: 'Éditer les accords scientifiques ci-dessous'
+        };
+        if (hintEl) hintEl.textContent = hints[mode.id] || '';
+
+        const fedPanel = document.getElementById('carto-federal-panel');
+        if (fedPanel) fedPanel.style.display = 'none';
+
+        const relPanel = document.getElementById('carto-relations-panel');
+        if (relPanel) {
+            const show = ['diplomacy', 'economic', 'scientific'].includes(mode.id);
+            relPanel.style.display = show ? 'block' : 'none';
+            if (show) buildRelationsPanel(mode);
+        }
+
+        rebuildMap();
+        updatePushBtn();
+    }
+
+    /* ── Federal panel ────────────────────────────── */
+    function openFederalPanel(props) {
+        const panel = document.getElementById('carto-federal-panel');
+        if (!panel) return;
+        panel.style.display = 'block';
+
+        const data = _modeData['federal'] || defaultData('federal');
+        const fed  = data.regions.find(r => r.member_ids.includes(props.region_id)) || null;
+
+        document.getElementById('federal-region-name').value     = fed ? fed.name  : '';
+        document.getElementById('federal-color-picker').value    = fed ? fed.color : '#c4a95b';
+        document.getElementById('federal-panel-region-id').value = props.region_id;
+        document.getElementById('federal-panel-region-name').textContent = props.name || '—';
+
+        const preview = document.getElementById('federal-flag-preview');
+        if (preview) {
+            if (fed && fed.flag_path) { preview.src = DATA_PREFIX + fed.flag_path; preview.style.display = 'block'; }
+            else                      { preview.src = ''; preview.style.display = 'none'; }
+        }
+        updateFederalMergeHint();
+    }
+
+    function updateFederalMergeHint() {
+        const colorEl = document.getElementById('federal-color-picker');
+        if (!colorEl) return;
+        const data  = _modeData['federal'] || defaultData('federal');
+        const match = data.regions.find(r => r.color === colorEl.value) || null;
+        const hint  = document.getElementById('federal-merge-hint');
+        if (hint) hint.textContent = match ? `Fusion avec : ${match.name}` : '';
+    }
+
+    function saveFederalRegion() {
+        const regionId = parseInt(document.getElementById('federal-panel-region-id').value);
+        const name     = (document.getElementById('federal-region-name').value || '').trim() || 'Région fédérale';
+        const color    = document.getElementById('federal-color-picker').value;
+
+        const data = _modeData['federal'] || defaultData('federal');
+
+        /* Remove regionId from all federal regions */
+        data.regions.forEach(r => { r.member_ids = r.member_ids.filter(id => id !== regionId); });
+        data.regions = data.regions.filter(r => r.member_ids.length > 0);
+
+        /* Find or create by color */
+        let fed = data.regions.find(r => r.color === color) || null;
+        if (fed) {
+            fed.member_ids.push(regionId);
+            fed.name = name;
+        } else {
+            const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'region-' + Date.now();
+            fed = { id: Date.now(), name, color, flag_path: null, slug, member_ids: [regionId] };
+            data.regions.push(fed);
+        }
+
+        _modeData['federal'] = data;
+        rebuildMap();
+        updatePushBtn();
+    }
+
+    /* ── Relations panel ──────────────────────────── */
+    function buildRelationsPanel(mode) {
+        const panel = document.getElementById('carto-relations-panel');
+        if (!panel || !_geoData) return;
+
+        const data    = _modeData[mode.id] || defaultData(mode.id);
+        const isAccord = mode.id !== 'diplomacy';
+        const optA = isAccord ? 'Accord'      : 'Reconnu';
+        const optB = isAccord ? 'Aucun accord' : 'Non-Reconnu';
+        const valA = isAccord ? 'accord'       : 'recognized';
+        const valB = isAccord ? 'none'          : 'not_recognized';
+
+        const cMap = new Map();
+        for (const f of _geoData.features) {
+            const p = f.properties || {};
+            if (p.country_id && p.country_name && !_empireIds.has(p.region_id))
+                cMap.set(p.country_id, { id: p.country_id, name: p.country_name, color: p.country_color });
+        }
+        const countries = [...cMap.values()].sort((a, b) => a.name.localeCompare(b.name));
+
+        const rows = countries.map(c => {
+            const status = (data.countries && data.countries[c.id]) || valB;
+            return `<div class="relations-row" data-country-id="${c.id}">
+                <span class="relations-dot" style="background:${c.color || '#888'}"></span>
+                <span class="relations-name">${c.name}</span>
+                <label class="relations-toggle"><input type="radio" name="rel-${c.id}" value="${valA}"${status === valA ? ' checked' : ''}> ${optA}</label>
+                <label class="relations-toggle"><input type="radio" name="rel-${c.id}" value="${valB}"${status !== valA ? ' checked' : ''}> ${optB}</label>
+            </div>`;
+        }).join('');
+
+        panel.innerHTML = `
+            <div class="relations-panel-header">
+                <span class="relations-panel-title">${mode.label}</span>
+                <input type="text" class="relations-search" id="relations-search" placeholder="Rechercher un pays…">
+            </div>
+            <div id="relations-list">${rows}</div>`;
+
+        panel.querySelectorAll('input[type=radio]').forEach(function (radio) {
+            radio.addEventListener('change', function () {
+                if (!radio.checked) return;
+                const row = radio.closest('.relations-row');
+                const countryId = parseInt(row.dataset.countryId);
+                const d = _modeData[mode.id] || defaultData(mode.id);
+                if (!d.countries) d.countries = {};
+                d.countries[countryId] = radio.value;
+                _modeData[mode.id] = d;
+                rebuildMap();
+                updatePushBtn();
+            });
+        });
+
+        const searchEl = document.getElementById('relations-search');
+        if (searchEl) {
+            searchEl.addEventListener('input', function () {
+                const q = searchEl.value.toLowerCase();
+                panel.querySelectorAll('.relations-row').forEach(function (row) {
+                    row.style.display = row.querySelector('.relations-name').textContent.toLowerCase().includes(q) ? '' : 'none';
+                });
+            });
+        }
+    }
+
+    /* ── GitHub push ──────────────────────────────── */
+    async function pushCurrentMode() {
+        const mode = currentMode();
+        const cfg  = getGH();
         if (!cfg || !cfg.repo || !cfg.pat) {
-            showCartoStatus('Configuration GitHub requise — allez dans l\'onglet CONFIGURATION', 'error');
+            showStatus("Configuration GitHub requise — allez dans l'onglet CONFIGURATION", 'error');
             return;
         }
 
-        const pushBtn = document.getElementById('carto-btn-push');
-        if (pushBtn) { pushBtn.disabled = true; pushBtn.textContent = 'Envoi…'; }
+        const btn = document.getElementById('carto-btn-push');
+        if (btn) { btn.disabled = true; btn.textContent = 'Envoi…'; }
 
         try {
-            /* Fetch latest SHA */
-            let sha = localStorage.getItem(REGIONS_SHA_KEY);
+            if (mode.id === 'federal') await pushFederalFlags(cfg);
+
+            const dataPath = DATA_PATHS[mode.id];
+            const shaKey   = SHA_KEYS[mode.id];
+
+            const raw    = _modeData[mode.id] || defaultData(mode.id);
+            const toSave = Object.assign({}, raw);
+            delete toSave._pendingFlags;
+
+            let sha = localStorage.getItem(shaKey);
             try {
                 const probe = await fetch(
-                    `https://api.github.com/repos/${cfg.repo}/contents/${REGIONS_PATH}?ref=${cfg.branch || 'main'}`,
+                    `https://api.github.com/repos/${cfg.repo}/contents/${dataPath}?ref=${cfg.branch || 'main'}`,
                     { headers: { Authorization: `token ${cfg.pat}`, Accept: 'application/vnd.github.v3+json' } }
                 );
-                if (probe.ok) { sha = (await probe.json()).sha; localStorage.setItem(REGIONS_SHA_KEY, sha); }
-            } catch {}
+                if (probe.ok) { sha = (await probe.json()).sha; localStorage.setItem(shaKey, sha); }
+            } catch (_) {}
 
-            const json = JSON.stringify({ region_ids: Array.from(_empireIds).sort(function(a,b){return a-b;}) }, null, 2);
             const body = {
-                message: 'feat(carte): mise à jour des territoires de l\'Empire Hussein',
-                content: btoa(unescape(encodeURIComponent(json))),
+                message: `feat(carte): mise à jour ${mode.label.toLowerCase()}`,
+                content: btoa(unescape(encodeURIComponent(JSON.stringify(toSave, null, 2)))),
                 branch:  cfg.branch || 'main'
             };
             if (sha) body.sha = sha;
 
-            const res  = await fetch(
-                `https://api.github.com/repos/${cfg.repo}/contents/${REGIONS_PATH}`,
+            const res    = await fetch(
+                `https://api.github.com/repos/${cfg.repo}/contents/${dataPath}`,
                 {
                     method: 'PUT',
-                    headers: {
-                        Authorization:  `token ${cfg.pat}`,
-                        Accept:         'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { Authorization: `token ${cfg.pat}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
                     body: JSON.stringify(body)
                 }
             );
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.message || 'Erreur push');
+            const result = await res.json();
+            if (!res.ok) throw new Error(result.message || 'Erreur push');
+            if (result.content && result.content.sha) localStorage.setItem(shaKey, result.content.sha);
 
-            /* Update saved SHA */
-            if (data.content && data.content.sha) localStorage.setItem(REGIONS_SHA_KEY, data.content.sha);
-
-            /* Sync saved state */
-            _savedIds = new Set(_empireIds);
-            showCartoStatus('✓ Territoires mis à jour sur GitHub (' + _empireIds.size + ' régions)', 'success');
-            updateUI();
+            _savedData[mode.id] = JSON.parse(JSON.stringify(toSave));
+            showStatus(`✓ ${mode.label} mis à jour sur GitHub`, 'success');
+            updatePushBtn();
 
         } catch (err) {
-            showCartoStatus('Erreur : ' + err.message, 'error');
+            showStatus('Erreur : ' + err.message, 'error');
         } finally {
-            const btn = document.getElementById('carto-btn-push');
-            if (btn) {
-                btn.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 12V4M4 8l4-4 4 4" stroke-linecap="round" stroke-linejoin="round"/></svg> Pousser sur GitHub';
+            const b = document.getElementById('carto-btn-push');
+            if (b) {
+                b.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 12V4M4 8l4-4 4 4" stroke-linecap="round" stroke-linejoin="round"/></svg> Pousser sur GitHub';
+                b.disabled = !isDirty(currentMode().id);
             }
         }
     }
 
-    /* ── Init panel ─────────────────────────────── */
-    function initCartoPanel() {
-        const el = document.getElementById('carto-map');
-        if (!el) return;
+    async function pushFederalFlags(cfg) {
+        const data = _modeData['federal'];
+        if (!data || !data._pendingFlags) return;
+        for (const [slug, b64] of Object.entries(data._pendingFlags)) {
+            const path   = `assets/flags/${slug}.png`;
+            const shaKey = `empire_flags_sha_${slug}`;
+            let sha = localStorage.getItem(shaKey);
+            try {
+                const probe = await fetch(
+                    `https://api.github.com/repos/${cfg.repo}/contents/${path}?ref=${cfg.branch || 'main'}`,
+                    { headers: { Authorization: `token ${cfg.pat}`, Accept: 'application/vnd.github.v3+json' } }
+                );
+                if (probe.ok) { sha = (await probe.json()).sha; localStorage.setItem(shaKey, sha); }
+            } catch (_) {}
+            const body = { message: `feat(carte): drapeau ${slug}`, content: b64, branch: cfg.branch || 'main' };
+            if (sha) body.sha = sha;
+            try {
+                const res = await fetch(
+                    `https://api.github.com/repos/${cfg.repo}/contents/${path}`,
+                    {
+                        method: 'PUT',
+                        headers: { Authorization: `token ${cfg.pat}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+                        body: JSON.stringify(body)
+                    }
+                );
+                const result = await res.json();
+                if (res.ok && result.content) localStorage.setItem(shaKey, result.content.sha);
+            } catch (_) {}
+        }
+        delete data._pendingFlags;
+    }
 
-        el.innerHTML = '<div class="map-loading">Chargement de la carte…</div>';
-
-        Promise.all([
-            _geoData
-                ? Promise.resolve(_geoData)
-                : fetch(GEOJSON_URL).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-        ]).then(function (results) {
-            _geoData = results[0];
-
-            _empireIds = new Set();
-            _savedIds  = new Set();
-
-            el.innerHTML = '';
-            buildCartoMap();
-        }).catch(function (err) {
-            console.error('CartoPanel: load failed', err);
-            el.innerHTML = '<div class="map-loading map-loading--error">Impossible de charger les données.</div>';
+    /* ── Init buttons ─────────────────────────────── */
+    function initButtons() {
+        const switcher = document.getElementById('carto-mode-switcher');
+        if (!switcher) return;
+        MapModes.forEach(function (mode, i) {
+            const btn = document.createElement('button');
+            btn.className = 'map-mode-btn' + (i === 0 ? ' active' : '');
+            btn.title = mode.label.charAt(0) + mode.label.slice(1).toLowerCase();
+            btn.setAttribute('aria-label', btn.title);
+            btn.innerHTML = mode.icon;
+            btn.addEventListener('click', function () { switchMode(i); });
+            switcher.appendChild(btn);
         });
     }
 
-    /* ── Wire up buttons ────────────────────────── */
+    /* ── Wire static buttons ──────────────────────── */
     function wireButtons() {
         const pushBtn  = document.getElementById('carto-btn-push');
         const resetBtn = document.getElementById('carto-btn-reset');
 
-        if (pushBtn) pushBtn.addEventListener('click', function () { pushRegions(); });
-
+        if (pushBtn)  pushBtn.addEventListener('click',  function () { pushCurrentMode(); });
         if (resetBtn) resetBtn.addEventListener('click', function () {
-            _empireIds = new Set(_savedIds);
-            /* Re-apply styles to all paths */
-            _pathMap.forEach(function (path, id) { applyStyle(path, _empireIds.has(id)); });
-            updateUI();
-            const pop = document.getElementById('carto-popup');
-            if (pop) pop.remove();
+            const id = currentMode().id;
+            _modeData[id] = JSON.parse(JSON.stringify(_savedData[id] || defaultData(id)));
+            rebuildMap();
+            updatePushBtn();
+            const fedPanel = document.getElementById('carto-federal-panel');
+            if (fedPanel) fedPanel.style.display = 'none';
+            const relPanel = document.getElementById('carto-relations-panel');
+            if (relPanel && relPanel.style.display !== 'none') buildRelationsPanel(currentMode());
+        });
+
+        const fedSave  = document.getElementById('federal-panel-save');
+        if (fedSave)  fedSave.addEventListener('click', saveFederalRegion);
+
+        const fedClose = document.getElementById('federal-panel-close');
+        if (fedClose) fedClose.addEventListener('click', function () {
+            document.getElementById('carto-federal-panel').style.display = 'none';
+        });
+
+        const fedColor = document.getElementById('federal-color-picker');
+        if (fedColor) fedColor.addEventListener('input', updateFederalMergeHint);
+
+        const fedFlag  = document.getElementById('federal-flag-input');
+        if (fedFlag) fedFlag.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (ev) {
+                const b64full = ev.target.result;
+                const b64     = b64full.split(',')[1];
+                const name    = (document.getElementById('federal-region-name').value || '').trim();
+                const slug    = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'region-' + Date.now();
+
+                const data = _modeData['federal'] || defaultData('federal');
+                if (!data._pendingFlags) data._pendingFlags = {};
+                data._pendingFlags[slug] = b64;
+                _modeData['federal'] = data;
+
+                const preview = document.getElementById('federal-flag-preview');
+                if (preview) { preview.src = b64full; preview.style.display = 'block'; }
+
+                const regionId = parseInt(document.getElementById('federal-panel-region-id').value);
+                const fed = data.regions.find(r => r.member_ids.includes(regionId));
+                if (fed) fed.flag_path = `assets/flags/${slug}.png`;
+            };
+            reader.readAsDataURL(file);
         });
     }
 
-    /* ── Hook into dashboard panel navigation ───── */
+    /* ── Panel activation ─────────────────────────── */
+    function initCartoPanel() {
+        const el = document.getElementById('carto-map');
+        if (!el) return;
+        el.innerHTML = '<div class="map-loading">Chargement de la carte…</div>';
+
+        fetch(GEOJSON_URL)
+            .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+            .then(function (geoData) {
+                _geoData   = geoData;
+                _empireIds = new Set();
+                for (const f of geoData.features) {
+                    if ((f.properties || {}).country_name === 'Empire Hussein')
+                        _empireIds.add(f.properties.region_id);
+                }
+
+                return Promise.all(
+                    MapModes.map(mode => mode.dataFile
+                        ? fetch(DATA_PREFIX + mode.dataFile).then(r => r.ok ? r.json() : null).catch(() => null)
+                        : Promise.resolve(null)
+                    )
+                ).then(function (results) {
+                    MapModes.forEach(function (mode, i) {
+                        _modeData[mode.id]  = results[i] || defaultData(mode.id);
+                        _savedData[mode.id] = JSON.parse(JSON.stringify(_modeData[mode.id]));
+                    });
+                    el.innerHTML = '';
+                    initButtons();
+                    switchMode(0);
+                    _mapBuilt = true;
+                });
+            })
+            .catch(function (err) {
+                console.error('CartoPanel: load failed', err);
+                el.innerHTML = '<div class="map-loading map-loading--error">Impossible de charger les données.</div>';
+            });
+    }
+
     function observePanelActivation() {
-        /* dashboard.js activates panels by toggling .hidden class */
         const wrapper = document.getElementById('panels-wrapper');
         if (!wrapper) return;
-
         const observer = new MutationObserver(function () {
             const panel = document.getElementById('panel-cartographie');
-            if (panel && !panel.classList.contains('hidden') && !_mapBuilt) {
+            if (panel && !panel.classList.contains('hidden') && !_mapBuilt)
                 initCartoPanel();
-            }
         });
         observer.observe(wrapper, { subtree: true, attributes: true, attributeFilter: ['class'] });
     }
 
-    /* Fallback: nav click direct listener */
     document.addEventListener('click', function (e) {
         const item = e.target.closest('[data-panel="cartographie"]');
-        if (item && !_mapBuilt) {
-            setTimeout(initCartoPanel, 50);
-        }
+        if (item && !_mapBuilt) setTimeout(initCartoPanel, 50);
     });
 
     document.addEventListener('DOMContentLoaded', function () {
         wireButtons();
         observePanelActivation();
     });
-
 }());

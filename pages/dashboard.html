@@ -989,7 +989,7 @@
                                 <span class="carto-count" id="carto-count">0</span>
                             </div>
                             <div class="carto-toolbar-right">
-                                <span class="carto-hint">Clic gauche : annexer — Clic droit : retirer du territoire</span>
+                                <span class="carto-hint" id="carto-hint">Clic gauche : annexer — Clic droit : retirer du territoire</span>
                                 <button class="btn-secondary" id="carto-btn-reset">Annuler les modifications</button>
                                 <button class="btn-primary cat-btn-push" id="carto-btn-push" disabled>
                                     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1001,12 +1001,38 @@
                         </div>
 
                         <div class="carto-map-wrapper carte-wrapper" id="carto-map-wrapper">
+                            <div class="map-mode-switcher" id="carto-mode-switcher"></div>
                             <div id="carto-map" class="map-empire"></div>
                             <div class="map-zoom-controls" aria-label="Contrôles zoom">
                                 <button id="carto-zoom-in"    class="map-zoom-btn" aria-label="Zoom avant">+</button>
                                 <button id="carto-zoom-reset" class="map-zoom-btn" aria-label="Réinitialiser">⌂</button>
                                 <button id="carto-zoom-out"   class="map-zoom-btn" aria-label="Zoom arrière">−</button>
                             </div>
+                            <!-- Federal regions edit panel -->
+                            <div class="carto-federal-panel" id="carto-federal-panel">
+                                <button class="carto-federal-panel-close" id="federal-panel-close" aria-label="Fermer">✕</button>
+                                <div class="carto-federal-panel-title">REGION FEDERALE</div>
+                                <div class="carto-federal-panel-region" id="federal-panel-region-name">—</div>
+                                <input type="hidden" id="federal-panel-region-id" value="">
+                                <div class="carto-federal-field">
+                                    <label>Nom</label>
+                                    <input type="text" id="federal-region-name" placeholder="Ex: Province du Nord">
+                                </div>
+                                <div class="carto-federal-field">
+                                    <label>Couleur</label>
+                                    <input type="color" id="federal-color-picker" value="#c4a95b">
+                                    <div class="carto-federal-merge-hint" id="federal-merge-hint"></div>
+                                </div>
+                                <div class="carto-federal-field">
+                                    <label>Drapeau (150×150)</label>
+                                    <img class="carto-federal-flag-preview" id="federal-flag-preview" src="" alt="Aperçu">
+                                    <input type="file" id="federal-flag-input" accept="image/*" style="font-size:0.75rem;color:var(--text-secondary);width:100%;">
+                                </div>
+                                <div class="carto-federal-actions">
+                                    <button class="btn-primary" id="federal-panel-save" style="flex:1;padding:6px 10px;font-size:0.75rem;">Appliquer</button>
+                                </div>
+                            </div>
+
                             <div class="map-legend">
                                 <div class="map-legend-item">
                                     <span class="map-legend-dot map-legend-dot--empire"></span>
@@ -1022,6 +1048,9 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Diplomacy / accords relations panel -->
+                        <div class="carto-relations-panel" id="carto-relations-panel"></div>
 
                         <div class="github-status" id="carto-push-status" style="display:none;"></div>
 
@@ -1118,6 +1147,8 @@
 
     <script src="../js/auth.js"></script>
     <script src="../js/dashboard.js"></script>
+    <script src="../js/map-engine.js"></script>
+    <script src="../js/map-modes.js"></script>
     <script src="../js/dashboard-map.js"></script>
 </body>
 </html>

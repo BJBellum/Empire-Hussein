@@ -2935,3 +2935,189 @@ button {
     border-color: rgba(196, 169, 91, 0.6);
     background: rgba(28, 24, 16, 0.95);
 }
+
+/* ── Map mode switcher ───────────────────────────────── */
+.carte-wrapper { position: relative; }
+
+.map-mode-switcher {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.map-mode-btn {
+    width: 36px;
+    height: 36px;
+    background: rgba(6,6,6,0.88);
+    border: 1px solid var(--gold-dark);
+    border-radius: 4px;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.map-mode-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+.map-mode-btn:hover { border-color: var(--gold); color: var(--gold-light); }
+.map-mode-btn.active {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(201,168,76,0.12);
+}
+
+/* ── Federal regions edit panel ─────────────────────── */
+.carto-federal-panel {
+    position: absolute;
+    right: 52px;
+    top: 12px;
+    width: 230px;
+    background: var(--bg-card);
+    border: 1px solid rgba(201,168,76,0.35);
+    border-radius: 4px;
+    padding: 16px;
+    z-index: 20;
+    display: none;
+}
+.carto-federal-panel-title {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    margin-bottom: 6px;
+}
+.carto-federal-panel-region {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    font-style: italic;
+}
+.carto-federal-field { margin-bottom: 10px; }
+.carto-federal-field label {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+}
+.carto-federal-field input[type="text"] {
+    width: 100%;
+    background: var(--bg-section);
+    border: 1px solid var(--gold-dark);
+    border-radius: 3px;
+    padding: 5px 8px;
+    font-size: 0.8rem;
+    color: var(--text-primary);
+    outline: none;
+    box-sizing: border-box;
+    font-family: var(--font-body);
+}
+.carto-federal-field input[type="color"] {
+    width: 100%;
+    height: 32px;
+    padding: 2px 4px;
+    background: var(--bg-section);
+    border: 1px solid var(--gold-dark);
+    border-radius: 3px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+.carto-federal-flag-preview {
+    width: 60px; height: 60px;
+    object-fit: cover;
+    border-radius: 3px;
+    margin-bottom: 6px;
+    display: none;
+}
+.carto-federal-merge-hint {
+    font-size: 0.7rem;
+    color: var(--gold);
+    min-height: 14px;
+    margin-top: 4px;
+}
+.carto-federal-actions { display: flex; gap: 6px; margin-top: 12px; }
+.carto-federal-panel-close {
+    position: absolute;
+    top: 8px; right: 10px;
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 2px 4px;
+    line-height: 1;
+}
+.carto-federal-panel-close:hover { color: var(--gold); }
+
+/* ── Relations panel (diplomacy / accords) ──────────── */
+.carto-relations-panel {
+    border-top: 1px solid rgba(201,168,76,0.2);
+    max-height: 260px;
+    overflow-y: auto;
+    padding: 0 16px 12px;
+    background: var(--bg-section);
+    display: none;
+}
+.relations-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0 8px;
+    position: sticky;
+    top: 0;
+    background: var(--bg-section);
+    border-bottom: 1px solid rgba(201,168,76,0.12);
+    z-index: 1;
+}
+.relations-panel-title {
+    font-family: var(--font-display);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    white-space: nowrap;
+}
+.relations-search {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--gold-dark);
+    border-radius: 3px;
+    padding: 4px 8px;
+    font-size: 0.78rem;
+    color: var(--text-primary);
+    outline: none;
+    font-family: var(--font-body);
+}
+.relations-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.relations-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.relations-name {
+    flex: 1;
+    font-size: 0.78rem;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.relations-toggle {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.relations-toggle input[type="radio"] { accent-color: var(--gold); cursor: pointer; }
