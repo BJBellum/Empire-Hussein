@@ -59,6 +59,7 @@ function initDashboard(user) {
     initGithub();
     loadGithubConfig();
     initCatalogueAdmin();
+    initCivilCatalogueAdmin();
     initCanalAdmin();
 }
 
@@ -2238,6 +2239,699 @@ function moveCatItem(id, direction) {
     _catItems.splice(newIdx, 0, item);
     setCatCache(_catItems);
     renderCatList();
+}
+
+/* ════════════════════════════════════════════
+   CATALOGUE CIVIL — ADMIN
+   ════════════════════════════════════════════ */
+const CIVIL_JSON_PATH   = 'data/catalogue-civil.json';
+const CIVIL_IMG_DIR     = 'assets/images/catalogue-civil';
+const CIVIL_CACHE_KEY   = 'empire_cat_civil_v1';
+const CIVIL_SHA_KEY     = 'empire_cat_civil_sha';
+
+const CIVIL_CATEGORY_LABELS = {
+    'matieres-premieres':     'Matières premières',
+    'hydrocarbures':          'Hydrocarbures',
+    'produits-agricoles':     'Produits agricoles',
+    'biens-manufactures':     'Biens manufacturés',
+    'equipements-industriels':'Équipements industriels',
+    'technologies':           'Technologies',
+    'batiments-commerciaux':  'Bâtiments commerciaux',
+    'infrastructures':        'Infrastructures',
+    'services-commerciaux':   'Services commerciaux'
+};
+
+const CIVIL_SUBTYPES = {
+    'matieres-premieres': [
+        'Minerai de fer', 'Minerai de cuivre', 'Minerai d\'aluminium',
+        'Acier', 'Ciment', 'Verre', 'Bois industriel', 'Caoutchouc',
+        'Sable siliceux', 'Minéral rare'
+    ],
+    'hydrocarbures': [
+        'Pétrole brut', 'Pétrole raffiné', 'Gaz naturel', 'Gaz liquéfié (GNL)',
+        'Charbon', 'Fioul lourd', 'Kérosène', 'Diesel', 'Essence'
+    ],
+    'produits-agricoles': [
+        'Céréales', 'Légumineuses', 'Fruits et légumes', 'Viande',
+        'Produits laitiers', 'Épices', 'Coton', 'Tabac', 'Sucre', 'Huile végétale'
+    ],
+    'biens-manufactures': [
+        'Textile', 'Produits chimiques', 'Produits pharmaceutiques',
+        'Matériaux de construction', 'Électronique grand public',
+        'Appareils électroménagers', 'Mobilier', 'Outillage'
+    ],
+    'equipements-industriels': [
+        'Machines-outils', 'Équipement de forage', 'Équipement minier',
+        'Matériel agricole', 'Matériel de chantier', 'Équipement portuaire',
+        'Générateurs', 'Pompes et turbines'
+    ],
+    'technologies': [
+        'Logiciel', 'Système de communication', 'Équipement radar civil',
+        'Système de navigation', 'Infrastructure réseau', 'Système énergétique',
+        'Automatisation industrielle', 'Intelligence artificielle'
+    ],
+    'batiments-commerciaux': [
+        'Immeuble de bureaux', 'Centre commercial', 'Entrepôt',
+        'Hôtel / Complexe hôtelier', 'Complexe industriel', 'Port commercial'
+    ],
+    'infrastructures': [
+        'Route / Autoroute', 'Pont', 'Tunnel', 'Voie ferrée',
+        'Aéroport', 'Port maritime', 'Barrage', 'Pipeline',
+        'Réseau électrique', 'Station de traitement'
+    ],
+    'services-commerciaux': [
+        'Service bancaire', 'Service logistique', 'Service de télécommunication',
+        'Service de conseil', 'Franchise commerciale', 'Service touristique'
+    ]
+};
+
+const CIVIL_PRESETS = {
+    'matieres-premieres': [
+        'Composition', 'Pureté / Grade', 'Unité de vente',
+        'Conditionnement', 'Région d\'extraction', 'Certification'
+    ],
+    'hydrocarbures': [
+        'Type', 'Densité API', 'Teneur en soufre', 'Point d\'ébullition',
+        'Unité de vente', 'Conditionnement', 'Région de production'
+    ],
+    'produits-agricoles': [
+        'Variété', 'Origine', 'Unité de vente', 'Conditionnement',
+        'Saisonnalité', 'Certification bio', 'Conservation'
+    ],
+    'biens-manufactures': [
+        'Matériau', 'Dimensions', 'Poids', 'Unité de vente',
+        'Conditionnement', 'Normes', 'Durée de vie'
+    ],
+    'equipements-industriels': [
+        'Puissance', 'Dimensions', 'Poids', 'Carburant / Énergie',
+        'Capacité', 'Normes de sécurité', 'Garantie'
+    ],
+    'technologies': [
+        'Version', 'Compatibilité', 'Licence', 'Support inclus',
+        'Déploiement', 'Langues supportées', 'Certifications'
+    ],
+    'batiments-commerciaux': [
+        'Surface totale', 'Nombre d\'étages', 'Capacité d\'accueil',
+        'Localisation', 'Année de construction', 'État'
+    ],
+    'infrastructures': [
+        'Longueur / Surface', 'Capacité', 'Matériaux',
+        'Durée de construction', 'Localisation', 'Normes applicables'
+    ],
+    'services-commerciaux': [
+        'Périmètre', 'Durée du contrat', 'Capacité de traitement',
+        'Zone géographique', 'Personnel inclus', 'Certifications'
+    ]
+};
+
+let _civilItems         = [];
+let _civilEditingId     = null;
+let _civilPendingImage  = null;
+let _civilDeleteTargetId = null;
+
+/* ── INIT ───────────────────────────────────── */
+function initCivilCatalogueAdmin() {
+    if (!document.getElementById('panel-cat-civil')) return;
+
+    document.getElementById('civil-categorie')?.addEventListener('change', onCivilCategoryChange);
+    document.getElementById('civil-form-save')?.addEventListener('click', () => saveCivilItem(false));
+    document.getElementById('civil-form-push')?.addEventListener('click', () => saveCivilItem(true));
+    document.getElementById('civil-form-reset')?.addEventListener('click', resetCivilForm);
+    document.getElementById('civil-specs-add')?.addEventListener('click', addCivilCustomSpecField);
+    document.getElementById('civil-img-btn')?.addEventListener('click', () =>
+        document.getElementById('civil-img-input')?.click());
+    document.getElementById('civil-img-input')?.addEventListener('change', handleCivilImageUpload);
+    document.getElementById('civil-img-clear')?.addEventListener('click', clearCivilImage);
+    document.getElementById('civil-sync-btn')?.addEventListener('click', () => loadCivilItemsFromGithub(true));
+    document.getElementById('civil-list-search')?.addEventListener('input', renderCivilList);
+    document.getElementById('civil-list-filter')?.addEventListener('change', renderCivilList);
+
+    // Populate niveau select
+    const nivSel = document.getElementById('civil-niveau');
+    if (nivSel && nivSel.options.length <= 1) {
+        Object.entries(CAT_NIV_LABELS).forEach(([n, label]) => {
+            const opt = document.createElement('option');
+            opt.value = n;
+            opt.textContent = label;
+            nivSel.appendChild(opt);
+        });
+    }
+
+    // Delete modal wiring
+    const delModal   = document.getElementById('civil-delete-modal');
+    const delCancel  = document.getElementById('btn-civil-delete-cancel');
+    const delConfirm = document.getElementById('btn-civil-delete-confirm');
+    const closeDel = () => {
+        if (delModal) delModal.style.display = 'none';
+        _civilDeleteTargetId = null;
+    };
+    delCancel?.addEventListener('click', closeDel);
+    delModal?.addEventListener('click', e => { if (e.target === delModal) closeDel(); });
+    delConfirm?.addEventListener('click', () => deleteCivilItem(_civilDeleteTargetId));
+
+    const cached = getCivilCache();
+    if (cached.items) {
+        _civilItems = cached.items;
+        renderCivilList();
+    } else {
+        renderCivilList();
+    }
+    loadCivilItemsFromGithub(false);
+}
+
+/* ── DATA LOADING ───────────────────────────── */
+function getCivilCache() {
+    try {
+        return JSON.parse(localStorage.getItem(CIVIL_CACHE_KEY) || '{}');
+    } catch { return {}; }
+}
+
+function setCivilCache(items) {
+    localStorage.setItem(CIVIL_CACHE_KEY, JSON.stringify({ items, ts: Date.now() }));
+}
+
+async function loadCivilItemsFromGithub(showToastOnSuccess) {
+    const cfg = getGithubConfig();
+    try {
+        let data, sha = null;
+        if (cfg && cfg.repo && cfg.pat) {
+            const res = await fetch(
+                `https://api.github.com/repos/${cfg.repo}/contents/${CIVIL_JSON_PATH}?ref=${cfg.branch || 'main'}`,
+                { headers: { Authorization: `token ${cfg.pat}`, Accept: 'application/vnd.github.v3+json' } }
+            );
+            if (!res.ok) throw new Error((await res.json()).message || 'Erreur GitHub');
+            const payload = await res.json();
+            sha = payload.sha;
+            const raw = atob(payload.content.replace(/\n/g, ''));
+            data = JSON.parse(decodeURIComponent(escape(raw)));
+            localStorage.setItem(CIVIL_SHA_KEY, sha);
+        } else {
+            const res = await fetch('../data/catalogue-civil.json' + '?t=' + Date.now());
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            data = await res.json();
+        }
+        _civilItems = Array.isArray(data) ? data : [];
+        setCivilCache(_civilItems);
+        renderCivilList();
+        if (showToastOnSuccess) showToast(`Inventaire civil chargé — ${_civilItems.length} ressource(s)`);
+    } catch (err) {
+        const listEl = document.getElementById('civil-admin-list');
+        if (listEl && _civilItems.length === 0) {
+            listEl.innerHTML = `<div class="cat-admin-empty">Erreur de chargement : ${escapeHtml(err.message)}</div>`;
+        }
+        if (showToastOnSuccess) showToast(`Erreur : ${err.message}`);
+    }
+}
+
+/* ── FORM : CATEGORY CHANGE ─────────────────── */
+function onCivilCategoryChange() {
+    const cat = document.getElementById('civil-categorie').value;
+    renderCivilSubtypeOptions(cat);
+    renderCivilSpecFields(cat);
+}
+
+function renderCivilSubtypeOptions(cat, selectedVal = '') {
+    const sel = document.getElementById('civil-soustype');
+    if (!sel) return;
+    sel.innerHTML = '<option value="">— Aucun —</option>';
+    if (!cat) {
+        sel.innerHTML = '<option value="">— Choisir une catégorie d\'abord —</option>';
+        return;
+    }
+    const list = CIVIL_SUBTYPES[cat] || [];
+    list.forEach(s => {
+        const o = document.createElement('option');
+        o.value = s;
+        o.textContent = s;
+        if (s === selectedVal) o.selected = true;
+        sel.appendChild(o);
+    });
+    if (selectedVal && !list.includes(selectedVal)) {
+        const o = document.createElement('option');
+        o.value = selectedVal;
+        o.textContent = selectedVal;
+        o.selected = true;
+        sel.appendChild(o);
+    }
+    const customOpt = document.createElement('option');
+    customOpt.value = '__custom__';
+    customOpt.textContent = '+ Autre (texte libre)…';
+    sel.appendChild(customOpt);
+}
+
+function renderCivilSpecFields(cat, existingSpecs = null) {
+    const container = document.getElementById('civil-specs-fields');
+    const hint = document.getElementById('civil-specs-hint');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const preset = CIVIL_PRESETS[cat];
+    if (!preset) {
+        if (hint) hint.style.display = 'block';
+        return;
+    }
+    if (hint) hint.style.display = 'none';
+
+    preset.forEach(key => {
+        container.appendChild(buildCivilSpecRow(key, existingSpecs?.[key] || '', false));
+    });
+
+    if (existingSpecs) {
+        Object.entries(existingSpecs).forEach(([k, v]) => {
+            if (!preset.includes(k)) {
+                container.appendChild(buildCivilSpecRow(k, v, true));
+            }
+        });
+    }
+}
+
+function buildCivilSpecRow(key, value, editableKey) {
+    const row = document.createElement('div');
+    row.className = 'cat-spec-row' + (editableKey ? ' cat-spec-row--custom' : '');
+    row.innerHTML = `
+        ${editableKey
+            ? `<input class="form-input cat-spec-key" type="text" placeholder="Nom du champ" value="${escapeHtml(key)}">`
+            : `<label class="cat-spec-label">${escapeHtml(key)}</label>`}
+        <input class="form-input cat-spec-val" type="text" placeholder="Valeur" value="${escapeHtml(value)}">
+        ${editableKey ? `<button type="button" class="btn-icon cat-spec-remove" title="Retirer"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5"/></svg></button>` : ''}
+    `;
+    if (editableKey) {
+        row.querySelector('.cat-spec-remove').addEventListener('click', () => row.remove());
+    }
+    return row;
+}
+
+function addCivilCustomSpecField() {
+    const container = document.getElementById('civil-specs-fields');
+    if (!container) return;
+    container.appendChild(buildCivilSpecRow('', '', true));
+}
+
+/* ── IMAGE UPLOAD (2:1 crop) ────────────────── */
+function handleCivilImageUpload(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = ev => {
+        const img = new Image();
+        img.onload = () => {
+            const { dataUrl } = cropTo2x1(img);
+            _civilPendingImage = {
+                dataUrl,
+                base64: dataUrl.split(',')[1],
+                filename: slugify(file.name).replace(/\.[^.]+$/, '') + '-' + Date.now() + '.jpg'
+            };
+            updateCivilImagePreview(dataUrl);
+        };
+        img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+}
+
+function updateCivilImagePreview(dataUrl) {
+    const preview = document.getElementById('civil-img-preview');
+    const clearBtn = document.getElementById('civil-img-clear');
+    if (!preview) return;
+    if (dataUrl) {
+        preview.innerHTML = `<img src="${dataUrl}" alt="Aperçu" style="width:100%;height:100%;object-fit:cover;">`;
+        preview.classList.add('has-image');
+        if (clearBtn) clearBtn.style.display = 'inline-flex';
+    } else {
+        preview.innerHTML = `
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                <path d="M8 44V20l16-14 16 14v24H8z"/>
+                <rect x="18" y="30" width="12" height="14"/>
+                <rect x="14" y="22" width="8" height="8"/>
+                <rect x="26" y="22" width="8" height="8"/>
+            </svg>
+            <span class="cat-img-placeholder">Aucune image</span>`;
+        preview.classList.remove('has-image');
+        if (clearBtn) clearBtn.style.display = 'none';
+    }
+}
+
+function clearCivilImage() {
+    _civilPendingImage = null;
+    document.getElementById('civil-image-path').value = '';
+    updateCivilImagePreview(null);
+}
+
+/* ── FORM : READ + SAVE ─────────────────────── */
+function collectCivilFormItem() {
+    const id = _civilEditingId || 'civil_' + Date.now();
+    const specs = {};
+    document.querySelectorAll('#civil-specs-fields .cat-spec-row').forEach(row => {
+        const keyEl = row.querySelector('.cat-spec-key');
+        const labelEl = row.querySelector('.cat-spec-label');
+        const valEl = row.querySelector('.cat-spec-val');
+        const key = keyEl ? keyEl.value.trim() : (labelEl ? labelEl.textContent.trim() : '');
+        const val = valEl ? valEl.value.trim() : '';
+        if (key && val) specs[key] = val;
+    });
+
+    let sousType = document.getElementById('civil-soustype').value;
+    if (sousType === '__custom__') {
+        sousType = prompt('Sous-type personnalisé :') || '';
+    }
+
+    const nivRaw = document.getElementById('civil-niveau').value;
+
+    return {
+        id,
+        nom:           document.getElementById('civil-nom').value.trim(),
+        categorie:     document.getElementById('civil-categorie').value,
+        soustype:      sousType,
+        niveau:        nivRaw ? parseInt(nivRaw, 10) : null,
+        fabricant:     document.getElementById('civil-fabricant').value.trim(),
+        cout_unite:    document.getElementById('civil-cout').value.trim(),
+        inspiration:   document.getElementById('civil-inspiration').value.trim(),
+        disponibilite: document.getElementById('civil-disponibilite').value.trim(),
+        specs,
+        image_path:    document.getElementById('civil-image-path').value.trim() || null
+    };
+}
+
+async function saveCivilItem(pushToGh) {
+    const item = collectCivilFormItem();
+    if (!item.nom) { showToast('Le nom est requis'); return; }
+    if (!item.categorie) { showToast('La catégorie est requise'); return; }
+
+    const saveBtn = document.getElementById('civil-form-save');
+    const pushBtn = document.getElementById('civil-form-push');
+    const statusEl = document.getElementById('civil-push-status');
+    if (saveBtn) saveBtn.disabled = true;
+    if (pushBtn) pushBtn.disabled = true;
+
+    try {
+        if (pushToGh && _civilPendingImage) {
+            showCivilPushStatus('Téléversement de l\'image…', null, statusEl);
+            const path = await uploadCivilImage(_civilPendingImage);
+            item.image_path = path;
+            _civilPendingImage = null;
+        } else if (_civilPendingImage) {
+            item.image_path = _civilPendingImage.dataUrl;
+        }
+
+        const idx = _civilItems.findIndex(i => i.id === item.id);
+        if (idx >= 0) _civilItems[idx] = item;
+        else _civilItems.push(item);
+        setCivilCache(_civilItems);
+
+        if (pushToGh) {
+            showCivilPushStatus('Envoi de l\'inventaire…', null, statusEl);
+            await pushCivilJson(`Update catalogue civil: ${item.nom}`);
+            showCivilPushStatus(`Ressource « ${item.nom} » poussée sur GitHub`, true, statusEl);
+            showToast(`« ${item.nom} » poussé sur GitHub`);
+        } else {
+            showToast(`« ${item.nom} » enregistré localement`);
+        }
+
+        resetCivilForm();
+        renderCivilList();
+    } catch (err) {
+        showCivilPushStatus(`Erreur : ${err.message}`, false, statusEl);
+        showToast(`Erreur : ${err.message}`);
+    } finally {
+        if (saveBtn) saveBtn.disabled = false;
+        if (pushBtn) pushBtn.disabled = false;
+    }
+}
+
+async function uploadCivilImage(pending) {
+    const cfg = getGithubConfig();
+    if (!cfg || !cfg.repo || !cfg.pat) throw new Error('Configuration GitHub requise pour l\'upload d\'image');
+
+    const path = `${CIVIL_IMG_DIR}/${pending.filename}`;
+    const res = await fetch(
+        `https://api.github.com/repos/${cfg.repo}/contents/${path}`,
+        {
+            method: 'PUT',
+            headers: {
+                Authorization: `token ${cfg.pat}`,
+                Accept:        'application/vnd.github.v3+json',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                message: `Add catalogue civil image: ${pending.filename}`,
+                content: pending.base64,
+                branch:  cfg.branch || 'main'
+            })
+        }
+    );
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Erreur upload image');
+    return path;
+}
+
+async function pushCivilJson(commitMessage) {
+    const cfg = getGithubConfig();
+    if (!cfg || !cfg.repo || !cfg.pat) throw new Error('Configuration GitHub requise');
+
+    let sha = localStorage.getItem(CIVIL_SHA_KEY);
+    try {
+        const probe = await fetch(
+            `https://api.github.com/repos/${cfg.repo}/contents/${CIVIL_JSON_PATH}?ref=${cfg.branch || 'main'}`,
+            { headers: { Authorization: `token ${cfg.pat}`, Accept: 'application/vnd.github.v3+json' } }
+        );
+        if (probe.ok) {
+            sha = (await probe.json()).sha;
+            localStorage.setItem(CIVIL_SHA_KEY, sha);
+        }
+    } catch {}
+
+    const json = JSON.stringify(_civilItems, null, 2);
+    const body = {
+        message: commitMessage,
+        content: btoa(unescape(encodeURIComponent(json))),
+        branch:  cfg.branch || 'main'
+    };
+    if (sha) body.sha = sha;
+
+    const res = await fetch(
+        `https://api.github.com/repos/${cfg.repo}/contents/${CIVIL_JSON_PATH}`,
+        {
+            method: 'PUT',
+            headers: {
+                Authorization: `token ${cfg.pat}`,
+                Accept:        'application/vnd.github.v3+json',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(body)
+        }
+    );
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Erreur push JSON');
+    if (data.content?.sha) localStorage.setItem(CIVIL_SHA_KEY, data.content.sha);
+}
+
+function showCivilPushStatus(msg, ok, el) {
+    if (!el) return;
+    el.style.display = 'block';
+    el.className = 'github-status' + (ok === true ? ' github-status--ok' : ok === false ? ' github-status--err' : '');
+    el.textContent = msg;
+}
+
+/* ── FORM : RESET + EDIT ────────────────────── */
+function resetCivilForm() {
+    _civilEditingId = null;
+    _civilPendingImage = null;
+    document.getElementById('civil-form-title').textContent = 'NOUVELLE RESSOURCE';
+    document.getElementById('civil-nom').value = '';
+    document.getElementById('civil-categorie').value = '';
+    document.getElementById('civil-niveau').value = '';
+    document.getElementById('civil-fabricant').value = '';
+    document.getElementById('civil-cout').value = '';
+    document.getElementById('civil-inspiration').value = '';
+    document.getElementById('civil-disponibilite').value = '';
+    document.getElementById('civil-image-path').value = '';
+    renderCivilSubtypeOptions('');
+    renderCivilSpecFields('');
+    updateCivilImagePreview(null);
+    const st = document.getElementById('civil-push-status');
+    if (st) st.style.display = 'none';
+}
+
+function editCivilItem(id) {
+    const item = _civilItems.find(i => i.id === id);
+    if (!item) return;
+    _civilEditingId = item.id;
+
+    document.getElementById('civil-form-title').textContent = `MODIFIER — ${item.nom}`;
+    document.getElementById('civil-nom').value = item.nom || '';
+    document.getElementById('civil-categorie').value = item.categorie || '';
+    document.getElementById('civil-niveau').value = item.niveau || '';
+    document.getElementById('civil-fabricant').value = item.fabricant || '';
+    document.getElementById('civil-cout').value = item.cout_unite || '';
+    document.getElementById('civil-inspiration').value = item.inspiration || '';
+    document.getElementById('civil-disponibilite').value = item.disponibilite || '';
+    document.getElementById('civil-image-path').value = item.image_path || '';
+
+    renderCivilSubtypeOptions(item.categorie || '', item.soustype || '');
+    renderCivilSpecFields(item.categorie || '', item.specs || {});
+
+    _civilPendingImage = null;
+    if (item.image_path) {
+        updateCivilImagePreview(item.image_path);
+    } else {
+        updateCivilImagePreview(null);
+    }
+
+    document.querySelector('.dashboard-main')?.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function openCivilDeleteModal(id, name) {
+    _civilDeleteTargetId = id;
+    const modal = document.getElementById('civil-delete-modal');
+    const text = document.getElementById('civil-delete-text');
+    if (text) text.textContent = `Supprimer « ${name} » ?`;
+    if (modal) modal.style.display = 'flex';
+}
+
+async function deleteCivilItem(id) {
+    if (!id) return;
+    const modal = document.getElementById('civil-delete-modal');
+    const item = _civilItems.find(i => i.id === id);
+    if (!item) { if (modal) modal.style.display = 'none'; return; }
+
+    const confirmBtn = document.getElementById('btn-civil-delete-confirm');
+    if (confirmBtn) confirmBtn.disabled = true;
+
+    try {
+        _civilItems = _civilItems.filter(i => i.id !== id);
+        setCivilCache(_civilItems);
+
+        const cfg = getGithubConfig();
+        if (cfg && cfg.repo && cfg.pat) {
+            await pushCivilJson(`Remove catalogue civil: ${item.nom}`);
+            showToast(`« ${item.nom} » supprimé (local + GitHub)`);
+        } else {
+            showToast(`« ${item.nom} » supprimé localement`);
+        }
+        renderCivilList();
+        if (_civilEditingId === id) resetCivilForm();
+    } catch (err) {
+        showToast(`Erreur suppression : ${err.message}`);
+    } finally {
+        if (confirmBtn) confirmBtn.disabled = false;
+        if (modal) modal.style.display = 'none';
+        _civilDeleteTargetId = null;
+    }
+}
+
+/* ── LIST RENDER ────────────────────────────── */
+function renderCivilList() {
+    const listEl = document.getElementById('civil-admin-list');
+    const countEl = document.getElementById('civil-list-count');
+    if (!listEl) return;
+
+    if (countEl) countEl.textContent = _civilItems.length;
+
+    const filterCat = document.getElementById('civil-list-filter')?.value || 'all';
+    const search = (document.getElementById('civil-list-search')?.value || '').trim().toLowerCase();
+
+    let items = [..._civilItems];
+    if (filterCat !== 'all') items = items.filter(i => i.categorie === filterCat);
+    if (search) {
+        items = items.filter(i =>
+            [i.nom, i.soustype, i.fabricant, i.inspiration].filter(Boolean)
+                .join(' ').toLowerCase().includes(search)
+        );
+    }
+
+    if (items.length === 0) {
+        listEl.innerHTML = `<div class="cat-admin-empty">Aucune ressource à afficher.</div>`;
+        return;
+    }
+
+    listEl.innerHTML = items.map(item => {
+        const catLabel = CIVIL_CATEGORY_LABELS[item.categorie] || item.categorie || '';
+        const niv = item.niveau ? `NIV ${CAT_NIV_LABELS[item.niveau]?.split(' ')[0] || item.niveau}` : '';
+        const imgBlock = item.image_path
+            ? `<img src="${escapeHtml(item.image_path)}" alt="" loading="lazy" onerror="this.style.display='none'">`
+            : `<div class="cat-admin-item-noimg">—</div>`;
+        return `
+            <div class="cat-admin-item" data-id="${escapeHtml(item.id)}">
+                <div class="cat-admin-item-img">${imgBlock}</div>
+                <div class="cat-admin-item-body">
+                    <div class="cat-admin-item-head">
+                        <h4 class="cat-admin-item-name">${escapeHtml(item.nom || '')}</h4>
+                        ${niv ? `<span class="cat-admin-item-niv">${escapeHtml(niv)}</span>` : ''}
+                    </div>
+                    <div class="cat-admin-item-meta">
+                        <span>${escapeHtml(catLabel)}</span>
+                        ${item.soustype ? `<span>·</span><span>${escapeHtml(item.soustype)}</span>` : ''}
+                        ${item.fabricant ? `<span>·</span><span>${escapeHtml(item.fabricant)}</span>` : ''}
+                    </div>
+                </div>
+                <div class="cat-admin-item-actions">
+                    <button class="btn-icon civil-move-up" title="Monter (double-clic = en tête)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 5v14M5 12l7-7 7 7"/>
+                        </svg>
+                    </button>
+                    <button class="btn-icon civil-move-down" title="Descendre (double-clic = en fin)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 5v14M5 12l7 7 7-7"/>
+                        </svg>
+                    </button>
+                    <button class="btn-icon civil-edit" title="Modifier">
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 14l2-5L11 2.5l3 3L9 12.5 2 14z"/>
+                            <path d="M9 4l3 3"/>
+                        </svg>
+                    </button>
+                    <button class="btn-icon civil-del" title="Supprimer">
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                            <path d="M3 4h10M6 4V3a1 1 0 011-1h2a1 1 0 011 1v1M5 4l1 9a1 1 0 001 1h2a1 1 0 001-1l1-9"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    listEl.querySelectorAll('.cat-admin-item').forEach(el => {
+        const id = el.dataset.id;
+        const item = _civilItems.find(i => i.id === id);
+        el.querySelector('.civil-edit')?.addEventListener('click', () => editCivilItem(id));
+        el.querySelector('.civil-del')?.addEventListener('click', () => openCivilDeleteModal(id, item?.nom || ''));
+        attachCivilMoveBtn(el.querySelector('.civil-move-up'),   id, 'up');
+        attachCivilMoveBtn(el.querySelector('.civil-move-down'), id, 'down');
+    });
+}
+
+function attachCivilMoveBtn(btn, id, dir) {
+    if (!btn) return;
+    let timer = null;
+    btn.addEventListener('click', () => {
+        if (timer !== null) return;
+        timer = setTimeout(() => {
+            timer = null;
+            moveCivilItem(id, dir);
+        }, 220);
+    });
+    btn.addEventListener('dblclick', () => {
+        clearTimeout(timer);
+        timer = null;
+        moveCivilItem(id, dir === 'up' ? 'top' : 'bottom');
+    });
+}
+
+function moveCivilItem(id, direction) {
+    const idx = _civilItems.findIndex(i => i.id === id);
+    if (idx === -1) return;
+    let newIdx;
+    if      (direction === 'up')   newIdx = Math.max(0, idx - 1);
+    else if (direction === 'down') newIdx = Math.min(_civilItems.length - 1, idx + 1);
+    else if (direction === 'top')  newIdx = 0;
+    else                           newIdx = _civilItems.length - 1;
+    if (newIdx === idx) return;
+    const [item] = _civilItems.splice(idx, 1);
+    _civilItems.splice(newIdx, 0, item);
+    setCivilCache(_civilItems);
+    renderCivilList();
 }
 
 /* ════════════════════════════════════════════

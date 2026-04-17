@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Catalogue civil de l'Empire Hussein — inventaire des ressources, biens et infrastructures">
+    <title>Catalogue civil — Empire Hussein</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" type="image/png" href="../assets/Hussein Empire Coat of Arms.png">
+    <!-- Clean URL: retire .html de la barre d'adresse instantanément -->
+    <script>if(location.pathname.endsWith('.html'))history.replaceState(null,'',location.pathname.replace('.html',''));</script>
+</head>
+<body class="page-catalogue">
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- HEADER / NAVIGATION                     -->
+    <!-- ═══════════════════════════════════════ -->
+    <header id="header" class="header--solid">
+        <div class="header-inner">
+            <nav class="nav-links">
+                <a href="../" class="nav-link">
+                    <span class="nav-link-text">ACCUEIL</span>
+                    <span class="nav-link-line"></span>
+                </a>
+                <a href="economie.html" class="nav-link">
+                    <span class="nav-link-text">ECONOMIE</span>
+                    <span class="nav-link-line"></span>
+                </a>
+                <a href="catalogues.html" class="nav-link nav-link--active">
+                    <span class="nav-link-text">CATALOGUES</span>
+                    <span class="nav-link-line"></span>
+                </a>
+                <a href="energie.html" class="nav-link">
+                    <span class="nav-link-text">ENERGIE</span>
+                    <span class="nav-link-line"></span>
+                </a>
+                <a href="forces-armees.html" class="nav-link nav-link--locked" id="nav-forces">
+                    <span class="nav-link-text">FORCES ARMEES</span>
+                    <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0110 0v4"/>
+                    </svg>
+                    <span class="nav-link-line"></span>
+                </a>
+                <button class="btn-discord" id="btn-discord" aria-label="Connexion Discord">
+                    <svg class="discord-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286z"/>
+                    </svg>
+                    <span class="btn-discord-text">CONNEXION</span>
+                </button>
+            </nav>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile nav overlay -->
+    <div class="mobile-nav" id="mobile-nav">
+        <a href="../" class="mobile-nav-link">ACCUEIL</a>
+        <a href="economie.html" class="mobile-nav-link">ECONOMIE</a>
+        <a href="catalogues.html" class="mobile-nav-link mobile-nav-link--active">CATALOGUES</a>
+        <a href="energie.html" class="mobile-nav-link">ENERGIE</a>
+        <a href="forces-armees.html" class="mobile-nav-link mobile-nav-link--locked" id="nav-forces-mobile">FORCES ARMEES
+            <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0110 0v4"/>
+            </svg>
+        </a>
+        <button class="btn-discord btn-discord--mobile" id="btn-discord-mobile" aria-label="Connexion Discord">
+            <svg class="discord-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286z"/>
+            </svg>
+            <span>CONNEXION</span>
+        </button>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- HEADER DE PAGE                          -->
+    <!-- ═══════════════════════════════════════ -->
+    <section class="cat-header">
+        <div class="container">
+            <div class="cat-header-badge">CATALOGUE CIVIL</div>
+            <h1 class="cat-header-title">RESSOURCES IMPERIALES</h1>
+            <p class="cat-header-sub">
+                Inventaire des ressources, biens manufacturés, infrastructures et services
+                disponibles à l'exportation sous l'autorité de l'Empire Hussein.
+            </p>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- LAYOUT                                  -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="cat-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="cat-sidebar">
+            <button class="cat-sidebar-toggle" id="cat-sidebar-toggle">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M2 4h12M2 8h12M2 12h12" stroke-linecap="round"/>
+                </svg>
+                FILTRER LES RESSOURCES
+            </button>
+
+            <div class="cat-sidebar-body" id="cat-sidebar-body">
+                <div class="cat-search">
+                    <svg class="cat-search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="7" cy="7" r="5"/>
+                        <path d="M14 14l-3-3" stroke-linecap="round"/>
+                    </svg>
+                    <input type="text" class="cat-search-input" id="cat-search" placeholder="Rechercher une ressource…" autocomplete="off">
+                </div>
+
+                <button class="cat-filter cat-filter-all active" data-filter="all">
+                    TOUTES LES RESSOURCES
+                    <span class="cat-filter-count" id="count-all">0</span>
+                </button>
+
+                <div class="cat-group">
+                    <span class="cat-group-label">RESSOURCES NATURELLES</span>
+                    <button class="cat-filter" data-filter="matieres-premieres">
+                        MATIERES PREMIERES
+                        <span class="cat-filter-count" data-count="matieres-premieres">0</span>
+                    </button>
+                    <button class="cat-filter" data-filter="hydrocarbures">
+                        HYDROCARBURES
+                        <span class="cat-filter-count" data-count="hydrocarbures">0</span>
+                    </button>
+                    <button class="cat-filter" data-filter="produits-agricoles">
+                        PRODUITS AGRICOLES
+                        <span class="cat-filter-count" data-count="produits-agricoles">0</span>
+                    </button>
+                </div>
+
+                <div class="cat-group">
+                    <span class="cat-group-label">INDUSTRIE</span>
+                    <button class="cat-filter" data-filter="biens-manufactures">
+                        BIENS MANUFACTURES
+                        <span class="cat-filter-count" data-count="biens-manufactures">0</span>
+                    </button>
+                    <button class="cat-filter" data-filter="equipements-industriels">
+                        EQUIPEMENTS INDUSTRIELS
+                        <span class="cat-filter-count" data-count="equipements-industriels">0</span>
+                    </button>
+                    <button class="cat-filter" data-filter="technologies">
+                        TECHNOLOGIES
+                        <span class="cat-filter-count" data-count="technologies">0</span>
+                    </button>
+                </div>
+
+                <div class="cat-group">
+                    <span class="cat-group-label">IMMOBILIER</span>
+                    <button class="cat-filter" data-filter="batiments-commerciaux">
+                        BATIMENTS COMMERCIAUX
+                        <span class="cat-filter-count" data-count="batiments-commerciaux">0</span>
+                    </button>
+                    <button class="cat-filter" data-filter="infrastructures">
+                        INFRASTRUCTURES
+                        <span class="cat-filter-count" data-count="infrastructures">0</span>
+                    </button>
+                </div>
+
+                <div class="cat-group">
+                    <span class="cat-group-label">SERVICES</span>
+                    <button class="cat-filter" data-filter="services-commerciaux">
+                        SERVICES COMMERCIAUX
+                        <span class="cat-filter-count" data-count="services-commerciaux">0</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="cat-main">
+            <div class="cat-results-header">
+                <h2 class="cat-results-title" id="cat-results-title">TOUTES LES RESSOURCES</h2>
+                <span class="cat-results-count" id="cat-results-count">0 ressource</span>
+            </div>
+
+            <div class="cat-loading" id="cat-loading">Chargement des ressources…</div>
+
+            <div class="cat-items" id="cat-items" style="display:none;"></div>
+
+            <div class="cat-empty-state" id="cat-empty" style="display:none;">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                    <path d="M8 44V20l16-14 16 14v24H8z"/>
+                    <rect x="18" y="30" width="12" height="14"/>
+                    <rect x="14" y="22" width="8" height="8"/>
+                    <rect x="26" y="22" width="8" height="8"/>
+                </svg>
+                <div class="cat-empty-state-title">AUCUNE RESSOURCE</div>
+                <p>Aucune ressource ne correspond à votre recherche.</p>
+            </div>
+        </main>
+
+        <!-- PANIER -->
+        <aside class="cat-cart" id="cat-cart" aria-label="Panier de sélection">
+            <div class="cat-cart-header">
+                <!-- icones.js.org — tabler:shopping-cart -->
+                <svg class="cat-cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19a2 2 0 1 0 4 0a2 2 0 1 0-4 0m11 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0"/>
+                    <path d="M17 17H6V3H4"/>
+                    <path d="m6 5l14 1l-1 7H6"/>
+                </svg>
+                <span class="cat-cart-title">PANIER</span>
+                <span class="cat-cart-count" id="cat-cart-count">0</span>
+            </div>
+
+            <div class="cat-cart-country">
+                <label class="cat-cart-country-label" for="cat-cart-country-input">NOM DU PAYS</label>
+                <input type="text" id="cat-cart-country-input" class="cat-cart-country-input" placeholder="Entrez le nom de votre pays…" autocomplete="off">
+            </div>
+
+            <div class="cat-cart-select">
+                <label class="cat-cart-country-label" for="cat-cart-item-select">AJOUTER UNE RESSOURCE</label>
+                <div class="cat-cart-select-row">
+                    <div class="cat-cart-select-wrap">
+                        <select id="cat-cart-item-select" class="cat-cart-item-select">
+                            <option value="">— Sélectionner —</option>
+                        </select>
+                    </div>
+                    <button class="cat-cart-select-add" id="cat-cart-select-add" type="button" aria-label="Ajouter au panier">
+                        <!-- icones.js.org — tabler:plus -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 5v14m-7-7h14"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="cat-cart-body" id="cat-cart-body">
+                <div class="cat-cart-empty" id="cat-cart-empty">
+                    Aucune ressource<br>sélectionnée.
+                </div>
+                <ul class="cat-cart-items" id="cat-cart-items"></ul>
+            </div>
+
+            <div class="cat-cart-footer">
+                <div class="cat-cart-total-row">
+                    <span class="cat-cart-total-label">TOTAL</span>
+                    <span class="cat-cart-total" id="cat-cart-total">$0</span>
+                </div>
+                <button class="cat-cart-checkout" id="cat-cart-checkout" type="button" disabled>
+                    <!-- icones.js.org — tabler:check -->
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12l5 5L20 7"/>
+                    </svg>
+                    <span id="cat-checkout-label">VALIDER LA COMMANDE</span>
+                </button>
+                <button class="cat-cart-clear" id="cat-cart-clear" type="button" disabled>
+                    <!-- icones.js.org — tabler:trash -->
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/>
+                    </svg>
+                    VIDER LE PANIER
+                </button>
+            </div>
+        </aside>
+
+        <!-- FAB panier mobile -->
+        <button class="cat-cart-fab" id="cat-cart-fab" type="button" aria-label="Ouvrir le panier">
+            <!-- icones.js.org — tabler:shopping-cart -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19a2 2 0 1 0 4 0a2 2 0 1 0-4 0m11 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0"/>
+                <path d="M17 17H6V3H4"/>
+                <path d="m6 5l14 1l-1 7H6"/>
+            </svg>
+            <span class="cat-cart-fab-count" id="cat-cart-fab-count">0</span>
+        </button>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- FOOTER                                  -->
+    <!-- ═══════════════════════════════════════ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <span class="footer-logo">EMPIRE HUSSEIN</span>
+                <span class="footer-text">Sous l'autorité éternelle du Lisan Al-Gaib</span>
+                <span class="footer-copy">&copy; Empire Hussein &mdash; Tous droits réservés</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast notification -->
+    <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+    <!-- Discord user badge (shown when logged in) -->
+    <div class="user-badge" id="user-badge" style="display:none;">
+        <img class="user-badge-avatar" id="user-avatar" alt="Avatar" width="32" height="32">
+        <span class="user-badge-name" id="user-name"></span>
+        <a class="user-badge-dashboard" id="btn-dashboard" href="dashboard.html" style="display:none;" aria-label="Tableau de bord">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15">
+                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                <rect x="14" y="3" width="7" height="7" rx="1"/>
+                <rect x="14" y="14" width="7" height="7" rx="1"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"/>
+            </svg>
+        </a>
+        <button class="user-badge-logout" id="btn-logout" aria-label="Déconnexion">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/>
+            </svg>
+        </button>
+    </div>
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/catalogue-civil.js"></script>
+</body>
+</html>

@@ -501,15 +501,160 @@
                 <!-- CATALOGUE CIVIL           -->
                 <!-- ══════════════════════════ -->
                 <div class="panel hidden" id="panel-cat-civil">
-                    <div class="placeholder-section">
-                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
-                            <path d="M8 44V20l16-14 16 14v24H8z"/>
-                            <rect x="18" y="30" width="12" height="14"/>
-                            <rect x="14" y="22" width="8" height="8"/>
-                            <rect x="26" y="22" width="8" height="8"/>
-                        </svg>
-                        <h2 class="placeholder-title">CATALOGUE CIVIL</h2>
-                        <p class="placeholder-text">Registre des infrastructures civiles, bâtiments administratifs et propriétés de l'Empire Hussein. Section en construction.</p>
+                    <div class="cat-admin-layout">
+
+                        <!-- FORMULAIRE -->
+                        <section class="cat-admin-section" id="civil-form-section">
+                            <div class="cat-admin-section-head">
+                                <h3 class="cat-admin-section-title" id="civil-form-title">NOUVELLE RESSOURCE</h3>
+                                <button class="btn-secondary" id="civil-form-reset" type="button">Annuler</button>
+                            </div>
+                            <p class="cat-admin-section-desc">Ajoutez, modifiez ou poussez une ressource vers GitHub. L'image est automatiquement redimensionnée au ratio 2:1.</p>
+
+                            <!-- Upload image 2:1 -->
+                            <div class="form-group">
+                                <label class="form-label">Image (ratio 2:1)</label>
+                                <div class="cat-img-uploader">
+                                    <div class="cat-img-preview" id="civil-img-preview">
+                                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                                            <path d="M8 44V20l16-14 16 14v24H8z"/>
+                                            <rect x="18" y="30" width="12" height="14"/>
+                                            <rect x="14" y="22" width="8" height="8"/>
+                                            <rect x="26" y="22" width="8" height="8"/>
+                                        </svg>
+                                        <span class="cat-img-placeholder">Aucune image</span>
+                                    </div>
+                                    <div class="cat-img-actions">
+                                        <input type="file" id="civil-img-input" accept="image/*" style="display:none;">
+                                        <button type="button" class="btn-secondary" id="civil-img-btn">Choisir une image…</button>
+                                        <button type="button" class="btn-secondary" id="civil-img-clear" style="display:none;">Retirer</button>
+                                        <small class="form-hint">L'image est recadrée au centre en 2:1 avant envoi. Formats : JPG, PNG, WebP.</small>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="civil-image-path">
+                            </div>
+
+                            <!-- Infos générales -->
+                            <div class="cat-form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Nom</label>
+                                    <input class="form-input" type="text" id="civil-nom" placeholder="Ex: Pétrole brut Grade A" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Catégorie</label>
+                                    <select class="form-input" id="civil-categorie">
+                                        <option value="">— Choisir —</option>
+                                        <option value="matieres-premieres">Matières premières</option>
+                                        <option value="hydrocarbures">Hydrocarbures</option>
+                                        <option value="produits-agricoles">Produits agricoles</option>
+                                        <option value="biens-manufactures">Biens manufacturés</option>
+                                        <option value="equipements-industriels">Équipements industriels</option>
+                                        <option value="technologies">Technologies</option>
+                                        <option value="batiments-commerciaux">Bâtiments commerciaux</option>
+                                        <option value="infrastructures">Infrastructures</option>
+                                        <option value="services-commerciaux">Services commerciaux</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Sous-type</label>
+                                    <select class="form-input" id="civil-soustype">
+                                        <option value="">— Choisir une catégorie d'abord —</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Niveau technologique</label>
+                                    <select class="form-input" id="civil-niveau">
+                                        <option value="">— Niveau —</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Origine / Fabricant</label>
+                                    <input class="form-input" type="text" id="civil-fabricant" placeholder="Empire Hussein" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Coût unitaire (§)</label>
+                                    <input class="form-input" type="text" id="civil-cout" placeholder="50000" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Référence</label>
+                                    <input class="form-input" type="text" id="civil-inspiration" placeholder="Référence internationale" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Disponibilité</label>
+                                    <input class="form-input" type="text" id="civil-disponibilite" placeholder="Immédiat" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <!-- Fiche technique (champs dynamiques) -->
+                            <div class="cat-specs-block">
+                                <h4 class="cat-specs-title">FICHE TECHNIQUE</h4>
+                                <p class="cat-specs-hint" id="civil-specs-hint">Sélectionnez une catégorie pour afficher les champs.</p>
+                                <div class="cat-specs-fields" id="civil-specs-fields"></div>
+                                <div class="cat-specs-custom">
+                                    <button type="button" class="btn-secondary" id="civil-specs-add">+ Ajouter un champ personnalisé</button>
+                                </div>
+                            </div>
+
+                            <div class="form-actions cat-form-actions">
+                                <button class="btn-primary" id="civil-form-save" type="button">
+                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M13 13H3V3h7l3 3v7z" stroke-linejoin="round"/>
+                                        <rect x="5" y="8" width="6" height="5"/>
+                                        <rect x="5" y="3" width="4" height="3"/>
+                                    </svg>
+                                    Enregistrer localement
+                                </button>
+                                <button class="btn-primary cat-btn-push" id="civil-form-push" type="button">
+                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M8 12V4M4 8l4-4 4 4" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Enregistrer &amp; pousser sur GitHub
+                                </button>
+                            </div>
+                            <div class="github-status" id="civil-push-status" style="display:none;"></div>
+                        </section>
+
+                        <!-- LISTE DES RESSOURCES -->
+                        <section class="cat-admin-section">
+                            <div class="cat-admin-section-head">
+                                <h3 class="cat-admin-section-title">INVENTAIRE (<span id="civil-list-count">0</span>)</h3>
+                                <div class="cat-admin-section-actions">
+                                    <button class="btn-secondary" id="civil-sync-btn" type="button">Recharger depuis GitHub</button>
+                                </div>
+                            </div>
+                            <div class="cat-admin-filters">
+                                <input class="form-input cat-admin-search" type="text" id="civil-list-search" placeholder="Rechercher…">
+                                <select class="form-input cat-admin-filter-cat" id="civil-list-filter">
+                                    <option value="all">Toutes catégories</option>
+                                    <option value="matieres-premieres">Matières premières</option>
+                                    <option value="hydrocarbures">Hydrocarbures</option>
+                                    <option value="produits-agricoles">Produits agricoles</option>
+                                    <option value="biens-manufactures">Biens manufacturés</option>
+                                    <option value="equipements-industriels">Équipements industriels</option>
+                                    <option value="technologies">Technologies</option>
+                                    <option value="batiments-commerciaux">Bâtiments commerciaux</option>
+                                    <option value="infrastructures">Infrastructures</option>
+                                    <option value="services-commerciaux">Services commerciaux</option>
+                                </select>
+                            </div>
+                            <div class="cat-admin-list" id="civil-admin-list">
+                                <div class="cat-admin-empty">Chargement de l'inventaire…</div>
+                            </div>
+                        </section>
+
+                    </div>
+                </div>
+
+                <!-- Modal: suppression ressource civile -->
+                <div class="modal-overlay" id="civil-delete-modal" style="display:none;">
+                    <div class="modal">
+                        <h3 class="modal-title">SUPPRIMER LA RESSOURCE</h3>
+                        <p class="modal-text" id="civil-delete-text">Supprimer cette ressource ?</p>
+                        <p class="modal-text" style="color:var(--text-muted);font-size:12px;margin-top:8px;">Cette suppression sera également poussée sur GitHub si une configuration est active.</p>
+                        <div class="modal-actions">
+                            <button class="btn-secondary" id="btn-civil-delete-cancel">Annuler</button>
+                            <button class="btn-danger" id="btn-civil-delete-confirm">Supprimer</button>
+                        </div>
                     </div>
                 </div>
 
