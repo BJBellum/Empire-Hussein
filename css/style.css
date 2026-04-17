@@ -2893,7 +2893,7 @@ button {
 }
 
 .map-legend-dot--empire { background: #c4a95b; }
-.map-legend-dot--other  { background: #2a3020; border: 1px solid #3a4030; }
+.map-legend-dot--other  { background: #33251a; border: 1px solid #4a3828; }
 
 .map-legend-label {
     font-family: var(--font-display);

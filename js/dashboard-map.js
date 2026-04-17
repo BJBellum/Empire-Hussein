@@ -111,8 +111,8 @@
             ? `<div class="map-popup-row"><span class="map-popup-label">Pays</span><span class="map-popup-value">${props.country_name}</span></div>`
             : '';
         const action = isEmpire
-            ? '<div class="map-popup-empire-badge map-popup-action--remove">Cliquer pour retirer du territoire</div>'
-            : '<div class="map-popup-action--add">Cliquer pour annexer à l\'Empire</div>';
+            ? '<div class="map-popup-empire-badge map-popup-action--remove">Clic droit pour retirer du territoire</div>'
+            : '<div class="map-popup-action--add">Clic gauche pour annexer à l\'Empire</div>';
 
         pop.innerHTML = `
             <button class="map-popup-close" aria-label="Fermer">✕</button>
@@ -252,19 +252,27 @@
                 if (pz.isMoved()) { pz.resetMoved(); return; }
                 e.stopPropagation();
 
-                /* Toggle territory */
+                /* Left click: add if not empire, show info if already empire */
+                if (!_empireIds.has(id)) {
+                    _empireIds.add(id);
+                    applyStyle(path, true);
+                    svg.appendChild(path); /* move to top */
+                    updateUI();
+                }
+                showPopup(wrapper, props, _empireIds.has(id), e.clientX, e.clientY);
+            });
+
+            path.addEventListener('contextmenu', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                /* Right click: remove from empire */
                 if (_empireIds.has(id)) {
                     _empireIds.delete(id);
-                } else {
-                    _empireIds.add(id);
+                    applyStyle(path, false);
+                    updateUI();
+                    showPopup(wrapper, props, false, e.clientX, e.clientY);
                 }
-
-                /* Re-order path (empire always on top) */
-                applyStyle(path, _empireIds.has(id));
-                if (_empireIds.has(id)) svg.appendChild(path); /* move to top */
-
-                updateUI();
-                showPopup(wrapper, props, _empireIds.has(id), e.clientX, e.clientY);
             });
 
             svg.appendChild(path);
@@ -276,6 +284,7 @@
         for (const f of _geoData.features) { if ( _empireIds.has((f.properties || {}).region_id)) addRegion(f); }
 
         el.appendChild(svg);
+        svg.addEventListener('contextmenu', function (e) { e.preventDefault(); });
         svg.addEventListener('click', function () {
             if (pz.isMoved()) { pz.resetMoved(); return; }
             const pop = document.getElementById('carto-popup');
