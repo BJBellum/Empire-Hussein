@@ -3,8 +3,8 @@
    ════════════════════════════════════════════ */
 @font-face {
     font-family: 'Dune Rise';
-    src: url('../fonts/Dune_Rise.otf') format('opentype'),
-         url('../fonts/Dune_Rise.ttf') format('truetype');
+    src: url('../fonts/Dune_Rise/Dune_Rise.otf') format('opentype'),
+         url('../fonts/Dune_Rise/Dune_Rise.ttf') format('truetype');
     font-display: swap;
     font-weight: normal;
     font-style: normal;
