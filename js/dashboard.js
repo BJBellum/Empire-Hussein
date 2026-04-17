@@ -2250,97 +2250,44 @@ const CIVIL_CACHE_KEY   = 'empire_cat_civil_v1';
 const CIVIL_SHA_KEY     = 'empire_cat_civil_sha';
 
 const CIVIL_CATEGORY_LABELS = {
-    'matieres-premieres':     'Matières premières',
-    'hydrocarbures':          'Hydrocarbures',
-    'produits-agricoles':     'Produits agricoles',
-    'biens-manufactures':     'Biens manufacturés',
-    'equipements-industriels':'Équipements industriels',
-    'technologies':           'Technologies',
-    'batiments-commerciaux':  'Bâtiments commerciaux',
-    'infrastructures':        'Infrastructures',
-    'services-commerciaux':   'Services commerciaux'
+    'appareils-aeriens':    'Appareils aériens',
+    'vehicules-terrestres': 'Véhicules terrestres',
+    'batiments-civils':     'Bâtiments civils'
 };
 
 const CIVIL_SUBTYPES = {
-    'matieres-premieres': [
-        'Minerai de fer', 'Minerai de cuivre', 'Minerai d\'aluminium',
-        'Acier', 'Ciment', 'Verre', 'Bois industriel', 'Caoutchouc',
-        'Sable siliceux', 'Minéral rare'
+    'appareils-aeriens': [
+        'Avion de ligne', 'Avion cargo', 'Avion d\'affaires', 'Avion léger',
+        'Hélicoptère civil', 'Hydravion', 'Dirigeable', 'Drone civil',
+        'Planeur', 'Aéronef VTOL civil'
     ],
-    'hydrocarbures': [
-        'Pétrole brut', 'Pétrole raffiné', 'Gaz naturel', 'Gaz liquéfié (GNL)',
-        'Charbon', 'Fioul lourd', 'Kérosène', 'Diesel', 'Essence'
+    'vehicules-terrestres': [
+        'Voiture particulière', 'SUV / 4x4', 'Camionnette', 'Camion léger',
+        'Camion lourd', 'Bus / Autocar', 'Train / Locomotive', 'Tramway',
+        'Moto', 'Véhicule utilitaire', 'Engin de chantier civil'
     ],
-    'produits-agricoles': [
-        'Céréales', 'Légumineuses', 'Fruits et légumes', 'Viande',
-        'Produits laitiers', 'Épices', 'Coton', 'Tabac', 'Sucre', 'Huile végétale'
-    ],
-    'biens-manufactures': [
-        'Textile', 'Produits chimiques', 'Produits pharmaceutiques',
-        'Matériaux de construction', 'Électronique grand public',
-        'Appareils électroménagers', 'Mobilier', 'Outillage'
-    ],
-    'equipements-industriels': [
-        'Machines-outils', 'Équipement de forage', 'Équipement minier',
-        'Matériel agricole', 'Matériel de chantier', 'Équipement portuaire',
-        'Générateurs', 'Pompes et turbines'
-    ],
-    'technologies': [
-        'Logiciel', 'Système de communication', 'Équipement radar civil',
-        'Système de navigation', 'Infrastructure réseau', 'Système énergétique',
-        'Automatisation industrielle', 'Intelligence artificielle'
-    ],
-    'batiments-commerciaux': [
-        'Immeuble de bureaux', 'Centre commercial', 'Entrepôt',
-        'Hôtel / Complexe hôtelier', 'Complexe industriel', 'Port commercial'
-    ],
-    'infrastructures': [
-        'Route / Autoroute', 'Pont', 'Tunnel', 'Voie ferrée',
-        'Aéroport', 'Port maritime', 'Barrage', 'Pipeline',
-        'Réseau électrique', 'Station de traitement'
-    ],
-    'services-commerciaux': [
-        'Service bancaire', 'Service logistique', 'Service de télécommunication',
-        'Service de conseil', 'Franchise commerciale', 'Service touristique'
+    'batiments-civils': [
+        'Cargo', 'Pétrolier', 'Méthanier', 'Vraquier', 'Porte-conteneurs',
+        'Ferry / Navire passagers', 'Yacht / Navire de croisière',
+        'Navire câblier', 'Remorqueur', 'Barge', 'Navire scientifique'
     ]
 };
 
 const CIVIL_PRESETS = {
-    'matieres-premieres': [
-        'Composition', 'Pureté / Grade', 'Unité de vente',
-        'Conditionnement', 'Région d\'extraction', 'Certification'
+    'appareils-aeriens': [
+        'Constructeur', 'Envergure', 'Longueur', 'Motorisation',
+        'Vitesse de croisière', 'Autonomie', 'Capacité / Charge utile',
+        'Altitude de croisière', 'Certification'
     ],
-    'hydrocarbures': [
-        'Type', 'Densité API', 'Teneur en soufre', 'Point d\'ébullition',
-        'Unité de vente', 'Conditionnement', 'Région de production'
+    'vehicules-terrestres': [
+        'Constructeur', 'Motorisation', 'Puissance', 'Transmission',
+        'Charge utile / Capacité', 'Autonomie / Carburant',
+        'Dimensions (L×l×H)', 'Poids total', 'Homologation'
     ],
-    'produits-agricoles': [
-        'Variété', 'Origine', 'Unité de vente', 'Conditionnement',
-        'Saisonnalité', 'Certification bio', 'Conservation'
-    ],
-    'biens-manufactures': [
-        'Matériau', 'Dimensions', 'Poids', 'Unité de vente',
-        'Conditionnement', 'Normes', 'Durée de vie'
-    ],
-    'equipements-industriels': [
-        'Puissance', 'Dimensions', 'Poids', 'Carburant / Énergie',
-        'Capacité', 'Normes de sécurité', 'Garantie'
-    ],
-    'technologies': [
-        'Version', 'Compatibilité', 'Licence', 'Support inclus',
-        'Déploiement', 'Langues supportées', 'Certifications'
-    ],
-    'batiments-commerciaux': [
-        'Surface totale', 'Nombre d\'étages', 'Capacité d\'accueil',
-        'Localisation', 'Année de construction', 'État'
-    ],
-    'infrastructures': [
-        'Longueur / Surface', 'Capacité', 'Matériaux',
-        'Durée de construction', 'Localisation', 'Normes applicables'
-    ],
-    'services-commerciaux': [
-        'Périmètre', 'Durée du contrat', 'Capacité de traitement',
-        'Zone géographique', 'Personnel inclus', 'Certifications'
+    'batiments-civils': [
+        'Chantier naval', 'Jauge brute (GT)', 'Longueur hors tout',
+        'Largeur', 'Tirant d\'eau', 'Motorisation', 'Vitesse de service',
+        'Capacité / Charge utile', 'Pavillon', 'Classification'
     ]
 };
 

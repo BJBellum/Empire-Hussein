@@ -5,15 +5,9 @@
  */
 
 const CIVIL_LABELS = {
-    'matieres-premieres':     'MATIERES PREMIERES',
-    'hydrocarbures':          'HYDROCARBURES',
-    'produits-agricoles':     'PRODUITS AGRICOLES',
-    'biens-manufactures':     'BIENS MANUFACTURES',
-    'equipements-industriels':'EQUIPEMENTS INDUSTRIELS',
-    'technologies':           'TECHNOLOGIES',
-    'batiments-commerciaux':  'BATIMENTS COMMERCIAUX',
-    'infrastructures':        'INFRASTRUCTURES',
-    'services-commerciaux':   'SERVICES COMMERCIAUX'
+    'appareils-aeriens':    'APPAREILS AERIENS',
+    'vehicules-terrestres': 'VEHICULES TERRESTRES',
+    'batiments-civils':     'BATIMENTS CIVILS'
 };
 
 const NIV_ROMAN = ['0', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
@@ -126,12 +120,12 @@ function render() {
 
     if (titleEl) {
         titleEl.textContent = currentFilter === 'all'
-            ? 'TOUTES LES RESSOURCES'
+            ? 'TOUS LES VEHICULES'
             : (CIVIL_LABELS[currentFilter] || currentFilter.toUpperCase());
     }
     if (countEl) {
         const n = items.length;
-        countEl.textContent = `${n} ressource${n !== 1 ? 's' : ''}`;
+        countEl.textContent = `${n} véhicule${n !== 1 ? 's' : ''}`;
     }
 
     if (items.length === 0) {

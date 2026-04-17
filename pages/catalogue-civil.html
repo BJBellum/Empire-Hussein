@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Catalogue civil de l'Empire Hussein — inventaire des ressources, biens et infrastructures">
+    <meta name="description" content="Catalogue civil de l'Empire Hussein — véhicules civils, appareils aériens et bâtiments navals">
     <title>Catalogue civil — Empire Hussein</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="icon" type="image/png" href="../assets/Hussein Empire Coat of Arms.png">
@@ -81,9 +81,9 @@
     <section class="cat-header">
         <div class="container">
             <div class="cat-header-badge">CATALOGUE CIVIL</div>
-            <h1 class="cat-header-title">RESSOURCES IMPERIALES</h1>
+            <h1 class="cat-header-title">VEHICULES CIVILS</h1>
             <p class="cat-header-sub">
-                Inventaire des ressources, biens manufacturés, infrastructures et services
+                Inventaire des appareils aériens, véhicules terrestres et bâtiments civils
                 disponibles à l'exportation sous l'autorité de l'Empire Hussein.
             </p>
         </div>
@@ -113,59 +113,23 @@
                 </div>
 
                 <button class="cat-filter cat-filter-all active" data-filter="all">
-                    TOUTES LES RESSOURCES
+                    TOUS LES VEHICULES
                     <span class="cat-filter-count" id="count-all">0</span>
                 </button>
 
                 <div class="cat-group">
-                    <span class="cat-group-label">RESSOURCES NATURELLES</span>
-                    <button class="cat-filter" data-filter="matieres-premieres">
-                        MATIERES PREMIERES
-                        <span class="cat-filter-count" data-count="matieres-premieres">0</span>
+                    <span class="cat-group-label">CATEGORIES</span>
+                    <button class="cat-filter" data-filter="appareils-aeriens">
+                        APPAREILS AERIENS
+                        <span class="cat-filter-count" data-count="appareils-aeriens">0</span>
                     </button>
-                    <button class="cat-filter" data-filter="hydrocarbures">
-                        HYDROCARBURES
-                        <span class="cat-filter-count" data-count="hydrocarbures">0</span>
+                    <button class="cat-filter" data-filter="vehicules-terrestres">
+                        VEHICULES TERRESTRES
+                        <span class="cat-filter-count" data-count="vehicules-terrestres">0</span>
                     </button>
-                    <button class="cat-filter" data-filter="produits-agricoles">
-                        PRODUITS AGRICOLES
-                        <span class="cat-filter-count" data-count="produits-agricoles">0</span>
-                    </button>
-                </div>
-
-                <div class="cat-group">
-                    <span class="cat-group-label">INDUSTRIE</span>
-                    <button class="cat-filter" data-filter="biens-manufactures">
-                        BIENS MANUFACTURES
-                        <span class="cat-filter-count" data-count="biens-manufactures">0</span>
-                    </button>
-                    <button class="cat-filter" data-filter="equipements-industriels">
-                        EQUIPEMENTS INDUSTRIELS
-                        <span class="cat-filter-count" data-count="equipements-industriels">0</span>
-                    </button>
-                    <button class="cat-filter" data-filter="technologies">
-                        TECHNOLOGIES
-                        <span class="cat-filter-count" data-count="technologies">0</span>
-                    </button>
-                </div>
-
-                <div class="cat-group">
-                    <span class="cat-group-label">IMMOBILIER</span>
-                    <button class="cat-filter" data-filter="batiments-commerciaux">
-                        BATIMENTS COMMERCIAUX
-                        <span class="cat-filter-count" data-count="batiments-commerciaux">0</span>
-                    </button>
-                    <button class="cat-filter" data-filter="infrastructures">
-                        INFRASTRUCTURES
-                        <span class="cat-filter-count" data-count="infrastructures">0</span>
-                    </button>
-                </div>
-
-                <div class="cat-group">
-                    <span class="cat-group-label">SERVICES</span>
-                    <button class="cat-filter" data-filter="services-commerciaux">
-                        SERVICES COMMERCIAUX
-                        <span class="cat-filter-count" data-count="services-commerciaux">0</span>
+                    <button class="cat-filter" data-filter="batiments-civils">
+                        BATIMENTS CIVILS
+                        <span class="cat-filter-count" data-count="batiments-civils">0</span>
                     </button>
                 </div>
             </div>
@@ -174,8 +138,8 @@
         <!-- MAIN -->
         <main class="cat-main">
             <div class="cat-results-header">
-                <h2 class="cat-results-title" id="cat-results-title">TOUTES LES RESSOURCES</h2>
-                <span class="cat-results-count" id="cat-results-count">0 ressource</span>
+                <h2 class="cat-results-title" id="cat-results-title">TOUS LES VEHICULES</h2>
+                <span class="cat-results-count" id="cat-results-count">0 véhicule</span>
             </div>
 
             <div class="cat-loading" id="cat-loading">Chargement des ressources…</div>
@@ -189,8 +153,8 @@
                     <rect x="14" y="22" width="8" height="8"/>
                     <rect x="26" y="22" width="8" height="8"/>
                 </svg>
-                <div class="cat-empty-state-title">AUCUNE RESSOURCE</div>
-                <p>Aucune ressource ne correspond à votre recherche.</p>
+                <div class="cat-empty-state-title">AUCUN VEHICULE</div>
+                <p>Aucun véhicule ne correspond à votre recherche.</p>
             </div>
         </main>
 
@@ -213,7 +177,7 @@
             </div>
 
             <div class="cat-cart-select">
-                <label class="cat-cart-country-label" for="cat-cart-item-select">AJOUTER UNE RESSOURCE</label>
+                <label class="cat-cart-country-label" for="cat-cart-item-select">AJOUTER UN VEHICULE</label>
                 <div class="cat-cart-select-row">
                     <div class="cat-cart-select-wrap">
                         <select id="cat-cart-item-select" class="cat-cart-item-select">
@@ -231,7 +195,7 @@
 
             <div class="cat-cart-body" id="cat-cart-body">
                 <div class="cat-cart-empty" id="cat-cart-empty">
-                    Aucune ressource<br>sélectionnée.
+                    Aucun véhicule<br>sélectionné.
                 </div>
                 <ul class="cat-cart-items" id="cat-cart-items"></ul>
             </div>
