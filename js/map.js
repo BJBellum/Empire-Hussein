@@ -2,7 +2,7 @@
     'use strict';
 
     const FALLBACK_IDS = [35, 38, 39, 40, 41, 42, 43, 44, 78, 169, 1152, 1194, 1195, 1198, 1199];
-    const GEOJSON_URL  = 'assets/regions_mercator.geojson';
+    const GEOJSON_URL  = 'https://api.projet-resurgence.fr/geojson/regions?projection=mercator';
     const REGIONS_URL  = 'data/empire-regions.json';
 
     const COLOR_EMPIRE        = '#c4a95b';

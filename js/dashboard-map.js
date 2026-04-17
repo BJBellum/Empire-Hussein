@@ -1,8 +1,7 @@
 (function () {
     'use strict';
 
-    const GEOJSON_URL  = '../assets/regions_mercator.geojson';
-    const REGIONS_URL  = '../data/empire-regions.json';
+    const GEOJSON_URL  = 'https://api.projet-resurgence.fr/geojson/regions?projection=mercator';
     const REGIONS_PATH = 'data/empire-regions.json';
     const REGIONS_SHA_KEY = 'empire_regions_sha';
     const FALLBACK_IDS = [35, 38, 39, 40, 41, 42, 43, 44, 78, 169, 1152, 1194, 1195, 1198, 1199];
@@ -366,19 +365,14 @@
         el.innerHTML = '<div class="map-loading">Chargement de la carte…</div>';
 
         Promise.all([
-            fetch(REGIONS_URL).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
             _geoData
                 ? Promise.resolve(_geoData)
                 : fetch(GEOJSON_URL).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
         ]).then(function (results) {
-            const regionsData = results[0];
-            _geoData = results[1];
+            _geoData = results[0];
 
-            const ids = (regionsData && Array.isArray(regionsData.region_ids))
-                ? regionsData.region_ids
-                : FALLBACK_IDS;
-            _empireIds = new Set(ids);
-            _savedIds  = new Set(ids);
+            _empireIds = new Set();
+            _savedIds  = new Set();
 
             el.innerHTML = '';
             buildCartoMap();
