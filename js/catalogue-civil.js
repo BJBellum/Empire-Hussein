@@ -308,7 +308,7 @@ function parsePrice(raw) {
 }
 
 function formatDollar(num) {
-    return '$' + Math.round(num).toLocaleString('fr-FR');
+    return Math.round(num).toLocaleString('fr-FR') + ' §';
 }
 
 /* ────────────────────────────────────────

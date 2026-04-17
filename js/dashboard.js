@@ -2275,12 +2275,12 @@ const CIVIL_SUBTYPES = {
 
 const CIVIL_PRESETS = {
     'appareils-aeriens': [
-        'Constructeur', 'Envergure', 'Longueur', 'Motorisation',
+        'Envergure', 'Longueur', 'Motorisation',
         'Vitesse de croisière', 'Autonomie', 'Capacité / Charge utile',
         'Altitude de croisière', 'Certification'
     ],
     'vehicules-terrestres': [
-        'Constructeur', 'Motorisation', 'Puissance', 'Transmission',
+        'Motorisation', 'Puissance', 'Transmission',
         'Charge utile / Capacité', 'Autonomie / Carburant',
         'Dimensions (L×l×H)', 'Poids total', 'Homologation'
     ],
