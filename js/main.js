@@ -186,6 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 8. LOGO LINK — SCROLL TO TOP
     // ────────────────────────────────────────
     const logo = document.querySelector('.logo');
+
     if (logo) {
         logo.addEventListener('click', (e) => {
             e.preventDefault();
@@ -194,7 +195,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ────────────────────────────────────────
-    // 9. PAGE LOAD CURTAIN
+    // 9. BATTERY: PAUSE ANIMATIONS
+    //    a) Tab hidden → pause everything
+    //    b) Hero offscreen → pause hero-only animations (dust, scroll arrow)
+    //       so the map section doesn't keep the hero GPU layers alive
+    // ────────────────────────────────────────
+    const html = document.documentElement;
+
+    document.addEventListener('visibilitychange', () => {
+        html.classList.toggle('page-hidden', document.hidden);
+    });
+
+    if (heroSection) {
+        new IntersectionObserver((entries) => {
+            html.classList.toggle('hero-offscreen', !entries[0].isIntersecting);
+        }, { threshold: 0 }).observe(heroSection);
+    }
+
+    // ────────────────────────────────────────
+    // 10. PAGE LOAD CURTAIN
     // ────────────────────────────────────────
     const curtain = document.getElementById('page-curtain');
     if (curtain) {
@@ -216,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ────────────────────────────────────────
-    // 10. CARD GLOW TRACKING
+    // 11. CARD GLOW TRACKING
     // ────────────────────────────────────────
     document.querySelectorAll('.empire-card').forEach(card => {
         card.addEventListener('mousemove', (e) => {

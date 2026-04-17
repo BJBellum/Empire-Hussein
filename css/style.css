@@ -504,6 +504,7 @@ button {
     border-radius: 50%;
     opacity: 0;
     animation: dustFloat linear infinite;
+    will-change: transform, opacity;
 }
 
 .dust-1 { left: 10%; animation-duration: 12s; animation-delay: 0s; }
@@ -2701,6 +2702,21 @@ button {
     .canal-flag { width: 60px; height: 40px; }
     .canal-flag img { width: 60px; height: 40px; }
     .canal-tax-row { width: 100%; }
+}
+
+/* ════════════════════════════════════════════
+   PERFORMANCE: Pause animations — tab hidden
+   ════════════════════════════════════════════ */
+html.page-hidden *,
+html.page-hidden *::before,
+html.page-hidden *::after {
+    animation-play-state: paused !important;
+}
+
+/* Pause hero-only animations when hero scrolled out of viewport */
+html.hero-offscreen .dust,
+html.hero-offscreen .hero-scroll-arrow {
+    animation-play-state: paused;
 }
 
 /* ════════════════════════════════════════════
