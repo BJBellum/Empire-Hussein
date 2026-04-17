@@ -10,6 +10,17 @@
         169,
         44
       ]
+    },
+    {
+      "id": 1776457841908,
+      "name": "Marmarik",
+      "color": "#3e9859",
+      "flag_path": null,
+      "slug": "marmarik",
+      "member_ids": [
+        38,
+        78
+      ]
     }
   ]
 }
