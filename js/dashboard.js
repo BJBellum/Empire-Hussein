@@ -2331,8 +2331,12 @@ async function loadCanalItemsFromGithub(showToastOnSuccess) {
             if (!res.ok) throw new Error('HTTP ' + res.status);
             data = await res.json();
         }
-        _canalItems = Array.isArray(data) ? data : [];
-        setCanalCache(_canalItems);
+        const fresh = Array.isArray(data) ? data : [];
+        // En chargement automatique, ne pas écraser les données locales déjà en mémoire
+        if (showToastOnSuccess || _canalItems.length === 0) {
+            _canalItems = fresh;
+            setCanalCache(_canalItems);
+        }
         renderCanalList();
         if (showToastOnSuccess) showToast(`${_canalItems.length} pays chargé(s)`);
     } catch (err) {
@@ -2561,7 +2565,10 @@ function editCanalItem(id) {
     document.getElementById('canal-form-title').textContent = `MODIFIER — ${item.nom}`;
     document.getElementById('canal-nom').value = item.nom || '';
     const contSelEdit = document.getElementById('canal-continent');
-    if (contSelEdit) contSelEdit.value = item.continent || '';
+    if (contSelEdit) {
+        contSelEdit.selectedIndex = 0;
+        if (item.continent) contSelEdit.value = item.continent;
+    }
     document.getElementById('canal-flag-path').value = item.drapeau || '';
 
     _canalPendingFlag = null;
