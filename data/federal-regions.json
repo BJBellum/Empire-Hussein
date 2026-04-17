@@ -12,17 +12,6 @@
       ]
     },
     {
-      "id": 1776457841908,
-      "name": "Marmarik",
-      "color": "#3e9859",
-      "flag_path": null,
-      "slug": "marmarik",
-      "member_ids": [
-        38,
-        78
-      ]
-    },
-    {
       "id": 1776458603007,
       "name": "CDTAA",
       "color": "#0dbcbf",
@@ -56,27 +45,6 @@
       ]
     },
     {
-      "id": 1776458789372,
-      "name": "As-Sa'id",
-      "color": "#28623e",
-      "flag_path": null,
-      "slug": "as-sa-id",
-      "member_ids": [
-        42,
-        43
-      ]
-    },
-    {
-      "id": 1776458833974,
-      "name": "al-Ghadaqah",
-      "color": "#6f5379",
-      "flag_path": null,
-      "slug": "al-ghadaqah",
-      "member_ids": [
-        35
-      ]
-    },
-    {
       "id": 1776458853922,
       "name": "Makkaj",
       "color": "#edb407",
@@ -87,9 +55,41 @@
       ]
     },
     {
-      "id": 1776458869373,
+      "id": 1776460371836,
+      "name": "Marmarik",
+      "color": "#2f8d93",
+      "flag_path": null,
+      "slug": "marmarik",
+      "member_ids": [
+        38,
+        78
+      ]
+    },
+    {
+      "id": 1776460417540,
+      "name": "As-Sa'id",
+      "color": "#348353",
+      "flag_path": null,
+      "slug": "as-sa-id",
+      "member_ids": [
+        42,
+        43
+      ]
+    },
+    {
+      "id": 1776460442832,
+      "name": "al-Ghadaqah",
+      "color": "#814497",
+      "flag_path": null,
+      "slug": "al-ghadaqah",
+      "member_ids": [
+        35
+      ]
+    },
+    {
+      "id": 1776460451925,
       "name": "Sinaï",
-      "color": "#856a19",
+      "color": "#a58b3b",
       "flag_path": null,
       "slug": "sina",
       "member_ids": [
