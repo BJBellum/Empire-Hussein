@@ -2770,6 +2770,7 @@ html.hero-offscreen .hero-scroll-arrow {
     width: 100%;
     aspect-ratio: 2 / 1;
     min-height: 360px;
+    contain: layout paint;
     background: #080a08;
     overflow: hidden;
 }

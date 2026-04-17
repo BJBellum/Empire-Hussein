@@ -19,6 +19,7 @@
     }
 
     function geomToPath(geometry, proj) {
+        if (_pathCache.has(geometry)) return _pathCache.get(geometry);
         const parts = [];
         function ringPath(ring) {
             let d = '';
@@ -34,7 +35,9 @@
             for (const poly of geometry.coordinates)
                 for (const r of poly) parts.push(ringPath(r));
         }
-        return parts.join(' ');
+        const d = parts.join(' ');
+        _pathCache.set(geometry, d);
+        return d;
     }
 
     function calcProjection(geoData) {
@@ -58,6 +61,7 @@
     }
 
     const _projCache = new WeakMap();
+    const _pathCache = new WeakMap();
 
     function addPanZoom(svg, VW, VH, prefix) {
         const ZOOM_MIN = 1, ZOOM_MAX = 20, ZOOM_STEP = 1.25;
@@ -172,6 +176,9 @@
      * config: { mapEl, wrapperEl, geoData, empireIds, mode, modeData,
      *           zoomPrefix, pathPrefix, onLeftClick, onRightClick }
      * Returns: { svg, pathMap, panZoom }
+     *
+     * Uses event delegation: 4 SVG-level listeners instead of 4×N per-path listeners.
+     * geomToPath results are WeakMap-cached by geometry reference.
      */
     function build(config) {
         const { mapEl, wrapperEl, geoData, empireIds, mode, modeData,
@@ -185,9 +192,10 @@
         svg.setAttribute('xmlns', NS);
         svg.style.cssText = 'width:100%;height:100%;display:block;cursor:grab;';
 
-        const panZoom  = addPanZoom(svg, VW, VH, zoomPrefix);
-        const pathMap  = new Map();
-        const popupId  = zoomPrefix + '-popup';
+        const panZoom       = addPanZoom(svg, VW, VH, zoomPrefix);
+        const pathMap       = new Map();
+        const featureByPath = new Map();
+        const popupId       = zoomPrefix + '-popup';
 
         function addFeature(f) {
             if (!f.geometry) return;
@@ -204,32 +212,7 @@
             path.style.cursor = 'pointer';
 
             if (props.region_id !== undefined) pathMap.set(props.region_id, path);
-
-            path.addEventListener('mouseenter', function () {
-                const hover = mode.getHoverFill(props, empireIds, modeData);
-                path.setAttribute('fill', hover.fill);
-                if (hover.opacity) path.setAttribute('fill-opacity', hover.opacity);
-            });
-            path.addEventListener('mouseleave', function () {
-                const s = mode.getStyle(props, empireIds, modeData, geoData);
-                path.setAttribute('fill', s.fill);
-                path.setAttribute('fill-opacity', s.opacity);
-            });
-            path.addEventListener('click', function (e) {
-                if (panZoom.isMoved()) { panZoom.resetMoved(); return; }
-                e.stopPropagation();
-                if (onLeftClick) {
-                    onLeftClick(f, path, svg, panZoom);
-                } else {
-                    const content = mode.buildPopupContent(props, empireIds, modeData, geoData, pathPrefix);
-                    showPopup(wrapperEl, content, e.clientX, e.clientY, popupId);
-                }
-            });
-            path.addEventListener('contextmenu', function (e) {
-                e.preventDefault(); e.stopPropagation();
-                if (onRightClick) onRightClick(f, path, svg, panZoom);
-            });
-
+            featureByPath.set(path, f);
             svg.appendChild(path);
         }
 
@@ -240,13 +223,65 @@
             if  (empireIds.has((f.properties || {}).region_id)) addFeature(f);
         }
 
-        mapEl.appendChild(svg);
-        svg.addEventListener('click', function () {
-            if (panZoom.isMoved()) { panZoom.resetMoved(); return; }
-            const pop = document.getElementById(popupId);
-            if (pop) pop.remove();
+        /* ── Delegated hover (2 listeners vs 2×N) ── */
+        let hoveredPath = null;
+        svg.addEventListener('mouseover', function (e) {
+            const path = e.target;
+            if (path.tagName !== 'path' || path === hoveredPath) return;
+            if (hoveredPath) {
+                const hf = featureByPath.get(hoveredPath);
+                if (hf) {
+                    const s = mode.getStyle(hf.properties || {}, empireIds, modeData, geoData);
+                    hoveredPath.setAttribute('fill', s.fill);
+                    hoveredPath.setAttribute('fill-opacity', s.opacity);
+                }
+            }
+            hoveredPath = path;
+            const f = featureByPath.get(path);
+            if (f) {
+                const h = mode.getHoverFill(f.properties || {}, empireIds, modeData);
+                path.setAttribute('fill', h.fill);
+                if (h.opacity) path.setAttribute('fill-opacity', h.opacity);
+            }
         });
-        svg.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+        svg.addEventListener('mouseleave', function () {
+            if (!hoveredPath) return;
+            const f = featureByPath.get(hoveredPath);
+            if (f) {
+                const s = mode.getStyle(f.properties || {}, empireIds, modeData, geoData);
+                hoveredPath.setAttribute('fill', s.fill);
+                hoveredPath.setAttribute('fill-opacity', s.opacity);
+            }
+            hoveredPath = null;
+        });
+
+        /* ── Delegated click + contextmenu (2 listeners vs 2×N) ── */
+        mapEl.appendChild(svg);
+        svg.addEventListener('click', function (e) {
+            if (panZoom.isMoved()) { panZoom.resetMoved(); return; }
+            const path = e.target.tagName === 'path' ? e.target : null;
+            if (!path) {
+                const pop = document.getElementById(popupId);
+                if (pop) pop.remove();
+                return;
+            }
+            const f = featureByPath.get(path);
+            if (!f) return;
+            if (onLeftClick) {
+                onLeftClick(f, path, svg, panZoom);
+            } else {
+                const content = mode.buildPopupContent(f.properties || {}, empireIds, modeData, geoData, pathPrefix);
+                showPopup(wrapperEl, content, e.clientX, e.clientY, popupId);
+            }
+        });
+        svg.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+            if (!onRightClick) return;
+            const path = e.target.tagName === 'path' ? e.target : null;
+            if (!path) return;
+            const f = featureByPath.get(path);
+            if (f) onRightClick(f, path, svg, panZoom);
+        });
 
         return { svg, pathMap, panZoom };
     }
