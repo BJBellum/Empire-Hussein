@@ -1,1 +1,15 @@
-{ "regions": [] }
+{
+  "regions": [
+    {
+      "id": 1776457413795,
+      "name": "Al Bahr Al Ahmar",
+      "color": "#a63636",
+      "flag_path": null,
+      "slug": "al-bahr-al-ahmar",
+      "member_ids": [
+        169,
+        44
+      ]
+    }
+  ]
+}
