@@ -4,10 +4,11 @@
     const GEOJSON_URL = 'https://api.projet-resurgence.fr/geojson/regions?projection=mercator';
     const DATA_PREFIX = '';
 
-    let _geoData    = null;
-    let _empireIds  = new Set();
-    let _currentIdx = 0;
-    let _modeData   = {};
+    let _geoData      = null;
+    let _empireIds    = new Set();
+    let _currentIdx   = 0;
+    let _modeData     = {};
+    let _mapInstance  = null;
 
     function loadModeData(mode) {
         if (_modeData[mode.id] !== undefined) return Promise.resolve(_modeData[mode.id]);
@@ -21,12 +22,13 @@
         const el      = document.getElementById('map-empire');
         const wrapper = el ? el.closest('.carte-wrapper') : null;
         if (!el || !_geoData) return;
+        if (_mapInstance) { _mapInstance.panZoom.destroy(); _mapInstance = null; }
         el.innerHTML = '';
 
         const mode = MapModes[_currentIdx];
         loadModeData(mode).then(function (data) {
             _modeData[mode.id] = data;
-            MapEngine.build({
+            _mapInstance = MapEngine.build({
                 mapEl:       el,
                 wrapperEl:   wrapper,
                 geoData:     _geoData,

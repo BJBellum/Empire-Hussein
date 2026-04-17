@@ -20,12 +20,13 @@
         scientific: 'empire_scientific_sha'
     };
 
-    let _geoData    = null;
-    let _empireIds  = new Set();
-    let _currentIdx = 0;
-    let _modeData   = {};
-    let _savedData  = {};
-    let _mapBuilt   = false;
+    let _geoData      = null;
+    let _empireIds    = new Set();
+    let _currentIdx   = 0;
+    let _modeData     = {};
+    let _savedData    = {};
+    let _mapBuilt     = false;
+    let _mapInstance  = null;
 
     function currentMode() { return MapModes[_currentIdx]; }
 
@@ -62,13 +63,14 @@
         const el      = document.getElementById('carto-map');
         const wrapper = document.getElementById('carto-map-wrapper');
         if (!el || !_geoData) return;
+        if (_mapInstance) { _mapInstance.panZoom.destroy(); _mapInstance = null; }
         el.innerHTML = '';
 
         const mode    = currentMode();
         const data    = _modeData[mode.id] || defaultData(mode.id);
         const { onLeftClick, onRightClick } = getModeHandlers(mode, data);
 
-        MapEngine.build({
+        _mapInstance = MapEngine.build({
             mapEl:       el,
             wrapperEl:   wrapper,
             geoData:     _geoData,
@@ -80,6 +82,21 @@
             onLeftClick,
             onRightClick
         });
+    }
+
+    /* Update only the paths affected by a country status change — avoids full SVG rebuild */
+    function patchCountryPaths(mode, data, countryId) {
+        if (!_mapInstance || !_mapInstance.pathMap || !_geoData) return false;
+        for (const f of _geoData.features) {
+            const props = f.properties || {};
+            if (props.country_id !== countryId) continue;
+            const path = _mapInstance.pathMap.get(props.region_id);
+            if (!path) continue;
+            const s = mode.getStyle(props, _empireIds, data);
+            path.setAttribute('fill',         s.fill);
+            path.setAttribute('fill-opacity', s.opacity);
+        }
+        return true;
     }
 
     /* ── Click handlers per mode ──────────────────── */
@@ -103,6 +120,7 @@
                     const d = _modeData['claims'] || defaultData('claims');
                     if (!d.region_ids.includes(props.region_id)) {
                         d.region_ids.push(props.region_id);
+                        delete d._claimedSet;
                         _modeData['claims'] = d;
                         const s = mode.getStyle(props, _empireIds, d);
                         path.setAttribute('fill', s.fill);
@@ -118,6 +136,7 @@
                     const idx = d.region_ids.indexOf(props.region_id);
                     if (idx !== -1) {
                         d.region_ids.splice(idx, 1);
+                        delete d._claimedSet;
                         _modeData['claims'] = d;
                         const s = mode.getStyle(props, _empireIds, d);
                         path.setAttribute('fill', s.fill);
@@ -270,7 +289,7 @@
                 if (!d.countries) d.countries = {};
                 d.countries[countryId] = radio.value;
                 _modeData[mode.id] = d;
-                rebuildMap();
+                if (!patchCountryPaths(mode, d, countryId)) rebuildMap();
                 updatePushBtn();
             });
         });

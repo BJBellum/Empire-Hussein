@@ -38,6 +38,7 @@
     }
 
     function calcProjection(geoData) {
+        if (_projCache.has(geoData)) return _projCache.get(geoData);
         let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
         for (const f of geoData.features) {
             if (!f.geometry) continue;
@@ -51,8 +52,12 @@
         const offX = (VW - (maxX - minX) * scale) / 2;
         const offY = (VH - (maxY - minY) * scale) / 2;
         function proj([x, y]) { return [offX + (x - minX) * scale, offY + (maxY - y) * scale]; }
-        return { proj, VW, VH };
+        const result = { proj, VW, VH };
+        _projCache.set(geoData, result);
+        return result;
     }
+
+    const _projCache = new WeakMap();
 
     function addPanZoom(svg, VW, VH, prefix) {
         const ZOOM_MIN = 1, ZOOM_MAX = 20, ZOOM_STEP = 1.25;
@@ -83,7 +88,7 @@
             drag = true; moved = false; lx = e.clientX; ly = e.clientY;
             svg.style.cursor = 'grabbing';
         });
-        window.addEventListener('mousemove', function (e) {
+        function onMove(e) {
             if (!drag) return;
             const dx = e.clientX - lx, dy = e.clientY - ly;
             if (Math.abs(dx) > 2 || Math.abs(dy) > 2) moved = true;
@@ -92,8 +97,10 @@
             vx = Math.max(0, Math.min(vx, VW - vw));
             vy = Math.max(0, Math.min(vy, VH - vh));
             lx = e.clientX; ly = e.clientY; setVB();
-        });
-        window.addEventListener('mouseup', function () { drag = false; svg.style.cursor = ''; });
+        }
+        function onUp() { drag = false; svg.style.cursor = ''; }
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onUp);
         let touches = [];
         svg.addEventListener('touchstart', function (e) { touches = Array.from(e.touches); }, { passive: true });
         svg.addEventListener('touchmove', function (e) {
@@ -126,8 +133,12 @@
             if (btnRst) btnRst.addEventListener('click',  function () { vx = 0; vy = 0; vw = VW; vh = VH; setVB(); });
         }
         return {
-            isMoved: function () { return moved; },
-            resetMoved: function () { moved = false; }
+            isMoved:  function () { return moved; },
+            resetMoved: function () { moved = false; },
+            destroy:  function () {
+                window.removeEventListener('mousemove', onMove);
+                window.removeEventListener('mouseup',   onUp);
+            }
         };
     }
 

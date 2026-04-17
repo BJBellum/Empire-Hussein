@@ -143,7 +143,8 @@
             icon: ICON_CLAIMS,
 
             getStyle(props, empireIds, modeData) {
-                const claimed = new Set((modeData || {}).region_ids || []);
+                if (modeData && !modeData._claimedSet) modeData._claimedSet = new Set(modeData.region_ids || []);
+                const claimed = (modeData && modeData._claimedSet) || new Set();
                 if (empireIds.has(props.region_id))
                     return { fill: COLOR_EMPIRE, stroke: COLOR_EMPIRE_STROKE, strokeWidth: '1', opacity: '0.65' };
                 if (claimed.has(props.region_id))
@@ -152,14 +153,16 @@
             },
 
             getHoverFill(props, empireIds, modeData) {
-                const claimed = new Set((modeData || {}).region_ids || []);
+                if (modeData && !modeData._claimedSet) modeData._claimedSet = new Set(modeData.region_ids || []);
+                const claimed = (modeData && modeData._claimedSet) || new Set();
                 if (empireIds.has(props.region_id)) return { fill: COLOR_EMPIRE_HOVER, opacity: '0.85' };
                 if (claimed.has(props.region_id))   return { fill: COLOR_CLAIMS_HOVER, opacity: '0.85' };
                 return { fill: COLOR_OTHER_HOVER, opacity: '0.85' };
             },
 
             buildPopupContent(props, empireIds, modeData) {
-                const claimed = new Set((modeData || {}).region_ids || []);
+                if (modeData && !modeData._claimedSet) modeData._claimedSet = new Set(modeData.region_ids || []);
+                const claimed = (modeData && modeData._claimedSet) || new Set();
                 const base = defaultPopup(props, empireIds.has(props.region_id));
                 if (claimed.has(props.region_id))
                     return base + `<div class="map-popup-empire-badge" style="color:#c4893b;border-top-color:rgba(122,92,30,0.4);">TERRITOIRE REVENDIQUE</div>`;
