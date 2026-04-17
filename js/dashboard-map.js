@@ -143,6 +143,7 @@
         const mode   = MapModes[idx];
         const hintEl = document.getElementById('carto-hint');
         const hints  = {
+            empire:     'Lecture seule — territoire de l\'Empire Hussein',
             federal:    'Clic : éditer la région fédérale',
             claims:     'Clic gauche : revendiquer — Clic droit : retirer',
             diplomacy:  'Éditer les reconnaissances ci-dessous',
@@ -386,6 +387,7 @@
     function initButtons() {
         const switcher = document.getElementById('carto-mode-switcher');
         if (!switcher) return;
+        switcher.innerHTML = '';
         MapModes.forEach(function (mode, i) {
             const btn = document.createElement('button');
             btn.className = 'map-mode-btn' + (i === 0 ? ' active' : '');
@@ -456,6 +458,7 @@
     function initCartoPanel() {
         const el = document.getElementById('carto-map');
         if (!el) return;
+        _mapBuilt = true;
         el.innerHTML = '<div class="map-loading">Chargement de la carte…</div>';
 
         fetch(GEOJSON_URL)

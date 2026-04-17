@@ -51,6 +51,7 @@
         return modeData.countries[props.country_id] === activeVal;
     }
 
+    const ICON_EMPIRE     = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M3 20l2.5-9 3.5 3 3-8 3 8 3.5-3L21 20"/></svg>`;
     const ICON_FEDERAL    = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>`;
     const ICON_CLAIMS     = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>`;
     const ICON_DIPLOMACY  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`;
@@ -58,6 +59,29 @@
     const ICON_SCIENTIFIC = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>`;
 
     const MODES = [
+
+        /* ── 0. EMPIRE HUSSEIN (lecture seule) ────────── */
+        {
+            id: 'empire',
+            label: 'EMPIRE HUSSEIN',
+            dataFile: null,
+            icon: ICON_EMPIRE,
+
+            getStyle(props, empireIds) {
+                if (empireIds.has(props.region_id))
+                    return { fill: COLOR_EMPIRE, stroke: COLOR_EMPIRE_STROKE, strokeWidth: '1', opacity: '0.85' };
+                return { fill: COLOR_OTHER, stroke: COLOR_OTHER_STROKE, strokeWidth: '0.5', opacity: '0.5' };
+            },
+
+            getHoverFill(props, empireIds) {
+                if (empireIds.has(props.region_id)) return { fill: COLOR_EMPIRE_HOVER, opacity: '0.95' };
+                return { fill: COLOR_OTHER_HOVER, opacity: '0.65' };
+            },
+
+            buildPopupContent(props, empireIds) {
+                return defaultPopup(props, empireIds.has(props.region_id));
+            }
+        },
 
         /* ── 1. REGIONS FEDERALES ─────────────────────── */
         {
