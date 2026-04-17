@@ -1,9 +1,7 @@
 (function () {
     'use strict';
 
-    const FALLBACK_IDS = [35, 38, 39, 40, 41, 42, 43, 44, 78, 169, 1152, 1194, 1195, 1198, 1199];
     const GEOJSON_URL  = 'https://api.projet-resurgence.fr/geojson/regions?projection=mercator';
-    const REGIONS_URL  = 'data/empire-regions.json';
 
     const COLOR_EMPIRE        = '#c4a95b';
     const COLOR_EMPIRE_STROKE = '#e6cc7a';
@@ -251,21 +249,22 @@
         if (!el) return;
         el.innerHTML = '<div class="map-loading">Chargement de la carte…</div>';
 
-        Promise.all([
-            fetch(REGIONS_URL).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
-            fetch(GEOJSON_URL).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-        ]).then(function (results) {
-            const regionsData = results[0];
-            const geoData     = results[1];
-            const ids = (regionsData && Array.isArray(regionsData.region_ids))
-                ? regionsData.region_ids
-                : FALLBACK_IDS;
-            el.innerHTML = '';
-            buildMap(geoData, new Set(ids));
-        }).catch(function (err) {
-            console.error('Carte: load failed', err);
-            el.innerHTML = '<div class="map-loading map-loading--error">Impossible de charger les données cartographiques.</div>';
-        });
+        fetch(GEOJSON_URL)
+            .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+            .then(function (geoData) {
+                const ids = new Set();
+                for (const f of geoData.features) {
+                    if ((f.properties || {}).country_name === 'Empire Hussein') {
+                        ids.add(f.properties.region_id);
+                    }
+                }
+                el.innerHTML = '';
+                buildMap(geoData, ids);
+            })
+            .catch(function (err) {
+                console.error('Carte: load failed', err);
+                el.innerHTML = '<div class="map-loading map-loading--error">Impossible de charger les données cartographiques.</div>';
+            });
     }
 
     if (document.readyState === 'loading') {
