@@ -39,15 +39,12 @@ async function initCanalPublic() {
         grid.style.display = 'grid';
         grid.innerHTML = data.map(renderCountryCard).join('');
 
-        if (typeof observeReveal === 'function') observeReveal();
-        else {
-            const io = new IntersectionObserver((entries) => {
-                entries.forEach(e => {
-                    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
-                });
-            }, { threshold: 0.05 });
-            document.querySelectorAll('.canal-card').forEach(el => io.observe(el));
-        }
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { e.target.classList.add('revealed'); io.unobserve(e.target); }
+            });
+        }, { threshold: 0.05 });
+        document.querySelectorAll('.canal-card').forEach(el => io.observe(el));
     } catch (err) {
         if (loading) loading.style.display = 'none';
         if (empty) {
