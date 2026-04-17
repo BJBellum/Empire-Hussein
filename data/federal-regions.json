@@ -2,13 +2,13 @@
   "regions": [
     {
       "id": 1776457413795,
-      "name": "Al Bahr Al Ahmar",
+      "name": "al-Bahr al-Ahmar",
       "color": "#a63636",
       "flag_path": null,
       "slug": "al-bahr-al-ahmar",
       "member_ids": [
-        169,
-        44
+        44,
+        169
       ]
     },
     {
@@ -20,6 +20,80 @@
       "member_ids": [
         38,
         78
+      ]
+    },
+    {
+      "id": 1776458603007,
+      "name": "CDTAA",
+      "color": "#0dbcbf",
+      "flag_path": null,
+      "slug": "cdtaa",
+      "member_ids": [
+        1195,
+        1194,
+        1199,
+        1198
+      ]
+    },
+    {
+      "id": 1776458672374,
+      "name": "al-Qahira",
+      "color": "#ccbd8e",
+      "flag_path": null,
+      "slug": "al-qahira",
+      "member_ids": [
+        39
+      ]
+    },
+    {
+      "id": 1776458721547,
+      "name": "Suez",
+      "color": "#d99330",
+      "flag_path": null,
+      "slug": "suez",
+      "member_ids": [
+        40
+      ]
+    },
+    {
+      "id": 1776458789372,
+      "name": "As-Sa'id",
+      "color": "#28623e",
+      "flag_path": null,
+      "slug": "as-sa-id",
+      "member_ids": [
+        42,
+        43
+      ]
+    },
+    {
+      "id": 1776458833974,
+      "name": "al-Ghadaqah",
+      "color": "#6f5379",
+      "flag_path": null,
+      "slug": "al-ghadaqah",
+      "member_ids": [
+        35
+      ]
+    },
+    {
+      "id": 1776458853922,
+      "name": "Makkaj",
+      "color": "#edb407",
+      "flag_path": null,
+      "slug": "makkaj",
+      "member_ids": [
+        1152
+      ]
+    },
+    {
+      "id": 1776458869373,
+      "name": "Sinaï",
+      "color": "#856a19",
+      "flag_path": null,
+      "slug": "sina",
+      "member_ids": [
+        41
       ]
     }
   ]
