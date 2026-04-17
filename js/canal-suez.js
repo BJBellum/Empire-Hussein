@@ -10,8 +10,6 @@ const CANAL_CATS_PUBLIC = [
     { id: 'ressources_energetiques', label: 'Ressources Énergétiques' },
 ];
 
-const CANAL_RAW_URL = 'https://raw.githubusercontent.com/BJBellum/Empire-Hussein/main/data/canal-suez.json';
-
 async function initCanalPublic() {
     const grid    = document.getElementById('canal-grid');
     const loading = document.getElementById('canal-loading');
@@ -19,9 +17,17 @@ async function initCanalPublic() {
     if (!grid) return;
 
     try {
-        const res = await fetch(CANAL_RAW_URL + '?t=' + Date.now());
+        const res = await fetch('../data/canal-suez.json?t=' + Date.now());
         if (!res.ok) throw new Error('HTTP ' + res.status);
-        const data = await res.json();
+        let data = await res.json();
+
+        // Si le fichier déployé est vide, utiliser le cache localStorage (mis à jour au push)
+        if (!Array.isArray(data) || data.length === 0) {
+            try {
+                const cached = JSON.parse(localStorage.getItem('empire_canal_v1') || '{}');
+                if (Array.isArray(cached.items) && cached.items.length > 0) data = cached.items;
+            } catch {}
+        }
 
         if (loading) loading.style.display = 'none';
 
@@ -33,7 +39,6 @@ async function initCanalPublic() {
         grid.style.display = 'grid';
         grid.innerHTML = data.map(renderCountryCard).join('');
 
-        // Trigger reveal animations
         if (typeof observeReveal === 'function') observeReveal();
         else {
             const io = new IntersectionObserver((entries) => {
@@ -54,8 +59,13 @@ async function initCanalPublic() {
 }
 
 function renderCountryCard(country) {
-    const flagHtml = country.drapeau
-        ? `<img src="../${escH(country.drapeau)}" alt="${escH(country.nom)}" loading="lazy" onerror="this.outerHTML='<svg viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'1.5\\' width=\\'48\\' height=\\'48\\' style=\\'color:var(--text-muted)\\'><rect x=\\'2\\' y=\\'5\\' width=\\'20\\' height=\\'14\\' rx=\\'1\\'/><path d=\\'M2 9h20M2 13h20\\'/></svg>'">`
+    // Gère les data URLs (sauvegarde locale) et les chemins de fichiers (push GitHub)
+    const flagSrc = country.drapeau
+        ? (country.drapeau.startsWith('data:') ? country.drapeau : `../${escH(country.drapeau)}`)
+        : null;
+
+    const flagHtml = flagSrc
+        ? `<img src="${flagSrc}" alt="${escH(country.nom)}" loading="lazy" onerror="this.outerHTML='<svg viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'1.5\\' width=\\'48\\' height=\\'48\\' style=\\'color:var(--text-muted)\\'><rect x=\\'2\\' y=\\'5\\' width=\\'20\\' height=\\'14\\' rx=\\'1\\'/><path d=\\'M2 9h20M2 13h20\\'/></svg>'">`
         : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48" style="color:var(--text-muted)"><rect x="2" y="5" width="20" height="14" rx="1"/><path d="M2 9h20M2 13h20"/></svg>`;
 
     const taxRows = CANAL_CATS_PUBLIC.map(cat => {
