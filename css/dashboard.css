@@ -2221,3 +2221,106 @@
         grid-column: 1 / -1;
     }
 }
+
+/* ════════════════════════════════════════════
+   EDITEUR DE TERRITOIRES (CARTOGRAPHIE)
+   ════════════════════════════════════════════ */
+.carto-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.carto-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 12px 20px;
+    flex-wrap: wrap;
+}
+
+.carto-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.carto-count-label {
+    font-family: var(--font-display);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+}
+
+.carto-count {
+    font-family: var(--font-display);
+    font-size: 16px;
+    color: #c4a95b;
+    min-width: 28px;
+}
+
+.carto-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.carto-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.carto-map-wrapper {
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: visible;
+    background: #080a08;
+}
+
+/* Popup action hints */
+.map-popup-action--add {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(196, 169, 91, 0.15);
+    text-align: center;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: #6aab4f;
+    font-style: italic;
+}
+
+.map-popup-action--remove {
+    color: #c4a95b;
+    cursor: default;
+}
+
+/* Status */
+.github-status--success {
+    color: #6aab4f;
+    background: rgba(106, 171, 79, 0.08);
+    border: 1px solid rgba(106, 171, 79, 0.2);
+    border-radius: 2px;
+    padding: 10px 16px;
+    font-size: 13px;
+}
+
+.github-status--error {
+    color: #c0392b;
+    background: rgba(192, 57, 43, 0.08);
+    border: 1px solid rgba(192, 57, 43, 0.2);
+    border-radius: 2px;
+    padding: 10px 16px;
+    font-size: 13px;
+}
+
+@media (max-width: 640px) {
+    .carto-toolbar { flex-direction: column; align-items: flex-start; }
+    .carto-hint { display: none; }
+}

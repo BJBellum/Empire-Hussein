@@ -119,6 +119,18 @@
                     </a>
                 </div>
 
+                <!-- CARTOGRAPHIE -->
+                <div class="nav-group">
+                    <span class="nav-group-label">CARTOGRAPHIE</span>
+                    <a class="nav-item" data-panel="cartographie" data-title="EDITEUR DE TERRITOIRES">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M2 4l5 2 6-3 5 2v11l-5-2-6 3-5-2V4z" stroke-linejoin="round"/>
+                            <path d="M7 6v11M13 3v11" stroke-linecap="round"/>
+                        </svg>
+                        <span>TERRITOIRES</span>
+                    </a>
+                </div>
+
                 <!-- GITHUB -->
                 <div class="nav-group">
                     <span class="nav-group-label">GITHUB</span>
@@ -965,6 +977,57 @@
                     </div>
                 </div>
 
+                <!-- ══════════════════════════ -->
+                <!-- EDITEUR DE TERRITOIRES   -->
+                <!-- ══════════════════════════ -->
+                <div class="panel hidden" id="panel-cartographie">
+                    <div class="carto-layout">
+
+                        <div class="carto-toolbar">
+                            <div class="carto-toolbar-left">
+                                <span class="carto-count-label">TERRITOIRES SELECTIONNES :</span>
+                                <span class="carto-count" id="carto-count">0</span>
+                            </div>
+                            <div class="carto-toolbar-right">
+                                <span class="carto-hint">Cliquez sur une région pour l'ajouter ou la retirer de l'Empire</span>
+                                <button class="btn-secondary" id="carto-btn-reset">Annuler les modifications</button>
+                                <button class="btn-primary cat-btn-push" id="carto-btn-push" disabled>
+                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M8 12V4M4 8l4-4 4 4" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Pousser sur GitHub
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="carto-map-wrapper carte-wrapper" id="carto-map-wrapper">
+                            <div id="carto-map" class="map-empire"></div>
+                            <div class="map-zoom-controls" aria-label="Contrôles zoom">
+                                <button id="carto-zoom-in"    class="map-zoom-btn" aria-label="Zoom avant">+</button>
+                                <button id="carto-zoom-reset" class="map-zoom-btn" aria-label="Réinitialiser">⌂</button>
+                                <button id="carto-zoom-out"   class="map-zoom-btn" aria-label="Zoom arrière">−</button>
+                            </div>
+                            <div class="map-legend">
+                                <div class="map-legend-item">
+                                    <span class="map-legend-dot map-legend-dot--empire"></span>
+                                    <span class="map-legend-label">TERRITOIRE DE L'EMPIRE</span>
+                                </div>
+                                <div class="map-legend-item">
+                                    <span class="map-legend-dot map-legend-dot--other"></span>
+                                    <span class="map-legend-label">TERRITOIRE ETRANGER</span>
+                                </div>
+                                <div class="map-legend-item" id="carto-unsaved-indicator" style="display:none;">
+                                    <span class="map-legend-dot" style="background:#e67e22;"></span>
+                                    <span class="map-legend-label" style="color:#e67e22;">MODIFICATIONS NON SAUVEGARDEES</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="github-status" id="carto-push-status" style="display:none;"></div>
+
+                    </div>
+                </div>
+
             </div><!-- /panels-wrapper -->
         </div><!-- /dashboard-main -->
     </div><!-- /dashboard-root -->
@@ -1055,5 +1118,6 @@
 
     <script src="../js/auth.js"></script>
     <script src="../js/dashboard.js"></script>
+    <script src="../js/dashboard-map.js"></script>
 </body>
 </html>
