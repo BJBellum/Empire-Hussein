@@ -36,8 +36,36 @@ async function initCanalPublic() {
             return;
         }
 
-        grid.style.display = 'flex';
-        grid.innerHTML = data.map(renderCountryCard).join('');
+        // Tri alphabétique par nom dans chaque groupe
+        data.sort((a, b) => (a.nom || '').localeCompare(b.nom || '', 'fr', { sensitivity: 'base' }));
+
+        // Regroupement par continent
+        const groups = {};
+        data.forEach(item => {
+            const cont = item.continent?.trim() || 'Non Classes';
+            if (!groups[cont]) groups[cont] = [];
+            groups[cont].push(item);
+        });
+
+        // Tri des continents alphabétiquement (Non Classes toujours en dernier)
+        const sortedContinents = Object.keys(groups).sort((a, b) => {
+            if (a === 'Non Classes') return 1;
+            if (b === 'Non Classes') return -1;
+            return a.localeCompare(b, 'fr', { sensitivity: 'base' });
+        });
+
+        grid.style.display = 'block';
+        grid.innerHTML = sortedContinents.map(cont => `
+            <div class="canal-continent-group">
+                <div class="canal-continent-header">
+                    <h2 class="canal-continent-title">${escH(cont.toUpperCase())}</h2>
+                    <div class="canal-continent-line"></div>
+                </div>
+                <div class="canal-continent-cards">
+                    ${groups[cont].map(renderCountryCard).join('')}
+                </div>
+            </div>
+        `).join('');
 
         const io = new IntersectionObserver((entries) => {
             entries.forEach(e => {
@@ -59,6 +87,13 @@ function taxColor(val) {
     // 0 → vert vif, 50 → orange, 100 → rouge
     const hue = Math.round(120 - (Math.min(val, 100) / 100) * 120);
     return `hsl(${hue}, 80%, 52%)`;
+}
+
+function countryNameStyle(name) {
+    const len = name.length;
+    if (len > 24) return 'font-size:9px;letter-spacing:0.1em;';
+    if (len > 17) return 'font-size:11px;letter-spacing:0.14em;';
+    return '';
 }
 
 function renderCountryCard(country) {
@@ -91,7 +126,7 @@ function renderCountryCard(country) {
         <div class="canal-card reveal-up">
             <div class="canal-flag">${flagHtml}</div>
             <div class="canal-card-body">
-                <h3 class="canal-country-name">${escH(country.nom)}</h3>
+                <h3 class="canal-country-name" style="${countryNameStyle(country.nom)}">${escH(country.nom)}</h3>
                 <div class="canal-divider"></div>
                 <div class="canal-tax-table">${taxRows}</div>
             </div>

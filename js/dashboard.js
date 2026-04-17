@@ -2418,8 +2418,9 @@ function collectCanalFormItem() {
     });
     return {
         id,
-        nom:     document.getElementById('canal-nom')?.value.trim() || '',
-        drapeau: document.getElementById('canal-flag-path')?.value.trim() || null,
+        nom:       document.getElementById('canal-nom')?.value.trim() || '',
+        continent: document.getElementById('canal-continent')?.value || '',
+        drapeau:   document.getElementById('canal-flag-path')?.value.trim() || null,
         taxes
     };
 }
@@ -2538,6 +2539,8 @@ function resetCanalForm() {
     _canalPendingFlag = null;
     document.getElementById('canal-form-title').textContent = 'NOUVEAU PAYS';
     document.getElementById('canal-nom').value = '';
+    const contSel = document.getElementById('canal-continent');
+    if (contSel) contSel.value = '';
     document.getElementById('canal-flag-path').value = '';
     updateFlagPreview(null);
     CANAL_TAXES.forEach(cat => {
@@ -2557,6 +2560,8 @@ function editCanalItem(id) {
 
     document.getElementById('canal-form-title').textContent = `MODIFIER — ${item.nom}`;
     document.getElementById('canal-nom').value = item.nom || '';
+    const contSelEdit = document.getElementById('canal-continent');
+    if (contSelEdit) contSelEdit.value = item.continent || '';
     document.getElementById('canal-flag-path').value = item.drapeau || '';
 
     _canalPendingFlag = null;
@@ -2651,6 +2656,7 @@ function renderCanalList() {
                         <h4 class="cat-admin-item-name">${escapeHtml(item.nom || '')}</h4>
                     </div>
                     <div class="cat-admin-item-meta">
+                        ${item.continent ? `<span style="font-size:11px;color:var(--gold);margin-right:8px;">${escapeHtml(item.continent)}</span>` : ''}
                         <span style="font-size:11px;">${escapeHtml(taxSummary)}</span>
                     </div>
                 </div>
