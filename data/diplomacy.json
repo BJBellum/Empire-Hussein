@@ -1,1 +1,31 @@
-{ "countries": {} }
+{
+  "countries": {
+    "1283": "recognized",
+    "1286": "recognized",
+    "1288": "recognized",
+    "1292": "recognized",
+    "1295": "recognized",
+    "1302": "recognized",
+    "1305": "recognized",
+    "1316": "recognized",
+    "1329": "recognized",
+    "1333": "recognized",
+    "1345": "recognized",
+    "1346": "recognized",
+    "1351": "recognized",
+    "1354": "recognized",
+    "1357": "recognized",
+    "1366": "recognized",
+    "1375": "recognized",
+    "1380": "recognized",
+    "1384": "recognized",
+    "1390": "recognized",
+    "1399": "recognized",
+    "1404": "recognized",
+    "1415": "recognized",
+    "1422": "recognized",
+    "1423": "recognized",
+    "1435": "recognized",
+    "1438": "recognized"
+  }
+}
