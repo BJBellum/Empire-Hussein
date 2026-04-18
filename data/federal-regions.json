@@ -13,7 +13,7 @@
     },
     {
       "id": 1776458603007,
-      "name": "CDTAA",
+      "name": "Îles australes",
       "color": "#0dbcbf",
       "flag_path": null,
       "slug": "cdtaa",
@@ -94,6 +94,37 @@
       "slug": "sina",
       "member_ids": [
         41
+      ]
+    },
+    {
+      "id": 1776528632166,
+      "name": "Terres du Grand Erg de Cristal",
+      "color": "#b2ddeb",
+      "flag_path": null,
+      "slug": "terres-du-grand-erg-de-cristal",
+      "member_ids": [
+        522,
+        523,
+        524,
+        525,
+        526,
+        527,
+        528,
+        521
+      ]
+    },
+    {
+      "id": 1776528814745,
+      "name": "Îles Caladan",
+      "color": "#819ea7",
+      "flag_path": null,
+      "slug": "les-subantarctiques",
+      "member_ids": [
+        1185,
+        1202,
+        1201,
+        1186,
+        801
       ]
     }
   ]
