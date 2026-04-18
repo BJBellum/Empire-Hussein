@@ -13,15 +13,15 @@
     },
     {
       "id": 1776458603007,
-      "name": "Îles australes",
+      "name": "Îles Gurney",
       "color": "#0dbcbf",
       "flag_path": null,
       "slug": "cdtaa",
       "member_ids": [
-        1195,
         1194,
         1199,
-        1198
+        1198,
+        1195
       ]
     },
     {
