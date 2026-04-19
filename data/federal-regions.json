@@ -100,17 +100,17 @@
       "id": 1776528632166,
       "name": "Terres du Grand Erg de Cristal",
       "color": "#b2ddeb",
-      "flag_path": null,
+      "flag_path": "assets/flags/terres-du-grand-erg-de-cristal.png",
       "slug": "terres-du-grand-erg-de-cristal",
       "member_ids": [
-        522,
         523,
         524,
         525,
         526,
         527,
         528,
-        521
+        521,
+        522
       ]
     },
     {
