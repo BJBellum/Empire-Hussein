@@ -45,16 +45,6 @@
       ]
     },
     {
-      "id": 1776458853922,
-      "name": "Makkaj",
-      "color": "#edb407",
-      "flag_path": null,
-      "slug": "makkaj",
-      "member_ids": [
-        1152
-      ]
-    },
-    {
       "id": 1776460371836,
       "name": "Marmarik",
       "color": "#2f8d93",
@@ -125,6 +115,16 @@
         1201,
         1186,
         801
+      ]
+    },
+    {
+      "id": 1776606695002,
+      "name": "Makka",
+      "color": "#edb407",
+      "flag_path": null,
+      "slug": "makka",
+      "member_ids": [
+        1152
       ]
     }
   ]
