@@ -90,11 +90,9 @@
         lines.push(`> `);
 
         // ── Préambule ─────────────────────────────────────────────────────────
-        lines.push(`> \`${toBold('PRÉAMBULE')}.\` :`);
         if (preamb) {
+            lines.push(`> \`${toBold('PRÉAMBULE')}.\` :`);
             preamb.split('\n').forEach(l => lines.push(`> ${l}`));
-        } else {
-            lines.push(`> `);
         }
 
         // ── Articles ──────────────────────────────────────────────────────────
