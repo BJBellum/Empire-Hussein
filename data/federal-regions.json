@@ -12,27 +12,16 @@
       ]
     },
     {
-      "id": 1776457841908,
-      "name": "Marmarik",
-      "color": "#3e9859",
-      "flag_path": null,
-      "slug": "marmarik",
-      "member_ids": [
-        38,
-        78
-      ]
-    },
-    {
       "id": 1776458603007,
-      "name": "CDTAA",
+      "name": "Îles Gurney",
       "color": "#0dbcbf",
       "flag_path": null,
       "slug": "cdtaa",
       "member_ids": [
-        1195,
         1194,
         1199,
-        1198
+        1198,
+        1195
       ]
     },
     {
@@ -56,9 +45,20 @@
       ]
     },
     {
-      "id": 1776458789372,
+      "id": 1776460371836,
+      "name": "Marmarik",
+      "color": "#2f8d93",
+      "flag_path": null,
+      "slug": "marmarik",
+      "member_ids": [
+        38,
+        78
+      ]
+    },
+    {
+      "id": 1776460417540,
       "name": "As-Sa'id",
-      "color": "#28623e",
+      "color": "#348353",
       "flag_path": null,
       "slug": "as-sa-id",
       "member_ids": [
@@ -67,9 +67,9 @@
       ]
     },
     {
-      "id": 1776458833974,
+      "id": 1776460442832,
       "name": "al-Ghadaqah",
-      "color": "#6f5379",
+      "color": "#814497",
       "flag_path": null,
       "slug": "al-ghadaqah",
       "member_ids": [
@@ -77,23 +77,54 @@
       ]
     },
     {
-      "id": 1776458853922,
-      "name": "Makkaj",
-      "color": "#edb407",
-      "flag_path": null,
-      "slug": "makkaj",
-      "member_ids": [
-        1152
-      ]
-    },
-    {
-      "id": 1776458869373,
+      "id": 1776460451925,
       "name": "Sinaï",
-      "color": "#856a19",
+      "color": "#a58b3b",
       "flag_path": null,
       "slug": "sina",
       "member_ids": [
         41
+      ]
+    },
+    {
+      "id": 1776528632166,
+      "name": "Terres du Grand Erg de Cristal",
+      "color": "#b2ddeb",
+      "flag_path": "assets/flags/terres-du-grand-erg-de-cristal.png",
+      "slug": "terres-du-grand-erg-de-cristal",
+      "member_ids": [
+        523,
+        524,
+        525,
+        526,
+        527,
+        528,
+        521,
+        522
+      ]
+    },
+    {
+      "id": 1776528814745,
+      "name": "Îles Caladan",
+      "color": "#819ea7",
+      "flag_path": null,
+      "slug": "les-subantarctiques",
+      "member_ids": [
+        1185,
+        1202,
+        1201,
+        1186,
+        801
+      ]
+    },
+    {
+      "id": 1776606695002,
+      "name": "Makka",
+      "color": "#edb407",
+      "flag_path": null,
+      "slug": "makka",
+      "member_ids": [
+        1152
       ]
     }
   ]
