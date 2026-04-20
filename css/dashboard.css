@@ -941,6 +941,160 @@
     background: rgba(201, 168, 76, 0.2);
 }
 
+/* ── Traités / Accords ──────────────────────── */
+.traite-section {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+}
+
+.traite-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 4px;
+}
+
+.traite-radio-row {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 6px 0;
+}
+
+.traite-radio-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: var(--font-body);
+    user-select: none;
+}
+
+.traite-radio-label input[type="radio"] {
+    accent-color: var(--gold);
+    cursor: pointer;
+}
+
+.traite-checks-row {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    padding: 6px 0;
+}
+
+.traite-check-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: var(--font-body);
+    user-select: none;
+}
+
+.traite-check-label input[type="checkbox"] {
+    accent-color: var(--gold);
+    cursor: pointer;
+}
+
+.traite-body-textarea {
+    width: 100%;
+    min-height: 80px;
+    resize: vertical;
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.6;
+    box-sizing: border-box;
+}
+
+.traite-articles-block {
+    margin-top: 20px;
+}
+
+.traite-articles-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.traite-article-item {
+    background: var(--bg-section);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 14px;
+    margin-bottom: 10px;
+}
+
+.traite-article-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.traite-article-num {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+}
+
+.traite-article-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.traite-subpoints-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.traite-subpoint-row {
+    display: grid;
+    grid-template-columns: 70px 1fr auto;
+    gap: 8px;
+    align-items: start;
+}
+
+.traite-preview-block {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+.traite-preview-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.traite-preview {
+    background: var(--bg-section);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 16px;
+    font-family: monospace;
+    font-size: 12.5px;
+    line-height: 1.75;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    word-break: break-word;
+    min-height: 120px;
+}
+
+.traite-copy-feedback {
+    color: var(--gold) !important;
+}
+
 /* ── Documents ──────────────────────────────── */
 .docs-layout {
     display: grid;

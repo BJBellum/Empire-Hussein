@@ -814,6 +814,111 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- ══════════════════════════════════════ -->
+                    <!-- TRAITES / ACCORDS                     -->
+                    <!-- ══════════════════════════════════════ -->
+                    <div class="traite-section" id="traite-section">
+                        <div class="cat-admin-section">
+                            <div class="cat-admin-section-head">
+                                <h3 class="cat-admin-section-title">TRAITES / ACCORDS</h3>
+                                <button class="btn-secondary" type="button" id="traite-reset">Réinitialiser</button>
+                            </div>
+                            <p class="cat-admin-section-desc">Composez un traité ou accord diplomatique au format Discord. Remplissez les champs pour générer automatiquement le texte mis en forme.</p>
+
+                            <div class="traite-form-grid">
+
+                                <!-- Type -->
+                                <div class="form-group">
+                                    <label class="form-label">Type de document</label>
+                                    <div class="traite-radio-row">
+                                        <label class="traite-radio-label"><input type="radio" name="traite-type" value="TRAITE" checked> Traité</label>
+                                        <label class="traite-radio-label"><input type="radio" name="traite-type" value="ACCORD"> Accord</label>
+                                    </div>
+                                </div>
+
+                                <!-- Format du titre -->
+                                <div class="form-group">
+                                    <label class="form-label">Format du titre</label>
+                                    <div class="traite-radio-row">
+                                        <label class="traite-radio-label"><input type="radio" name="traite-nom-type" value="ville" checked> De [Ville]</label>
+                                        <label class="traite-radio-label"><input type="radio" name="traite-nom-type" value="nilo"> Nilo-[Nationalité]</label>
+                                    </div>
+                                </div>
+
+                                <!-- Nom de ville -->
+                                <div class="form-group" id="traite-ville-group">
+                                    <label class="form-label">Nom de la ville</label>
+                                    <input class="form-input" type="text" id="traite-ville" placeholder="Ex : ALEXANDRIE" autocomplete="off">
+                                </div>
+
+                                <!-- Nationalité -->
+                                <div class="form-group" id="traite-nilo-group" style="display:none;">
+                                    <label class="form-label">Nationalité</label>
+                                    <input class="form-input" type="text" id="traite-nilo" placeholder="Ex : EGYPTIEN" autocomplete="off">
+                                </div>
+
+                                <!-- Emoji partenaire -->
+                                <div class="form-group">
+                                    <label class="form-label">Emoji partenaire</label>
+                                    <input class="form-input" type="text" id="traite-emoji" placeholder="Ex : <:flag_ugp:1490478772502139041>" autocomplete="off">
+                                    <small class="form-hint">Code emoji Discord complet, ex : &lt;:flag_ugp:1490478772502139041&gt;</small>
+                                </div>
+
+                                <!-- Visibilité -->
+                                <div class="form-group">
+                                    <label class="form-label">Visibilité</label>
+                                    <div class="traite-radio-row">
+                                        <label class="traite-radio-label"><input type="radio" name="traite-visibilite" value="Public" checked> Public</label>
+                                        <label class="traite-radio-label"><input type="radio" name="traite-visibilite" value="Secret"> Secret</label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Nature (pleine largeur) -->
+                            <div class="form-group">
+                                <label class="form-label">Nature du traité</label>
+                                <div class="traite-checks-row">
+                                    <label class="traite-check-label"><input type="checkbox" id="traite-eco"> Économique</label>
+                                    <label class="traite-check-label"><input type="checkbox" id="traite-def"> Défense</label>
+                                    <label class="traite-check-label"><input type="checkbox" id="traite-tech"> Technologique</label>
+                                    <label class="traite-check-label"><input type="checkbox" id="traite-diplo"> Diplomatique</label>
+                                </div>
+                            </div>
+
+                            <!-- Préambule -->
+                            <div class="form-group" style="margin-top:8px;">
+                                <label class="form-label">Préambule</label>
+                                <textarea class="form-input traite-body-textarea" id="traite-preambule" placeholder="Texte du préambule…" rows="4"></textarea>
+                            </div>
+
+                            <!-- Articles -->
+                            <div class="traite-articles-block">
+                                <div class="traite-articles-head">
+                                    <h4 class="cat-specs-title">ARTICLES</h4>
+                                    <button type="button" class="btn-secondary" id="traite-add-article">+ Ajouter un article</button>
+                                </div>
+                                <div id="traite-articles-list"></div>
+                            </div>
+
+                            <!-- Aperçu + Copier -->
+                            <div class="traite-preview-block">
+                                <div class="traite-preview-head">
+                                    <h4 class="cat-specs-title">APERCU</h4>
+                                    <button type="button" class="btn-primary" id="traite-copy-btn">
+                                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                            <rect x="5" y="5" width="9" height="9" rx="1"/>
+                                            <path d="M11 5V3H2v9h2" stroke-linejoin="round"/>
+                                        </svg>
+                                        Copier le traité
+                                    </button>
+                                </div>
+                                <pre class="traite-preview" id="traite-preview">Remplissez les champs pour générer l'aperçu…</pre>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
 
                 <!-- ══════════════════════════ -->
@@ -1147,6 +1252,7 @@
 
     <script src="../js/auth.js"></script>
     <script src="../js/dashboard.js"></script>
+    <script src="../js/traites.js"></script>
     <script src="../js/map-engine.js"></script>
     <script src="../js/map-modes.js"></script>
     <script src="../js/dashboard-map.js"></script>
