@@ -942,66 +942,122 @@
 }
 
 /* ── Traités / Accords ──────────────────────── */
-.traite-section {
-    margin-top: 28px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
+
+/* Pill toggle group — binary radio choices */
+.traite-toggle-group {
+    display: inline-flex;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    background: var(--bg-section);
 }
 
-.traite-form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 4px;
+.traite-toggle-opt {
+    position: relative;
 }
 
-.traite-radio-row {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-    flex-wrap: wrap;
-    padding: 6px 0;
+.traite-toggle-opt input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
 }
 
-.traite-radio-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    color: var(--text-secondary);
+.traite-toggle-opt span {
+    display: block;
+    padding: 7px 18px;
+    font-family: var(--font-display);
+    font-size: 9.5px;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
     cursor: pointer;
-    font-family: var(--font-body);
+    transition: background 0.18s, color 0.18s;
+    border-right: 1px solid var(--border);
+    white-space: nowrap;
     user-select: none;
 }
 
-.traite-radio-label input[type="radio"] {
-    accent-color: var(--gold);
-    cursor: pointer;
+.traite-toggle-opt:last-child span {
+    border-right: none;
 }
 
-.traite-checks-row {
+.traite-toggle-opt input[type="radio"]:checked + span {
+    background: rgba(201, 168, 76, 0.12);
+    color: var(--gold);
+}
+
+.traite-toggle-opt span:hover {
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* Nature badge checkboxes */
+.traite-nature-grid {
     display: flex;
-    gap: 18px;
+    gap: 8px;
     flex-wrap: wrap;
-    padding: 6px 0;
 }
 
-.traite-check-label {
+.traite-nature-opt {
+    position: relative;
+}
+
+.traite-nature-opt input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.traite-nature-opt span {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 13px;
-    color: var(--text-secondary);
+    padding: 7px 14px 7px 10px;
+    background: var(--bg-section);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-family: var(--font-display);
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
     cursor: pointer;
-    font-family: var(--font-body);
+    transition: border-color 0.18s, color 0.18s, background 0.18s;
     user-select: none;
+    white-space: nowrap;
 }
 
-.traite-check-label input[type="checkbox"] {
-    accent-color: var(--gold);
-    cursor: pointer;
+.traite-nature-opt span::before {
+    content: '';
+    width: 11px;
+    height: 11px;
+    border: 1px solid var(--border);
+    border-radius: 1px;
+    flex-shrink: 0;
+    transition: background 0.15s, border-color 0.15s;
+    background: transparent;
 }
 
+.traite-nature-opt span:hover {
+    color: var(--text-secondary);
+    border-color: rgba(201, 168, 76, 0.3);
+}
+
+.traite-nature-opt input[type="checkbox"]:checked + span {
+    border-color: var(--gold-dark);
+    color: var(--gold);
+    background: rgba(201, 168, 76, 0.07);
+}
+
+.traite-nature-opt input[type="checkbox"]:checked + span::before {
+    background: var(--gold);
+    border-color: var(--gold);
+    box-shadow: inset 0 0 0 2px var(--bg-deep);
+}
+
+/* Body textareas */
 .traite-body-textarea {
     width: 100%;
     min-height: 80px;
@@ -1012,6 +1068,7 @@
     box-sizing: border-box;
 }
 
+/* Articles */
 .traite-articles-block {
     margin-top: 20px;
 }
@@ -1024,11 +1081,11 @@
 }
 
 .traite-article-item {
-    background: var(--bg-section);
+    background: var(--bg-deep);
     border: 1px solid var(--border);
     border-radius: 2px;
     padding: 14px;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .traite-article-header {
@@ -1040,14 +1097,14 @@
 
 .traite-article-num {
     font-family: var(--font-display);
-    font-size: 11px;
-    letter-spacing: 0.15em;
+    font-size: 10px;
+    letter-spacing: 0.2em;
     color: var(--gold);
 }
 
 .traite-article-actions {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     align-items: center;
 }
 
@@ -1064,31 +1121,26 @@
     align-items: start;
 }
 
-.traite-preview-block {
-    margin-top: 24px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
-}
-
-.traite-preview-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
+/* Preview panel */
+.traite-preview-section {
+    position: sticky;
+    top: 0;
+    align-self: start;
 }
 
 .traite-preview {
-    background: var(--bg-section);
+    background: var(--bg-deep);
     border: 1px solid var(--border);
     border-radius: 2px;
-    padding: 16px;
+    padding: 16px 18px;
     font-family: monospace;
-    font-size: 12.5px;
-    line-height: 1.75;
+    font-size: 12px;
+    line-height: 1.8;
     color: var(--text-primary);
     white-space: pre-wrap;
     word-break: break-word;
-    min-height: 120px;
+    min-height: 200px;
+    margin: 0;
 }
 
 .traite-copy-feedback {
