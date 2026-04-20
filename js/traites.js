@@ -93,11 +93,12 @@
         if (preamb) {
             lines.push(`> \`${toBold('PRÉAMBULE')}.\` :`);
             preamb.split('\n').forEach(l => lines.push(`> ${l}`));
+            if (articles.length) lines.push(`> `);
         }
 
         // ── Articles ──────────────────────────────────────────────────────────
         articles.forEach((art, idx) => {
-            lines.push(`> `);
+            if (idx > 0) lines.push(`> `);
             const roman = toBold(toRoman(idx + 1));
             lines.push(`> \`${toBold('ARTICLE')} ${roman}.\` :`);
             if (art.mode === 'simple') {
