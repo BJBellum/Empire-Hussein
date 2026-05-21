@@ -869,7 +869,7 @@
         <div class="ref-subtabs">
             <button class="ref-subtab active" data-ref="div">DIVISIONS (5)</button>
             <button class="ref-subtab" data-ref="brig">BRIGADES (9)</button>
-            <button class="ref-subtab" data-ref="reg">REGIMENTS (20)</button>
+            <button class="ref-subtab" data-ref="reg">REGIMENTS (18)</button>
         </div>
 
         <div id="ref-div" class="ref-subpanel active"></div>
@@ -938,10 +938,8 @@ const EQ_BASE = {
   RPara: {s:700,fa:600,p:200,ml:24,mag:18,hmg:6,pm:30,ugl:54,g:2100,fp:18,lrat:40,atgm:16,mp:6,map:50,mat:30,mol:9,mom:6,vb:8,cl:20,amb:4,vc:4},
   RIMa:  {s:950,fa:700,p:250,ml:30,mag:24,hmg:12,pm:50,ugl:60,g:2800,fp:12,lrat:60,atgm:18,mp:8,map:50,mat:40,mol:9,mom:8,moh:4,apc:24,vb:12,vm:4,amb:4,vc:6,cl:30,cll:8},
   RBA:   {s:700,fa:400,p:500,hmg:24,pm:150,g:1000,lrat:24,atgm:18,mp:4,mat:30,mom:8,bl:48,ifv:6,apc:6,vb:6,vrb:4,vm:6,cll:8,amb:3,vc:6},
-  RA155T:{s:650,fa:450,p:650,ml:6,pm:24,g:600,c155:18,mom:2,cll:30,cl:30,vc:10,vrs:4,vm:6,vb:6,amb:3},
-  RA105T:{s:480,fa:380,p:480,pm:20,g:400,c105:18,mol:4,cl:30,cll:6,vc:6,vrs:2,vm:4,vb:4,amb:2},
-  RAA:   {s:700,fa:400,p:700,hmg:18,pm:60,g:700,spga:18,cll:24,cl:20,vrb:6,vm:8,vrs:4,vc:8,vb:4,amb:3},
-  RAC:   {s:550,fa:380,p:550,pm:40,g:500,spgc:18,cll:24,cl:18,vm:6,vrs:4,vc:8,vb:4,amb:3},
+  RAT:   {s:760,fa:520,p:760,ml:6,pm:34,g:850,c105:18,c155:18,mol:4,mom:2,cl:45,cll:32,amb:4,vc:12,vm:8,vrs:5,vb:7},
+  RAM:   {s:820,fa:520,p:820,hmg:18,pm:90,g:900,spga:18,spgc:18,cl:32,cll:36,amb:5,vc:12,vrb:6,vm:12,vrs:6,vb:6},
   RLRM:  {s:480,fa:320,p:480,pm:24,ml:6,g:400,lrm:18,cll:30,cl:18,vc:6,vrs:6,vm:4,vb:4,amb:2},
   RDA:   {s:700,fa:450,p:700,ml:12,mag:6,pm:40,g:600,mp:48,dca:24,vrs:12,vc:6,vm:4,vb:6,cl:24,amb:3},
   RG:    {s:500,i:350,fa:650,p:850,ml:12,mag:12,pm:30,ugl:24,g:700,map:300,mat:300,atgm:6,vg:28,apc:8,vb:6,cll:24,cl:30,vrb:4,vm:6,vc:4,amb:3},
@@ -969,7 +967,7 @@ const EQ_REF = {
   BAM:{s:2400,fa:2000,p:900,ml:72,mag:54,hmg:18,pm:110,ugl:162,g:6300,map:150,mat:90,fp:54,lrat:120,mp:18,atgm:48,c105:18,mol:27,mom:18,cl:105,cll:6,amb:16,vc:26,vm:4,vrs:2,bl:0,vb:32,hp:6},
   BAA:{s:2400,fa:1750,p:1000,ml:60,mag:48,hmg:24,pm:140,ugl:120,g:5600,map:100,mat:80,fp:24,lrat:120,mp:16,atgm:36,spgc:18,mol:18,mom:16,moh:8,cl:98,cll:46,amb:14,vc:32,vm:14,vrs:4,apc:48,bl:0,vb:36,hp:4},
   BBA:{s:2850,fa:1850,p:1750,ml:30,mag:24,hmg:60,pm:390,ugl:60,g:4800,map:50,mat:100,fp:12,lrat:108,mp:16,atgm:54,spgc:18,mol:9,mom:24,moh:4,cl:68,cll:54,amb:16,vc:38,vrb:8,vm:22,vrs:4,ifv:12,apc:36,bl:96,vb:36,hp:6},
-  BA:{s:2990,i:490,fa:2040,p:2990,ml:6,mag:24,hmg:18,pm:194,ugl:48,g:2400,map:300,mat:300,fp:18,lrat:12,mp:66,atgm:6,c105:36,c155:0,spga:18,spgc:18,mol:8,mom:0,moh:0,lrm:0,cl:154,cll:112,amb:30,vc:26,vg:28,vew:12,vrb:10,vm:43,vrs:26,ifv:0,apc:8,dca:24,bl:0,br:8,mbt:0,vb:32,ha:0,ht15:18,ht55:6,hp:6},
+  BA:{s:3120,i:490,fa:2060,p:3120,ml:18,mag:24,hmg:18,pm:212,ugl:48,g:3000,map:300,mat:300,fp:18,lrat:12,mp:66,atgm:6,c105:36,c155:36,spga:18,spgc:18,mol:8,mom:4,moh:0,lrm:18,cl:148,cll:136,amb:17,vc:40,vg:28,vew:12,vrb:16,vm:34,vrs:38,ifv:0,apc:8,dca:24,bl:0,br:8,mbt:0,vb:28,ha:0,ht15:18,ht55:6,hp:6},
   RIL:{s:750,fa:660,p:150,ml:27,mag:18,hmg:6,pm:30,ugl:54,g:2250,map:60,mat:40,fp:12,lrat:36,mp:4,atgm:12,mol:6,mom:6,cl:30,cll:6,amb:3,vc:4,vb:6},
   RIMo:{s:800,fa:700,p:200,ml:30,mag:18,hmg:8,pm:40,ugl:60,g:2400,map:80,mat:40,fp:24,lrat:50,mp:6,atgm:14,mol:9,mom:6,moh:4,cl:20,cll:4,amb:3,vc:4,vb:4},
   RIMot:{s:900,fa:600,p:300,ml:18,mag:24,hmg:30,pm:80,ugl:54,g:2200,map:40,mat:60,fp:9,lrat:60,mp:6,atgm:24,mom:6,moh:4,cl:8,cll:12,amb:4,vc:6,vrb:3,vm:6,apc:48,vb:8},
@@ -979,10 +977,8 @@ const EQ_REF = {
   RPara:{s:700,fa:600,p:200,ml:24,mag:18,hmg:6,pm:30,ugl:54,g:2100,map:50,mat:30,fp:18,lrat:40,mp:6,atgm:16,mol:9,mom:6,cl:20,amb:4,vc:4,vb:8},
   RIMa:{s:950,fa:700,p:250,ml:30,mag:24,hmg:12,pm:50,ugl:60,g:2800,map:50,mat:40,fp:12,lrat:60,mp:8,atgm:18,mol:9,mom:8,moh:4,cl:30,cll:8,amb:4,vc:6,vm:4,apc:24,vb:12},
   RBA:{s:700,fa:400,p:500,hmg:24,pm:150,g:1000,mat:30,lrat:24,mp:4,atgm:18,mom:8,cll:8,amb:3,vc:6,vrb:4,vm:6,ifv:6,apc:6,bl:48,vb:6},
-  RA155T:{s:650,fa:450,p:650,ml:6,pm:24,g:600,c155:18,mom:2,cl:30,cll:30,amb:3,vc:10,vm:6,vrs:4,vb:6},
-  RA105T:{s:480,fa:380,p:480,pm:20,g:400,c105:18,mol:4,cl:30,cll:6,amb:2,vc:6,vm:4,vrs:2,vb:4},
-  RAA:{s:700,fa:400,p:700,hmg:18,pm:60,g:700,spga:18,cl:20,cll:24,amb:3,vc:8,vrb:6,vm:8,vrs:4,vb:4},
-  RAC:{s:550,fa:380,p:550,pm:40,g:500,spgc:18,cl:18,cll:24,amb:3,vc:8,vm:6,vrs:4,vb:4},
+  RAT:{s:760,fa:520,p:760,ml:6,pm:34,g:850,c105:18,c155:18,mol:4,mom:2,cl:45,cll:32,amb:4,vc:12,vm:8,vrs:5,vb:7},
+  RAM:{s:820,fa:520,p:820,hmg:18,pm:90,g:900,spga:18,spgc:18,cl:32,cll:36,amb:5,vc:12,vrb:6,vm:12,vrs:6,vb:6},
   RLRM:{s:480,fa:320,p:480,ml:6,pm:24,g:400,lrm:18,cl:18,cll:30,amb:2,vc:6,vm:4,vrs:6,vb:4},
   RDA:{s:700,fa:450,p:700,ml:12,mag:6,pm:40,g:600,mp:48,cl:24,amb:3,vc:6,vm:4,vrs:12,dca:24,vb:6},
   RG:{s:500,i:350,fa:650,p:850,ml:12,mag:12,pm:30,ugl:24,g:700,map:300,mat:300,atgm:6,cl:30,cll:24,amb:3,vc:4,vg:28,vrb:4,vm:6,apc:8,vb:6},
@@ -1032,10 +1028,8 @@ const REG = {
   RPara: {n:"Régiment Parachutiste / Aéromobile", s:'RPara', r:"Assaut héliporté, projection rapide, saisie d'objectif, raid"},
   RIMa:  {n:"Régiment d'Infanterie de Marine",    s:'RIMa',  r:"Débarquement amphibie, projection littorale, opérations côtières"},
   RBA:   {n:"Régiment Blindé Amphibie",           s:'RBA',   r:"Appui blindé au débarquement, exploitation de tête de pont"},
-  RA155T:{n:"Régiment d'Artillerie 155mm Tractée",s:'RA155T',r:"Appui-feu général, contre-batterie, neutralisation profonde"},
-  RA105T:{n:"Régiment d'Artillerie 105mm Tractée",s:'RA105T',r:"Appui-feu direct, aérotransportable, soutien rapproché"},
-  RAA:   {n:"Régiment d'Artillerie Automotrice",  s:'RAA',   r:"Artillerie SPG chenillé, appui-feu mobile pour unités blindées"},
-  RAC:   {n:"Régiment d'Artillerie Camion",       s:'RAC',   r:"Artillerie SPG camion, déploiement rapide, projection opérationnelle"},
+  RAT:   {n:"Régiment d'Artillerie Tractée 105/155mm", s:'RAT', r:"Appui-feu mixte 105mm et 155mm, soutien rapproché, contre-batterie"},
+  RAM:   {n:"Régiment d'Artillerie Mobile",       s:'RAM',   r:"Artillerie automotrice chenillée et camion, appui-feu mobile et projection rapide"},
   RLRM:  {n:"Régiment Lance-Roquettes Multiples", s:'RLRM',  r:"Frappe en profondeur, interdiction, saturation de zone"},
   RDA:   {n:"Régiment de Défense Antiaérienne",   s:'RDA',   r:"Protection antiaérienne courte et moyenne portée, radar"},
   RG:    {n:"Régiment du Génie",                  s:'RG',    r:"Déminage, breaching, franchissement, fortification, contre-mobilité"},
@@ -1057,7 +1051,7 @@ const BRIG = {
   BAM:  {n:"Brigade Aéromobile",              s:'BAM',   r:"Régiments aéroportés, projection héliportée, saisie d'objectif, sans artillerie organique",  qg:'QGB_L',  c:[['RPara',3]]},
   BAA:  {n:"Brigade d'Assaut Amphibie",       s:'BAA',   r:"Infanterie de marine, première vague d'assaut, conquête de tête de pont",                   qg:'QGB_Mar', c:[['RIMa',2]]},
   BBA:  {n:"Brigade Blindée Amphibie",        s:'BBA',   r:"Blindé amphibie, exploitation de tête de pont, percée littorale",                           qg:'QGB_Mar', c:[['RBA',2],['RIMa',1]]},
-  BA:   {n:"Brigade d'Artillerie",            s:'BA',    r:"Artillerie divisionnaire, appui-feu toutes distances, regroupement interarmes",              qg:'QGB_M',  c:[['RA105T',2],['RAA',1],['RAC',1],['RLRM',1]]}
+  BA:   {n:"Brigade d'Artillerie",            s:'BA',    r:"Artillerie divisionnaire, appui-feu toutes distances, regroupement interarmes",              qg:'QGB_M',  c:[['RAT',2],['RAM',1],['RLRM',1]]}
 };
 
 /* ══════════════════════════════════════════
@@ -1299,7 +1293,18 @@ function renderArmy() {
       const field = e.target.dataset.field;
       const val = Math.max(0, parseInt(e.target.value)||0);
       const row = army.find(r => r.id === id);
-      if (row) { row[field] = val; saveArmy(); renderArmy(); }
+      if (!row) return;
+      row[field] = val;
+      saveArmy();
+
+      const tr = e.target.closest('tr');
+      if (tr) {
+        const perDiv = divEff(row.type);
+        tr.querySelector('.eff-service').textContent = fmt(perDiv * row.service);
+        tr.querySelector('.eff-cmd').textContent = fmt(perDiv * row.ordered);
+      }
+      renderStats();
+      renderTotals();
     });
   });
   tbody.querySelectorAll('.btn-remove').forEach(btn => {
