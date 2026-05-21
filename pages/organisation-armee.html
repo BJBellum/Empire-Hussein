@@ -788,12 +788,12 @@
             <div class="stat-card">
                 <div class="stat-label">EN SERVICE</div>
                 <div class="stat-value" id="stat-service">0</div>
-                <div class="stat-sub">hommes opérationnels</div>
+                <div class="stat-sub">soldats opérationnels</div>
             </div>
             <div class="stat-card cmd">
                 <div class="stat-label">COMMANDEES</div>
                 <div class="stat-value" id="stat-ordered">0</div>
-                <div class="stat-sub">hommes en commande</div>
+                <div class="stat-sub">soldats en commande</div>
             </div>
             <div class="stat-card total">
                 <div class="stat-label">TOTAL PROJETE</div>
@@ -947,8 +947,8 @@ const EQ_BASE = {
   RG:    {s:500,i:350,fa:650,p:850,ml:12,mag:12,pm:30,ugl:24,g:700,map:300,mat:300,atgm:6,vg:28,apc:8,vb:6,cll:24,cl:30,vrb:4,vm:6,vc:4,amb:3},
   RT:    {s:1000,i:60,fa:750,p:1000,pm:60,ml:6,ugl:12,g:500,lrat:12,mp:6,cll:80,cl:50,amb:18,vrb:6,vm:18,vc:6,vb:8},
   RGE:   {s:500,i:80,fa:380,p:550,mag:6,pm:60,ugl:12,g:300,fp:18,vew:12,vrs:12,br:8,vb:12,vc:6,vm:3,cl:30,amb:2},
-  RHC:   {s:450,fa:280,p:450,pm:60,g:300,mp:12,ha:24,cl:20,cll:6,vm:12,vc:4,amb:3,vrs:2},
-  RHM:   {s:500,fa:320,p:500,pm:50,g:300,mp:12,ht15:18,ht55:6,cl:20,cll:8,vm:12,vc:4,amb:4,vrs:2},
+  RHC:   {s:520,fa:330,p:520,pm:70,g:360,mp:12,ha:24,hp:8,cl:24,cll:8,vm:14,vc:5,amb:4,vrs:2},
+  RHM:   {s:620,fa:390,p:620,pm:65,g:420,mp:12,ht15:18,ht55:6,hp:12,cl:26,cll:10,vm:15,vc:5,amb:5,vrs:2},
   QGB_L: {s:300,fa:200,p:300,pm:20,vc:8,cl:15,amb:2,vb:4},
   QGB_M: {s:300,fa:180,p:300,pm:30,vc:10,cl:8,cll:6,amb:2,vb:6,vm:2},
   QGB_Mar:{s:500,fa:350,p:500,pm:40,vc:12,cl:20,cll:6,amb:3,vb:8},
@@ -956,20 +956,20 @@ const EQ_BASE = {
 };
 
 const EQ_REF = {
-  DIL:{s:13440,i:490,fa:10980,p:8440,ml:279,mag:186,hmg:54,pm:694,ugl:534,g:24450,map:840,mat:660,fp:126,lrat:336,mp:102,atgm:114,c105:54,c155:18,mol:66,mom:56,cl:604,cll:220,amb:76,vc:129,vg:28,vew:14,vrb:10,vm:61,vrs:36,apc:8,dca:24,bl:0,br:8,vb:126,ht15:18,ht55:6},
-  DIM:{s:16280,i:490,fa:10390,p:12480,ml:162,mag:150,hmg:216,pm:1894,ugl:363,g:21500,map:580,mat:840,fp:74,lrat:408,mp:142,atgm:228,spga:72,mom:42,moh:36,lrm:18,cl:367,cll:384,amb:93,vc:163,vg:28,vew:14,vrb:78,vm:177,vrs:50,ifv:306,apc:54,dca:24,bl:58,br:8,mbt:88,vb:130,ha:24,ht15:18,ht55:6},
-  DB:{s:15680,i:490,fa:9790,p:13080,ml:126,mag:114,hmg:252,pm:2194,ugl:273,g:19100,map:500,mat:840,fp:58,lrat:372,mp:134,atgm:180,spga:72,mom:30,moh:36,lrm:18,cl:351,cll:392,amb:93,vc:159,vg:28,vew:14,vrb:86,vm:185,vrs:50,ifv:234,apc:46,dca:24,bl:62,br:8,mbt:176,vb:126,ha:24,ht15:18,ht55:6},
-  DAM:{s:12790,i:490,fa:10270,p:8690,ml:246,mag:186,hmg:54,pm:730,ugl:534,g:22800,map:750,mat:570,fp:180,lrat:372,mp:132,atgm:150,c105:54,mol:93,mom:54,cl:504,cll:142,amb:85,vc:123,vg:28,vew:14,vrb:10,vm:67,vrs:34,apc:8,dca:24,bl:0,br:8,vb:138,ha:24,ht15:18,ht55:6},
-  DMar:{s:13930,i:490,fa:9940,p:10430,ml:186,mag:144,hmg:108,pm:1154,ugl:348,g:20600,map:550,mat:560,fp:78,lrat:360,mp:126,atgm:132,spgc:54,mol:45,mom:56,moh:20,lrm:18,cl:471,cll:300,amb:83,vc:153,vg:28,vew:14,vrb:18,vm:109,vrs:46,ifv:12,apc:140,dca:24,bl:96,br:8,vb:154,ha:24,ht15:18,ht55:6},
+  DIL:{s:13560,i:490,fa:11050,p:8560,ml:279,mag:186,hmg:54,pm:709,ugl:534,g:24570,map:840,mat:660,fp:126,lrat:336,mp:102,atgm:114,c105:54,c155:18,mol:66,mom:56,cl:610,cll:222,amb:77,vc:130,vg:28,vew:14,vrb:10,vm:64,vrs:36,apc:8,dca:24,bl:0,br:8,vb:126,ht15:18,ht55:6,hp:12},
+  DIM:{s:16470,i:490,fa:10510,p:12670,ml:162,mag:150,hmg:216,pm:1969,ugl:363,g:21680,map:580,mat:840,fp:74,lrat:408,mp:142,atgm:228,spga:72,mom:42,moh:36,lrm:18,cl:377,cll:388,amb:95,vc:165,vg:28,vew:14,vrb:78,vm:182,vrs:50,ifv:306,apc:54,dca:24,bl:58,br:8,mbt:88,vb:130,ha:24,ht15:18,ht55:6,hp:20},
+  DB:{s:15870,i:490,fa:9910,p:13270,ml:126,mag:114,hmg:252,pm:2269,ugl:273,g:19280,map:500,mat:840,fp:58,lrat:372,mp:134,atgm:180,spga:72,mom:30,moh:36,lrm:18,cl:361,cll:396,amb:95,vc:161,vg:28,vew:14,vrb:86,vm:190,vrs:50,ifv:234,apc:46,dca:24,bl:62,br:8,mbt:176,vb:126,ha:24,ht15:18,ht55:6,hp:20},
+  DAM:{s:12980,i:490,fa:10390,p:8880,ml:246,mag:186,hmg:54,pm:805,ugl:534,g:22980,map:750,mat:570,fp:180,lrat:372,mp:132,atgm:150,c105:54,mol:93,mom:54,cl:514,cll:146,amb:87,vc:125,vg:28,vew:14,vrb:10,vm:72,vrs:34,apc:8,dca:24,bl:0,br:8,vb:138,ha:24,ht15:18,ht55:6,hp:44},
+  DMar:{s:14120,i:490,fa:10060,p:10620,ml:186,mag:144,hmg:108,pm:1229,ugl:348,g:20780,map:550,mat:560,fp:78,lrat:360,mp:126,atgm:132,spgc:54,mol:45,mom:56,moh:20,lrm:18,cl:481,cll:304,amb:85,vc:155,vg:28,vew:14,vrb:18,vm:114,vrs:46,ifv:12,apc:140,dca:24,bl:96,br:8,vb:154,ha:24,ht15:18,ht55:6,hp:40},
   BIL:{s:2550,fa:2180,p:750,ml:81,mag:54,hmg:18,pm:110,ugl:162,g:6750,map:180,mat:120,fp:36,lrat:108,mp:12,atgm:36,c105:18,mol:18,mom:18,cl:135,cll:24,amb:13,vc:26,vm:4,vrs:2,bl:0,vb:26},
   BIMo:{s:2700,fa:2300,p:900,ml:90,mag:54,hmg:24,pm:140,ugl:180,g:7200,map:240,mat:120,fp:72,lrat:150,mp:18,atgm:42,c105:18,mol:27,mom:18,moh:12,cl:105,cll:18,amb:13,vc:26,vm:4,vrs:2,bl:0,vb:20},
   BIMot:{s:3000,fa:1980,p:1200,ml:54,mag:72,hmg:90,pm:270,ugl:162,g:6600,map:120,mat:180,fp:27,lrat:180,mp:18,atgm:72,spgc:18,mom:18,moh:12,cl:50,cll:66,amb:17,vc:36,vrb:9,vm:26,vrs:4,apc:144,bl:0,vb:34},
   BIMec:{s:3150,fa:1980,p:1350,ml:54,mag:54,hmg:36,pm:330,ugl:135,g:6000,map:120,mat:180,fp:24,lrat:144,mp:24,atgm:90,spga:18,mom:18,moh:12,cl:52,cll:66,amb:17,vc:36,vrb:18,vm:34,vrs:4,ifv:126,apc:18,bl:18,vb:28},
   BB:{s:2550,fa:1380,p:1950,ml:18,mag:18,hmg:72,pm:630,ugl:45,g:3600,map:40,mat:180,fp:8,lrat:108,mp:16,atgm:42,spga:18,mom:6,moh:12,cl:36,cll:74,amb:17,vc:32,vrb:26,vm:42,vrs:4,ifv:54,apc:10,bl:22,mbt:88,vb:24},
-  BAM:{s:2400,fa:2000,p:900,ml:72,mag:54,hmg:18,pm:110,ugl:162,g:6300,map:150,mat:90,fp:54,lrat:120,mp:18,atgm:48,c105:18,mol:27,mom:18,cl:105,cll:6,amb:16,vc:26,vm:4,vrs:2,bl:0,vb:32},
-  BAA:{s:2400,fa:1750,p:1000,ml:60,mag:48,hmg:24,pm:140,ugl:120,g:5600,map:100,mat:80,fp:24,lrat:120,mp:16,atgm:36,spgc:18,mol:18,mom:16,moh:8,cl:98,cll:46,amb:14,vc:32,vm:14,vrs:4,apc:48,bl:0,vb:36},
-  BBA:{s:2850,fa:1850,p:1750,ml:30,mag:24,hmg:60,pm:390,ugl:60,g:4800,map:50,mat:100,fp:12,lrat:108,mp:16,atgm:54,spgc:18,mol:9,mom:24,moh:4,cl:68,cll:54,amb:16,vc:38,vrb:8,vm:22,vrs:4,ifv:12,apc:36,bl:96,vb:36},
-  BA:{s:2990,i:490,fa:2040,p:2990,ml:6,mag:24,hmg:18,pm:194,ugl:48,g:2400,map:300,mat:300,fp:18,lrat:12,mp:66,atgm:6,c105:36,c155:0,spga:18,spgc:18,mol:8,mom:0,moh:0,lrm:0,cl:154,cll:112,amb:30,vc:26,vg:28,vew:12,vrb:10,vm:43,vrs:26,ifv:0,apc:8,dca:24,bl:0,br:8,mbt:0,vb:32,ha:0,ht15:18,ht55:6},
+  BAM:{s:2400,fa:2000,p:900,ml:72,mag:54,hmg:18,pm:110,ugl:162,g:6300,map:150,mat:90,fp:54,lrat:120,mp:18,atgm:48,c105:18,mol:27,mom:18,cl:105,cll:6,amb:16,vc:26,vm:4,vrs:2,bl:0,vb:32,hp:6},
+  BAA:{s:2400,fa:1750,p:1000,ml:60,mag:48,hmg:24,pm:140,ugl:120,g:5600,map:100,mat:80,fp:24,lrat:120,mp:16,atgm:36,spgc:18,mol:18,mom:16,moh:8,cl:98,cll:46,amb:14,vc:32,vm:14,vrs:4,apc:48,bl:0,vb:36,hp:4},
+  BBA:{s:2850,fa:1850,p:1750,ml:30,mag:24,hmg:60,pm:390,ugl:60,g:4800,map:50,mat:100,fp:12,lrat:108,mp:16,atgm:54,spgc:18,mol:9,mom:24,moh:4,cl:68,cll:54,amb:16,vc:38,vrb:8,vm:22,vrs:4,ifv:12,apc:36,bl:96,vb:36,hp:6},
+  BA:{s:2990,i:490,fa:2040,p:2990,ml:6,mag:24,hmg:18,pm:194,ugl:48,g:2400,map:300,mat:300,fp:18,lrat:12,mp:66,atgm:6,c105:36,c155:0,spga:18,spgc:18,mol:8,mom:0,moh:0,lrm:0,cl:154,cll:112,amb:30,vc:26,vg:28,vew:12,vrb:10,vm:43,vrs:26,ifv:0,apc:8,dca:24,bl:0,br:8,mbt:0,vb:32,ha:0,ht15:18,ht55:6,hp:6},
   RIL:{s:750,fa:660,p:150,ml:27,mag:18,hmg:6,pm:30,ugl:54,g:2250,map:60,mat:40,fp:12,lrat:36,mp:4,atgm:12,mol:6,mom:6,cl:30,cll:6,amb:3,vc:4,vb:6},
   RIMo:{s:800,fa:700,p:200,ml:30,mag:18,hmg:8,pm:40,ugl:60,g:2400,map:80,mat:40,fp:24,lrat:50,mp:6,atgm:14,mol:9,mom:6,moh:4,cl:20,cll:4,amb:3,vc:4,vb:4},
   RIMot:{s:900,fa:600,p:300,ml:18,mag:24,hmg:30,pm:80,ugl:54,g:2200,map:40,mat:60,fp:9,lrat:60,mp:6,atgm:24,mom:6,moh:4,cl:8,cll:12,amb:4,vc:6,vrb:3,vm:6,apc:48,vb:8},
@@ -988,8 +988,8 @@ const EQ_REF = {
   RG:{s:500,i:350,fa:650,p:850,ml:12,mag:12,pm:30,ugl:24,g:700,map:300,mat:300,atgm:6,cl:30,cll:24,amb:3,vc:4,vg:28,vrb:4,vm:6,apc:8,vb:6},
   RT:{s:1000,i:60,fa:750,p:1000,ml:6,pm:60,ugl:12,g:500,lrat:12,mp:6,cl:50,cll:80,amb:18,vc:6,vrb:6,vm:18,vb:8},
   RGE:{s:500,i:80,fa:380,p:550,mag:6,pm:60,ugl:12,g:300,fp:18,cl:30,amb:2,vc:6,vew:12,vm:3,vrs:12,br:8,vb:12},
-  RHC:{s:450,fa:280,p:450,pm:60,g:300,mp:12,cl:20,cll:6,amb:3,vc:4,vm:12,vrs:2,ha:24},
-  RHM:{s:500,fa:320,p:500,pm:50,g:300,mp:12,cl:20,cll:8,amb:4,vc:4,vm:12,vrs:2,ht15:18,ht55:6}
+  RHC:{s:520,fa:330,p:520,pm:70,g:360,mp:12,cl:24,cll:8,amb:4,vc:5,vm:14,vrs:2,ha:24,hp:8},
+  RHM:{s:620,fa:390,p:620,pm:65,g:420,mp:12,cl:26,cll:10,amb:5,vc:5,vm:15,vrs:2,ht15:18,ht55:6,hp:12}
 };
 
 const EL = {
@@ -1003,14 +1003,15 @@ const EL = {
   vg:'Véh. génie (IFV)',vew:'Véh. de GE',vrb:'Véh. récup. blindé',vm:'Véh. de maint.',
   vrs:'Véh. radar/SIGINT',ifv:'IFV',apc:'APC',dca:'DCA',bl:'Blindé léger',
   br:'Blindé de reco.',mbt:'MBT',vb:'Voitures blindées',ha:"Hélico. d'attaque",
-  ht15:'Hélico. transport (15t)',ht55:'Hélico. transport (55t)'
+  ht15:'Hélico. transport (15 soldats)',ht55:'Hélico. transport (55 soldats)',
+  hp:'Hélicoptères polyvalents'
 };
 const EC = {
   s:'per',i:'per',fa:'per',p:'per',ml:'arm',mag:'arm',hmg:'arm',pm:'arm',ugl:'arm',g:'arm',
   map:'arm',mat:'arm',fp:'arm',lrat:'arm',mp:'arm',atgm:'arm',c105:'art',c155:'art',
   spga:'art',spgc:'art',mol:'art',mom:'art',moh:'art',lrm:'art',cl:'veh',cll:'veh',
   amb:'veh',vc:'veh',vg:'veh',vew:'veh',vrb:'veh',vm:'veh',vrs:'veh',ifv:'bld',apc:'bld',
-  dca:'bld',bl:'bld',br:'bld',mbt:'bld',vb:'bld',ha:'avi',ht15:'avi',ht55:'avi'
+  dca:'bld',bl:'bld',br:'bld',mbt:'bld',vb:'bld',ha:'avi',ht15:'avi',ht55:'avi',hp:'avi'
 };
 const CAT_ORDER = ['per','arm','art','bld','veh','avi'];
 const CAT_LABELS = {
@@ -1063,15 +1064,15 @@ const BRIG = {
    DATA — Divisions (source CSV, vérifié)
 ══════════════════════════════════════════ */
 const DIV = {
-  DIL:  {n:"Division d'Infanterie Légère",    s:'DIL',  r:"Projection rapide, contre-insurrection, terrain difficile, contrôle de zone vaste. ~13 930 h",
+  DIL:  {n:"Division d'Infanterie Légère",    s:'DIL',  r:"Projection rapide, contre-insurrection, terrain difficile, contrôle de zone vaste. ~14 050 soldats",
          qg:'QGD', c:[['B','BIL',3],['B','BA',1],['R','RG',1],['R','RT',1],['R','RDA',1],['R','RGE',1],['R','RHM',1]]},
-  DIM:  {n:"Division d'Infanterie Mécanisée", s:'DIM',  r:"Combat conventionnel équilibré, manœuvre mécanisée avec appui blindé. ~16 770 h",
+  DIM:  {n:"Division d'Infanterie Mécanisée", s:'DIM',  r:"Combat conventionnel équilibré, manœuvre mécanisée avec appui blindé. ~16 960 soldats",
          qg:'QGD', c:[['B','BIMec',2],['B','BB',1],['B','BA',1],['R','RG',1],['R','RT',1],['R','RDA',1],['R','RGE',1],['R','RHC',1],['R','RHM',1]]},
-  DB:   {n:"Division Blindée",                s:'DB',   r:"Percée, exploitation blindée, contre-attaque, choc mécanisé décisif. ~16 170 h",
+  DB:   {n:"Division Blindée",                s:'DB',   r:"Percée, exploitation blindée, contre-attaque, choc mécanisé décisif. ~16 360 soldats",
          qg:'QGD', c:[['B','BB',2],['B','BIMec',1],['B','BA',1],['R','RG',1],['R','RT',1],['R','RDA',1],['R','RGE',1],['R','RHC',1],['R','RHM',1]]},
-  DAM:  {n:"Division Aéromobile",             s:'DAM',  r:"Projection héliportée stratégique, saisie aéroportée, opérations à longue portée. ~13 280 h",
+  DAM:  {n:"Division Aéromobile",             s:'DAM',  r:"Projection héliportée stratégique, saisie aéroportée, opérations à longue portée. ~13 470 soldats",
          qg:'QGD', c:[['B','BAM',3],['B','BA',1],['R','RHC',1],['R','RHM',1],['R','RG',1],['R','RT',1],['R','RDA',1],['R','RGE',1]]},
-  DMar: {n:"Division de Marine",              s:'DMar', r:"Projection littorale, débarquement amphibie, opérations côtières interarmes. ~14 420 h",
+  DMar: {n:"Division de Marine",              s:'DMar', r:"Projection littorale, débarquement amphibie, opérations côtières interarmes. ~14 610 soldats",
          qg:'QGD', c:[['B','BAA',2],['B','BBA',1],['B','BA',1],['R','RG',1],['R','RT',1],['R','RDA',1],['R','RGE',1],['R','RHC',1],['R','RHM',1]]}
 };
 
@@ -1129,6 +1130,7 @@ const NOMENC = [
   {code:'-T',  type:'Version Biplace (Suffixe)',    cat:'Aviation',      origine:'Thunai'},
   {code:'MH',  type:"Hélicoptère d'Attaque",        cat:'Hélicoptères',  origine:'Muruwahya Hujumiya'},
   {code:'MN',  type:'Hélicoptère de Transport',     cat:'Hélicoptères',  origine:'Muruwahya Naql'},
+  {code:'MHP', type:'Hélicoptère Polyvalent',       cat:'Hélicoptères',  origine:"Muruwahya Muta'addida"},
   {code:'MU',  type:'Hélicoptère Embarqué',         cat:'Hélicoptères',  origine:'Muruwahya Ustul'},
   {code:'MG',  type:'Hélicoptère Anti-Sous-Marin',  cat:'Hélicoptères',  origine:'Muruwahya Ghawwasa'},
   {code:'SJ',  type:'Missile Air-Air (AAM)',         cat:'Missiles',      origine:'Sarukh Jawi'},
@@ -1340,7 +1342,7 @@ function renderTotals() {
     }
     const eq = sumEq(list);
     const totalH = army.filter(r=>r.service).reduce((s,r)=>s+divEff(r.type)*r.service,0);
-    document.getElementById('totals-note').textContent = `Cumul référentiel des divisions en service — ${fmt(totalH)} hommes`;
+    document.getElementById('totals-note').textContent = `Cumul référentiel des divisions en service — ${fmt(totalH)} soldats`;
     document.getElementById('totals-eq').innerHTML = renderEqPanel(eq, false, null);
   }
 
@@ -1354,7 +1356,7 @@ function renderTotals() {
     }
     const eq = sumEq(list);
     const totalH = army.filter(r=>r.ordered).reduce((s,r)=>s+divEff(r.type)*r.ordered,0);
-    document.getElementById('totals-note-cmd').textContent = `Cumul référentiel des divisions commandées — ${fmt(totalH)} hommes`;
+    document.getElementById('totals-note-cmd').textContent = `Cumul référentiel des divisions commandées — ${fmt(totalH)} soldats`;
     document.getElementById('totals-eq-cmd').innerHTML = renderEqPanel(eq, false, null);
   }
 }
@@ -1375,7 +1377,7 @@ function renderRegCard(rk, topLevel) {
         <div class="mil-name">${r.n}</div>
         <div class="mil-role">${r.r}</div>
       </div>
-      <span class="mil-eff">${fmt(eff)} h</span>
+      <span class="mil-eff">${fmt(eff)} soldats</span>
       <span class="mil-chev" id="chev${id}">▶</span>
     </div>
     <div class="${topLevel ? 'mil-body' : 'sub-body'}" id="${id}">
@@ -1398,7 +1400,7 @@ function renderRegWithCount(rk, n) {
         <div class="mil-name">${r.n}</div>
         <div class="mil-role">${r.r}</div>
       </div>
-      <span class="mil-eff">${fmt(eff)} h${n>1?` <span style="color:var(--text-muted);font-size:11px;font-weight:400">(${fmt(rEff(rk))} u.)</span>`:''}</span>
+      <span class="mil-eff">${fmt(eff)} soldats${n>1?` <span style="color:var(--text-muted);font-size:11px;font-weight:400">(${fmt(rEff(rk))} u.)</span>`:''}</span>
       <span class="mil-chev" id="chev${id}">▶</span>
     </div>
     <div class="sub-body" id="${id}">
@@ -1418,7 +1420,7 @@ function renderBrigCard(bk, count, topLevel) {
 
   let body = '';
   if (b.qg) {
-    body += `<div class="qg-box"><b>QG Brigade (${b.qg})</b> · ${fmt(qgData.s||0)} h · commandement, transmissions, soutien immédiat</div>`;
+    body += `<div class="qg-box"><b>QG Brigade (${b.qg})</b> · ${fmt(qgData.s||0)} soldats · commandement, transmissions, soutien immédiat</div>`;
   }
   for (const [rk, rn] of b.c) body += renderRegWithCount(rk, rn);
 
@@ -1430,7 +1432,7 @@ function renderBrigCard(bk, count, topLevel) {
     <span class="mil-chev" id="achev${aggId}">▶</span>
   </div>
   <div class="agg-body" id="${aggId}">
-    <div class="agg-note">Total référentiel CSV — ${fmt(brigEff(bk))} h</div>
+    <div class="agg-note">Total référentiel CSV — ${fmt(brigEff(bk))} soldats</div>
     <div class="eq-panel">${renderEqPanel(totalEq, editMode && topLevel, topLevel ? bk : null)}</div>
   </div>`;
 
@@ -1442,7 +1444,7 @@ function renderBrigCard(bk, count, topLevel) {
           <div class="mil-name">${b.n}</div>
           <div class="mil-role">${b.r}</div>
         </div>
-        <span class="mil-eff">${fmt(eff)} h</span>
+        <span class="mil-eff">${fmt(eff)} soldats</span>
         <span class="mil-chev" id="chev${id}">▶</span>
       </div>
       <div class="mil-body" id="${id}">${body}</div>
@@ -1455,7 +1457,7 @@ function renderBrigCard(bk, count, topLevel) {
           <div class="mil-name">${b.n}</div>
           <div class="mil-role">${b.r}</div>
         </div>
-        <span class="mil-eff">${fmt(eff)} h${count>1?` <span style="color:var(--text-muted);font-size:11px;font-weight:400">(${fmt(brigEff(bk))} u.)</span>`:''}</span>
+        <span class="mil-eff">${fmt(eff)} soldats${count>1?` <span style="color:var(--text-muted);font-size:11px;font-weight:400">(${fmt(brigEff(bk))} u.)</span>`:''}</span>
         <span class="mil-chev" id="chev${id}">▶</span>
       </div>
       <div class="sub-body" id="${id}">${body}</div>
@@ -1471,7 +1473,7 @@ function renderDivCard(dk) {
 
   let body = '';
   if (d.qg) {
-    body += `<div class="qg-box"><b>QG Division (${d.qg})</b> · ${fmt(qgData.s||0)} h · PC, transmissions, EW divisionnaire, médical avancé</div>`;
+    body += `<div class="qg-box"><b>QG Division (${d.qg})</b> · ${fmt(qgData.s||0)} soldats · PC, transmissions, EW divisionnaire, médical avancé</div>`;
   }
   for (const [t, kk, n] of d.c) {
     if (t === 'B') body += renderBrigCard(kk, n, false);
@@ -1485,7 +1487,7 @@ function renderDivCard(dk) {
     <span class="mil-chev" id="achev${aggId}">▶</span>
   </div>
   <div class="agg-body" id="${aggId}">
-    <div class="agg-note">Total référentiel CSV — ${fmt(eff)} h</div>
+    <div class="agg-note">Total référentiel CSV — ${fmt(eff)} soldats</div>
     <div class="eq-panel">${renderEqPanel(totalEq, editMode, dk)}</div>
   </div>`;
 
@@ -1496,7 +1498,7 @@ function renderDivCard(dk) {
         <div class="mil-name">${d.n}</div>
         <div class="mil-role">${d.r}</div>
       </div>
-      <span class="mil-eff">${fmt(eff)} h</span>
+      <span class="mil-eff">${fmt(eff)} soldats</span>
       <span class="mil-chev" id="chev${id}">▶</span>
     </div>
     <div class="mil-body" id="${id}">${body}</div>
