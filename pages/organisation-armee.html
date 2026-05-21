@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculateur de forces et référentiel doctrinal des Forces Armées Impériales">
+    <title>Organisation Militaire — Empire Hussein</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" type="image/png" href="../assets/Hussein Empire Coat of Arms.png">
+    <script>if(location.pathname.endsWith('.html'))history.replaceState(null,'',location.pathname.replace('.html',''));</script>
+    <style>
+/* ═══════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════ */
+.org-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px,5vw,48px) 100px;
+}
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+.org-hero {
+    padding: calc(var(--header-h) + 52px) 0 44px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0;
+}
+.org-badge {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    border: 1px solid rgba(201,168,76,0.3);
+    padding: 6px 18px;
+    margin-bottom: 22px;
+}
+.org-title {
+    font-family: var(--font-display);
+    font-size: clamp(26px,5vw,50px);
+    letter-spacing: 0.12em;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+.org-sub {
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════════
+   MAIN TABS
+═══════════════════════════════════════════ */
+.org-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: var(--header-h);
+    background: var(--bg-deep);
+    z-index: 90;
+    padding: 0;
+    margin-bottom: 32px;
+}
+.org-tab {
+    font-family: var(--font-display);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    color: var(--text-muted);
+    padding: 16px 22px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.2s, border-color 0.2s;
+}
+.org-tab:hover { color: var(--text-secondary); }
+.org-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+.org-panel { display: none; }
+.org-panel.active { display: block; }
+
+/* ═══════════════════════════════════════════
+   SECTION TITLE
+═══════════════════════════════════════════ */
+.sec-title {
+    font-family: var(--font-display);
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    color: var(--gold);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* ═══════════════════════════════════════════
+   STATS GRID
+═══════════════════════════════════════════ */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(165px,1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+}
+.stat-card {
+    padding: 18px 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+.stat-label {
+    font-family: var(--font-display);
+    font-size: 8px;
+    letter-spacing: 0.22em;
+    color: var(--text-muted);
+    margin-bottom: 7px;
+}
+.stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gold);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+.stat-sub {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 5px;
+}
+.stat-card.cmd .stat-value { color: var(--text-secondary); }
+.stat-card.total .stat-value { color: var(--gold-light); }
+
+/* ═══════════════════════════════════════════
+   ADD FORM
+═══════════════════════════════════════════ */
+.calc-add-form {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    padding: 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.form-label {
+    font-family: var(--font-display);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+}
+.form-select, .form-input {
+    background: var(--bg-section);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+}
+.form-select { min-width: 220px; cursor: pointer; }
+.form-select:focus, .form-input:focus { border-color: var(--gold); }
+.form-input { width: 88px; text-align: center; }
+.form-input::placeholder { color: var(--text-muted); }
+.btn-add {
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.35);
+    color: var(--gold);
+    font-family: var(--font-display);
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    padding: 9px 22px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.btn-add:hover { background: rgba(201,168,76,0.22); border-color: var(--gold); }
+
+/* ═══════════════════════════════════════════
+   ROSTER TABLE
+═══════════════════════════════════════════ */
+.roster-wrap {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+.roster-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.roster-table th {
+    text-align: left;
+    padding: 10px 14px;
+    font-family: var(--font-display);
+    font-size: 8px;
+    letter-spacing: 0.22em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-card);
+    white-space: nowrap;
+}
+.roster-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: var(--text-primary);
+    background: var(--bg-section);
+    vertical-align: middle;
+}
+.roster-table tr:last-child td { border-bottom: none; }
+.roster-table tr:hover td { background: rgba(201,168,76,0.03); }
+.roster-input {
+    width: 72px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 13px;
+    padding: 6px 8px;
+    border-radius: 4px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+    -moz-appearance: textfield;
+}
+.roster-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.roster-input:focus { border-color: var(--gold); }
+.btn-remove {
+    background: none;
+    border: 1px solid rgba(220,80,80,0.2);
+    color: rgba(220,100,100,0.55);
+    padding: 5px 11px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--font-body);
+}
+.btn-remove:hover { border-color: rgba(220,80,80,0.5); color: rgba(220,100,100,0.9); }
+.eff-service { color: var(--gold); font-weight: 600; }
+.eff-cmd { color: var(--text-secondary); }
+.roster-empty {
+    text-align: center;
+    padding: 44px 20px;
+    color: var(--text-muted);
+    background: var(--bg-section);
+    font-size: 13px;
+}
+
+/* ═══════════════════════════════════════════
+   TOTALS BLOCK
+═══════════════════════════════════════════ */
+.totals-block {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+.totals-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 16px;
+    background: var(--bg-card);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    user-select: none;
+    transition: background 0.15s;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-family: var(--font-body);
+}
+.totals-toggle:hover { background: rgba(201,168,76,0.04); }
+.totals-chevron { color: var(--text-muted); font-size: 11px; transition: transform 0.2s; }
+.totals-chevron.open { transform: rotate(90deg); }
+.totals-body {
+    display: none;
+    padding: 16px;
+    background: var(--bg-section);
+    border-top: 1px solid var(--border);
+}
+.totals-body.open { display: block; }
+.totals-note {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* ═══════════════════════════════════════════
+   EQUIPMENT DISPLAY
+═══════════════════════════════════════════ */
+.eq-section { margin-bottom: 14px; }
+.eq-section:last-child { margin-bottom: 0; }
+.eq-cat-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 7px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid;
+}
+.eq-grid { display: flex; flex-wrap: wrap; gap: 5px; }
+.eq-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid;
+    min-width: 64px;
+    text-align: center;
+}
+.eq-val { font-size: 15px; font-weight: 600; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.eq-val input {
+    width: 54px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(201,168,76,0.45);
+    border-radius: 3px;
+    color: inherit;
+    padding: 2px 4px;
+    font-family: var(--font-body);
+    outline: none;
+    -moz-appearance: textfield;
+}
+.eq-val input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.eq-lbl { font-size: 10px; margin-top: 2px; line-height: 1.3; opacity: 0.85; }
+
+.cat-per .eq-cat-label{color:#4CAF82;border-color:rgba(76,175,130,.3)}.cat-per .eq-item{background:rgba(76,175,130,.07);border-color:rgba(76,175,130,.22);color:#4CAF82}
+.cat-arm .eq-cat-label{color:#C9784C;border-color:rgba(201,120,76,.3)}.cat-arm .eq-item{background:rgba(201,120,76,.07);border-color:rgba(201,120,76,.22);color:#C9784C}
+.cat-art .eq-cat-label{color:#C94C4C;border-color:rgba(201,76,76,.3)}.cat-art .eq-item{background:rgba(201,76,76,.07);border-color:rgba(201,76,76,.22);color:#C94C4C}
+.cat-bld .eq-cat-label{color:#8080C9;border-color:rgba(128,128,201,.3)}.cat-bld .eq-item{background:rgba(128,128,201,.07);border-color:rgba(128,128,201,.22);color:#8080C9}
+.cat-veh .eq-cat-label{color:#7CA84C;border-color:rgba(124,168,76,.3)}.cat-veh .eq-item{background:rgba(124,168,76,.07);border-color:rgba(124,168,76,.22);color:#7CA84C}
+.cat-avi .eq-cat-label{color:#4C9EC9;border-color:rgba(76,158,201,.3)}.cat-avi .eq-item{background:rgba(76,158,201,.07);border-color:rgba(76,158,201,.22);color:#4C9EC9}
+
+/* ═══════════════════════════════════════════
+   REFERENTIEL CARDS
+═══════════════════════════════════════════ */
+.ref-subtabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 0;
+}
+.ref-subtab {
+    font-family: var(--font-display);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    padding: 11px 18px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.2s, border-color 0.2s;
+}
+.ref-subtab:hover { color: var(--text-secondary); }
+.ref-subtab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+.ref-subpanel { display: none; }
+.ref-subpanel.active { display: block; }
+
+/* Edit mode controls */
+.edit-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+.btn-edit-toggle {
+    font-family: var(--font-display);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    padding: 7px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid var(--border);
+    background: none;
+    color: var(--text-muted);
+}
+.btn-edit-toggle:hover { border-color: var(--gold); color: var(--gold); }
+.btn-edit-toggle.active { background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.5); color: var(--gold); }
+.edit-actions { display: flex; gap: 8px; }
+.btn-save {
+    font-family: var(--font-display);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    padding: 7px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    background: rgba(201,168,76,0.18);
+    border: 1px solid rgba(201,168,76,0.45);
+    color: var(--gold);
+    transition: all 0.2s;
+}
+.btn-save:hover { background: rgba(201,168,76,0.28); }
+.btn-reset {
+    font-family: var(--font-display);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    padding: 7px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    background: none;
+    border: 1px solid rgba(220,80,80,0.22);
+    color: rgba(220,100,100,0.6);
+    transition: all 0.2s;
+}
+.btn-reset:hover { border-color: rgba(220,80,80,0.5); color: rgba(220,100,100,0.9); }
+
+/* Card base */
+.mil-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    background: var(--bg-card);
+}
+.mil-card-hdr {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 16px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+}
+.mil-card-hdr:hover { background: rgba(201,168,76,0.04); }
+.mil-chip {
+    font-family: var(--font-display);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    min-width: 42px;
+    text-align: center;
+}
+.chip-div { background: rgba(201,168,76,0.18); color: var(--gold); border: 1px solid rgba(201,168,76,0.38); }
+.chip-brig { background: rgba(192,178,160,0.1); color: var(--text-secondary); border: 1px solid rgba(192,178,160,0.22); }
+.chip-reg { background: rgba(154,139,122,0.08); color: var(--text-muted); border: 1px solid rgba(154,139,122,0.18); }
+.mil-info { flex: 1; min-width: 0; }
+.mil-name { font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1.3; }
+.mil-role { font-size: 11px; color: var(--text-secondary); margin-top: 3px; line-height: 1.4; }
+.mil-eff { font-size: 13px; font-weight: 600; color: var(--gold); flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.mil-chev { color: var(--text-muted); font-size: 10px; flex-shrink: 0; margin-left: 4px; transition: transform 0.2s; }
+.mil-chev.open { transform: rotate(90deg); }
+.mil-body {
+    display: none;
+    padding: 8px 14px 14px;
+    background: var(--bg-section);
+    border-top: 1px solid var(--border);
+}
+.mil-body.open { display: block; }
+
+/* QG box inside card */
+.qg-box {
+    padding: 8px 12px;
+    margin: 6px 0 10px;
+    background: var(--bg-card);
+    border-left: 3px solid var(--gold-dark);
+    border-radius: 0 4px 4px 0;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+.qg-box b { color: var(--text-primary); }
+
+/* Sub-cards (brigade inside div, regiment inside brigade) */
+.sub-card {
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 6px;
+    margin: 4px 0;
+    overflow: hidden;
+}
+.sub-card-hdr {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+    user-select: none;
+    background: var(--bg-card);
+    transition: background 0.15s;
+}
+.sub-card-hdr:hover { background: rgba(255,255,255,0.04); }
+.sub-cnt {
+    background: rgba(201,168,76,0.18);
+    color: var(--gold);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    min-width: 28px;
+    text-align: center;
+    flex-shrink: 0;
+    font-family: var(--font-display);
+    letter-spacing: 0.05em;
+}
+.sub-body {
+    display: none;
+    padding: 0 0 6px 10px;
+    background: rgba(0,0,0,0.2);
+}
+.sub-body.open { display: block; }
+.eq-panel {
+    padding: 12px 14px;
+    background: var(--bg-card);
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Aggregate totals toggle inside card */
+.agg-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    margin: 8px 0 0;
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    transition: background 0.15s;
+}
+.agg-toggle:hover { background: rgba(201,168,76,0.04); color: var(--text-primary); }
+.agg-body {
+    display: none;
+    padding: 6px 0 0;
+}
+.agg-body.open { display: block; }
+.agg-note {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-style: italic;
+    padding: 6px 12px 10px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 10px;
+}
+
+/* ═══════════════════════════════════════════
+   NOMENCLATURE TAB
+═══════════════════════════════════════════ */
+.nom-filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+    align-items: center;
+}
+.nom-search {
+    flex: 1;
+    min-width: 200px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 13px;
+    padding: 9px 14px;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.nom-search:focus { border-color: var(--gold); }
+.nom-cat-filter {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: var(--font-display);
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.nom-cat-filter:hover { border-color: var(--gold); color: var(--gold); }
+.nom-cat-filter.active { background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.4); color: var(--gold); }
+
+.nom-wrap { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.nom-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.nom-table th {
+    text-align: left;
+    padding: 9px 14px;
+    font-family: var(--font-display);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-card);
+    white-space: nowrap;
+}
+.nom-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    background: var(--bg-section);
+}
+.nom-table tr:last-child td { border-bottom: none; }
+.nom-table tr:hover td { background: rgba(201,168,76,0.03); }
+.nom-code {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    white-space: nowrap;
+}
+.nom-origin { color: var(--text-muted); font-style: italic; font-size: 12px; }
+.nom-badge {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+}
+.nom-hidden { display: none; }
+.nom-count { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+
+/* Save notification */
+.save-toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: var(--bg-card);
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold);
+    font-family: var(--font-display);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    padding: 12px 20px;
+    border-radius: 6px;
+    z-index: 999;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.25s, transform 0.25s;
+    pointer-events: none;
+}
+.save-toast.show { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 600px) {
+    .calc-add-form { flex-direction: column; }
+    .form-select { min-width: 0; width: 100%; }
+    .stats-grid { grid-template-columns: repeat(2,1fr); }
+    .nom-filters { flex-direction: column; }
+}
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════ -->
+<header id="header" class="header--solid">
+    <div class="header-inner">
+        <nav class="nav-links">
+            <a href="../" class="nav-link">
+                <span class="nav-link-text">ACCUEIL</span>
+                <span class="nav-link-line"></span>
+            </a>
+            <a href="economie.html" class="nav-link">
+                <span class="nav-link-text">ECONOMIE</span>
+                <span class="nav-link-line"></span>
+            </a>
+            <a href="catalogues.html" class="nav-link">
+                <span class="nav-link-text">CATALOGUES</span>
+                <span class="nav-link-line"></span>
+            </a>
+            <a href="energie.html" class="nav-link">
+                <span class="nav-link-text">ENERGIE</span>
+                <span class="nav-link-line"></span>
+            </a>
+            <a href="forces-armees.html" class="nav-link nav-link--locked" id="nav-forces">
+                <span class="nav-link-text">FORCES ARMEES</span>
+                <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0110 0v4"/>
+                </svg>
+                <span class="nav-link-line"></span>
+            </a>
+            <button class="btn-discord" id="btn-discord" aria-label="Connexion Discord">
+                <svg class="discord-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286z"/>
+                </svg>
+                <span class="btn-discord-text">CONNEXION</span>
+            </button>
+        </nav>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+
+<!-- Mobile nav -->
+<div class="mobile-nav" id="mobile-nav">
+    <a href="../" class="mobile-nav-link">ACCUEIL</a>
+    <a href="economie.html" class="mobile-nav-link">ECONOMIE</a>
+    <a href="catalogues.html" class="mobile-nav-link">CATALOGUES</a>
+    <a href="energie.html" class="mobile-nav-link">ENERGIE</a>
+    <a href="forces-armees.html" class="mobile-nav-link mobile-nav-link--locked">FORCES ARMEES
+        <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0110 0v4"/>
+        </svg>
+    </a>
+    <button class="btn-discord btn-discord--mobile" id="btn-discord-mobile" aria-label="Connexion Discord">
+        <svg class="discord-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286z"/>
+        </svg>
+        <span>CONNEXION</span>
+    </button>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════ -->
+<div class="org-hero">
+    <div class="org-wrap">
+        <div class="org-badge">FORCES ARMEES IMPERIALES</div>
+        <h1 class="org-title">ORDRE DE BATAILLE</h1>
+        <p class="org-sub">Calculateur de forces, référentiel doctrinal et nomenclature des unités</p>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     TABS
+═══════════════════════════════════════════ -->
+<div class="org-tabs">
+    <div class="org-wrap" style="display:flex;padding-top:0;padding-bottom:0;width:100%;max-width:1200px;margin:0 auto;">
+        <button class="org-tab active" data-tab="armee">MON ARMEE</button>
+        <button class="org-tab" data-tab="referentiel">REFERENTIEL</button>
+        <button class="org-tab" data-tab="nomenclature">NOMENCLATURE</button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MAIN
+═══════════════════════════════════════════ -->
+<div class="org-wrap">
+
+    <!-- ────────── TAB: MON ARMEE ────────── -->
+    <div id="tab-armee" class="org-panel active">
+
+        <!-- Add form -->
+        <div class="sec-title">AJOUTER UNE UNITE</div>
+        <div class="calc-add-form">
+            <div class="form-field">
+                <label class="form-label">TYPE DE DIVISION</label>
+                <select class="form-select" id="add-type"></select>
+            </div>
+            <div class="form-field">
+                <label class="form-label">EN SERVICE</label>
+                <input type="number" class="form-input" id="add-service" value="1" min="0" max="999" placeholder="0">
+            </div>
+            <div class="form-field">
+                <label class="form-label">COMMANDEES</label>
+                <input type="number" class="form-input" id="add-ordered" value="0" min="0" max="999" placeholder="0">
+            </div>
+            <button class="btn-add" id="btn-add-div">+ AJOUTER</button>
+        </div>
+
+        <!-- Stats -->
+        <div class="sec-title">BILAN DES EFFECTIFS</div>
+        <div class="stats-grid" id="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">EN SERVICE</div>
+                <div class="stat-value" id="stat-service">0</div>
+                <div class="stat-sub">hommes opérationnels</div>
+            </div>
+            <div class="stat-card cmd">
+                <div class="stat-label">COMMANDEES</div>
+                <div class="stat-value" id="stat-ordered">0</div>
+                <div class="stat-sub">hommes en commande</div>
+            </div>
+            <div class="stat-card total">
+                <div class="stat-label">TOTAL PROJETE</div>
+                <div class="stat-value" id="stat-total">0</div>
+                <div class="stat-sub">effectif final</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">DIVISIONS</div>
+                <div class="stat-value" id="stat-divs">0</div>
+                <div class="stat-sub">unités enregistrées</div>
+            </div>
+        </div>
+
+        <!-- Roster -->
+        <div class="sec-title">COMPOSITION DE L'ARMEE</div>
+        <div class="roster-wrap">
+            <table class="roster-table">
+                <thead>
+                    <tr>
+                        <th>TYPE</th>
+                        <th>DESIGNATION</th>
+                        <th>EN SERVICE</th>
+                        <th>COMMANDEES</th>
+                        <th>EFFECTIF SERVICE</th>
+                        <th>EFFECTIF CMD</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="roster-body">
+                    <tr><td colspan="7" class="roster-empty">Aucune division enregistrée. Utilisez le formulaire ci-dessus pour composer votre ordre de bataille.</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Equipment totals -->
+        <div class="totals-block" id="totals-block" style="display:none">
+            <button class="totals-toggle" id="totals-toggle">
+                <span>Inventaire des équipements — forces en service</span>
+                <span class="totals-chevron" id="totals-chevron">▶</span>
+            </button>
+            <div class="totals-body" id="totals-body">
+                <div class="totals-note" id="totals-note"></div>
+                <div id="totals-eq"></div>
+            </div>
+        </div>
+
+        <div class="totals-block" id="totals-block-cmd" style="display:none">
+            <button class="totals-toggle" id="totals-toggle-cmd">
+                <span>Inventaire des équipements — forces commandées</span>
+                <span class="totals-chevron" id="totals-chevron-cmd">▶</span>
+            </button>
+            <div class="totals-body" id="totals-body-cmd">
+                <div class="totals-note" id="totals-note-cmd"></div>
+                <div id="totals-eq-cmd"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ────────── TAB: REFERENTIEL ────────── -->
+    <div id="tab-referentiel" class="org-panel">
+
+        <div class="edit-bar">
+            <div>
+                <button class="btn-edit-toggle" id="btn-edit-toggle">MODE EDITION</button>
+            </div>
+            <div class="edit-actions" id="edit-actions" style="display:none">
+                <button class="btn-save" id="btn-save-ref">SAUVEGARDER</button>
+                <button class="btn-reset" id="btn-reset-ref">REINITIALISER</button>
+            </div>
+        </div>
+
+        <div class="ref-subtabs">
+            <button class="ref-subtab active" data-ref="div">DIVISIONS (5)</button>
+            <button class="ref-subtab" data-ref="brig">BRIGADES (9)</button>
+            <button class="ref-subtab" data-ref="reg">REGIMENTS (20)</button>
+        </div>
+
+        <div id="ref-div" class="ref-subpanel active"></div>
+        <div id="ref-brig" class="ref-subpanel"></div>
+        <div id="ref-reg" class="ref-subpanel"></div>
+
+    </div>
+
+    <!-- ────────── TAB: NOMENCLATURE ────────── -->
+    <div id="tab-nomenclature" class="org-panel">
+        <div class="sec-title">CODIFICATION DES MATERIELS</div>
+        <div class="nom-filters">
+            <input type="text" class="nom-search" id="nom-search" placeholder="Rechercher un code, un type, une origine…" autocomplete="off">
+            <button class="nom-cat-filter active" data-nomcat="all">TOUS</button>
+            <button class="nom-cat-filter" data-nomcat="Infanterie">INFANTERIE</button>
+            <button class="nom-cat-filter" data-nomcat="Véhicules">VEHICULES</button>
+            <button class="nom-cat-filter" data-nomcat="Artillerie">ARTILLERIE</button>
+            <button class="nom-cat-filter" data-nomcat="Aviation">AVIATION</button>
+            <button class="nom-cat-filter" data-nomcat="Hélicoptères">HELICOPTERES</button>
+            <button class="nom-cat-filter" data-nomcat="Missiles">MISSILES</button>
+        </div>
+        <div class="nom-count" id="nom-count"></div>
+        <div class="nom-wrap">
+            <table class="nom-table">
+                <thead>
+                    <tr>
+                        <th>CODE</th>
+                        <th>DESIGNATION</th>
+                        <th>CATEGORIE</th>
+                        <th>ORIGINE ARABE (RACINE)</th>
+                    </tr>
+                </thead>
+                <tbody id="nom-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+</div><!-- /org-wrap -->
+
+<!-- Toast notification -->
+<div class="save-toast" id="save-toast">REFERENTIEL SAUVEGARDE</div>
+
+<!-- ═══════════════════════════════════════════
+     AUTH (reuse existing)
+═══════════════════════════════════════════ -->
+<script src="../js/auth.js"></script>
+<script src="../js/main.js"></script>
+
+<!-- ═══════════════════════════════════════════
+     PAGE LOGIC
+═══════════════════════════════════════════ -->
+<script>
+'use strict';
+
+/* ══════════════════════════════════════════
+   DATA — Équipement par régiment
+   Source : Calculateur Militaire CSV
+══════════════════════════════════════════ */
+const EQ_BASE = {
+  RIL:   {s:750,fa:660,p:150,ml:27,mag:18,hmg:6,pm:30,ugl:54,g:2250,fp:12,lrat:36,atgm:12,mp:4,map:60,mat:40,mol:6,mom:6,cl:30,cll:6,amb:3,vc:4,vb:6},
+  RIMo:  {s:800,fa:700,p:200,ml:30,mag:18,hmg:8,pm:40,ugl:60,g:2400,fp:24,lrat:50,atgm:14,mp:6,map:80,mat:40,mol:9,mom:6,moh:4,cl:20,cll:4,amb:3,vc:4,vb:4},
+  RIMot: {s:900,fa:600,p:300,ml:18,mag:24,hmg:30,pm:80,ugl:54,g:2200,fp:9,lrat:60,atgm:24,mp:6,map:40,mat:60,mom:6,moh:4,apc:48,vb:8,vm:6,vrb:3,cll:12,amb:4,vc:6,cl:8},
+  RIMec: {s:950,fa:600,p:350,ml:18,mag:18,hmg:12,pm:100,ugl:45,g:2000,fp:8,lrat:48,atgm:30,mp:8,map:40,mat:60,mom:6,moh:4,ifv:42,apc:6,vb:6,vm:8,vrb:4,cll:12,cl:8,amb:4,vc:6},
+  RB:    {s:650,fa:300,p:650,hmg:30,pm:250,g:800,lrat:30,atgm:6,mp:4,mat:60,moh:4,mbt:44,ifv:6,apc:2,vb:4,vrb:8,vm:12,cll:16,amb:4,vc:4},
+  RC:    {s:600,fa:350,p:350,mag:12,hmg:18,pm:80,ugl:24,g:800,fp:12,lrat:24,atgm:18,mp:6,mom:4,br:36,vb:18,ifv:4,vew:4,vrs:6,vrb:3,vm:6,amb:2,vc:4},
+  RPara: {s:700,fa:600,p:200,ml:24,mag:18,hmg:6,pm:30,ugl:54,g:2100,fp:18,lrat:40,atgm:16,mp:6,map:50,mat:30,mol:9,mom:6,vb:8,cl:20,amb:4,vc:4},
+  RIMa:  {s:950,fa:700,p:250,ml:30,mag:24,hmg:12,pm:50,ugl:60,g:2800,fp:12,lrat:60,atgm:18,mp:8,map:50,mat:40,mol:9,mom:8,moh:4,apc:24,vb:12,vm:4,amb:4,vc:6,cl:30,cll:8},
+  RBA:   {s:700,fa:400,p:500,hmg:24,pm:150,g:1000,lrat:24,atgm:18,mp:4,mat:30,mom:8,bl:48,ifv:6,apc:6,vb:6,vrb:4,vm:6,cll:8,amb:3,vc:6},
+  RA155T:{s:650,fa:450,p:650,ml:6,pm:24,g:600,c155:18,mom:2,cll:30,cl:30,vc:10,vrs:4,vm:6,vb:6,amb:3},
+  RA105T:{s:480,fa:380,p:480,pm:20,g:400,c105:18,mol:4,cl:30,cll:6,vc:6,vrs:2,vm:4,vb:4,amb:2},
+  RAA:   {s:700,fa:400,p:700,hmg:18,pm:60,g:700,spga:18,cll:24,cl:20,vrb:6,vm:8,vrs:4,vc:8,vb:4,amb:3},
+  RAC:   {s:550,fa:380,p:550,pm:40,g:500,spgc:18,cll:24,cl:18,vm:6,vrs:4,vc:8,vb:4,amb:3},
+  RLRM:  {s:480,fa:320,p:480,pm:24,ml:6,g:400,lrm:18,cll:30,cl:18,vc:6,vrs:6,vm:4,vb:4,amb:2},
+  RDA:   {s:700,fa:450,p:700,ml:12,mag:6,pm:40,g:600,mp:48,dca:24,vrs:12,vc:6,vm:4,vb:6,cl:24,amb:3},
+  RG:    {s:500,i:350,fa:650,p:850,ml:12,mag:12,pm:30,ugl:24,g:700,map:300,mat:300,atgm:6,vg:28,apc:8,vb:6,cll:24,cl:30,vrb:4,vm:6,vc:4,amb:3},
+  RT:    {s:1000,i:60,fa:750,p:1000,pm:60,ml:6,ugl:12,g:500,lrat:12,mp:6,cll:80,cl:50,amb:18,vrb:6,vm:18,vc:6,vb:8},
+  RGE:   {s:500,i:80,fa:380,p:550,mag:6,pm:60,ugl:12,g:300,fp:18,vew:12,vrs:12,br:8,vb:12,vc:6,vm:3,cl:30,amb:2},
+  RHC:   {s:450,fa:280,p:450,pm:60,g:300,mp:12,ha:24,cl:20,cll:6,vm:12,vc:4,amb:3,vrs:2},
+  RHM:   {s:500,fa:320,p:500,pm:50,g:300,mp:12,ht15:18,ht55:6,cl:20,cll:8,vm:12,vc:4,amb:4,vrs:2},
+  QGB_L: {s:300,fa:200,p:300,pm:20,vc:8,cl:15,amb:2,vb:4},
+  QGB_M: {s:300,fa:180,p:300,pm:30,vc:10,cl:8,cll:6,amb:2,vb:6,vm:2},
+  QGB_Mar:{s:500,fa:350,p:500,pm:40,vc:12,cl:20,cll:6,amb:3,vb:8},
+  QGD:   {s:500,fa:300,p:500,pm:40,vc:15,cl:15,cll:6,amb:4,vb:10,vew:2}
+};
+
+const EL = {
+  s:'Soldats',i:'Ingénieurs',fa:"Fusils d'assaut",p:'Pistolets',ml:'Mitrailleuse légère',
+  mag:'Mitrailleuse polyvalente',hmg:'Mitrailleuse lourde',pm:'Pistolet-mitrailleur',
+  ugl:'Lance-grenades',g:'Grenades à main',map:'Mine antipersonnel',mat:'Mine antichar',
+  fp:'Fusil de précision',lrat:'Lance-roquettes AT',mp:'MANPADS',atgm:'ATGM',
+  c105:'Canon 105mm',c155:'Canon 155mm',spga:'SPG 155mm (Auto.)',spgc:'SPG 155mm (Camion)',
+  mol:'Mortier léger',mom:'Mortier moyen',moh:'Mortier lourd',lrm:'LRM',
+  cl:'Camions légers',cll:'Camions lourds',amb:'Ambulances',vc:'Vél. de cmdmt',
+  vg:'Vél. génie (IFV)',vew:'Vél. de GE',vrb:'Vél. récup. blindé',vm:'Vél. de maint.',
+  vrs:'Vél. radar/SIGINT',ifv:'IFV',apc:'APC',dca:'DCA',bl:'Blindé léger',
+  br:'Blindé de reco.',mbt:'MBT',vb:'Voitures blindées',ha:"Hélico. d'attaque",
+  ht15:'Hélico. transport (15t)',ht55:'Hélico. transport (55t)'
+};
+const EC = {
+  s:'per',i:'per',fa:'per',p:'per',ml:'arm',mag:'arm',hmg:'arm',pm:'arm',ugl:'arm',g:'arm',
+  map:'arm',mat:'arm',fp:'arm',lrat:'arm',mp:'arm',atgm:'arm',c105:'art',c155:'art',
+  spga:'art',spgc:'art',mol:'art',mom:'art',moh:'art',lrm:'art',cl:'veh',cll:'veh',
+  amb:'veh',vc:'veh',vg:'veh',vew:'veh',vrb:'veh',vm:'veh',vrs:'veh',ifv:'bld',apc:'bld',
+  dca:'bld',bl:'bld',br:'bld',mbt:'bld',vb:'bld',ha:'avi',ht15:'avi',ht55:'avi'
+};
+const CAT_ORDER = ['per','arm','art','bld','veh','avi'];
+const CAT_LABELS = {
+  per:'Personnel',arm:'Armement léger & mines',art:'Artillerie & mortiers',
+  bld:'Blindés & véhicules de combat',veh:'Véhicules de soutien',avi:'Aviation'
+};
+
+/* ══════════════════════════════════════════
+   DATA — Régiments
+══════════════════════════════════════════ */
+const REG = {
+  RIL:   {n:"Régiment d'Infanterie Légère",       s:'RIL',   r:"Combat à pied, terrain difficile et urbain, contre-insurrection, contrôle de zone"},
+  RIMo:  {n:"Régiment d'Infanterie de Montagne",  s:'RIMo',  r:"Combat alpin et désertique, raids en profondeur, reconnaissance avancée"},
+  RIMot: {n:"Régiment d'Infanterie Motorisée",    s:'RIMot', r:"Infanterie sur APC à roues, mobilité opérationnelle, contre-attaque"},
+  RIMec: {n:"Régiment d'Infanterie Mécanisée",    s:'RIMec', r:"Infanterie sur IFV chenillé, mêlée mécanisée, exploitation"},
+  RB:    {n:"Régiment Blindé",                    s:'RB',    r:"Percée, exploitation blindée, contre-attaque mobile, antichar"},
+  RC:    {n:"Régiment de Cavalerie / Reconnaissance", s:'RC', r:"Éclairage, reconnaissance, flanc-garde, sécurité, surveillance"},
+  RPara: {n:"Régiment Parachutiste / Aéromobile", s:'RPara', r:"Assaut héliporté, projection rapide, saisie d'objectif, raid"},
+  RIMa:  {n:"Régiment d'Infanterie de Marine",    s:'RIMa',  r:"Débarquement amphibie, projection littorale, opérations côtières"},
+  RBA:   {n:"Régiment Blindé Amphibie",           s:'RBA',   r:"Appui blindé au débarquement, exploitation de tête de pont"},
+  RA155T:{n:"Régiment d'Artillerie 155mm Tractée",s:'RA155T',r:"Appui-feu général, contre-batterie, neutralisation profonde"},
+  RA105T:{n:"Régiment d'Artillerie 105mm Tractée",s:'RA105T',r:"Appui-feu direct, aérotransportable, soutien rapproché"},
+  RAA:   {n:"Régiment d'Artillerie Automotrice",  s:'RAA',   r:"Artillerie SPG chenillé, appui-feu mobile pour unités blindées"},
+  RAC:   {n:"Régiment d'Artillerie Camion",       s:'RAC',   r:"Artillerie SPG camion, déploiement rapide, projection opérationnelle"},
+  RLRM:  {n:"Régiment Lance-Roquettes Multiples", s:'RLRM',  r:"Frappe en profondeur, interdiction, saturation de zone"},
+  RDA:   {n:"Régiment de Défense Antiaérienne",   s:'RDA',   r:"Protection antiaérienne courte et moyenne portée, radar"},
+  RG:    {n:"Régiment du Génie",                  s:'RG',    r:"Déminage, breaching, franchissement, fortification, contre-mobilité"},
+  RT:    {n:"Régiment de Logistique / Train",     s:'RT',    r:"Ravitaillement, maintenance, soutien médical (BSB divisionnaire)"},
+  RGE:   {n:"Régiment de Renseignement & Guerre Électronique", s:'RGE', r:"ISR, EW, SIGINT, brouillage, surveillance tactique"},
+  RHC:   {n:"Régiment d'Hélicoptères de Combat",  s:'RHC',   r:"Appui-feu héliporté, antichar, escorte aérienne"},
+  RHM:   {n:"Régiment d'Hélicoptères de Manœuvre",s:'RHM',   r:"Transport tactique, héliassaut, CASEVAC, ravitaillement aérien"}
+};
+
+/* ══════════════════════════════════════════
+   DATA — Brigades (source CSV)
+══════════════════════════════════════════ */
+const BRIG = {
+  BIL:  {n:"Brigade d'Infanterie Légère",     s:'BIL',   r:"Trois régiments d'infanterie légère, projetable rapidement, sans artillerie organique",    qg:'QGB_L',  c:[['RIL',3]]},
+  BIMo: {n:"Brigade d'Infanterie de Montagne",s:'BIMo',  r:"Infanterie alpine spécialisée, terrain extrême, autonomie tactique élevée",                 qg:'QGB_L',  c:[['RIMo',3]]},
+  BIMot:{n:"Brigade d'Infanterie Motorisée",  s:'BIMot', r:"Infanterie sur APC à roues, déploiement rapide, sans artillerie organique",                  qg:'QGB_M',  c:[['RIMot',3]]},
+  BIMec:{n:"Brigade d'Infanterie Mécanisée",  s:'BIMec', r:"Infanterie sur IFV chenillé, combat de mêlée mécanisée, sans artillerie organique",          qg:'QGB_M',  c:[['RIMec',3]]},
+  BB:   {n:"Brigade Blindée",                 s:'BB',    r:"Chars MBT en pointe, soutenus par infanterie mécanisée, sans artillerie organique",           qg:'QGB_M',  c:[['RB',2],['RIMec',1]]},
+  BAM:  {n:"Brigade Aéromobile",              s:'BAM',   r:"Régiments aéroportés, projection héliportée, saisie d'objectif, sans artillerie organique",  qg:'QGB_L',  c:[['RPara',3]]},
+  BAA:  {n:"Brigade d'Assaut Amphibie",       s:'BAA',   r:"Infanterie de marine, première vague d'assaut, conquête de tête de pont",                   qg:'QGB_Mar', c:[['RIMa',2]]},
+  BBA:  {n:"Brigade Blindée Amphibie",        s:'BBA',   r:"Blindé amphibie, exploitation de tête de pont, percée littorale",                           qg:'QGB_Mar', c:[['RBA',2],['RIMa',1]]},
+  BA:   {n:"Brigade d'Artillerie",            s:'BA',    r:"Artillerie divisionnaire, appui-feu toutes distances, regroupement interarmes",              qg:'QGB_M',  c:[['RA105T',2],['RAA',1],['RAC',1],['RLRM',1]]}
+};
+
+/* ══════════════════════════════════════════
+   DATA — Divisions (source CSV, vérifié)
+══════════════════════════════════════════ */
+const DIV = {
+  DIL:  {n:"Division d'Infanterie Légère",    s:'DIL',  r:"Projection rapide, contre-insurrection, terrain difficile, contrôle de zone vaste. ~14 830 h",
+         qg:'QGD', c:[['B','BIL',3],['B','BA',1],['R','RG',1],['R','RT',1],['R','RDA',1],['R','RGE',1],['R','RHM',1]]},
+  DIM:  {n:"Division d'Infanterie Mécanisée", s:'DIM',  r:"Combat conventionnel équilibré, manœuvre mécanisée avec appui blindé. ~16 480 h",
+         qg:'QGD', c:[['B','BIMec',2],['B','BB',1],['B','BA',1],['R','RG',1],['R','RT',1],['R','RDA',1],['R','RGE',1],['R','RHC',1],['R','RHM',1]]},
+  DB:   {n:"Division Blindée",                s:'DB',   r:"Percée, exploitation blindée, contre-attaque, choc mécanisé décisif. ~15 880 h",
+         qg:'QGD', c:[['B','BB',2],['B','BIMec',1],['B','BA',1],['R','RG',1],['R','RT',1],['R','RDA',1],['R','RGE',1],['R','RHC',1],['R','RHM',1]]},
+  DAM:  {n:"Division Aéromobile",             s:'DAM',  r:"Projection héliportée stratégique, saisie aéroportée, opérations à longue portée. ~14 830 h",
+         qg:'QGD', c:[['B','BAM',3],['B','BA',1],['R','RHC',1],['R','RHM',1],['R','RG',1],['R','RT',1],['R','RDA',1],['R','RGE',1]]},
+  DMar: {n:"Division de Marine",              s:'DMar', r:"Projection littorale, débarquement amphibie, opérations côtières interarmes. ~15 280 h",
+         qg:'QGD', c:[['B','BAA',2],['B','BBA',1],['B','BA',1],['R','RG',1],['R','RT',1],['R','RDA',1],['R','RGE',1],['R','RHC',1],['R','RHM',1]]}
+};
+
+/* ══════════════════════════════════════════
+   DATA — Nomenclature (source CSV)
+══════════════════════════════════════════ */
+const NOMENC = [
+  {code:'MS',  type:'Pistolet',                     cat:'Infanterie',    origine:'Musaddas'},
+  {code:'MR',  type:'Pistolet Mitrailleur (SMG)',    cat:'Infanterie',    origine:'Musaddas Rashash'},
+  {code:'BA',  type:"Fusil d'Assaut",               cat:'Infanterie',    origine:'Bunduqiya Atomatikiya'},
+  {code:'QN',  type:'Fusil de Sniper',              cat:'Infanterie',    origine:'Qannas'},
+  {code:'RS',  type:'Mitrailleuse (Standard)',       cat:'Infanterie',    origine:'Rashash'},
+  {code:'RK',  type:'Mitrailleuse Légère (LMG)',    cat:'Infanterie',    origine:'Rashash Khafif'},
+  {code:'RM',  type:'Mitrailleuse Moyenne (GPMG)',  cat:'Infanterie',    origine:'Rashash Mutawassit'},
+  {code:'RT',  type:'Mitrailleuse Lourde (HMG)',    cat:'Infanterie',    origine:'Rashash Thaqil'},
+  {code:'RQ',  type:'Lance-grenades',               cat:'Infanterie',    origine:'Rami Qanabil'},
+  {code:'QY',  type:'Grenade',                      cat:'Infanterie',    origine:'Qunbula Yadawiya'},
+  {code:'LG',  type:'Mine terrestre',               cat:'Infanterie',    origine:'Lughm'},
+  {code:'DK',  type:'Char Léger',                   cat:'Véhicules',     origine:'Dabbaba Khafifa'},
+  {code:'DM',  type:'Char Moyen',                   cat:'Véhicules',     origine:'Dabbaba Mutawassita'},
+  {code:'DT',  type:'Char Lourd',                   cat:'Véhicules',     origine:'Dabbaba Thaqila'},
+  {code:'DB',  type:'Char de Combat (MBT)',         cat:'Véhicules',     origine:'Dabbaba'},
+  {code:'MQ',  type:'Véhicule Combat Infanterie (IFV)', cat:'Véhicules', origine:'Marqabat Qital'},
+  {code:'NAN', type:'Transport Blindé (APC)',        cat:'Véhicules',     origine:'Naqilat Ashkhas'},
+  {code:'KS',  type:'Véhicule Reconnaissance',      cat:'Véhicules',     origine:'Kashshaf'},
+  {code:'MQM', type:'IFV Parachutiste',             cat:'Véhicules',     origine:'Marqabat Qital Mouzalliya'},
+  {code:'MR',  type:'Véhicule Léger Blindé (Humvee)',cat:'Véhicules',    origine:'Marqaba Rubaiya'},
+  {code:'SN',  type:'Camion de Transport',          cat:'Véhicules',     origine:'Shadhina Naql'},
+  {code:'MD',  type:'Artillerie Mobile',            cat:'Artillerie',    origine:"Madfa'iya"},
+  {code:'MM',  type:'Artillerie de Campagne',       cat:'Artillerie',    origine:"Madfa' Midani"},
+  {code:'MZ',  type:'Obusier',                      cat:'Artillerie',    origine:"Madfa' Hawitzer"},
+  {code:'DJ',  type:'Système Sol-Air (SAM)',         cat:'Artillerie',    origine:"Difa' Jawi"},
+  {code:'MJ',  type:'Artillerie de Montagne / Légère', cat:'Artillerie', origine:"Madfa'iya Jabaliya"},
+  {code:'SM',  type:'Artillerie Mobile sur Camion', cat:'Artillerie',    origine:"Shadhina Madfa'ia"},
+  {code:'BR',  type:'Lance-Roquettes Multiple (LRM)',cat:'Artillerie',   origine:'Batariat Rajimat'},
+  {code:'DH',  type:'MANPADS (Sol-Air Portable)',   cat:'Artillerie',    origine:"Difa' Hamili"},
+  {code:'HW',  type:'Mortier',                      cat:'Artillerie',    origine:'Hawen'},
+  {code:'IM',  type:'AWACS / Radar Aéroporté',      cat:'Aviation',      origine:'Inthir Mubakir'},
+  {code:'RI',  type:'Avion ELINT (Interception)',   cat:'Aviation',      origine:'Rasd Iliktrouniya'},
+  {code:'IS',  type:'Reconnaissance Supersonique',  cat:'Aviation',      origine:"Istikshaf Sarie'"},
+  {code:'TG',  type:'Avion Anti-Sous-Marin',        cat:'Aviation',      origine:"Ta'ira Ghawwasa"},
+  {code:'HI',  type:'Guerre Électronique',          cat:'Aviation',      origine:'Harb Iliktrouniya'},
+  {code:'MK',  type:'Chasseur Léger',               cat:'Aviation',      origine:'Mukafaha Khafifa'},
+  {code:'MT',  type:'Chasseur Multirôle',           cat:'Aviation',      origine:"Mukafaha Ta'adudiya"},
+  {code:'MB',  type:'Chasseur Embarqué',            cat:'Aviation',      origine:'Mukafaha Bahriya'},
+  {code:'HA',  type:'Attaque au Sol (CAS)',          cat:'Aviation',      origine:'Hujum Ardi'},
+  {code:'MTM', type:'Lutte Anti-Guérilla (COIN)',   cat:'Aviation',      origine:'Mukafahat Tamarrud'},
+  {code:'QK',  type:'Bombardier Léger',             cat:'Aviation',      origine:'Qasifa Khafifa'},
+  {code:'QS',  type:'Bombardier Stratégique',       cat:'Aviation',      origine:'Qasifa Stratijiya'},
+  {code:'JT',  type:'Aile Volante (Stealth)',       cat:'Aviation',      origine:"Janah Ta'ir"},
+  {code:'TD',  type:'Entraînement / Biplace',       cat:'Aviation',      origine:'Tadrib'},
+  {code:'TY',  type:'Drone / Scout',                cat:'Aviation',      origine:'Tayara'},
+  {code:'NAN', type:'Transport Aérien (Cargo)',     cat:'Aviation',      origine:'Naql Jawi'},
+  {code:'WD',  type:'Ravitailleur en vol',          cat:'Aviation',      origine:'Waqoud'},
+  {code:'-T',  type:'Version Biplace (Suffixe)',    cat:'Aviation',      origine:'Thunai'},
+  {code:'MH',  type:"Hélicoptère d'Attaque",        cat:'Hélicoptères',  origine:'Muruwahya Hujumiya'},
+  {code:'MN',  type:'Hélicoptère de Transport',     cat:'Hélicoptères',  origine:'Muruwahya Naql'},
+  {code:'MU',  type:'Hélicoptère Embarqué',         cat:'Hélicoptères',  origine:'Muruwahya Ustul'},
+  {code:'MG',  type:'Hélicoptère Anti-Sous-Marin',  cat:'Hélicoptères',  origine:'Muruwahya Ghawwasa'},
+  {code:'SJ',  type:'Missile Air-Air (AAM)',         cat:'Missiles',      origine:'Sarukh Jawi'},
+  {code:'SA',  type:'Missile Air-Sol (ASM)',         cat:'Missiles',      origine:'Sarukh Ardi'},
+  {code:'SD',  type:'Missile Anti-Char (ATGM)',     cat:'Missiles',      origine:"Sarukh Duru'"},
+  {code:'SB',  type:'Missile Anti-Navire (AShM)',   cat:'Missiles',      origine:'Sarukh Bahri'},
+  {code:'SW',  type:'Missile de Croisière',         cat:'Missiles',      origine:'Sarukh Jawal'},
+  {code:'SS',  type:'Missile Balistique',           cat:'Missiles',      origine:'Sarukh Stratiji'}
+];
+
+const CAT_COLORS = {
+  'Infanterie':'rgba(76,175,130,0.12)',
+  'Véhicules': 'rgba(124,168,76,0.12)',
+  'Artillerie':'rgba(201,76,76,0.12)',
+  'Aviation':  'rgba(76,158,201,0.12)',
+  'Hélicoptères':'rgba(128,128,201,0.12)',
+  'Missiles':  'rgba(201,120,76,0.12)'
+};
+const CAT_TEXT = {
+  'Infanterie':'#4CAF82','Véhicules':'#7CA84C','Artillerie':'#C94C4C',
+  'Aviation':'#4C9EC9','Hélicoptères':'#8080C9','Missiles':'#C9784C'
+};
+
+/* ══════════════════════════════════════════
+   STATE
+══════════════════════════════════════════ */
+const LS_ARMY = 'hussein_army_v1';
+const LS_EQ   = 'hussein_eq_overrides_v1';
+
+let army = [];
+let editMode = false;
+let _uid = 0;
+const uid = () => 'u' + (++_uid);
+
+function loadArmy() {
+  try { army = JSON.parse(localStorage.getItem(LS_ARMY)) || []; } catch(e) { army = []; }
+}
+function saveArmy() {
+  localStorage.setItem(LS_ARMY, JSON.stringify(army));
+}
+function getOverrides() {
+  try { return JSON.parse(localStorage.getItem(LS_EQ)) || {}; } catch(e) { return {}; }
+}
+function saveOverrides(o) {
+  localStorage.setItem(LS_EQ, JSON.stringify(o));
+}
+function resetOverrides() {
+  localStorage.removeItem(LS_EQ);
+}
+function getEQ(k) {
+  const o = getOverrides();
+  return Object.assign({}, EQ_BASE[k] || {}, o[k] || {});
+}
+
+/* ══════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════ */
+function fmt(n) { return Number(n).toLocaleString('fr-FR'); }
+function rEff(k) { const e = getEQ(k); return (e.s||0) + (e.i||0); }
+
+function brigRegs(bk) {
+  const b = BRIG[bk]; if (!b) return [];
+  const list = [];
+  if (b.qg) list.push([b.qg, 1]);
+  for (const [rk, n] of b.c) list.push([rk, n]);
+  return list;
+}
+function brigEff(bk) {
+  return brigRegs(bk).reduce((s,[k,n]) => s + rEff(k)*n, 0);
+}
+
+function divFlat(dk) {
+  const d = DIV[dk]; if (!d) return [];
+  const list = [];
+  if (d.qg) list.push([d.qg, 1]);
+  for (const [t, kk, n] of d.c) {
+    if (t === 'R') {
+      list.push([kk, n]);
+    } else if (t === 'B') {
+      const br = brigRegs(kk);
+      for (const [rk, rn] of br) list.push([rk, rn * n]);
+    }
+  }
+  return list;
+}
+function divEff(dk) {
+  return divFlat(dk).reduce((s,[k,n]) => s + rEff(k)*n, 0);
+}
+
+function sumEq(list) {
+  const r = {};
+  for (const [k, n] of list) {
+    const e = getEQ(k); if (!e) continue;
+    for (const [ek, v] of Object.entries(e)) r[ek] = (r[ek]||0) + v*n;
+  }
+  return r;
+}
+
+/* ══════════════════════════════════════════
+   EQUIPMENT RENDER
+══════════════════════════════════════════ */
+function renderEqPanel(eq, editable, regKey) {
+  const groups = {};
+  for (const [k, v] of Object.entries(eq)) {
+    const c = EC[k]; if (!c) continue;
+    if (!groups[c]) groups[c] = [];
+    groups[c].push([k, v]);
+  }
+  let h = '';
+  for (const c of CAT_ORDER) {
+    if (!groups[c]) continue;
+    h += `<div class="eq-section cat-${c}">
+      <div class="eq-cat-label">${CAT_LABELS[c]}</div>
+      <div class="eq-grid">`;
+    for (const [k, v] of groups[c]) {
+      const lbl = EL[k] || k;
+      const valHtml = editable
+        ? `<input type="number" min="0" data-reg="${regKey}" data-eq="${k}" value="${v}">`
+        : fmt(v);
+      h += `<div class="eq-item"><span class="eq-val">${valHtml}</span><span class="eq-lbl">${lbl}</span></div>`;
+    }
+    h += '</div></div>';
+  }
+  return h || '<div style="color:var(--text-muted);font-size:12px;font-style:italic">Aucun équipement défini.</div>';
+}
+
+/* ══════════════════════════════════════════
+   CALCULATOR — RENDER
+══════════════════════════════════════════ */
+function renderArmy() {
+  const tbody = document.getElementById('roster-body');
+  if (!army.length) {
+    tbody.innerHTML = '<tr><td colspan="7" class="roster-empty">Aucune division enregistrée. Utilisez le formulaire ci-dessus pour composer votre ordre de bataille.</td></tr>';
+    document.getElementById('totals-block').style.display = 'none';
+    document.getElementById('totals-block-cmd').style.display = 'none';
+    renderStats();
+    return;
+  }
+
+  let rows = '';
+  for (const row of army) {
+    const d = DIV[row.type];
+    const perDiv = divEff(row.type);
+    const effSvc = perDiv * row.service;
+    const effCmd = perDiv * row.ordered;
+    rows += `<tr data-id="${row.id}">
+      <td><span class="mil-chip chip-div">${row.type}</span></td>
+      <td style="color:var(--text-primary)">${d ? d.n : row.type}</td>
+      <td><input type="number" class="roster-input" min="0" max="999" value="${row.service}" data-field="service" data-id="${row.id}"></td>
+      <td><input type="number" class="roster-input" min="0" max="999" value="${row.ordered}" data-field="ordered" data-id="${row.id}"></td>
+      <td class="eff-service">${fmt(effSvc)}</td>
+      <td class="eff-cmd">${fmt(effCmd)}</td>
+      <td><button class="btn-remove" data-id="${row.id}">✕</button></td>
+    </tr>`;
+  }
+  tbody.innerHTML = rows;
+
+  // Events: roster inputs
+  tbody.querySelectorAll('.roster-input').forEach(inp => {
+    inp.addEventListener('input', e => {
+      const id = e.target.dataset.id;
+      const field = e.target.dataset.field;
+      const val = Math.max(0, parseInt(e.target.value)||0);
+      const row = army.find(r => r.id === id);
+      if (row) { row[field] = val; saveArmy(); renderArmy(); }
+    });
+  });
+  tbody.querySelectorAll('.btn-remove').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const id = e.target.dataset.id;
+      army = army.filter(r => r.id !== id);
+      saveArmy(); renderArmy();
+    });
+  });
+
+  renderStats();
+  renderTotals();
+}
+
+function renderStats() {
+  let totalSvc = 0, totalCmd = 0, divCount = 0;
+  for (const row of army) {
+    const perDiv = divEff(row.type);
+    totalSvc += perDiv * row.service;
+    totalCmd += perDiv * row.ordered;
+    divCount += row.service + row.ordered;
+  }
+  document.getElementById('stat-service').textContent = fmt(totalSvc);
+  document.getElementById('stat-ordered').textContent = fmt(totalCmd);
+  document.getElementById('stat-total').textContent   = fmt(totalSvc + totalCmd);
+  document.getElementById('stat-divs').textContent    = fmt(divCount);
+}
+
+function renderTotals() {
+  const hasData = army.some(r => r.service > 0);
+  const hasCmd  = army.some(r => r.ordered > 0);
+
+  // Service block
+  document.getElementById('totals-block').style.display = hasData ? '' : 'none';
+  if (hasData) {
+    const list = [];
+    for (const row of army) {
+      if (!row.service) continue;
+      for (const [k,n] of divFlat(row.type)) list.push([k, n * row.service]);
+    }
+    const eq = sumEq(list);
+    const totalH = army.filter(r=>r.service).reduce((s,r)=>s+divEff(r.type)*r.service,0);
+    document.getElementById('totals-note').textContent = `Cumul de toutes les unités en service — ${fmt(totalH)} hommes`;
+    document.getElementById('totals-eq').innerHTML = renderEqPanel(eq, false, null);
+  }
+
+  // Ordered block
+  document.getElementById('totals-block-cmd').style.display = hasCmd ? '' : 'none';
+  if (hasCmd) {
+    const list = [];
+    for (const row of army) {
+      if (!row.ordered) continue;
+      for (const [k,n] of divFlat(row.type)) list.push([k, n * row.ordered]);
+    }
+    const eq = sumEq(list);
+    const totalH = army.filter(r=>r.ordered).reduce((s,r)=>s+divEff(r.type)*r.ordered,0);
+    document.getElementById('totals-note-cmd').textContent = `Cumul de toutes les unités commandées — ${fmt(totalH)} hommes`;
+    document.getElementById('totals-eq-cmd').innerHTML = renderEqPanel(eq, false, null);
+  }
+}
+
+/* ══════════════════════════════════════════
+   REFERENTIEL — RENDER
+══════════════════════════════════════════ */
+function renderRegCard(rk, topLevel) {
+  const r = REG[rk]; if (!r) return '';
+  const id = uid();
+  const eq = getEQ(rk);
+  const eff = rEff(rk);
+  const chip = topLevel ? `<span class="mil-chip chip-reg">${r.s}</span>` : '';
+  return `<div class="${topLevel ? 'mil-card' : 'sub-card'}">
+    <div class="${topLevel ? 'mil-card-hdr' : 'sub-card-hdr'}" onclick="tg('${id}','chev${id}')">
+      ${chip}
+      <div class="mil-info">
+        <div class="mil-name">${r.n}</div>
+        <div class="mil-role">${r.r}</div>
+      </div>
+      <span class="mil-eff">${fmt(eff)} h</span>
+      <span class="mil-chev" id="chev${id}">▶</span>
+    </div>
+    <div class="${topLevel ? 'mil-body' : 'sub-body'}" id="${id}">
+      <div class="eq-panel" id="eq-${rk}-${id}">
+        ${renderEqPanel(eq, editMode, rk)}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderRegWithCount(rk, n) {
+  const r = REG[rk]; if (!r) return '';
+  const id = uid();
+  const eq = getEQ(rk);
+  const eff = rEff(rk) * n;
+  return `<div class="sub-card">
+    <div class="sub-card-hdr" onclick="tg('${id}','chev${id}')">
+      <span class="sub-cnt">×${n}</span>
+      <div class="mil-info">
+        <div class="mil-name">${r.n}</div>
+        <div class="mil-role">${r.r}</div>
+      </div>
+      <span class="mil-eff">${fmt(eff)} h${n>1?` <span style="color:var(--text-muted);font-size:11px;font-weight:400">(${fmt(rEff(rk))} u.)</span>`:''}</span>
+      <span class="mil-chev" id="chev${id}">▶</span>
+    </div>
+    <div class="sub-body" id="${id}">
+      <div class="eq-panel" id="eq-${rk}-${id}">
+        ${renderEqPanel(getEQ(rk), editMode, rk)}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderBrigCard(bk, count, topLevel) {
+  const b = BRIG[bk]; if (!b) return '';
+  const id = uid();
+  const regs = brigRegs(bk);
+  const eff = brigEff(bk) * count;
+  const qgData = EQ_BASE[b.qg] || {};
+
+  let body = '';
+  if (b.qg) {
+    body += `<div class="qg-box"><b>QG Brigade (${b.qg})</b> · ${fmt(qgData.s||0)} h · commandement, transmissions, soutien immédiat</div>`;
+  }
+  for (const [rk, rn] of b.c) body += renderRegWithCount(rk, rn);
+
+  // Aggregate toggle
+  const aggId = uid();
+  const totalEq = sumEq(regs);
+  body += `<div class="agg-toggle" onclick="tg('${aggId}','achev${aggId}')">
+    <span>Équipement total de la brigade</span>
+    <span class="mil-chev" id="achev${aggId}">▶</span>
+  </div>
+  <div class="agg-body" id="${aggId}">
+    <div class="agg-note">Cumul de tous les régiments (QG inclus) — ${fmt(brigEff(bk))} h</div>
+    <div class="eq-panel">${renderEqPanel(totalEq, false, null)}</div>
+  </div>`;
+
+  if (topLevel) {
+    return `<div class="mil-card">
+      <div class="mil-card-hdr" onclick="tg('${id}','chev${id}')">
+        <span class="mil-chip chip-brig">${b.s}</span>
+        <div class="mil-info">
+          <div class="mil-name">${b.n}</div>
+          <div class="mil-role">${b.r}</div>
+        </div>
+        <span class="mil-eff">${fmt(eff)} h</span>
+        <span class="mil-chev" id="chev${id}">▶</span>
+      </div>
+      <div class="mil-body" id="${id}">${body}</div>
+    </div>`;
+  } else {
+    return `<div class="sub-card">
+      <div class="sub-card-hdr" onclick="tg('${id}','chev${id}')">
+        <span class="sub-cnt">×${count}</span>
+        <div class="mil-info">
+          <div class="mil-name">${b.n}</div>
+          <div class="mil-role">${b.r}</div>
+        </div>
+        <span class="mil-eff">${fmt(eff)} h${count>1?` <span style="color:var(--text-muted);font-size:11px;font-weight:400">(${fmt(brigEff(bk))} u.)</span>`:''}</span>
+        <span class="mil-chev" id="chev${id}">▶</span>
+      </div>
+      <div class="sub-body" id="${id}">${body}</div>
+    </div>`;
+  }
+}
+
+function renderDivCard(dk) {
+  const d = DIV[dk]; if (!d) return '';
+  const id = uid();
+  const flatList = divFlat(dk);
+  const eff = flatList.reduce((s,[k,n]) => s + rEff(k)*n, 0);
+  const qgData = EQ_BASE[d.qg] || {};
+
+  let body = '';
+  if (d.qg) {
+    body += `<div class="qg-box"><b>QG Division (${d.qg})</b> · ${fmt(qgData.s||0)} h · PC, transmissions, EW divisionnaire, médical avancé</div>`;
+  }
+  for (const [t, kk, n] of d.c) {
+    if (t === 'B') body += renderBrigCard(kk, n, false);
+    else if (t === 'R') body += renderRegWithCount(kk, n);
+  }
+
+  const aggId = uid();
+  const totalEq = sumEq(flatList);
+  body += `<div class="agg-toggle" onclick="tg('${aggId}','achev${aggId}')">
+    <span>Équipement total de la division</span>
+    <span class="mil-chev" id="achev${aggId}">▶</span>
+  </div>
+  <div class="agg-body" id="${aggId}">
+    <div class="agg-note">Cumul de toutes les brigades, régiments et QG — ${fmt(eff)} h</div>
+    <div class="eq-panel">${renderEqPanel(totalEq, false, null)}</div>
+  </div>`;
+
+  return `<div class="mil-card">
+    <div class="mil-card-hdr" onclick="tg('${id}','chev${id}')">
+      <span class="mil-chip chip-div">${d.s}</span>
+      <div class="mil-info">
+        <div class="mil-name">${d.n}</div>
+        <div class="mil-role">${d.r}</div>
+      </div>
+      <span class="mil-eff">${fmt(eff)} h</span>
+      <span class="mil-chev" id="chev${id}">▶</span>
+    </div>
+    <div class="mil-body" id="${id}">${body}</div>
+  </div>`;
+}
+
+function renderReferentiel() {
+  document.getElementById('ref-div').innerHTML  = Object.keys(DIV).map(k => renderDivCard(k)).join('');
+  document.getElementById('ref-brig').innerHTML = Object.keys(BRIG).map(k => renderBrigCard(k,1,true)).join('');
+  document.getElementById('ref-reg').innerHTML  = Object.keys(REG).map(k => renderRegCard(k, true)).join('');
+
+  if (editMode) attachEditListeners();
+}
+
+function attachEditListeners() {
+  document.querySelectorAll('.eq-val input').forEach(inp => {
+    inp.addEventListener('input', e => {
+      const rk = e.target.dataset.reg;
+      const ek = e.target.dataset.eq;
+      const val = parseInt(e.target.value) || 0;
+      const o = getOverrides();
+      if (!o[rk]) o[rk] = {};
+      o[rk][ek] = val;
+      // Write pending to memory (not localStorage yet — user must click Save)
+      window._pendingOverrides = o;
+    });
+  });
+}
+
+/* ══════════════════════════════════════════
+   NOMENCLATURE — RENDER
+══════════════════════════════════════════ */
+let nomCatFilter = 'all';
+let nomSearch = '';
+
+function renderNomenclature() {
+  const tbody = document.getElementById('nom-body');
+  const query = nomSearch.toLowerCase();
+  let rows = '';
+  let count = 0;
+
+  for (const item of NOMENC) {
+    if (nomCatFilter !== 'all' && item.cat !== nomCatFilter) continue;
+    if (query && !item.code.toLowerCase().includes(query) &&
+        !item.type.toLowerCase().includes(query) &&
+        !item.origine.toLowerCase().includes(query) &&
+        !item.cat.toLowerCase().includes(query)) continue;
+
+    const bg = CAT_COLORS[item.cat] || 'rgba(255,255,255,0.05)';
+    const tc = CAT_TEXT[item.cat] || 'var(--text-muted)';
+    rows += `<tr>
+      <td><span class="nom-code">${item.code}</span></td>
+      <td style="color:var(--text-primary)">${item.type}</td>
+      <td><span class="nom-badge" style="background:${bg};color:${tc};border:1px solid ${tc.replace(')',',0.25)').replace('rgb','rgba')}">${item.cat}</span></td>
+      <td class="nom-origin">${item.origine}</td>
+    </tr>`;
+    count++;
+  }
+
+  tbody.innerHTML = rows || `<tr><td colspan="4" style="padding:30px;text-align:center;color:var(--text-muted);background:var(--bg-section)">Aucun résultat.</td></tr>`;
+  document.getElementById('nom-count').textContent = `${count} entrée${count!==1?'s':''} affichée${count!==1?'s':''}`;
+}
+
+/* ══════════════════════════════════════════
+   TOGGLE (expand/collapse)
+══════════════════════════════════════════ */
+function tg(...ids) {
+  ids.forEach(id => { const el = document.getElementById(id); if (el) el.classList.toggle('open'); });
+}
+
+/* ══════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════ */
+function showToast(msg) {
+  const t = document.getElementById('save-toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+/* ══════════════════════════════════════════
+   INIT
+══════════════════════════════════════════ */
+function init() {
+  loadArmy();
+
+  // Populate division select
+  const sel = document.getElementById('add-type');
+  for (const [k, d] of Object.entries(DIV)) {
+    const opt = document.createElement('option');
+    opt.value = k; opt.textContent = `${k} — ${d.n}`;
+    sel.appendChild(opt);
+  }
+
+  // Add division button
+  document.getElementById('btn-add-div').addEventListener('click', () => {
+    const type    = document.getElementById('add-type').value;
+    const service = Math.max(0, parseInt(document.getElementById('add-service').value)||0);
+    const ordered = Math.max(0, parseInt(document.getElementById('add-ordered').value)||0);
+    if (!type) return;
+    army.push({ id: uid(), type, service, ordered });
+    saveArmy();
+    renderArmy();
+    document.getElementById('add-service').value = '1';
+    document.getElementById('add-ordered').value = '0';
+  });
+
+  // Totals toggles
+  ['','cmd'].forEach(suffix => {
+    const s = suffix ? '-cmd' : '';
+    document.getElementById('totals-toggle'+s).addEventListener('click', () => {
+      document.getElementById('totals-body'+s).classList.toggle('open');
+      document.getElementById('totals-chevron'+s).classList.toggle('open');
+    });
+  });
+
+  // Main tabs
+  document.querySelectorAll('.org-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.org-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.org-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Ref sub-tabs
+  document.querySelectorAll('.ref-subtab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.ref-subtab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.ref-subpanel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('ref-' + tab.dataset.ref).classList.add('active');
+    });
+  });
+
+  // Edit mode toggle
+  document.getElementById('btn-edit-toggle').addEventListener('click', () => {
+    editMode = !editMode;
+    window._pendingOverrides = getOverrides();
+    document.getElementById('btn-edit-toggle').classList.toggle('active', editMode);
+    document.getElementById('edit-actions').style.display = editMode ? 'flex' : 'none';
+    renderReferentiel();
+  });
+
+  // Save overrides
+  document.getElementById('btn-save-ref').addEventListener('click', () => {
+    if (window._pendingOverrides) saveOverrides(window._pendingOverrides);
+    showToast('REFERENTIEL SAUVEGARDE');
+    renderArmy(); // recalculate totals with new EQ
+  });
+
+  // Reset overrides
+  document.getElementById('btn-reset-ref').addEventListener('click', () => {
+    if (!confirm('Réinitialiser tous les équipements aux valeurs par défaut ?')) return;
+    resetOverrides();
+    window._pendingOverrides = {};
+    showToast('REFERENTIEL REINITIALISE');
+    renderReferentiel();
+    renderArmy();
+  });
+
+  // Nomenclature search
+  document.getElementById('nom-search').addEventListener('input', e => {
+    nomSearch = e.target.value;
+    renderNomenclature();
+  });
+  document.querySelectorAll('.nom-cat-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.nom-cat-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      nomCatFilter = btn.dataset.nomcat;
+      renderNomenclature();
+    });
+  });
+
+  // Initial renders
+  renderArmy();
+  renderReferentiel();
+  renderNomenclature();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
