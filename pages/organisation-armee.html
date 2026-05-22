@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Calculateur de forces et référentiel doctrinal des Forces Armées Impériales">
+    <meta name="description" content="Calculateur de forces et referentiel doctrinal des Forces Armees Imperiales">
     <title>Organisation Militaire — Empire Hussein</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="icon" type="image/png" href="../assets/Hussein Empire Coat of Arms.png">
@@ -932,7 +932,7 @@
     <div class="org-wrap">
         <div class="org-badge">FORCES ARMEES IMPERIALES</div>
         <h1 class="org-title">ORDRE DE BATAILLE</h1>
-        <p class="org-sub">Calculateur de forces, référentiel doctrinal et nomenclature des unités</p>
+        <p class="org-sub">Calculateur de forces, referentiel doctrinal et nomenclature des unites</p>
     </div>
 </div>
 
@@ -980,7 +980,7 @@
             <div class="stat-card">
                 <div class="stat-label">EN SERVICE</div>
                 <div class="stat-value" id="stat-service">0</div>
-                <div class="stat-sub">soldats opérationnels</div>
+                <div class="stat-sub">soldats operationnels</div>
             </div>
             <div class="stat-card cmd">
                 <div class="stat-label">COMMANDEES</div>
@@ -995,7 +995,7 @@
             <div class="stat-card">
                 <div class="stat-label">DIVISIONS</div>
                 <div class="stat-value" id="stat-divs">0</div>
-                <div class="stat-sub">unités enregistrées</div>
+                <div class="stat-sub">unites enregistrees</div>
             </div>
         </div>
 
@@ -1015,7 +1015,7 @@
                     </tr>
                 </thead>
                 <tbody id="roster-body">
-                    <tr><td colspan="7" class="roster-empty">Aucune division enregistrée. Utilisez le formulaire ci-dessus pour composer votre ordre de bataille.</td></tr>
+                    <tr><td colspan="7" class="roster-empty">Aucune division enregistree. Utilisez le formulaire ci-dessus pour composer votre ordre de bataille.</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1023,7 +1023,7 @@
         <!-- Equipment totals -->
         <div class="totals-block" id="totals-block" style="display:none">
             <button class="totals-toggle" id="totals-toggle">
-                <span>Inventaire des équipements — forces en service</span>
+                <span>Inventaire des equipements — forces en service</span>
                 <span class="totals-chevron" id="totals-chevron">▶</span>
             </button>
             <div class="totals-body" id="totals-body">
@@ -1034,7 +1034,7 @@
 
         <div class="totals-block" id="totals-block-cmd" style="display:none">
             <button class="totals-toggle" id="totals-toggle-cmd">
-                <span>Inventaire des équipements — forces commandées</span>
+                <span>Inventaire des equipements — forces commandees</span>
                 <span class="totals-chevron" id="totals-chevron-cmd">▶</span>
             </button>
             <div class="totals-body" id="totals-body-cmd">
@@ -1077,10 +1077,10 @@
             <input type="text" class="nom-search" id="nom-search" placeholder="Rechercher un code, un type, une origine…" autocomplete="off">
             <button class="nom-cat-filter active" data-nomcat="all">TOUS</button>
             <button class="nom-cat-filter" data-nomcat="Infanterie">INFANTERIE</button>
-            <button class="nom-cat-filter" data-nomcat="Véhicules">VEHICULES</button>
+            <button class="nom-cat-filter" data-nomcat="Vehicules">VEHICULES</button>
             <button class="nom-cat-filter" data-nomcat="Artillerie">ARTILLERIE</button>
             <button class="nom-cat-filter" data-nomcat="Aviation">AVIATION</button>
-            <button class="nom-cat-filter" data-nomcat="Hélicoptères">HELICOPTERES</button>
+            <button class="nom-cat-filter" data-nomcat="Helicopteres">HELICOPTERES</button>
             <button class="nom-cat-filter" data-nomcat="Missiles">MISSILES</button>
         </div>
         <div class="nom-count" id="nom-count"></div>
@@ -1105,8 +1105,8 @@
         <div class="rank-intro">
             <div class="rank-brief">
                 <div class="rank-kicker">CADRE IMPERIAL</div>
-                <h2 class="rank-heading">Grades des forces impériales</h2>
-                <p class="rank-copy">Référentiel unifié pour l'Armée de terre, la Marine, l'Armée de l'air et les Forces Spéciales. Les intitulés conservent l'esthétique Dune du système source, avec des équivalences modernes pour garder une lecture opérationnelle claire.</p>
+                <h2 class="rank-heading">Grades des forces imperiales</h2>
+                <p class="rank-copy">Referentiel unifie pour l'Armee de terre, la Marine, l'Armee de l'air et les Forces Speciales. Les intitules conservent l'esthetique Dune du systeme source, avec des equivalences modernes pour garder une lecture operationnelle claire.</p>
             </div>
             <div class="rank-summary">
                 <div class="rank-summary-row">
@@ -1115,7 +1115,7 @@
                 </div>
                 <div class="rank-summary-row">
                     <span class="rank-summary-label">BRANCHES</span>
-                    <span class="rank-summary-value">TERRE · MER · AIR · FS</span>
+                    <span class="rank-summary-value">TERRE - MER - AIR - FS</span>
                 </div>
                 <div class="rank-summary-row">
                     <span class="rank-summary-label">GRADE SUPREME</span>
@@ -1146,7 +1146,7 @@
 'use strict';
 
 /* ══════════════════════════════════════════
-   DATA — Équipement par unité
+   DATA — Equipement par unite
    Source : Calculateur Militaire CSV
 ══════════════════════════════════════════ */
 const EQ_BASE = {
@@ -1210,18 +1210,18 @@ const EQ_REF = {
 };
 
 const EL = {
-  s:'Soldats',i:'Ingénieurs',fa:"Fusils d'assaut",p:'Pistolets',ml:'Mitrailleuse légère',
+  s:'Soldats',i:'Ingenieurs',fa:"Fusils d'assaut",p:'Pistolets',ml:'Mitrailleuse legere',
   mag:'Mitrailleuse polyvalente',hmg:'Mitrailleuse lourde',pm:'Pistolet-mitrailleur',
-  ugl:'Lance-grenades',g:'Grenades à main',map:'Mine antipersonnel',mat:'Mine antichar',
-  fp:'Fusil de précision',lrat:'Lance-roquettes AT',mp:'MANPADS',atgm:'ATGM',
+  ugl:'Lance-grenades',g:'Grenades a main',map:'Mine antipersonnel',mat:'Mine antichar',
+  fp:'Fusil de precision',lrat:'Lance-roquettes AT',mp:'MANPADS',atgm:'ATGM',
   c105:'Canon 105mm',c155:'Canon 155mm',spga:'SPG 155mm (Auto.)',spgc:'SPG 155mm (Camion)',
-  mol:'Mortier léger',mom:'Mortier moyen',moh:'Mortier lourd',lrm:'LRM',
-  cl:'Camions légers',cll:'Camions lourds',amb:'Ambulances',vc:'Véh. de cmdmt',
-  vg:'Véh. génie (IFV)',vew:'Véh. de GE',vrb:'Véh. récup. blindé',vm:'Véh. de maint.',
-  vrs:'Véh. radar/SIGINT',ifv:'IFV',apc:'APC',dca:'DCA',bl:'Blindé léger',
-  br:'Blindé de reco.',mbt:'MBT',vb:'Voitures blindées',ha:"Hélico. d'attaque",
-  ht15:'Hélico. transport (15 soldats)',ht55:'Hélico. transport (55 soldats)',
-  hp:'Hélicoptères polyvalents'
+  mol:'Mortier leger',mom:'Mortier moyen',moh:'Mortier lourd',lrm:'LRM',
+  cl:'Camions legers',cll:'Camions lourds',amb:'Ambulances',vc:'Veh. de cmdmt',
+  vg:'Veh. genie (IFV)',vew:'Veh. de GE',vrb:'Veh. recup. blinde',vm:'Veh. de maint.',
+  vrs:'Veh. radar/SIGINT',ifv:'IFV',apc:'APC',dca:'DCA',bl:'Blinde leger',
+  br:'Blinde de reco.',mbt:'MBT',vb:'Voitures blindees',ha:"Helico. d'attaque",
+  ht15:'Helico. transport (15 soldats)',ht55:'Helico. transport (55 soldats)',
+  hp:'Helicopteres polyvalents'
 };
 const EC = {
   s:'per',i:'per',fa:'per',p:'per',ml:'arm',mag:'arm',hmg:'arm',pm:'arm',ugl:'arm',g:'arm',
@@ -1232,62 +1232,62 @@ const EC = {
 };
 const CAT_ORDER = ['per','arm','art','bld','veh','avi'];
 const CAT_LABELS = {
-  per:'Personnel',arm:'Armement léger & mines',art:'Artillerie & mortiers',
-  bld:'Blindés & véhicules de combat',veh:'Véhicules de soutien',avi:'Aviation'
+  per:'Personnel',arm:'Armement leger & mines',art:'Artillerie & mortiers',
+  bld:'Blindes & vehicules de combat',veh:'Vehicules de soutien',avi:'Aviation'
 };
 
 /* ══════════════════════════════════════════
-   DATA — Régiments
+   DATA — Regiments
 ══════════════════════════════════════════ */
 const REG = {
-  RIL:   {n:"Régiment d'Infanterie Légère",       s:'RIL',   r:"Combat à pied, terrain difficile et urbain, contre-insurrection, contrôle de zone"},
-  RIMo:  {n:"Régiment d'Infanterie de Montagne",  s:'RIMo',  r:"Combat alpin et désertique, raids en profondeur, reconnaissance avancée"},
-  RIMot: {n:"Régiment d'Infanterie Motorisée",    s:'RIMot', r:"Infanterie sur APC à roues, mobilité opérationnelle, contre-attaque"},
-  RIMec: {n:"Régiment d'Infanterie Mécanisée",    s:'RIMec', r:"Infanterie sur IFV chenillé, mêlée mécanisée, exploitation"},
-  RB:    {n:"Régiment Blindé",                    s:'RB',    r:"Percée, exploitation blindée, contre-attaque mobile, antichar"},
-  RC:    {n:"Régiment de Cavalerie / Reconnaissance", s:'RC', r:"Éclairage, reconnaissance, flanc-garde, sécurité, surveillance"},
-  RPara: {n:"Régiment Parachutiste / Aéromobile", s:'RPara', r:"Assaut héliporté, projection rapide, saisie d'objectif, raid"},
-  RIMa:  {n:"Régiment d'Infanterie de Marine",    s:'RIMa',  r:"Débarquement amphibie, projection littorale, opérations côtières"},
-  RBA:   {n:"Régiment Blindé Amphibie",           s:'RBA',   r:"Appui blindé au débarquement, exploitation de tête de pont"},
-  RAT:   {n:"Régiment d'Artillerie Tractée 105/155mm", s:'RAT', r:"Appui-feu mixte 105mm et 155mm, soutien rapproché, contre-batterie"},
-  RAM:   {n:"Régiment d'Artillerie Mobile",       s:'RAM',   r:"Artillerie automotrice chenillée et camion, appui-feu mobile et projection rapide"},
-  RLRM:  {n:"Régiment Lance-Roquettes Multiples", s:'RLRM',  r:"Frappe en profondeur, interdiction, saturation de zone"},
-  RDA:   {n:"Régiment de Défense Antiaérienne",   s:'RDA',   r:"Protection antiaérienne courte et moyenne portée, radar"},
-  RG:    {n:"Régiment du Génie",                  s:'RG',    r:"Déminage, breaching, franchissement, fortification, contre-mobilité"},
-  RT:    {n:"Régiment de Logistique / Train",     s:'RT',    r:"Ravitaillement, maintenance, soutien médical (BSB divisionnaire)"},
-  RGE:   {n:"Régiment de Renseignement & Guerre Électronique", s:'RGE', r:"ISR, EW, SIGINT, brouillage, surveillance tactique"},
-  RHC:   {n:"Régiment d'Hélicoptères de Combat",  s:'RHC',   r:"Appui-feu héliporté, antichar, escorte aérienne"},
-  RHM:   {n:"Régiment d'Hélicoptères de Manœuvre",s:'RHM',   r:"Transport tactique, héliassaut, CASEVAC, ravitaillement aérien"}
+  RIL:   {n:"Regiment d'Infanterie Legere",       s:'RIL',   r:"Combat a pied, terrain difficile et urbain, contre-insurrection, controle de zone"},
+  RIMo:  {n:"Regiment d'Infanterie de Montagne",  s:'RIMo',  r:"Combat alpin et desertique, raids en profondeur, reconnaissance avancee"},
+  RIMot: {n:"Regiment d'Infanterie Motorisee",    s:'RIMot', r:"Infanterie sur APC a roues, mobilite operationnelle, contre-attaque"},
+  RIMec: {n:"Regiment d'Infanterie Mecanisee",    s:'RIMec', r:"Infanterie sur IFV chenille, melee mecanisee, exploitation"},
+  RB:    {n:"Regiment Blinde",                    s:'RB',    r:"Percee, exploitation blindee, contre-attaque mobile, antichar"},
+  RC:    {n:"Regiment de Cavalerie / Reconnaissance", s:'RC', r:"Eclairage, reconnaissance, flanc-garde, securite, surveillance"},
+  RPara: {n:"Regiment Parachutiste / Aeromobile", s:'RPara', r:"Assaut heliporte, projection rapide, saisie d'objectif, raid"},
+  RIMa:  {n:"Regiment d'Infanterie de Marine",    s:'RIMa',  r:"Debarquement amphibie, projection littorale, operations cotieres"},
+  RBA:   {n:"Regiment Blinde Amphibie",           s:'RBA',   r:"Appui blinde au debarquement, exploitation de tete de pont"},
+  RAT:   {n:"Regiment d'Artillerie Tractee 105/155mm", s:'RAT', r:"Appui-feu mixte 105mm et 155mm, soutien rapproche, contre-batterie"},
+  RAM:   {n:"Regiment d'Artillerie Mobile",       s:'RAM',   r:"Artillerie automotrice chenillee et camion, appui-feu mobile et projection rapide"},
+  RLRM:  {n:"Regiment Lance-Roquettes Multiples", s:'RLRM',  r:"Frappe en profondeur, interdiction, saturation de zone"},
+  RDA:   {n:"Regiment de Defense Antiaerienne",   s:'RDA',   r:"Protection antiaerienne courte et moyenne portee, radar"},
+  RG:    {n:"Regiment du Genie",                  s:'RG',    r:"Deminage, breaching, franchissement, fortification, contre-mobilite"},
+  RT:    {n:"Regiment de Logistique / Train",     s:'RT',    r:"Ravitaillement, maintenance, soutien medical (BSB divisionnaire)"},
+  RGE:   {n:"Regiment de Renseignement & Guerre Electronique", s:'RGE', r:"ISR, EW, SIGINT, brouillage, surveillance tactique"},
+  RHC:   {n:"Regiment d'Helicopteres de Combat",  s:'RHC',   r:"Appui-feu heliporte, antichar, escorte aerienne"},
+  RHM:   {n:"Regiment d'Helicopteres de Manoeuvre",s:'RHM',   r:"Transport tactique, heliassaut, CASEVAC, ravitaillement aerien"}
 };
 
 /* ══════════════════════════════════════════
    DATA — Brigades (source CSV)
 ══════════════════════════════════════════ */
 const BRIG = {
-  BIL:  {n:"Brigade d'Infanterie Légère",     s:'BIL',   r:"Trois régiments d'infanterie légère, projetable rapidement, sans artillerie organique",    qg:'QGB_L',  c:[['RIL',3]]},
-  BIMo: {n:"Brigade d'Infanterie de Montagne",s:'BIMo',  r:"Infanterie alpine spécialisée, terrain extrême, autonomie tactique élevée",                 qg:'QGB_L',  c:[['RIMo',3]]},
-  BIMot:{n:"Brigade d'Infanterie Motorisée",  s:'BIMot', r:"Infanterie sur APC à roues, déploiement rapide, sans artillerie organique",                  qg:'QGB_M',  c:[['RIMot',3]]},
-  BIMec:{n:"Brigade d'Infanterie Mécanisée",  s:'BIMec', r:"Infanterie sur IFV chenillé, combat de mêlée mécanisée, sans artillerie organique",          qg:'QGB_M',  c:[['RIMec',3]]},
-  BB:   {n:"Brigade Blindée",                 s:'BB',    r:"Chars MBT en pointe, soutenus par infanterie mécanisée, sans artillerie organique",           qg:'QGB_M',  c:[['RB',2],['RIMec',1]]},
-  BAM:  {n:"Brigade Aéromobile",              s:'BAM',   r:"Régiments aéroportés, projection héliportée, saisie d'objectif, sans artillerie organique",  qg:'QGB_L',  c:[['RPara',3]]},
-  BAA:  {n:"Brigade d'Assaut Amphibie",       s:'BAA',   r:"Infanterie de marine, première vague d'assaut, conquête de tête de pont",                   qg:'QGB_Mar', c:[['RIMa',2]]},
-  BBA:  {n:"Brigade Blindée Amphibie",        s:'BBA',   r:"Blindé amphibie, exploitation de tête de pont, percée littorale",                           qg:'QGB_Mar', c:[['RBA',2],['RIMa',1]]},
+  BIL:  {n:"Brigade d'Infanterie Legere",     s:'BIL',   r:"Trois regiments d'infanterie legere, projetable rapidement, sans artillerie organique",    qg:'QGB_L',  c:[['RIL',3]]},
+  BIMo: {n:"Brigade d'Infanterie de Montagne",s:'BIMo',  r:"Infanterie alpine specialisee, terrain extreme, autonomie tactique elevee",                 qg:'QGB_L',  c:[['RIMo',3]]},
+  BIMot:{n:"Brigade d'Infanterie Motorisee",  s:'BIMot', r:"Infanterie sur APC a roues, deploiement rapide, sans artillerie organique",                  qg:'QGB_M',  c:[['RIMot',3]]},
+  BIMec:{n:"Brigade d'Infanterie Mecanisee",  s:'BIMec', r:"Infanterie sur IFV chenille, combat de melee mecanisee, sans artillerie organique",          qg:'QGB_M',  c:[['RIMec',3]]},
+  BB:   {n:"Brigade Blindee",                 s:'BB',    r:"Chars MBT en pointe, soutenus par infanterie mecanisee, sans artillerie organique",           qg:'QGB_M',  c:[['RB',2],['RIMec',1]]},
+  BAM:  {n:"Brigade Aeromobile",              s:'BAM',   r:"Regiments aeroportes, projection heliportee, saisie d'objectif, sans artillerie organique",  qg:'QGB_L',  c:[['RPara',3]]},
+  BAA:  {n:"Brigade d'Assaut Amphibie",       s:'BAA',   r:"Infanterie de marine, premiere vague d'assaut, conquete de tete de pont",                   qg:'QGB_Mar', c:[['RIMa',2]]},
+  BBA:  {n:"Brigade Blindee Amphibie",        s:'BBA',   r:"Blinde amphibie, exploitation de tete de pont, percee littorale",                           qg:'QGB_Mar', c:[['RBA',2],['RIMa',1]]},
   BA:   {n:"Brigade d'Artillerie",            s:'BA',    r:"Artillerie divisionnaire, appui-feu toutes distances, regroupement interarmes",              qg:'QGB_M',  c:[['RAT',2],['RAM',1],['RLRM',1]]}
 };
 
 /* ══════════════════════════════════════════
-   DATA — Divisions (source CSV, vérifié)
+   DATA — Divisions (source CSV, verifie)
 ══════════════════════════════════════════ */
 const DIV = {
-  DIL:  {n:"Division d'Infanterie Légère",    s:'DIL',  r:"Projection rapide, contre-insurrection, terrain difficile, contrôle de zone vaste. ~14 050 soldats",
+  DIL:  {n:"Division d'Infanterie Legere",    s:'DIL',  r:"Projection rapide, contre-insurrection, terrain difficile, controle de zone vaste. ~14 050 soldats",
          qg:'QGD', c:[['B','BIL',3],['B','BA',1],['R','RG',1],['R','RT',1],['R','RDA',1],['R','RGE',1],['R','RHM',1]]},
-  DIM:  {n:"Division d'Infanterie Mécanisée", s:'DIM',  r:"Combat conventionnel équilibré, manœuvre mécanisée avec appui blindé. ~16 960 soldats",
+  DIM:  {n:"Division d'Infanterie Mecanisee", s:'DIM',  r:"Combat conventionnel equilibre, manoeuvre mecanisee avec appui blinde. ~16 960 soldats",
          qg:'QGD', c:[['B','BIMec',2],['B','BB',1],['B','BA',1],['R','RG',1],['R','RT',1],['R','RDA',1],['R','RGE',1],['R','RHC',1],['R','RHM',1]]},
-  DB:   {n:"Division Blindée",                s:'DB',   r:"Percée, exploitation blindée, contre-attaque, choc mécanisé décisif. ~16 360 soldats",
+  DB:   {n:"Division Blindee",                s:'DB',   r:"Percee, exploitation blindee, contre-attaque, choc mecanise decisif. ~16 360 soldats",
          qg:'QGD', c:[['B','BB',2],['B','BIMec',1],['B','BA',1],['R','RG',1],['R','RT',1],['R','RDA',1],['R','RGE',1],['R','RHC',1],['R','RHM',1]]},
-  DAM:  {n:"Division Aéromobile",             s:'DAM',  r:"Projection héliportée stratégique, saisie aéroportée, opérations à longue portée. ~13 470 soldats",
+  DAM:  {n:"Division Aeromobile",             s:'DAM',  r:"Projection heliportee strategique, saisie aeroportee, operations a longue portee. ~13 470 soldats",
          qg:'QGD', c:[['B','BAM',3],['B','BA',1],['R','RHC',1],['R','RHM',1],['R','RG',1],['R','RT',1],['R','RDA',1],['R','RGE',1]]},
-  DMar: {n:"Division de Marine",              s:'DMar', r:"Projection littorale, débarquement amphibie, opérations côtières interarmes. ~14 610 soldats",
+  DMar: {n:"Division de Marine",              s:'DMar', r:"Projection littorale, debarquement amphibie, operations cotieres interarmes. ~14 610 soldats",
          qg:'QGD', c:[['B','BAA',2],['B','BBA',1],['B','BA',1],['R','RG',1],['R','RT',1],['R','RDA',1],['R','RGE',1],['R','RHC',1],['R','RHM',1]]}
 };
 
@@ -1300,83 +1300,83 @@ const NOMENC = [
   {code:'BA',  type:"Fusil d'Assaut",               cat:'Infanterie',    origine:'Bunduqiya Atomatikiya'},
   {code:'QN',  type:'Fusil de Sniper',              cat:'Infanterie',    origine:'Qannas'},
   {code:'RS',  type:'Mitrailleuse (Standard)',       cat:'Infanterie',    origine:'Rashash'},
-  {code:'RK',  type:'Mitrailleuse Légère (LMG)',    cat:'Infanterie',    origine:'Rashash Khafif'},
+  {code:'RK',  type:'Mitrailleuse Legere (LMG)',    cat:'Infanterie',    origine:'Rashash Khafif'},
   {code:'RM',  type:'Mitrailleuse Moyenne (GPMG)',  cat:'Infanterie',    origine:'Rashash Mutawassit'},
   {code:'RT',  type:'Mitrailleuse Lourde (HMG)',    cat:'Infanterie',    origine:'Rashash Thaqil'},
   {code:'RQ',  type:'Lance-grenades',               cat:'Infanterie',    origine:'Rami Qanabil'},
   {code:'QY',  type:'Grenade',                      cat:'Infanterie',    origine:'Qunbula Yadawiya'},
   {code:'LG',  type:'Mine terrestre',               cat:'Infanterie',    origine:'Lughm'},
-  {code:'DK',  type:'Char Léger',                   cat:'Véhicules',     origine:'Dabbaba Khafifa'},
-  {code:'DM',  type:'Char Moyen',                   cat:'Véhicules',     origine:'Dabbaba Mutawassita'},
-  {code:'DT',  type:'Char Lourd',                   cat:'Véhicules',     origine:'Dabbaba Thaqila'},
-  {code:'DB',  type:'Char de Combat (MBT)',         cat:'Véhicules',     origine:'Dabbaba'},
-  {code:'MQ',  type:'Véhicule Combat Infanterie (IFV)', cat:'Véhicules', origine:'Marqabat Qital'},
-  {code:'NAN', type:'Transport Blindé (APC)',        cat:'Véhicules',     origine:'Naqilat Ashkhas'},
-  {code:'KS',  type:'Véhicule Reconnaissance',      cat:'Véhicules',     origine:'Kashshaf'},
-  {code:'MQM', type:'IFV Parachutiste',             cat:'Véhicules',     origine:'Marqabat Qital Mouzalliya'},
-  {code:'MR',  type:'Véhicule Léger Blindé (Humvee)',cat:'Véhicules',    origine:'Marqaba Rubaiya'},
-  {code:'SN',  type:'Camion de Transport',          cat:'Véhicules',     origine:'Shadhina Naql'},
+  {code:'DK',  type:'Char Leger',                   cat:'Vehicules',     origine:'Dabbaba Khafifa'},
+  {code:'DM',  type:'Char Moyen',                   cat:'Vehicules',     origine:'Dabbaba Mutawassita'},
+  {code:'DT',  type:'Char Lourd',                   cat:'Vehicules',     origine:'Dabbaba Thaqila'},
+  {code:'DB',  type:'Char de Combat (MBT)',         cat:'Vehicules',     origine:'Dabbaba'},
+  {code:'MQ',  type:'Vehicule Combat Infanterie (IFV)', cat:'Vehicules', origine:'Marqabat Qital'},
+  {code:'NAN', type:'Transport Blinde (APC)',        cat:'Vehicules',     origine:'Naqilat Ashkhas'},
+  {code:'KS',  type:'Vehicule Reconnaissance',      cat:'Vehicules',     origine:'Kashshaf'},
+  {code:'MQM', type:'IFV Parachutiste',             cat:'Vehicules',     origine:'Marqabat Qital Mouzalliya'},
+  {code:'MR',  type:'Vehicule Leger Blinde (Humvee)',cat:'Vehicules',    origine:'Marqaba Rubaiya'},
+  {code:'SN',  type:'Camion de Transport',          cat:'Vehicules',     origine:'Shadhina Naql'},
   {code:'MD',  type:'Artillerie Mobile',            cat:'Artillerie',    origine:"Madfa'iya"},
   {code:'MM',  type:'Artillerie de Campagne',       cat:'Artillerie',    origine:"Madfa' Midani"},
   {code:'MZ',  type:'Obusier',                      cat:'Artillerie',    origine:"Madfa' Hawitzer"},
-  {code:'DJ',  type:'Système Sol-Air (SAM)',         cat:'Artillerie',    origine:"Difa' Jawi"},
-  {code:'MJ',  type:'Artillerie de Montagne / Légère', cat:'Artillerie', origine:"Madfa'iya Jabaliya"},
+  {code:'DJ',  type:'Systeme Sol-Air (SAM)',         cat:'Artillerie',    origine:"Difa' Jawi"},
+  {code:'MJ',  type:'Artillerie de Montagne / Legere', cat:'Artillerie', origine:"Madfa'iya Jabaliya"},
   {code:'SM',  type:'Artillerie Mobile sur Camion', cat:'Artillerie',    origine:"Shadhina Madfa'ia"},
   {code:'BR',  type:'Lance-Roquettes Multiple (LRM)',cat:'Artillerie',   origine:'Batariat Rajimat'},
   {code:'DH',  type:'MANPADS (Sol-Air Portable)',   cat:'Artillerie',    origine:"Difa' Hamili"},
   {code:'HW',  type:'Mortier',                      cat:'Artillerie',    origine:'Hawen'},
-  {code:'IM',  type:'AWACS / Radar Aéroporté',      cat:'Aviation',      origine:'Inthir Mubakir'},
+  {code:'IM',  type:'AWACS / Radar Aeroporte',      cat:'Aviation',      origine:'Inthir Mubakir'},
   {code:'RI',  type:'Avion ELINT (Interception)',   cat:'Aviation',      origine:'Rasd Iliktrouniya'},
   {code:'IS',  type:'Reconnaissance Supersonique',  cat:'Aviation',      origine:"Istikshaf Sarie'"},
   {code:'TG',  type:'Avion Anti-Sous-Marin',        cat:'Aviation',      origine:"Ta'ira Ghawwasa"},
-  {code:'HI',  type:'Guerre Électronique',          cat:'Aviation',      origine:'Harb Iliktrouniya'},
-  {code:'MK',  type:'Chasseur Léger',               cat:'Aviation',      origine:'Mukafaha Khafifa'},
-  {code:'MT',  type:'Chasseur Multirôle',           cat:'Aviation',      origine:"Mukafaha Ta'adudiya"},
-  {code:'MB',  type:'Chasseur Embarqué',            cat:'Aviation',      origine:'Mukafaha Bahriya'},
+  {code:'HI',  type:'Guerre Electronique',          cat:'Aviation',      origine:'Harb Iliktrouniya'},
+  {code:'MK',  type:'Chasseur Leger',               cat:'Aviation',      origine:'Mukafaha Khafifa'},
+  {code:'MT',  type:'Chasseur Multirole',           cat:'Aviation',      origine:"Mukafaha Ta'adudiya"},
+  {code:'MB',  type:'Chasseur Embarque',            cat:'Aviation',      origine:'Mukafaha Bahriya'},
   {code:'HA',  type:'Attaque au Sol (CAS)',          cat:'Aviation',      origine:'Hujum Ardi'},
-  {code:'MTM', type:'Lutte Anti-Guérilla (COIN)',   cat:'Aviation',      origine:'Mukafahat Tamarrud'},
-  {code:'QK',  type:'Bombardier Léger',             cat:'Aviation',      origine:'Qasifa Khafifa'},
-  {code:'QS',  type:'Bombardier Stratégique',       cat:'Aviation',      origine:'Qasifa Stratijiya'},
+  {code:'MTM', type:'Lutte Anti-Guerilla (COIN)',   cat:'Aviation',      origine:'Mukafahat Tamarrud'},
+  {code:'QK',  type:'Bombardier Leger',             cat:'Aviation',      origine:'Qasifa Khafifa'},
+  {code:'QS',  type:'Bombardier Strategique',       cat:'Aviation',      origine:'Qasifa Stratijiya'},
   {code:'JT',  type:'Aile Volante (Stealth)',       cat:'Aviation',      origine:"Janah Ta'ir"},
-  {code:'TD',  type:'Entraînement / Biplace',       cat:'Aviation',      origine:'Tadrib'},
+  {code:'TD',  type:'Entrainement / Biplace',       cat:'Aviation',      origine:'Tadrib'},
   {code:'TY',  type:'Drone / Scout',                cat:'Aviation',      origine:'Tayara'},
-  {code:'NAN', type:'Transport Aérien (Cargo)',     cat:'Aviation',      origine:'Naql Jawi'},
+  {code:'NAN', type:'Transport Aerien (Cargo)',     cat:'Aviation',      origine:'Naql Jawi'},
   {code:'WD',  type:'Ravitailleur en vol',          cat:'Aviation',      origine:'Waqoud'},
   {code:'-T',  type:'Version Biplace (Suffixe)',    cat:'Aviation',      origine:'Thunai'},
-  {code:'MH',  type:"Hélicoptère d'Attaque",        cat:'Hélicoptères',  origine:'Muruwahya Hujumiya'},
-  {code:'MN',  type:'Hélicoptère de Transport',     cat:'Hélicoptères',  origine:'Muruwahya Naql'},
-  {code:'MHP', type:'Hélicoptère Polyvalent',       cat:'Hélicoptères',  origine:"Muruwahya Muta'addida"},
-  {code:'MU',  type:'Hélicoptère Embarqué',         cat:'Hélicoptères',  origine:'Muruwahya Ustul'},
-  {code:'MG',  type:'Hélicoptère Anti-Sous-Marin',  cat:'Hélicoptères',  origine:'Muruwahya Ghawwasa'},
+  {code:'MH',  type:"Helicoptere d'Attaque",        cat:'Helicopteres',  origine:'Muruwahya Hujumiya'},
+  {code:'MN',  type:'Helicoptere de Transport',     cat:'Helicopteres',  origine:'Muruwahya Naql'},
+  {code:'MHP', type:'Helicoptere Polyvalent',       cat:'Helicopteres',  origine:"Muruwahya Muta'addida"},
+  {code:'MU',  type:'Helicoptere Embarque',         cat:'Helicopteres',  origine:'Muruwahya Ustul'},
+  {code:'MG',  type:'Helicoptere Anti-Sous-Marin',  cat:'Helicopteres',  origine:'Muruwahya Ghawwasa'},
   {code:'SJ',  type:'Missile Air-Air (AAM)',         cat:'Missiles',      origine:'Sarukh Jawi'},
   {code:'SA',  type:'Missile Air-Sol (ASM)',         cat:'Missiles',      origine:'Sarukh Ardi'},
   {code:'SD',  type:'Missile Anti-Char (ATGM)',     cat:'Missiles',      origine:"Sarukh Duru'"},
   {code:'SB',  type:'Missile Anti-Navire (AShM)',   cat:'Missiles',      origine:'Sarukh Bahri'},
-  {code:'SW',  type:'Missile de Croisière',         cat:'Missiles',      origine:'Sarukh Jawal'},
+  {code:'SW',  type:'Missile de Croisiere',         cat:'Missiles',      origine:'Sarukh Jawal'},
   {code:'SS',  type:'Missile Balistique',           cat:'Missiles',      origine:'Sarukh Stratiji'}
 ];
 
 const CAT_COLORS = {
   'Infanterie':'rgba(76,175,130,0.12)',
-  'Véhicules': 'rgba(124,168,76,0.12)',
+  'Vehicules': 'rgba(124,168,76,0.12)',
   'Artillerie':'rgba(201,76,76,0.12)',
   'Aviation':  'rgba(76,158,201,0.12)',
-  'Hélicoptères':'rgba(128,128,201,0.12)',
+  'Helicopteres':'rgba(128,128,201,0.12)',
   'Missiles':  'rgba(201,120,76,0.12)'
 };
 const CAT_TEXT = {
-  'Infanterie':'#4CAF82','Véhicules':'#7CA84C','Artillerie':'#C94C4C',
-  'Aviation':'#4C9EC9','Hélicoptères':'#8080C9','Missiles':'#C9784C'
+  'Infanterie':'#4CAF82','Vehicules':'#7CA84C','Artillerie':'#C94C4C',
+  'Aviation':'#4C9EC9','Helicopteres':'#8080C9','Missiles':'#C9784C'
 };
 
 /* ══════════════════════════════════════════
-   DATA — Grades impériaux
+   DATA — Grades imperiaux
 ══════════════════════════════════════════ */
 const RANKS = {
   terre: {
-    label: "Armée de terre",
+    label: "Armee de terre",
     code: "TERRE",
-    sub: "Doctrine Sardaukar impériale et commandement de manoeuvre terrestre",
+    sub: "Doctrine Sardaukar imperiale et commandement de manoeuvre terrestre",
     groups: [
       {title:"Troupe", color:"#888780", rows:[
         [1,"Mushtamal","Recrue",""],
@@ -1400,33 +1400,33 @@ const RANKS = {
         [15,"Wali","Lieutenant-colonel",""],
         [16,"Wali-Prime","Colonel",""]
       ]},
-      {title:"Officiers généraux", color:"#C9A84C", rows:[
-        [17,"Legate","Général de brigade","★"],
-        [18,"Legate-Prime","Général de division","★★"],
-        [19,"Sardaukar-Wali","Général de corps d'armée","★★★"],
-        [20,"Grand-Wali","Général d'armée","★★★★"],
-        [21,"Lisan al-Gaib","Maréchal","★★★★★"]
+      {title:"Officiers generaux", color:"#C9A84C", rows:[
+        [17,"Legate","General de brigade","★"],
+        [18,"Legate-Prime","General de division","★★"],
+        [19,"Sardaukar-Wali","General de corps d'armee","★★★"],
+        [20,"Grand-Wali","General d'armee","★★★★"],
+        [21,"Lisan al-Gaib","Marechal","★★★★★"]
       ]}
     ]
   },
   marine: {
     label: "Marine",
     code: "MER",
-    sub: "Guilde navale, navigation stratégique et commandement de flotte",
+    sub: "Guilde navale, navigation strategique et commandement de flotte",
     groups: [
       {title:"Matelots", color:"#888780", rows:[
         [1,"Apprenti-Navigateur","Matelot",""],
-        [2,"Kull-Wayah","Quartier-maître 2e classe",""],
-        [3,"Kull-Tau","Quartier-maître 1re classe",""],
-        [4,"Steersman","Maître",""],
-        [5,"Steersman-Primus","Premier maître",""],
-        [6,"Guild-Tertius","Maître principal",""]
+        [2,"Kull-Wayah","Quartier-maitre 2e classe",""],
+        [3,"Kull-Tau","Quartier-maitre 1re classe",""],
+        [4,"Steersman","Maitre",""],
+        [5,"Steersman-Primus","Premier maitre",""],
+        [6,"Guild-Tertius","Maitre principal",""]
       ]},
       {title:"Officiers", color:"#4C9EC9", rows:[
         [7,"Mentat-de-Bord","Enseigne de vaisseau 2e classe",""],
         [8,"Mentat-Tau","Enseigne de vaisseau 1re classe",""],
         [9,"Pilote-Primus","Lieutenant de vaisseau",""],
-        [10,"Frégatier-Guild","Capitaine de frégate",""],
+        [10,"Fregatier-Guild","Capitaine de fregate",""],
         [11,"Navigateur-Prime","Capitaine de vaisseau",""]
       ]},
       {title:"Amiraux", color:"#C9A84C", rows:[
@@ -1434,21 +1434,21 @@ const RANKS = {
         [13,"Vice-Amiral de Guilde","Vice-amiral","★★"],
         [14,"Grand-Amiral","Amiral","★★★"],
         [15,"Padishah-Amiral","Amiral de la flotte","★★★★"],
-        [16,"Lisan al-Gaib","Maréchal des mers","★★★★★"]
+        [16,"Lisan al-Gaib","Marechal des mers","★★★★★"]
       ]}
     ]
   },
   air: {
-    label: "Armée de l'air",
+    label: "Armee de l'air",
     code: "AIR",
-    sub: "Corps Sirocco, pilotes d'ornithoptères et supériorité aérienne",
+    sub: "Corps Sirocco, pilotes d'ornithopteres et superiorite aerienne",
     groups: [
-      {title:"Mécaniciens et stagiaires", color:"#888780", rows:[
-        [1,"Mudir-Sol","Mécanicien sol",""],
+      {title:"Mecaniciens et stagiaires", color:"#888780", rows:[
+        [1,"Mudir-Sol","Mecanicien sol",""],
         [2,"Cielago-Apprenti","Pilote stagiaire",""],
-        [3,"Cielago","Pilote qualifié",""]
+        [3,"Cielago","Pilote qualifie",""]
       ]},
-      {title:"Pilotes confirmés", color:"#4CAF82", rows:[
+      {title:"Pilotes confirmes", color:"#4CAF82", rows:[
         [4,"Thopteriste","Pilote 2e classe",""],
         [5,"Thopteriste-Tau","Pilote 1re classe",""],
         [6,"Thopteriste-Prime","Pilote chef",""]
@@ -1461,26 +1461,26 @@ const RANKS = {
         [11,"Razzia-Bas","Lieutenant-colonel pilote",""],
         [12,"Razzia-Prime","Colonel pilote",""]
       ]},
-      {title:"Officiers généraux", color:"#C9A84C", rows:[
-        [13,"Sirocco-Legate","Général de brigade aérienne","★"],
-        [14,"Grand-Sirocco","Général de division aérienne","★★"],
-        [15,"Mudir-Sirocco","Général de corps aérien","★★★"],
-        [16,"Padishah-Sirocco","Général d'armée aérienne","★★★★"],
-        [17,"Lisan al-Gaib","Maréchal de l'air","★★★★★"]
+      {title:"Officiers generaux", color:"#C9A84C", rows:[
+        [13,"Sirocco-Legate","General de brigade aerienne","★"],
+        [14,"Grand-Sirocco","General de division aerienne","★★"],
+        [15,"Mudir-Sirocco","General de corps aerien","★★★"],
+        [16,"Padishah-Sirocco","General d'armee aerienne","★★★★"],
+        [17,"Lisan al-Gaib","Marechal de l'air","★★★★★"]
       ]}
     ]
   },
   speciales: {
-    label: "Forces Spéciales",
+    label: "Forces Speciales",
     code: "FS",
-    sub: "Fedaykin, commandos impériaux et opérations clandestines",
+    sub: "Fedaykin, commandos imperiaux et operations clandestines",
     groups: [
-      {title:"Initiés", color:"#888780", rows:[
+      {title:"Inities", color:"#888780", rows:[
         [1,"Candidat","Stagiaire commando",""],
-        [2,"Initié","Commando",""],
-        [3,"Fedaykin-Bas","Commando qualifié",""]
+        [2,"Initie","Commando",""],
+        [3,"Fedaykin-Bas","Commando qualifie",""]
       ]},
-      {title:"Opérateurs", color:"#4CAF82", rows:[
+      {title:"Operateurs", color:"#4CAF82", rows:[
         [4,"Fedaykin","Commando expert",""],
         [5,"Fedaykin-Tau","Sergent commando",""],
         [6,"Sayyadina","Adjudant commando",""]
@@ -1491,8 +1491,8 @@ const RANKS = {
         [9,"Bas-Fedaykin","Major Fedaykin",""],
         [10,"Grand-Naib-Fedaykin","Colonel Fedaykin",""]
       ]},
-      {title:"Commandement suprême", color:"#C9A84C", rows:[
-        [11,"Lisan al-Gaib","Maréchal Fedaykin","★★★★★"]
+      {title:"Commandement supreme", color:"#C9A84C", rows:[
+        [11,"Lisan al-Gaib","Marechal Fedaykin","★★★★★"]
       ]}
     ]
   }
@@ -1602,7 +1602,7 @@ function renderEqPanel(eq, editable, regKey) {
     }
     h += '</div></div>';
   }
-  return h || '<div style="color:var(--text-muted);font-size:12px;font-style:italic">Aucun équipement défini.</div>';
+  return h || '<div style="color:var(--text-muted);font-size:12px;font-style:italic">Aucun equipement defini.</div>';
 }
 
 /* ══════════════════════════════════════════
@@ -1611,7 +1611,7 @@ function renderEqPanel(eq, editable, regKey) {
 function renderArmy() {
   const tbody = document.getElementById('roster-body');
   if (!army.length) {
-    tbody.innerHTML = '<tr><td colspan="7" class="roster-empty">Aucune division enregistrée. Utilisez le formulaire ci-dessus pour composer votre ordre de bataille.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" class="roster-empty">Aucune division enregistree. Utilisez le formulaire ci-dessus pour composer votre ordre de bataille.</td></tr>';
     document.getElementById('totals-block').style.display = 'none';
     document.getElementById('totals-block-cmd').style.display = 'none';
     renderStats();
@@ -1697,7 +1697,7 @@ function renderTotals() {
     }
     const eq = sumEq(list);
     const totalH = army.filter(r=>r.service).reduce((s,r)=>s+divEff(r.type)*r.service,0);
-    document.getElementById('totals-note').textContent = `Cumul référentiel des divisions en service — ${fmt(totalH)} soldats`;
+    document.getElementById('totals-note').textContent = `Cumul referentiel des divisions en service — ${fmt(totalH)} soldats`;
     document.getElementById('totals-eq').innerHTML = renderEqPanel(eq, false, null);
   }
 
@@ -1711,7 +1711,7 @@ function renderTotals() {
     }
     const eq = sumEq(list);
     const totalH = army.filter(r=>r.ordered).reduce((s,r)=>s+divEff(r.type)*r.ordered,0);
-    document.getElementById('totals-note-cmd').textContent = `Cumul référentiel des divisions commandées — ${fmt(totalH)} soldats`;
+    document.getElementById('totals-note-cmd').textContent = `Cumul referentiel des divisions commandees — ${fmt(totalH)} soldats`;
     document.getElementById('totals-eq-cmd').innerHTML = renderEqPanel(eq, false, null);
   }
 }
@@ -1750,7 +1750,7 @@ function renderRegWithCount(rk, n) {
   const eff = rEff(rk) * n;
   return `<div class="sub-card">
     <div class="sub-card-hdr" onclick="tg('${id}','chev${id}')">
-      <span class="sub-cnt">×${n}</span>
+      <span class="sub-cnt">x${n}</span>
       <div class="mil-info">
         <div class="mil-name">${r.n}</div>
         <div class="mil-role">${r.r}</div>
@@ -1775,7 +1775,7 @@ function renderBrigCard(bk, count, topLevel) {
 
   let body = '';
   if (b.qg) {
-    body += `<div class="qg-box"><b>QG Brigade (${b.qg})</b> · ${fmt(qgData.s||0)} soldats · commandement, transmissions, soutien immédiat</div>`;
+    body += `<div class="qg-box"><b>QG Brigade (${b.qg})</b> - ${fmt(qgData.s||0)} soldats - commandement, transmissions, soutien immediat</div>`;
   }
   for (const [rk, rn] of b.c) body += renderRegWithCount(rk, rn);
 
@@ -1783,11 +1783,11 @@ function renderBrigCard(bk, count, topLevel) {
   const aggId = uid();
   const totalEq = getEQ(bk);
   body += `<div class="agg-toggle" onclick="tg('${aggId}','achev${aggId}')">
-    <span>Équipement total de la brigade</span>
+    <span>Equipement total de la brigade</span>
     <span class="mil-chev" id="achev${aggId}">▶</span>
   </div>
   <div class="agg-body" id="${aggId}">
-    <div class="agg-note">Total référentiel CSV — ${fmt(brigEff(bk))} soldats</div>
+    <div class="agg-note">Total referentiel CSV — ${fmt(brigEff(bk))} soldats</div>
     <div class="eq-panel">${renderEqPanel(totalEq, editMode && topLevel, topLevel ? bk : null)}</div>
   </div>`;
 
@@ -1807,7 +1807,7 @@ function renderBrigCard(bk, count, topLevel) {
   } else {
     return `<div class="sub-card">
       <div class="sub-card-hdr" onclick="tg('${id}','chev${id}')">
-        <span class="sub-cnt">×${count}</span>
+        <span class="sub-cnt">x${count}</span>
         <div class="mil-info">
           <div class="mil-name">${b.n}</div>
           <div class="mil-role">${b.r}</div>
@@ -1828,7 +1828,7 @@ function renderDivCard(dk) {
 
   let body = '';
   if (d.qg) {
-    body += `<div class="qg-box"><b>QG Division (${d.qg})</b> · ${fmt(qgData.s||0)} soldats · PC, transmissions, EW divisionnaire, médical avancé</div>`;
+    body += `<div class="qg-box"><b>QG Division (${d.qg})</b> - ${fmt(qgData.s||0)} soldats - PC, transmissions, EW divisionnaire, medical avance</div>`;
   }
   for (const [t, kk, n] of d.c) {
     if (t === 'B') body += renderBrigCard(kk, n, false);
@@ -1838,11 +1838,11 @@ function renderDivCard(dk) {
   const aggId = uid();
   const totalEq = getEQ(dk);
   body += `<div class="agg-toggle" onclick="tg('${aggId}','achev${aggId}')">
-    <span>Équipement total de la division</span>
+    <span>Equipement total de la division</span>
     <span class="mil-chev" id="achev${aggId}">▶</span>
   </div>
   <div class="agg-body" id="${aggId}">
-    <div class="agg-note">Total référentiel CSV — ${fmt(eff)} soldats</div>
+    <div class="agg-note">Total referentiel CSV — ${fmt(eff)} soldats</div>
     <div class="eq-panel">${renderEqPanel(totalEq, editMode, dk)}</div>
   </div>`;
 
@@ -1913,8 +1913,8 @@ function renderNomenclature() {
     count++;
   }
 
-  tbody.innerHTML = rows || `<tr><td colspan="4" style="padding:30px;text-align:center;color:var(--text-muted);background:var(--bg-section)">Aucun résultat.</td></tr>`;
-  document.getElementById('nom-count').textContent = `${count} entrée${count!==1?'s':''} affichée${count!==1?'s':''}`;
+  tbody.innerHTML = rows || `<tr><td colspan="4" style="padding:30px;text-align:center;color:var(--text-muted);background:var(--bg-section)">Aucun resultat.</td></tr>`;
+  document.getElementById('nom-count').textContent = `${count} entree${count!==1?'s':''} affichee${count!==1?'s':''}`;
 }
 
 /* ══════════════════════════════════════════
@@ -1926,7 +1926,7 @@ function renderRanks(activeKey = 'terre') {
   if (!tabs || !panels) return;
 
   tabs.innerHTML = Object.entries(RANKS).map(([key, corps]) => (
-    `<button class="rank-corps-tab ${key === activeKey ? 'active' : ''}" data-rank="${key}">${corps.code} · ${corps.label}</button>`
+    `<button class="rank-corps-tab ${key === activeKey ? 'active' : ''}" data-rank="${key}">${corps.code} - ${corps.label}</button>`
   )).join('');
 
   panels.innerHTML = Object.entries(RANKS).map(([key, corps]) => {
@@ -2063,7 +2063,7 @@ function init() {
 
   // Reset overrides
   document.getElementById('btn-reset-ref').addEventListener('click', () => {
-    if (!confirm('Réinitialiser tous les équipements aux valeurs par défaut ?')) return;
+    if (!confirm('Reinitialiser tous les equipements aux valeurs par defaut ?')) return;
     resetOverrides();
     window._pendingOverrides = {};
     showToast('REFERENTIEL REINITIALISE');
