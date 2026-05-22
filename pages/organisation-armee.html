@@ -467,6 +467,8 @@
 .chip-div { background: rgba(201,168,76,0.18); color: var(--gold); border: 1px solid rgba(201,168,76,0.38); }
 .chip-brig { background: rgba(192,178,160,0.1); color: var(--text-secondary); border: 1px solid rgba(192,178,160,0.22); }
 .chip-reg { background: rgba(154,139,122,0.08); color: var(--text-muted); border: 1px solid rgba(154,139,122,0.18); }
+.chip-comp { background: rgba(76,158,201,0.08); color: #7fb8d6; border: 1px solid rgba(76,158,201,0.2); }
+.chip-bat { background: rgba(76,175,130,0.1); color: #7fcaa4; border: 1px solid rgba(76,175,130,0.24); }
 .mil-info { flex: 1; min-width: 0; }
 .mil-name { font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1.3; }
 .mil-role { font-size: 11px; color: var(--text-secondary); margin-top: 3px; line-height: 1.4; }
@@ -1143,12 +1145,16 @@ body.military-auth-denied .save-toast {
         <div class="ref-subtabs">
             <button class="ref-subtab active" data-ref="div">DIVISIONS (5)</button>
             <button class="ref-subtab" data-ref="brig">BRIGADES (9)</button>
+            <button class="ref-subtab" data-ref="bat">BATAILLONS (1)</button>
             <button class="ref-subtab" data-ref="reg">REGIMENTS (22)</button>
+            <button class="ref-subtab" data-ref="comp">COMPAGNIES (3)</button>
         </div>
 
         <div id="ref-div" class="ref-subpanel active"></div>
         <div id="ref-brig" class="ref-subpanel"></div>
+        <div id="ref-bat" class="ref-subpanel"></div>
         <div id="ref-reg" class="ref-subpanel"></div>
+        <div id="ref-comp" class="ref-subpanel"></div>
 
     </div>
 
@@ -1254,6 +1260,9 @@ const EQ_BASE = {
   RFSP:  {s:620,fa:500,p:620,ml:20,mag:12,hmg:6,pm:80,ugl:42,g:1800,fp:42,lrat:36,atgm:14,mp:8,map:40,mat:20,mol:8,mom:6,vb:16,cl:18,cll:4,amb:3,vc:6,atp:4},
   RFST:  {s:480,fa:390,p:480,ml:16,mag:10,hmg:4,pm:120,ugl:30,g:1300,fp:48,lrat:28,atgm:10,mp:4,map:60,mat:30,mol:6,vb:20,cl:16,amb:3,vc:7,vew:4,vrs:4},
   RFSM:  {s:540,fa:420,p:540,ml:18,mag:12,hmg:6,pm:100,ugl:36,g:1500,fp:34,lrat:32,atgm:12,mp:6,mol:6,mom:4,apc:8,vb:18,cl:16,cll:6,amb:3,vc:6,hp:2},
+  CIA:   {s:160,fa:110,p:160,ml:6,mag:3,pm:24,ugl:8,g:320,fp:4,lrat:4,cl:12,cll:2,amb:2,vc:4,vb:8},
+  CTA:   {s:90,i:12,fa:60,p:90,pm:18,g:120,vc:6,cl:8,cll:2,amb:1,vew:3,vrs:4,vb:4},
+  CLA:   {s:130,i:10,fa:75,p:130,ml:4,pm:20,g:180,cl:16,cll:12,amb:3,vc:4,vm:6,vb:4},
   QGB_L: {s:300,fa:200,p:300,pm:20,vc:8,cl:15,amb:2,vb:4},
   QGB_M: {s:300,fa:180,p:300,pm:30,vc:10,cl:8,cll:6,amb:2,vb:6,vm:2},
   QGB_Mar:{s:500,fa:350,p:500,pm:40,vc:12,cl:20,cll:6,amb:3,vb:8},
@@ -1296,7 +1305,11 @@ const EQ_REF = {
   RFSA:{s:560,fa:430,p:560,ml:18,mag:12,hmg:6,pm:90,ugl:36,g:1600,fp:36,lrat:30,mp:6,atgm:12,mol:6,mom:4,cl:14,cll:4,amb:3,vc:6,vb:18,hp:4},
   RFSP:{s:620,fa:500,p:620,ml:20,mag:12,hmg:6,pm:80,ugl:42,g:1800,map:40,mat:20,fp:42,lrat:36,mp:8,atgm:14,mol:8,mom:6,cl:18,cll:4,amb:3,vc:6,vb:16,atp:4},
   RFST:{s:480,fa:390,p:480,ml:16,mag:10,hmg:4,pm:120,ugl:30,g:1300,map:60,mat:30,fp:48,lrat:28,mp:4,atgm:10,mol:6,cl:16,amb:3,vc:7,vew:4,vrs:4,vb:20},
-  RFSM:{s:540,fa:420,p:540,ml:18,mag:12,hmg:6,pm:100,ugl:36,g:1500,fp:34,lrat:32,mp:6,atgm:12,mol:6,mom:4,cl:16,cll:6,amb:3,vc:6,apc:8,vb:18,hp:2}
+  RFSM:{s:540,fa:420,p:540,ml:18,mag:12,hmg:6,pm:100,ugl:36,g:1500,fp:34,lrat:32,mp:6,atgm:12,mol:6,mom:4,cl:16,cll:6,amb:3,vc:6,apc:8,vb:18,hp:2},
+  CIA:{s:160,fa:110,p:160,ml:6,mag:3,pm:24,ugl:8,g:320,fp:4,lrat:4,cl:12,cll:2,amb:2,vc:4,vb:8},
+  CTA:{s:90,i:12,fa:60,p:90,pm:18,g:120,cl:8,cll:2,amb:1,vc:6,vew:3,vrs:4,vb:4},
+  CLA:{s:130,i:10,fa:75,p:130,ml:4,pm:20,g:180,cl:16,cll:12,amb:3,vc:4,vm:6,vb:4},
+  BAus:{s:380,i:22,fa:245,p:380,ml:10,mag:3,pm:62,ugl:8,g:620,fp:4,lrat:4,cl:36,cll:16,amb:6,vc:16,vew:3,vrs:4,vm:6,vb:16}
 };
 
 const EL = {
@@ -1353,6 +1366,22 @@ const REG = {
   RFSP:  {n:"Régiment des Forces Spéciales Parachutistes",   s:'RFSP', r:"Infiltration parachutée, ouverture de zone de poser, action directe en profondeur"},
   RFST:  {n:"Régiment des Forces Spéciales de Terre",        s:'RFST', r:"Reconnaissance spéciale, action clandestine, sabotage, guidage d'appuis"},
   RFSM:  {n:"Régiment des Forces Spéciales de Marine",       s:'RFSM', r:"Commandos littoraux, raids amphibies, abordage, reconnaissance côtière"}
+};
+
+/* ══════════════════════════════════════════
+   DATA — Compagnies
+══════════════════════════════════════════ */
+const COMP = {
+  CIA: {n:"Compagnie d'Infanterie Australe", s:'CIA', r:"Stabilisation, police militaire, sécurisation de zone, contrôle des axes et maintien de l'ordre"},
+  CTA: {n:"Compagnie de Transmissions Australe", s:'CTA', r:"Liaisons radio, relais tactiques, coordination police militaire, suivi des patrouilles et veille réseau"},
+  CLA: {n:"Compagnie de Logistique Australe", s:'CLA', r:"Ravitaillement, transport léger, maintenance de premier niveau, évacuation sanitaire et soutien de garnison"}
+};
+
+/* ══════════════════════════════════════════
+   DATA — Bataillons
+══════════════════════════════════════════ */
+const BAT = {
+  BAus: {n:"Bataillon Austral", s:'BAUS', r:"Groupement de stabilisation réunissant infanterie australe, transmissions australes et logistique australe", c:[['CIA',1],['CTA',1],['CLA',1]]}
 };
 
 /* ══════════════════════════════════════════
@@ -1668,24 +1697,39 @@ function divEff(dk) {
   return divFlat(dk).reduce((s,[k,n]) => s + rEff(k)*n, 0);
 }
 
+function batComps(bk) {
+  const b = BAT[bk]; if (!b) return [];
+  return b.c || [];
+}
+function batEff(bk) {
+  const direct = rEff(bk);
+  if (direct) return direct;
+  return batComps(bk).reduce((s,[k,n]) => s + rEff(k)*n, 0);
+}
+
 function unitData(k) {
-  return DIV[k] || BRIG[k] || REG[k] || null;
+  return DIV[k] || BRIG[k] || BAT[k] || REG[k] || COMP[k] || null;
 }
 function unitKind(k) {
   if (DIV[k]) return 'div';
   if (BRIG[k]) return 'brig';
+  if (BAT[k]) return 'bat';
   if (REG[k]) return 'reg';
+  if (COMP[k]) return 'comp';
   return 'unknown';
 }
 function unitEff(k) {
   if (DIV[k]) return divEff(k);
   if (BRIG[k]) return brigEff(k);
+  if (BAT[k]) return batEff(k);
   return rEff(k);
 }
 function unitChipClass(k) {
   const kind = unitKind(k);
   if (kind === 'div') return 'chip-div';
   if (kind === 'brig') return 'chip-brig';
+  if (kind === 'bat') return 'chip-bat';
+  if (kind === 'comp') return 'chip-comp';
   return 'chip-reg';
 }
 
@@ -1888,6 +1932,84 @@ function renderRegWithCount(rk, n) {
   </div>`;
 }
 
+function renderCompCard(ck) {
+  const c = COMP[ck]; if (!c) return '';
+  const id = uid();
+  const eq = getEQ(ck);
+  const eff = rEff(ck);
+  return `<div class="mil-card">
+    <div class="mil-card-hdr" onclick="tg('${id}','chev${id}')">
+      <span class="mil-chip chip-comp">${c.s}</span>
+      <div class="mil-info">
+        <div class="mil-name">${c.n}</div>
+        <div class="mil-role">${c.r}</div>
+      </div>
+      <span class="mil-eff">${fmt(eff)} soldats</span>
+      <span class="mil-chev" id="chev${id}">▶</span>
+    </div>
+    <div class="mil-body" id="${id}">
+      <div class="eq-panel" id="eq-${ck}-${id}">
+        ${renderEqPanel(eq, editMode, ck)}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderCompWithCount(ck, n) {
+  const c = COMP[ck]; if (!c) return '';
+  const id = uid();
+  const eff = rEff(ck) * n;
+  return `<div class="sub-card">
+    <div class="sub-card-hdr" onclick="tg('${id}','chev${id}')">
+      <span class="sub-cnt">x${n}</span>
+      <div class="mil-info">
+        <div class="mil-name">${c.n}</div>
+        <div class="mil-role">${c.r}</div>
+      </div>
+      <span class="mil-eff">${fmt(eff)} soldats${n>1?` <span style="color:var(--text-muted);font-size:11px;font-weight:400">(${fmt(rEff(ck))} u.)</span>`:''}</span>
+      <span class="mil-chev" id="chev${id}">▶</span>
+    </div>
+    <div class="sub-body" id="${id}">
+      <div class="eq-panel" id="eq-${ck}-${id}">
+        ${renderEqPanel(getEQ(ck), editMode, ck)}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderBatCard(bk) {
+  const b = BAT[bk]; if (!b) return '';
+  const id = uid();
+  const eff = batEff(bk);
+
+  let body = '';
+  for (const [ck, cn] of b.c) body += renderCompWithCount(ck, cn);
+
+  const aggId = uid();
+  const totalEq = getEQ(bk);
+  body += `<div class="agg-toggle" onclick="tg('${aggId}','achev${aggId}')">
+    <span>Équipement total du bataillon</span>
+    <span class="mil-chev" id="achev${aggId}">▶</span>
+  </div>
+  <div class="agg-body" id="${aggId}">
+    <div class="agg-note">Total référentiel — ${fmt(eff)} soldats</div>
+    <div class="eq-panel">${renderEqPanel(totalEq, editMode, bk)}</div>
+  </div>`;
+
+  return `<div class="mil-card">
+    <div class="mil-card-hdr" onclick="tg('${id}','chev${id}')">
+      <span class="mil-chip chip-bat">${b.s}</span>
+      <div class="mil-info">
+        <div class="mil-name">${b.n}</div>
+        <div class="mil-role">${b.r}</div>
+      </div>
+      <span class="mil-eff">${fmt(eff)} soldats</span>
+      <span class="mil-chev" id="chev${id}">▶</span>
+    </div>
+    <div class="mil-body" id="${id}">${body}</div>
+  </div>`;
+}
+
 function renderBrigCard(bk, count, topLevel) {
   const b = BRIG[bk]; if (!b) return '';
   const id = uid();
@@ -1985,7 +2107,9 @@ function renderDivCard(dk) {
 function renderReferentiel() {
   document.getElementById('ref-div').innerHTML  = Object.keys(DIV).map(k => renderDivCard(k)).join('');
   document.getElementById('ref-brig').innerHTML = Object.keys(BRIG).map(k => renderBrigCard(k,1,true)).join('');
+  document.getElementById('ref-bat').innerHTML  = Object.keys(BAT).map(k => renderBatCard(k)).join('');
   document.getElementById('ref-reg').innerHTML  = Object.keys(REG).map(k => renderRegCard(k, true)).join('');
+  document.getElementById('ref-comp').innerHTML = Object.keys(COMP).map(k => renderCompCard(k)).join('');
 
   if (editMode) attachEditListeners();
 }
@@ -2122,7 +2246,9 @@ function init() {
   [
     ['Divisions', DIV],
     ['Brigades', BRIG],
-    ['Régiments', REG]
+    ['Bataillons', BAT],
+    ['Régiments', REG],
+    ['Compagnies', COMP]
   ].forEach(([label, source]) => {
     const group = document.createElement('optgroup');
     group.label = label;
