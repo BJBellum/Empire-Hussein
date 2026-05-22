@@ -1145,15 +1145,15 @@ body.military-auth-denied .save-toast {
         <div class="ref-subtabs">
             <button class="ref-subtab active" data-ref="div">DIVISIONS (5)</button>
             <button class="ref-subtab" data-ref="brig">BRIGADES (9)</button>
-            <button class="ref-subtab" data-ref="bat">BATAILLONS (1)</button>
             <button class="ref-subtab" data-ref="reg">REGIMENTS (22)</button>
+            <button class="ref-subtab" data-ref="bat">BATAILLONS (1)</button>
             <button class="ref-subtab" data-ref="comp">COMPAGNIES (3)</button>
         </div>
 
         <div id="ref-div" class="ref-subpanel active"></div>
         <div id="ref-brig" class="ref-subpanel"></div>
-        <div id="ref-bat" class="ref-subpanel"></div>
         <div id="ref-reg" class="ref-subpanel"></div>
+        <div id="ref-bat" class="ref-subpanel"></div>
         <div id="ref-comp" class="ref-subpanel"></div>
 
     </div>
@@ -1226,7 +1226,6 @@ body.military-auth-denied .save-toast {
             <div class="rank-brief">
                 <div class="rank-kicker">CADRE IMPERIAL</div>
                 <h2 class="rank-heading">Grades des forces imperiales</h2>
-                <p class="rank-copy">Référentiel unifié pour l'Armée de terre, la Marine, l'Armée de l'air et les Forces Spéciales. Les intitulés conservent l'esthétique Dune du système source, avec des équivalences modernes pour garder une lecture opérationnelle claire.</p>
             </div>
             <div class="rank-summary">
                 <div class="rank-summary-row">
@@ -1292,7 +1291,7 @@ const EQ_BASE = {
   RFSP:  {s:620,fa:500,p:620,ml:20,mag:12,hmg:6,pm:80,ugl:42,g:1800,fp:42,lrat:36,atgm:14,mp:8,map:40,mat:20,mol:8,mom:6,vb:16,cl:18,cll:4,amb:3,vc:6,atp:4},
   RFST:  {s:480,fa:390,p:480,ml:16,mag:10,hmg:4,pm:120,ugl:30,g:1300,fp:48,lrat:28,atgm:10,mp:4,map:60,mat:30,mol:6,vb:20,cl:16,amb:3,vc:7,vew:4,vrs:4},
   RFSM:  {s:540,fa:420,p:540,ml:18,mag:12,hmg:6,pm:100,ugl:36,g:1500,fp:34,lrat:32,atgm:12,mp:6,mol:6,mom:4,apc:8,vb:18,cl:16,cll:6,amb:3,vc:6,hp:2},
-  CIA:   {s:160,fa:110,p:160,ml:6,mag:3,pm:24,ugl:8,g:320,fp:4,lrat:4,cl:12,cll:2,amb:2,vc:4,vb:8},
+  CIA:   {s:160,fa:110,p:160,ml:6,mag:3,pm:24,ugl:8,g:320,fp:4,lrat:4,mol:3,cl:12,cll:2,amb:2,vc:4,vb:8},
   CTA:   {s:90,i:12,fa:60,p:90,pm:18,g:120,vc:6,cl:8,cll:2,amb:1,vew:3,vrs:4,vb:4},
   CLA:   {s:130,i:10,fa:75,p:130,ml:4,pm:20,g:180,cl:16,cll:12,amb:3,vc:4,vm:6,vb:4},
   QGB_L: {s:300,fa:200,p:300,pm:20,vc:8,cl:15,amb:2,vb:4},
@@ -1338,10 +1337,10 @@ const EQ_REF = {
   RFSP:{s:620,fa:500,p:620,ml:20,mag:12,hmg:6,pm:80,ugl:42,g:1800,map:40,mat:20,fp:42,lrat:36,mp:8,atgm:14,mol:8,mom:6,cl:18,cll:4,amb:3,vc:6,vb:16,atp:4},
   RFST:{s:480,fa:390,p:480,ml:16,mag:10,hmg:4,pm:120,ugl:30,g:1300,map:60,mat:30,fp:48,lrat:28,mp:4,atgm:10,mol:6,cl:16,amb:3,vc:7,vew:4,vrs:4,vb:20},
   RFSM:{s:540,fa:420,p:540,ml:18,mag:12,hmg:6,pm:100,ugl:36,g:1500,fp:34,lrat:32,mp:6,atgm:12,mol:6,mom:4,cl:16,cll:6,amb:3,vc:6,apc:8,vb:18,hp:2},
-  CIA:{s:160,fa:110,p:160,ml:6,mag:3,pm:24,ugl:8,g:320,fp:4,lrat:4,cl:12,cll:2,amb:2,vc:4,vb:8},
+  CIA:{s:160,fa:110,p:160,ml:6,mag:3,pm:24,ugl:8,g:320,fp:4,lrat:4,mol:3,cl:12,cll:2,amb:2,vc:4,vb:8},
   CTA:{s:90,i:12,fa:60,p:90,pm:18,g:120,cl:8,cll:2,amb:1,vc:6,vew:3,vrs:4,vb:4},
   CLA:{s:130,i:10,fa:75,p:130,ml:4,pm:20,g:180,cl:16,cll:12,amb:3,vc:4,vm:6,vb:4},
-  BAus:{s:380,i:22,fa:245,p:380,ml:10,mag:3,pm:62,ugl:8,g:620,fp:4,lrat:4,cl:36,cll:16,amb:6,vc:16,vew:3,vrs:4,vm:6,vb:16}
+  BAus:{s:380,i:22,fa:245,p:380,ml:10,mag:3,pm:62,ugl:8,g:620,fp:4,lrat:4,mol:3,cl:36,cll:16,amb:6,vc:16,vew:3,vrs:4,vm:6,vb:16}
 };
 
 const EL = {
@@ -2452,8 +2451,8 @@ function init() {
   [
     ['Divisions', DIV],
     ['Brigades', BRIG],
-    ['Bataillons', BAT],
     ['Régiments', REG],
+    ['Bataillons', BAT],
     ['Compagnies', COMP]
   ].forEach(([label, source]) => {
     const group = document.createElement('optgroup');
