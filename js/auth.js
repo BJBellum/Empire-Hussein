@@ -24,6 +24,15 @@ const DISCORD_CONFIG = {
     adminIds: [
         '772821169664426025',
         '950389750739664896'
+    ],
+
+    // Discord user IDs allowed to access military organization pages
+    militaryAccessIds: [
+        '1473103141728944171',
+        '772821169664426025',
+        '1014832884764393523',
+        '293869524091142144',
+        '928291843958014014'
     ]
 };
 
@@ -35,6 +44,7 @@ const AUTH_STORAGE_KEY = 'empire_hussein_auth';
 const Auth = {
     user: null,
     isAdmin: false,
+    hasMilitaryAccess: false,
 
     /**
      * Initialize auth: check for token in URL hash or localStorage
@@ -60,7 +70,9 @@ const Auth = {
                 if (data.expiresAt && Date.now() < data.expiresAt) {
                     this.user = data.user;
                     this.isAdmin = DISCORD_CONFIG.adminIds.includes(data.user.id);
+                    this.hasMilitaryAccess = DISCORD_CONFIG.militaryAccessIds.includes(data.user.id);
                     this.updateUI();
+                    this.enforceMilitaryPageAccess();
                     this._dispatchReady();
                     return;
                 }
@@ -73,6 +85,7 @@ const Auth = {
 
         // 3. Not logged in
         this.updateUI();
+        this.enforceMilitaryPageAccess();
         this._dispatchReady();
     },
 
@@ -81,7 +94,11 @@ const Auth = {
      */
     _dispatchReady() {
         document.dispatchEvent(new CustomEvent('auth:ready', {
-            detail: { user: this.user, isAdmin: this.isAdmin }
+            detail: {
+                user: this.user,
+                isAdmin: this.isAdmin,
+                hasMilitaryAccess: this.hasMilitaryAccess
+            }
         }));
     },
 
@@ -104,8 +121,10 @@ const Auth = {
     logout() {
         this.user = null;
         this.isAdmin = false;
+        this.hasMilitaryAccess = false;
         localStorage.removeItem(AUTH_STORAGE_KEY);
         this.updateUI();
+        this.enforceMilitaryPageAccess();
         showToast('Déconnexion réussie');
     },
 
@@ -123,6 +142,7 @@ const Auth = {
             const user = await res.json();
             this.user = user;
             this.isAdmin = DISCORD_CONFIG.adminIds.includes(user.id);
+            this.hasMilitaryAccess = DISCORD_CONFIG.militaryAccessIds.includes(user.id);
 
             // Store in localStorage (token lasts ~7 days = 604800 seconds)
             localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({
@@ -132,6 +152,7 @@ const Auth = {
             }));
 
             this.updateUI();
+            this.enforceMilitaryPageAccess();
             this._dispatchReady();
             showToast(this.isAdmin
                 ? `Bienvenue, ${user.global_name || user.username} (Admin)`
@@ -140,8 +161,52 @@ const Auth = {
         } catch (err) {
             console.error('Auth error:', err);
             showToast('Erreur de connexion Discord');
+            this.enforceMilitaryPageAccess();
             this._dispatchReady();
         }
+    },
+
+    /**
+     * Protect pages marked with data-requires-military-access="true".
+     */
+    enforceMilitaryPageAccess() {
+        if (!document.body || document.body.dataset.requiresMilitaryAccess !== 'true') return;
+
+        const existing = document.getElementById('military-access-gate');
+        if (existing) existing.remove();
+
+        if (this.user && this.hasMilitaryAccess) {
+            document.body.classList.remove('military-auth-pending', 'military-auth-denied');
+            return;
+        }
+
+        document.body.classList.remove('military-auth-pending');
+        document.body.classList.add('military-auth-denied');
+
+        const gate = document.createElement('section');
+        gate.id = 'military-access-gate';
+        gate.className = 'military-access-gate';
+
+        const isLoggedIn = Boolean(this.user);
+        gate.innerHTML = `
+            <div class="military-access-box">
+                <div class="military-access-kicker">${isLoggedIn ? 'ACCES REFUSE' : 'CONNEXION REQUISE'}</div>
+                <h1 class="military-access-title">ORGANISATION MILITAIRE</h1>
+                <p class="military-access-copy">${isLoggedIn
+                    ? "Votre identifiant Discord n'est pas autorisé à consulter cette page."
+                    : "Connectez-vous avec un compte Discord autorisé pour consulter l'organisation militaire."}</p>
+                <div class="military-access-actions">
+                    ${isLoggedIn
+                        ? '<a class="military-access-btn secondary" href="../">RETOUR</a>'
+                        : '<button class="military-access-btn" id="military-access-login" type="button">CONNEXION DISCORD</button>'}
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(gate);
+
+        const loginBtn = document.getElementById('military-access-login');
+        if (loginBtn) loginBtn.addEventListener('click', () => this.login());
     },
 
     /**
@@ -188,8 +253,8 @@ const Auth = {
                 btn.style.color = '#5865F2';
             });
 
-            // Unlock Forces Armees for admins
-            if (this.isAdmin) {
+            // Unlock Forces Armees for authorized military users
+            if (this.hasMilitaryAccess) {
                 [navForces, navForcesMobile].forEach(el => {
                     if (!el) return;
                     el.classList.remove('nav-link--locked', 'mobile-nav-link--locked');
@@ -215,7 +280,7 @@ const Auth = {
             // Lock Forces Armees
             [navForces, navForcesMobile].forEach(el => {
                 if (!el) return;
-                el.classList.add(el.classList.contains('mobile-nav-link--locked')
+                el.classList.add(el.classList.contains('mobile-nav-link')
                     ? 'mobile-nav-link--locked'
                     : 'nav-link--locked');
                 el.classList.remove('nav-link--unlocked');
@@ -256,17 +321,17 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutBtn.addEventListener('click', () => Auth.logout());
     }
 
-    // Forces Armées — block if not admin
+    // Forces Armées — block if not authorized
     ['nav-forces', 'nav-forces-mobile'].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
             el.addEventListener('click', (e) => {
-                if (!Auth.isAdmin) {
+                if (!Auth.hasMilitaryAccess) {
                     e.preventDefault();
                     if (!Auth.user) {
-                        showToast('Connexion requise — Accès réservé aux administrateurs');
+                        showToast('Connexion requise — Accès réservé');
                     } else {
-                        showToast('Accès refusé — Privilèges administrateur requis');
+                        showToast('Accès refusé — Identifiant Discord non autorisé');
                     }
                 }
             });
