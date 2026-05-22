@@ -1185,6 +1185,22 @@ body.military-auth-denied .save-toast {
                 <tbody id="nom-body"></tbody>
             </table>
         </div>
+
+        <div class="sec-title" style="margin-top:24px">SUFFIXES DE VERSION</div>
+        <div class="nom-count" id="nom-suffix-count"></div>
+        <div class="nom-wrap">
+            <table class="nom-table">
+                <thead>
+                    <tr>
+                        <th>SUFFIXE</th>
+                        <th>VERSION</th>
+                        <th>EMPLOI</th>
+                        <th>ORIGINE ARABE (RACINE)</th>
+                    </tr>
+                </thead>
+                <tbody id="nom-suffix-body"></tbody>
+            </table>
+        </div>
     </div>
 
     <!-- ────────── TAB: GRADES ────────── -->
@@ -1440,6 +1456,13 @@ const NOMENC = [
   {code:'MQM', type:'IFV Parachutiste',             cat:'Véhicules',     origine:'Marqabat Qital Mouzalliya'},
   {code:'MR',  type:'Véhicule Léger Blindé (Humvee)',cat:'Véhicules',    origine:'Marqaba Rubaiya'},
   {code:'SN',  type:'Camion de Transport',          cat:'Véhicules',     origine:'Shadhina Naql'},
+  {code:'SK',  type:'Camion Léger',                 cat:'Véhicules',     origine:'Shadhina Khafifa'},
+  {code:'ST',  type:'Camion Lourd',                 cat:'Véhicules',     origine:'Shadhina Thaqila'},
+  {code:'MQD', type:'Véhicule de Commandement',     cat:'Véhicules',     origine:'Marqaba Qiyada'},
+  {code:'MSA', type:'Ambulance Militaire',          cat:'Véhicules',     origine:'Marqaba Siha'},
+  {code:'MSN', type:'Véhicule de Maintenance',      cat:'Véhicules',     origine:'Marqaba Siyanah'},
+  {code:'MIR', type:'Véhicule Radar / SIGINT',      cat:'Véhicules',     origine:'Marqaba Istikhbarat Rasd'},
+  {code:'MHE', type:'Véhicule de Guerre Électronique', cat:'Véhicules',  origine:'Marqaba Harb Iliktrouniya'},
   {code:'MD',  type:'Artillerie Mobile',            cat:'Artillerie',    origine:"Madfa'iya"},
   {code:'MM',  type:'Artillerie de Campagne',       cat:'Artillerie',    origine:"Madfa' Midani"},
   {code:'MZ',  type:'Obusier',                      cat:'Artillerie',    origine:"Madfa' Hawitzer"},
@@ -1464,10 +1487,10 @@ const NOMENC = [
   {code:'JT',  type:'Aile Volante (Stealth)',       cat:'Aviation',      origine:"Janah Ta'ir"},
   {code:'TD',  type:'Entraînement / Biplace',       cat:'Aviation',      origine:'Tadrib'},
   {code:'TY',  type:'Drone / Scout',                cat:'Aviation',      origine:'Tayara'},
-  {code:'NAN', type:'Transport Aérien (Cargo)',     cat:'Aviation',      origine:'Naql Jawi'},
+  {code:'NT',  type:'Avion de Transport',           cat:'Aviation',      origine:"Naql Ta'ira"},
+  {code:'NTC', type:'Avion de Transport Cargo',     cat:'Aviation',      origine:"Naql Ta'ira Shahn"},
   {code:'NMP', type:'Avion de Transport Parachutiste', cat:'Aviation',   origine:'Naql Mouzalli'},
   {code:'WD',  type:'Ravitailleur en vol',          cat:'Aviation',      origine:'Waqoud'},
-  {code:'-T',  type:'Version Biplace (Suffixe)',    cat:'Aviation',      origine:'Thunai'},
   {code:'MH',  type:"Hélicoptère d'Attaque",        cat:'Hélicoptères',  origine:'Muruwahya Hujumiya'},
   {code:'MN',  type:'Hélicoptère de Transport',     cat:'Hélicoptères',  origine:'Muruwahya Naql'},
   {code:'MHP', type:'Hélicoptère Polyvalent',       cat:'Hélicoptères',  origine:"Muruwahya Muta'addida"},
@@ -1479,6 +1502,26 @@ const NOMENC = [
   {code:'SB',  type:'Missile Anti-Navire (AShM)',   cat:'Missiles',      origine:'Sarukh Bahri'},
   {code:'SW',  type:'Missile de Croisière',         cat:'Missiles',      origine:'Sarukh Jawal'},
   {code:'SS',  type:'Missile Balistique',           cat:'Missiles',      origine:'Sarukh Stratiji'}
+];
+
+const NOM_SUFFIX = [
+  {code:'-T', version:'Biplace',        usage:'Entraînement, conversion opérationnelle, double commande', origine:'Thunai'},
+  {code:'-M', version:'Modernisé',      usage:'Standard rénové, capteurs ou motorisation améliorés',       origine:'Muhaddath'},
+  {code:'-N', version:'Naval',          usage:'Emploi embarqué, corrosion marine, opérations littorales',  origine:'Bahri'},
+  {code:'-P', version:'Parachutiste',   usage:'Allégé ou adapté au largage et à la projection aéroportée', origine:'Mouzalli'},
+  {code:'-R', version:'Reconnaissance', usage:'Observation, éclairage, ISR ou patrouille avancée',         origine:'Rasd'},
+  {code:'-E', version:'Électronique',   usage:'Guerre électronique, relais, SIGINT ou brouillage',         origine:'Iliktrouni'},
+  {code:'-S', version:'Stratégique',    usage:'Rayon d’action, charge utile ou endurance renforcés',       origine:'Stratiji'},
+  {code:'-L', version:'Léger',          usage:'Version allégée, mobilité accrue, emploi expéditionnaire',  origine:'Khafif'},
+  {code:'-H', version:'Lourd',          usage:'Charge utile, blindage ou capacité d’emport renforcés',      origine:'Thaqil'},
+  {code:'-A', version:'Amphibie',       usage:'Franchissement, débarquement, opérations littorales ou fluviales', origine:'Barma\'i'},
+  {code:'-B', version:'Blindé',         usage:'Protection renforcée contre armes légères, mines ou éclats', origine:'Mudara\'a'},
+  {code:'-C', version:'Commandement',   usage:'Poste de commandement mobile, transmissions et coordination tactique', origine:'Qiyada'},
+  {code:'-D', version:'Dépannage',      usage:'Récupération, remorquage, réparation de terrain et évacuation de véhicules', origine:'Daman'},
+  {code:'-G', version:'Génie',          usage:'Déminage, bréchage, franchissement, terrassement ou obstacle', origine:'Handasa'},
+  {code:'-K', version:'Convoi',         usage:'Sécurisation d’axe, escorte logistique, patrouille et protection rapprochée', origine:'Qafila'},
+  {code:'-V', version:'Sanitaire',      usage:'Ambulance, évacuation médicale, secours de combat ou soutien santé', origine:'Siha'},
+  {code:'-W', version:'Atelier',        usage:'Maintenance mobile, dépannage mécanique, pièces et outillage embarqués', origine:'Warsha'}
 ];
 
 const CAT_COLORS = {
@@ -2137,9 +2180,12 @@ let nomSearch = '';
 
 function renderNomenclature() {
   const tbody = document.getElementById('nom-body');
+  const suffixBody = document.getElementById('nom-suffix-body');
   const query = nomSearch.toLowerCase();
   let rows = '';
+  let suffixRows = '';
   let count = 0;
+  let suffixCount = 0;
 
   for (const item of NOMENC) {
     if (nomCatFilter !== 'all' && item.cat !== nomCatFilter) continue;
@@ -2159,8 +2205,25 @@ function renderNomenclature() {
     count++;
   }
 
+  for (const item of NOM_SUFFIX) {
+    if (query && !item.code.toLowerCase().includes(query) &&
+        !item.version.toLowerCase().includes(query) &&
+        !item.usage.toLowerCase().includes(query) &&
+        !item.origine.toLowerCase().includes(query)) continue;
+
+    suffixRows += `<tr>
+      <td><span class="nom-code">${item.code}</span></td>
+      <td style="color:var(--text-primary)">${item.version}</td>
+      <td style="color:var(--text-secondary)">${item.usage}</td>
+      <td class="nom-origin">${item.origine}</td>
+    </tr>`;
+    suffixCount++;
+  }
+
   tbody.innerHTML = rows || `<tr><td colspan="4" style="padding:30px;text-align:center;color:var(--text-muted);background:var(--bg-section)">Aucun résultat.</td></tr>`;
-  document.getElementById('nom-count').textContent = `${count} entrée${count!==1?'s':''} affichée${count!==1?'s':''}`;
+  suffixBody.innerHTML = suffixRows || `<tr><td colspan="4" style="padding:30px;text-align:center;color:var(--text-muted);background:var(--bg-section)">Aucun suffixe affiché.</td></tr>`;
+  document.getElementById('nom-count').textContent = `${count} entrée${count!==1?'s':''} de matériel affichée${count!==1?'s':''}`;
+  document.getElementById('nom-suffix-count').textContent = `${suffixCount} suffixe${suffixCount!==1?'s':''} affiché${suffixCount!==1?'s':''}`;
 }
 
 /* ══════════════════════════════════════════
