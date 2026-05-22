@@ -1042,7 +1042,7 @@ body.military-auth-denied .save-toast {
         <div class="sec-title">AJOUTER UNE UNITE</div>
         <div class="calc-add-form">
             <div class="form-field">
-                <label class="form-label">TYPE DE DIVISION</label>
+                <label class="form-label">TYPE D'UNITE</label>
                 <select class="form-select" id="add-type"></select>
             </div>
             <div class="form-field">
@@ -1053,7 +1053,7 @@ body.military-auth-denied .save-toast {
                 <label class="form-label">COMMANDEES</label>
                 <input type="number" class="form-input" id="add-ordered" value="0" min="0" max="999" placeholder="0">
             </div>
-            <button class="btn-add" id="btn-add-div">+ AJOUTER</button>
+            <button class="btn-add" id="btn-add-unit">+ AJOUTER</button>
         </div>
 
         <!-- Stats -->
@@ -1075,7 +1075,7 @@ body.military-auth-denied .save-toast {
                 <div class="stat-sub">effectif final</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">DIVISIONS</div>
+                <div class="stat-label">UNITES</div>
                 <div class="stat-value" id="stat-divs">0</div>
                 <div class="stat-sub">unités enregistrées</div>
             </div>
@@ -1097,7 +1097,7 @@ body.military-auth-denied .save-toast {
                     </tr>
                 </thead>
                 <tbody id="roster-body">
-                    <tr><td colspan="7" class="roster-empty">Aucune division enregistrée. Utilisez le formulaire ci-dessus pour composer votre ordre de bataille.</td></tr>
+                    <tr><td colspan="7" class="roster-empty">Aucune unité enregistrée. Utilisez le formulaire ci-dessus pour composer votre ordre de bataille.</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1668,6 +1668,27 @@ function divEff(dk) {
   return divFlat(dk).reduce((s,[k,n]) => s + rEff(k)*n, 0);
 }
 
+function unitData(k) {
+  return DIV[k] || BRIG[k] || REG[k] || null;
+}
+function unitKind(k) {
+  if (DIV[k]) return 'div';
+  if (BRIG[k]) return 'brig';
+  if (REG[k]) return 'reg';
+  return 'unknown';
+}
+function unitEff(k) {
+  if (DIV[k]) return divEff(k);
+  if (BRIG[k]) return brigEff(k);
+  return rEff(k);
+}
+function unitChipClass(k) {
+  const kind = unitKind(k);
+  if (kind === 'div') return 'chip-div';
+  if (kind === 'brig') return 'chip-brig';
+  return 'chip-reg';
+}
+
 function sumEq(list) {
   const r = {};
   for (const [k, n] of list) {
@@ -1711,7 +1732,7 @@ function renderEqPanel(eq, editable, regKey) {
 function renderArmy() {
   const tbody = document.getElementById('roster-body');
   if (!army.length) {
-    tbody.innerHTML = '<tr><td colspan="7" class="roster-empty">Aucune division enregistrée. Utilisez le formulaire ci-dessus pour composer votre ordre de bataille.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" class="roster-empty">Aucune unité enregistrée. Utilisez le formulaire ci-dessus pour composer votre ordre de bataille.</td></tr>';
     document.getElementById('totals-block').style.display = 'none';
     document.getElementById('totals-block-cmd').style.display = 'none';
     renderStats();
@@ -1720,13 +1741,14 @@ function renderArmy() {
 
   let rows = '';
   for (const row of army) {
-    const d = DIV[row.type];
-    const perDiv = divEff(row.type);
-    const effSvc = perDiv * row.service;
-    const effCmd = perDiv * row.ordered;
+    const unit = unitData(row.type);
+    const chipClass = unitChipClass(row.type);
+    const perUnit = unitEff(row.type);
+    const effSvc = perUnit * row.service;
+    const effCmd = perUnit * row.ordered;
     rows += `<tr data-id="${row.id}">
-      <td><span class="mil-chip chip-div">${row.type}</span></td>
-      <td style="color:var(--text-primary)">${d ? d.n : row.type}</td>
+      <td><span class="mil-chip ${chipClass}">${row.type}</span></td>
+      <td style="color:var(--text-primary)">${unit ? unit.n : row.type}</td>
       <td><input type="number" class="roster-input" min="0" max="999" value="${row.service}" data-field="service" data-id="${row.id}"></td>
       <td><input type="number" class="roster-input" min="0" max="999" value="${row.ordered}" data-field="ordered" data-id="${row.id}"></td>
       <td class="eff-service">${fmt(effSvc)}</td>
@@ -1749,9 +1771,9 @@ function renderArmy() {
 
       const tr = e.target.closest('tr');
       if (tr) {
-        const perDiv = divEff(row.type);
-        tr.querySelector('.eff-service').textContent = fmt(perDiv * row.service);
-        tr.querySelector('.eff-cmd').textContent = fmt(perDiv * row.ordered);
+        const perUnit = unitEff(row.type);
+        tr.querySelector('.eff-service').textContent = fmt(perUnit * row.service);
+        tr.querySelector('.eff-cmd').textContent = fmt(perUnit * row.ordered);
       }
       renderStats();
       renderTotals();
@@ -1770,17 +1792,17 @@ function renderArmy() {
 }
 
 function renderStats() {
-  let totalSvc = 0, totalCmd = 0, divCount = 0;
+  let totalSvc = 0, totalCmd = 0, unitCount = 0;
   for (const row of army) {
-    const perDiv = divEff(row.type);
-    totalSvc += perDiv * row.service;
-    totalCmd += perDiv * row.ordered;
-    divCount += row.service + row.ordered;
+    const perUnit = unitEff(row.type);
+    totalSvc += perUnit * row.service;
+    totalCmd += perUnit * row.ordered;
+    unitCount += row.service + row.ordered;
   }
   document.getElementById('stat-service').textContent = fmt(totalSvc);
   document.getElementById('stat-ordered').textContent = fmt(totalCmd);
   document.getElementById('stat-total').textContent   = fmt(totalSvc + totalCmd);
-  document.getElementById('stat-divs').textContent    = fmt(divCount);
+  document.getElementById('stat-divs').textContent    = fmt(unitCount);
 }
 
 function renderTotals() {
@@ -1796,8 +1818,8 @@ function renderTotals() {
       list.push([row.type, row.service]);
     }
     const eq = sumEq(list);
-    const totalH = army.filter(r=>r.service).reduce((s,r)=>s+divEff(r.type)*r.service,0);
-    document.getElementById('totals-note').textContent = `Cumul référentiel des divisions en service — ${fmt(totalH)} soldats`;
+    const totalH = army.filter(r=>r.service).reduce((s,r)=>s+unitEff(r.type)*r.service,0);
+    document.getElementById('totals-note').textContent = `Cumul référentiel des unités en service — ${fmt(totalH)} soldats`;
     document.getElementById('totals-eq').innerHTML = renderEqPanel(eq, false, null);
   }
 
@@ -1810,8 +1832,8 @@ function renderTotals() {
       list.push([row.type, row.ordered]);
     }
     const eq = sumEq(list);
-    const totalH = army.filter(r=>r.ordered).reduce((s,r)=>s+divEff(r.type)*r.ordered,0);
-    document.getElementById('totals-note-cmd').textContent = `Cumul référentiel des divisions commandées — ${fmt(totalH)} soldats`;
+    const totalH = army.filter(r=>r.ordered).reduce((s,r)=>s+unitEff(r.type)*r.ordered,0);
+    document.getElementById('totals-note-cmd').textContent = `Cumul référentiel des unités commandées — ${fmt(totalH)} soldats`;
     document.getElementById('totals-eq-cmd').innerHTML = renderEqPanel(eq, false, null);
   }
 }
@@ -2095,16 +2117,26 @@ function showToast(msg) {
 function init() {
   loadArmy();
 
-  // Populate division select
+  // Populate integrated unit select
   const sel = document.getElementById('add-type');
-  for (const [k, d] of Object.entries(DIV)) {
-    const opt = document.createElement('option');
-    opt.value = k; opt.textContent = `${k} — ${d.n}`;
-    sel.appendChild(opt);
-  }
+  [
+    ['Divisions', DIV],
+    ['Brigades', BRIG],
+    ['Régiments', REG]
+  ].forEach(([label, source]) => {
+    const group = document.createElement('optgroup');
+    group.label = label;
+    for (const [k, unit] of Object.entries(source)) {
+      const opt = document.createElement('option');
+      opt.value = k;
+      opt.textContent = `${k} — ${unit.n}`;
+      group.appendChild(opt);
+    }
+    sel.appendChild(group);
+  });
 
-  // Add division button
-  document.getElementById('btn-add-div').addEventListener('click', () => {
+  // Add unit button
+  document.getElementById('btn-add-unit').addEventListener('click', () => {
     const type    = document.getElementById('add-type').value;
     const service = Math.max(0, parseInt(document.getElementById('add-service').value)||0);
     const ordered = Math.max(0, parseInt(document.getElementById('add-ordered').value)||0);
