@@ -1201,6 +1201,22 @@ body.military-auth-denied .save-toast {
                 <tbody id="nom-suffix-body"></tbody>
             </table>
         </div>
+
+        <div class="sec-title" style="margin-top:24px">NOMS PROPRES D'EQUIPEMENT</div>
+        <div class="nom-count" id="nom-name-count"></div>
+        <div class="nom-wrap">
+            <table class="nom-table">
+                <thead>
+                    <tr>
+                        <th>DOMAINE</th>
+                        <th>NOM</th>
+                        <th>INSPIRATION</th>
+                        <th>USAGE CONSEILLE</th>
+                    </tr>
+                </thead>
+                <tbody id="nom-name-body"></tbody>
+            </table>
+        </div>
     </div>
 
     <!-- ────────── TAB: GRADES ────────── -->
@@ -1522,6 +1538,112 @@ const NOM_SUFFIX = [
   {code:'-K', version:'Convoi',         usage:'Sécurisation d’axe, escorte logistique, patrouille et protection rapprochée', origine:'Qafila'},
   {code:'-V', version:'Sanitaire',      usage:'Ambulance, évacuation médicale, secours de combat ou soutien santé', origine:'Siha'},
   {code:'-W', version:'Atelier',        usage:'Maintenance mobile, dépannage mécanique, pièces et outillage embarqués', origine:'Warsha'}
+];
+
+const NOM_NAMES = [
+  {domain:'Terrestre', name:'Al-Haras', inspiration:'Arabe simple - la garde', usage:'Véhicules de police militaire, patrouille, stabilisation'},
+  {domain:'Terrestre', name:'Al-Qalaa', inspiration:'Arabe simple - la forteresse', usage:'Chars, APC lourds, véhicules blindés'},
+  {domain:'Terrestre', name:'Al-Sahra', inspiration:'Dune / désert - le Sahara', usage:'Véhicules désertiques, camions tactiques'},
+  {domain:'Terrestre', name:'Al-Raml', inspiration:'Dune / désert - le sable', usage:'Blindés légers, reconnaissance'},
+  {domain:'Terrestre', name:'Al-Jabal', inspiration:'Arabe simple - la montagne', usage:'Matériels de montagne, artillerie légère'},
+  {domain:'Terrestre', name:'Al-Matmar', inspiration:'Dune - sietch / refuge fortifié', usage:'Véhicules de commandement, postes mobiles'},
+  {domain:'Terrestre', name:'Sietch', inspiration:'Dune - communauté fortifiée du désert', usage:'Véhicules de commandement ou de garnison'},
+  {domain:'Terrestre', name:'Fedaykin', inspiration:'Dune - combattants d’élite', usage:'Véhicules forces spéciales, versions commando'},
+  {domain:'Terrestre', name:'Sardaukar', inspiration:'Dune - troupes impériales', usage:'Blindés d’assaut, unités de choc'},
+  {domain:'Terrestre', name:'Shai-Hulud', inspiration:'Dune - ver des sables sacré', usage:'Chars lourds, engins de rupture'},
+  {domain:'Terrestre', name:'MuadDib', inspiration:'Dune - souris du désert et nom de guerre', usage:'Reconnaissance, véhicules rapides'},
+  {domain:'Terrestre', name:'Kwisatz', inspiration:'Dune - référence mystique impériale', usage:'Commandement, renseignement, systèmes rares'},
+  {domain:'Terrestre', name:'Anubis', inspiration:'Egypte - gardien funéraire', usage:'Véhicules de sécurité, police militaire'},
+  {domain:'Terrestre', name:'Sekhmet', inspiration:'Egypte - déesse guerrière', usage:'Chars, artillerie, véhicules d’assaut'},
+  {domain:'Terrestre', name:'Bastet', inspiration:'Egypte - protection et vigilance', usage:'Patrouille, défense de zone, reconnaissance'},
+  {domain:'Terrestre', name:'Horus', inspiration:'Egypte - souveraineté et guerre', usage:'Commandement terrestre, blindés nobles'},
+  {domain:'Terrestre', name:'Khepri', inspiration:'Egypte - renaissance, scarabée solaire', usage:'Génie, dépannage, franchissement'},
+  {domain:'Terrestre', name:'Medjay', inspiration:'Egypte - force de garde', usage:'Police militaire, stabilisation, convoi'},
+  {domain:'Terrestre', name:'Nekheb', inspiration:'Egypte - cité protectrice', usage:'Véhicules de protection rapprochée'},
+  {domain:'Terrestre', name:'Djoser', inspiration:'Egypte - ancien pharaon bâtisseur', usage:'Génie, fortification, logistique'},
+  {domain:'Terrestre', name:'Al-Asad', inspiration:'Arabe simple - le lion', usage:'Blindés polyvalents, chars moyens'},
+  {domain:'Terrestre', name:'Al-Nimr', inspiration:'Arabe simple - le tigre', usage:'Véhicules rapides, blindés légers'},
+  {domain:'Terrestre', name:'Al-Saqr', inspiration:'Arabe simple - le faucon', usage:'Reconnaissance terrestre, éclaireurs'},
+  {domain:'Terrestre', name:'Al-Mizan', inspiration:'Arabe simple - la balance', usage:'Police militaire, maintien de l’ordre'},
+  {domain:'Terrestre', name:'Al-Midrar', inspiration:'Arabe simple - abondance / soutien', usage:'Logistique, ravitaillement, ateliers'},
+
+  {domain:'Aérien', name:'Almajara', inspiration:'Arabe simple - la galaxie', usage:'Avions de transport, avions stratégiques'},
+  {domain:'Aérien', name:'Al-Buraq', inspiration:'Tradition arabe - monture céleste', usage:'Transport rapide, liaison, projection'},
+  {domain:'Aérien', name:'Al-Tayr', inspiration:'Arabe simple - l’oiseau', usage:'Drones, avions légers, reconnaissance'},
+  {domain:'Aérien', name:'Al-Sirocco', inspiration:'Vent chaud du désert', usage:'Chasseurs, avions d’attaque, supériorité aérienne'},
+  {domain:'Aérien', name:'Al-Khamasin', inspiration:'Vent égyptien du désert', usage:'Attaque au sol, bombardement léger'},
+  {domain:'Aérien', name:'Ornithopter', inspiration:'Dune - aéronef à ailes battantes', usage:'Hélicoptères, aéronefs de manœuvre'},
+  {domain:'Aérien', name:'Thopter', inspiration:'Dune - diminutif d’ornithopter', usage:'Drones, appareils légers, reconnaissance'},
+  {domain:'Aérien', name:'Atreides', inspiration:'Dune - maison noble', usage:'Chasseurs de prestige, appareils de commandement'},
+  {domain:'Aérien', name:'Harkonnen', inspiration:'Dune - maison rivale', usage:'Bombardiers lourds, appareils intimidants'},
+  {domain:'Aérien', name:'Arrakis', inspiration:'Dune - planète désertique', usage:'Appareils désertiques, transport opérationnel'},
+  {domain:'Aérien', name:'Caladan', inspiration:'Dune - monde océanique', usage:'Patrouille maritime, appareils embarqués'},
+  {domain:'Aérien', name:'Osiris', inspiration:'Egypte - souverain de l’au-delà', usage:'AWACS, commandement aérien, plateformes majeures'},
+  {domain:'Aérien', name:'Ra', inspiration:'Egypte - dieu solaire', usage:'Chasseurs, bombardiers, appareils stratégiques'},
+  {domain:'Aérien', name:'Aton', inspiration:'Egypte - disque solaire', usage:'Drones HALE, surveillance longue endurance'},
+  {domain:'Aérien', name:'Isis', inspiration:'Egypte - protection et magie', usage:'Guerre électronique, soutien aérien'},
+  {domain:'Aérien', name:'Nephthys', inspiration:'Egypte - nuit et protection', usage:'Furtifs, reconnaissance nocturne'},
+  {domain:'Aérien', name:'Bennu', inspiration:'Egypte - oiseau solaire', usage:'Avions de reconnaissance, drones'},
+  {domain:'Aérien', name:'Akh', inspiration:'Egypte - esprit lumineux', usage:'Intercepteurs, avions rapides'},
+  {domain:'Aérien', name:'Al-Barq', inspiration:'Arabe simple - l’éclair', usage:'Intercepteurs, chasseurs légers'},
+  {domain:'Aérien', name:'Al-Najm', inspiration:'Arabe simple - l’étoile', usage:'Avions de commandement, transport VIP'},
+  {domain:'Aérien', name:'Al-Ghayth', inspiration:'Arabe simple - la pluie salvatrice', usage:'Transport humanitaire, ravitaillement'},
+  {domain:'Aérien', name:'Al-Samt', inspiration:'Arabe simple - le silence', usage:'Drones furtifs, reconnaissance discrète'},
+  {domain:'Aérien', name:'Al-Miraj', inspiration:'Arabe simple - ascension', usage:'Appareils haute altitude, espace proche'},
+  {domain:'Aérien', name:'Al-Aqrab', inspiration:'Arabe simple - le scorpion', usage:'CAS, hélicoptères d’attaque'},
+  {domain:'Aérien', name:'Al-Rih', inspiration:'Arabe simple - le vent', usage:'Transport, liaison, mobilité aérienne'},
+
+  {domain:'Naval', name:'Al-Bahr', inspiration:'Arabe simple - la mer', usage:'Patrouilleurs, navires logistiques'},
+  {domain:'Naval', name:'Al-Mawj', inspiration:'Arabe simple - la vague', usage:'Corvettes, bâtiments rapides'},
+  {domain:'Naval', name:'Al-Tufan', inspiration:'Arabe simple - le déluge', usage:'Frégates, navires d’assaut'},
+  {domain:'Naval', name:'Al-Marsa', inspiration:'Arabe simple - le port', usage:'Soutien naval, navires logistiques'},
+  {domain:'Naval', name:'Al-Ghawwas', inspiration:'Arabe simple - le plongeur', usage:'Sous-marins, lutte sous-marine'},
+  {domain:'Naval', name:'Caladan', inspiration:'Dune - monde maritime', usage:'Navires océaniques, aéronavale'},
+  {domain:'Naval', name:'Spacing Guild', inspiration:'Dune - guilde de navigation', usage:'Navires de soutien, commandement naval'},
+  {domain:'Naval', name:'Ix', inspiration:'Dune - monde technologique', usage:'Navires électroniques, drones navals'},
+  {domain:'Naval', name:'Tleilax', inspiration:'Dune - référence techno-biologique', usage:'Navires spéciaux, renseignement'},
+  {domain:'Naval', name:'Sobek', inspiration:'Egypte - crocodile et puissance du Nil', usage:'Navires fluviaux, amphibies'},
+  {domain:'Naval', name:'Neith', inspiration:'Egypte - guerre et protection', usage:'Frégates, défense antiaérienne navale'},
+  {domain:'Naval', name:'Wadjet', inspiration:'Egypte - cobra protecteur', usage:'Patrouilleurs, défense côtière'},
+  {domain:'Naval', name:'Hapi', inspiration:'Egypte - crue du Nil', usage:'Logistique navale, ravitaillement'},
+  {domain:'Naval', name:'Memphis', inspiration:'Egypte - ancienne capitale', usage:'Navire amiral, commandement'},
+  {domain:'Naval', name:'Alexandria', inspiration:'Egypte - cité maritime', usage:'Frégates, bâtiments océaniques'},
+  {domain:'Naval', name:'Rosette', inspiration:'Egypte - pierre et ville du delta', usage:'Renseignement, transmissions navales'},
+  {domain:'Naval', name:'Nile', inspiration:'Egypte - fleuve majeur', usage:'Flotte fluviale, transport'},
+  {domain:'Naval', name:'Al-Minqar', inspiration:'Arabe simple - le bec', usage:'Interception côtière, navires rapides'},
+  {domain:'Naval', name:'Al-Safinah', inspiration:'Arabe simple - le navire', usage:'Transport maritime générique'},
+  {domain:'Naval', name:'Al-Hut', inspiration:'Arabe simple - la baleine', usage:'Sous-marins lourds, navires de soutien'},
+  {domain:'Naval', name:'Al-LuLu', inspiration:'Arabe simple - la perle', usage:'Navires légers, patrouille côtière'},
+  {domain:'Naval', name:'Al-Qadis', inspiration:'Arabe simple - le sanctuaire', usage:'Navire hôpital, soutien humanitaire'},
+  {domain:'Naval', name:'Al-Mina', inspiration:'Arabe simple - le port', usage:'Navires ateliers, soutien portuaire'},
+  {domain:'Naval', name:'Al-Rasid', inspiration:'Arabe simple - l’observateur', usage:'Surveillance maritime, radar'},
+  {domain:'Naval', name:'Al-Muqatil', inspiration:'Arabe simple - le combattant', usage:'Corvettes et patrouilleurs armés'},
+
+  {domain:'Spatial', name:'Al-Falak', inspiration:'Arabe simple - l’orbite / sphère céleste', usage:'Satellites, plateformes orbitales'},
+  {domain:'Spatial', name:'Al-Madar', inspiration:'Arabe simple - l’orbite', usage:'Satellites ISR, relais orbitaux'},
+  {domain:'Spatial', name:'Al-Qamar', inspiration:'Arabe simple - la lune', usage:'Satellites de communication'},
+  {domain:'Spatial', name:'Al-Shams', inspiration:'Arabe simple - le soleil', usage:'Satellites énergétiques, observation'},
+  {domain:'Spatial', name:'Al-Nujum', inspiration:'Arabe simple - les étoiles', usage:'Constellations de satellites'},
+  {domain:'Spatial', name:'Heighliner', inspiration:'Dune - vaisseau de transport interstellaire', usage:'Transport stratégique spatial'},
+  {domain:'Spatial', name:'Guild Navigator', inspiration:'Dune - navigation spatiale', usage:'Navigation, relais, commandement spatial'},
+  {domain:'Spatial', name:'Melange', inspiration:'Dune - ressource stratégique', usage:'Satellites rares, systèmes expérimentaux'},
+  {domain:'Spatial', name:'Kaitain', inspiration:'Dune - capitale impériale', usage:'Plateformes de commandement orbital'},
+  {domain:'Spatial', name:'Salusa', inspiration:'Dune - monde-prison impérial', usage:'Stations militaires, surveillance'},
+  {domain:'Spatial', name:'Thoth', inspiration:'Egypte - savoir et calcul', usage:'Satellites de renseignement, navigation'},
+  {domain:'Spatial', name:'Seshat', inspiration:'Egypte - écriture et mesures', usage:'Cartographie, observation terrestre'},
+  {domain:'Spatial', name:'Nut', inspiration:'Egypte - voûte céleste', usage:'Stations orbitales, défense spatiale'},
+  {domain:'Spatial', name:'Khonsu', inspiration:'Egypte - dieu lunaire', usage:'Satellites lunaires, communication'},
+  {domain:'Spatial', name:'Ptah', inspiration:'Egypte - artisan et création', usage:'Plateformes industrielles orbitales'},
+  {domain:'Spatial', name:'Serqet', inspiration:'Egypte - protection et venin', usage:'Défense orbitale, satellites d’alerte'},
+  {domain:'Spatial', name:'Akhet', inspiration:'Egypte - horizon', usage:'Observation, veille longue portée'},
+  {domain:'Spatial', name:'Al-Samt Al-Aala', inspiration:'Arabe simple - le zénith', usage:'Satellites haute altitude'},
+  {domain:'Spatial', name:'Al-Burj', inspiration:'Arabe simple - la tour / constellation', usage:'Constellation de surveillance'},
+  {domain:'Spatial', name:'Al-Raqib', inspiration:'Arabe simple - le veilleur', usage:'Alerte avancée, surveillance orbitale'},
+  {domain:'Spatial', name:'Al-Miftah', inspiration:'Arabe simple - la clé', usage:'Navigation, cryptographie, relais sécurisés'},
+  {domain:'Spatial', name:'Al-Hijab', inspiration:'Arabe simple - le voile', usage:'Furtivité, brouillage, protection orbitale'},
+  {domain:'Spatial', name:'Al-Sirat', inspiration:'Arabe simple - le chemin', usage:'Navigation spatiale, couloirs orbitaux'},
+  {domain:'Spatial', name:'Al-Quds', inspiration:'Arabe simple - le sanctuaire', usage:'Station capitale, plateforme majeure'},
+  {domain:'Spatial', name:'Al-Mizan', inspiration:'Arabe simple - la balance', usage:'Contrôle orbital, arbitrage de trafic'}
 ];
 
 const CAT_COLORS = {
@@ -2181,11 +2303,14 @@ let nomSearch = '';
 function renderNomenclature() {
   const tbody = document.getElementById('nom-body');
   const suffixBody = document.getElementById('nom-suffix-body');
+  const nameBody = document.getElementById('nom-name-body');
   const query = nomSearch.toLowerCase();
   let rows = '';
   let suffixRows = '';
+  let nameRows = '';
   let count = 0;
   let suffixCount = 0;
+  let nameCount = 0;
 
   for (const item of NOMENC) {
     if (nomCatFilter !== 'all' && item.cat !== nomCatFilter) continue;
@@ -2220,10 +2345,28 @@ function renderNomenclature() {
     suffixCount++;
   }
 
+  for (const item of NOM_NAMES) {
+    if (nomCatFilter !== 'all') continue;
+    if (query && !item.domain.toLowerCase().includes(query) &&
+        !item.name.toLowerCase().includes(query) &&
+        !item.inspiration.toLowerCase().includes(query) &&
+        !item.usage.toLowerCase().includes(query)) continue;
+
+    nameRows += `<tr>
+      <td><span class="nom-badge" style="background:rgba(255,255,255,0.05);color:var(--text-secondary);border:1px solid rgba(255,255,255,0.12)">${item.domain}</span></td>
+      <td><span class="nom-code">"${item.name}"</span></td>
+      <td style="color:var(--text-secondary)">${item.inspiration}</td>
+      <td class="nom-origin">${item.usage}</td>
+    </tr>`;
+    nameCount++;
+  }
+
   tbody.innerHTML = rows || `<tr><td colspan="4" style="padding:30px;text-align:center;color:var(--text-muted);background:var(--bg-section)">Aucun résultat.</td></tr>`;
   suffixBody.innerHTML = suffixRows || `<tr><td colspan="4" style="padding:30px;text-align:center;color:var(--text-muted);background:var(--bg-section)">Aucun suffixe affiché.</td></tr>`;
+  nameBody.innerHTML = nameRows || `<tr><td colspan="4" style="padding:30px;text-align:center;color:var(--text-muted);background:var(--bg-section)">Aucun nom propre affiché.</td></tr>`;
   document.getElementById('nom-count').textContent = `${count} entrée${count!==1?'s':''} de matériel affichée${count!==1?'s':''}`;
   document.getElementById('nom-suffix-count').textContent = `${suffixCount} suffixe${suffixCount!==1?'s':''} affiché${suffixCount!==1?'s':''}`;
+  document.getElementById('nom-name-count').textContent = `${nameCount} nom${nameCount!==1?'s':''} propre${nameCount!==1?'s':''} affiché${nameCount!==1?'s':''}`;
 }
 
 /* ══════════════════════════════════════════
