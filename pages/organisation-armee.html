@@ -1144,7 +1144,7 @@ body.military-auth-denied .save-toast {
 
         <div class="ref-subtabs">
             <button class="ref-subtab active" data-ref="div">DIVISIONS (5)</button>
-            <button class="ref-subtab" data-ref="brig">BRIGADES (9)</button>
+            <button class="ref-subtab" data-ref="brig">BRIGADES (10)</button>
             <button class="ref-subtab" data-ref="reg">REGIMENTS (22)</button>
             <button class="ref-subtab" data-ref="bat">BATAILLONS (1)</button>
             <button class="ref-subtab" data-ref="comp">COMPAGNIES (3)</button>
@@ -1275,7 +1275,7 @@ const EQ_BASE = {
   RIMec: {s:950,fa:600,p:350,ml:18,mag:18,hmg:12,pm:100,ugl:45,g:2000,fp:8,lrat:48,atgm:30,mp:8,map:40,mat:60,mom:6,moh:4,ifv:42,apc:6,vb:6,vm:8,vrb:4,cll:12,cl:8,amb:4,vc:6},
   RB:    {s:650,fa:300,p:650,hmg:30,pm:250,g:800,lrat:30,atgm:6,mp:4,mat:60,moh:4,mbt:44,ifv:6,apc:2,vb:4,vrb:8,vm:12,cll:16,amb:4,vc:4},
   RC:    {s:600,fa:350,p:350,mag:12,hmg:18,pm:80,ugl:24,g:800,fp:12,lrat:24,atgm:18,mp:6,mom:4,br:36,vb:18,ifv:4,vew:4,vrs:6,vrb:3,vm:6,amb:2,vc:4},
-  RPara: {s:700,fa:600,p:200,ml:24,mag:18,hmg:6,pm:30,ugl:54,g:2100,fp:18,lrat:40,atgm:16,mp:6,map:50,mat:30,mol:9,mom:6,vb:8,cl:20,amb:4,vc:4,atp:2},
+  RPara: {s:700,fa:600,p:200,ml:24,mag:18,hmg:6,pm:30,ugl:54,g:2100,fp:18,lrat:40,atgm:16,mp:6,map:50,mat:30,mol:9,mom:6,vb:8,cl:20,amb:4,vc:4},
   RIMa:  {s:950,fa:700,p:250,ml:30,mag:24,hmg:12,pm:50,ugl:60,g:2800,fp:12,lrat:60,atgm:18,mp:8,map:50,mat:40,mol:9,mom:8,moh:4,apc:24,vb:12,vm:4,amb:4,vc:6,cl:30,cll:8},
   RBA:   {s:700,fa:400,p:500,hmg:24,pm:150,g:1000,lrat:24,atgm:18,mp:4,mat:30,mom:8,bl:48,ifv:6,apc:6,vb:6,vrb:4,vm:6,cll:8,amb:3,vc:6},
   RAT:   {s:760,fa:520,p:760,ml:6,pm:34,g:850,c105:18,c155:18,mol:4,mom:2,cl:45,cll:32,amb:4,vc:12,vm:8,vrs:5,vb:7},
@@ -1283,14 +1283,14 @@ const EQ_BASE = {
   RLRM:  {s:480,fa:320,p:480,pm:24,ml:6,g:400,lrm:18,cll:30,cl:18,vc:6,vrs:6,vm:4,vb:4,amb:2},
   RDA:   {s:700,fa:450,p:700,ml:12,mag:6,pm:40,g:600,mp:48,dca:24,vrs:12,vc:6,vm:4,vb:6,cl:24,amb:3},
   RG:    {s:500,i:350,fa:650,p:850,ml:12,mag:12,pm:30,ugl:24,g:700,map:300,mat:300,atgm:6,vg:28,apc:8,vb:6,cll:24,cl:30,vrb:4,vm:6,vc:4,amb:3},
-  RT:    {s:1000,i:60,fa:750,p:1000,pm:60,ml:6,ugl:12,g:500,lrat:12,mp:6,cll:80,cl:50,amb:18,vrb:6,vm:18,vc:6,vb:8},
+  RT:    {s:1000,i:60,fa:750,p:1000,pm:60,ml:6,ugl:12,g:500,lrat:12,mp:6,cll:80,cl:50,amb:18,vrb:6,vm:18,vc:6,vb:8,at:4,atl:1},
   RGE:   {s:500,i:80,fa:380,p:550,mag:6,pm:60,ugl:12,g:300,fp:18,vew:12,vrs:12,br:8,vb:12,vc:6,vm:3,cl:30,amb:2},
   RHC:   {s:520,fa:330,p:520,pm:70,g:360,mp:12,ha:24,hp:8,cl:24,cll:8,vm:14,vc:5,amb:4,vrs:2},
   RHM:   {s:620,fa:390,p:620,pm:65,g:420,mp:12,ht15:18,ht55:6,hp:12,cl:26,cll:10,vm:15,vc:5,amb:5,vrs:2},
-  RFSA:  {s:560,fa:430,p:560,ml:18,mag:12,hmg:6,pm:90,ugl:36,g:1600,fp:36,lrat:30,atgm:12,mp:6,mol:6,mom:4,vb:18,cl:14,cll:4,amb:3,vc:6,hp:4},
-  RFSP:  {s:620,fa:500,p:620,ml:20,mag:12,hmg:6,pm:80,ugl:42,g:1800,fp:42,lrat:36,atgm:14,mp:8,map:40,mat:20,mol:8,mom:6,vb:16,cl:18,cll:4,amb:3,vc:6,atp:4},
-  RFST:  {s:480,fa:390,p:480,ml:16,mag:10,hmg:4,pm:120,ugl:30,g:1300,fp:48,lrat:28,atgm:10,mp:4,map:60,mat:30,mol:6,vb:20,cl:16,amb:3,vc:7,vew:4,vrs:4},
-  RFSM:  {s:540,fa:420,p:540,ml:18,mag:12,hmg:6,pm:100,ugl:36,g:1500,fp:34,lrat:32,atgm:12,mp:6,mol:6,mom:4,apc:8,vb:18,cl:16,cll:6,amb:3,vc:6,hp:2},
+  RFSA:  {fs:560,fa:430,p:560,ml:18,mag:12,hmg:6,pm:90,ugl:36,g:1600,fp:36,lrat:30,atgm:12,mp:6,mol:6,mom:4,vb:18,cl:14,cll:4,amb:3,vc:6,hp:4},
+  RFSP:  {fs:620,fa:500,p:620,ml:20,mag:12,hmg:6,pm:80,ugl:42,g:1800,fp:42,lrat:36,atgm:14,mp:8,map:40,mat:20,mol:8,mom:6,vb:16,cl:18,cll:4,amb:3,vc:6,atp:4},
+  RFST:  {fs:480,fa:390,p:480,ml:16,mag:10,hmg:4,pm:120,ugl:30,g:1300,fp:48,lrat:28,atgm:10,mp:4,map:60,mat:30,mol:6,vb:20,cl:16,amb:3,vc:7,vew:4,vrs:4},
+  RFSM:  {fs:540,fa:420,p:540,ml:18,mag:12,hmg:6,pm:100,ugl:36,g:1500,fp:34,lrat:32,atgm:12,mp:6,mol:6,mom:4,apc:8,vb:18,cl:16,cll:6,amb:3,vc:6,hp:2},
   CIA:   {s:160,fa:110,p:160,ml:6,mag:3,pm:24,ugl:8,g:320,fp:4,lrat:4,mol:3,cl:12,cll:2,amb:2,vc:4,vb:8},
   CTA:   {s:90,i:12,fa:60,p:90,pm:18,g:120,vc:6,cl:8,cll:2,amb:1,vew:3,vrs:4,vb:4},
   CLA:   {s:130,i:10,fa:75,p:130,ml:4,pm:20,g:180,cl:16,cll:12,amb:3,vc:4,vm:6,vb:4},
@@ -1301,27 +1301,28 @@ const EQ_BASE = {
 };
 
 const EQ_REF = {
-  DIL:{s:13560,i:490,fa:11050,p:8560,ml:279,mag:186,hmg:54,pm:709,ugl:534,g:24570,map:840,mat:660,fp:126,lrat:336,mp:102,atgm:114,c105:54,c155:18,mol:66,mom:56,cl:610,cll:222,amb:77,vc:130,vg:28,vew:14,vrb:10,vm:64,vrs:36,apc:8,dca:24,bl:0,br:8,vb:126,ht15:18,ht55:6,hp:12},
-  DIM:{s:16470,i:490,fa:10510,p:12670,ml:162,mag:150,hmg:216,pm:1969,ugl:363,g:21680,map:580,mat:840,fp:74,lrat:408,mp:142,atgm:228,spga:72,mom:42,moh:36,lrm:18,cl:377,cll:388,amb:95,vc:165,vg:28,vew:14,vrb:78,vm:182,vrs:50,ifv:306,apc:54,dca:24,bl:58,br:8,mbt:88,vb:130,ha:24,ht15:18,ht55:6,hp:20},
-  DB:{s:15870,i:490,fa:9910,p:13270,ml:126,mag:114,hmg:252,pm:2269,ugl:273,g:19280,map:500,mat:840,fp:58,lrat:372,mp:134,atgm:180,spga:72,mom:30,moh:36,lrm:18,cl:361,cll:396,amb:95,vc:161,vg:28,vew:14,vrb:86,vm:190,vrs:50,ifv:234,apc:46,dca:24,bl:62,br:8,mbt:176,vb:126,ha:24,ht15:18,ht55:6,hp:20},
-  DAM:{s:12980,i:490,fa:10390,p:8880,ml:246,mag:186,hmg:54,pm:805,ugl:534,g:22980,map:750,mat:570,fp:180,lrat:372,mp:132,atgm:150,c105:54,mol:93,mom:54,cl:514,cll:146,amb:87,vc:125,vg:28,vew:14,vrb:10,vm:72,vrs:34,apc:8,dca:24,bl:0,br:8,vb:138,ha:24,ht15:18,ht55:6,hp:44,atp:18},
-  DMar:{s:14120,i:490,fa:10060,p:10620,ml:186,mag:144,hmg:108,pm:1229,ugl:348,g:20780,map:550,mat:560,fp:78,lrat:360,mp:126,atgm:132,spgc:54,mol:45,mom:56,moh:20,lrm:18,cl:481,cll:304,amb:85,vc:155,vg:28,vew:14,vrb:18,vm:114,vrs:46,ifv:12,apc:140,dca:24,bl:96,br:8,vb:154,ha:24,ht15:18,ht55:6,hp:40},
+  DIL:{s:13860,i:490,fa:11230,p:8860,ml:279,mag:186,hmg:54,pm:739,ugl:534,g:24570,map:840,mat:660,fp:126,lrat:336,mp:102,atgm:114,c105:54,c155:18,mol:66,mom:56,cl:618,cll:228,amb:79,vc:140,vg:28,vew:14,vrb:10,vm:66,vrs:36,apc:8,dca:24,bl:0,br:8,vb:132,ht15:18,ht55:6,hp:12,at:4,atl:1},
+  DIM:{s:16770,i:490,fa:10690,p:12970,ml:162,mag:150,hmg:216,pm:1999,ugl:363,g:21680,map:580,mat:840,fp:74,lrat:408,mp:142,atgm:228,spga:72,mom:42,moh:36,lrm:18,cl:385,cll:394,amb:97,vc:175,vg:28,vew:14,vrb:78,vm:184,vrs:50,ifv:306,apc:54,dca:24,bl:58,br:8,mbt:88,vb:136,ha:24,ht15:18,ht55:6,hp:20,at:4,atl:1},
+  DB:{s:16170,i:490,fa:10090,p:13570,ml:126,mag:114,hmg:252,pm:2299,ugl:273,g:19280,map:500,mat:840,fp:58,lrat:372,mp:134,atgm:180,spga:72,mom:30,moh:36,lrm:18,cl:369,cll:402,amb:97,vc:171,vg:28,vew:14,vrb:86,vm:192,vrs:50,ifv:234,apc:46,dca:24,bl:62,br:8,mbt:176,vb:132,ha:24,ht15:18,ht55:6,hp:20,at:4,atl:1},
+  DAM:{s:13280,i:490,fa:10570,p:9180,ml:246,mag:186,hmg:54,pm:835,ugl:534,g:22980,map:750,mat:570,fp:180,lrat:372,mp:132,atgm:150,c105:54,mol:93,mom:54,cl:522,cll:152,amb:89,vc:135,vg:28,vew:14,vrb:10,vm:74,vrs:34,apc:8,dca:24,bl:0,br:8,vb:144,ha:24,ht15:18,ht55:6,hp:44,at:4,atl:1},
+  DMar:{s:14420,i:490,fa:10240,p:10920,ml:186,mag:144,hmg:108,pm:1259,ugl:348,g:20780,map:550,mat:560,fp:78,lrat:360,mp:126,atgm:132,spgc:54,mol:45,mom:56,moh:20,lrm:18,cl:489,cll:310,amb:87,vc:165,vg:28,vew:14,vrb:18,vm:116,vrs:46,ifv:12,apc:140,dca:24,bl:96,br:8,vb:160,ha:24,ht15:18,ht55:6,hp:40,at:4,atl:1},
   BIL:{s:2550,fa:2180,p:750,ml:81,mag:54,hmg:18,pm:110,ugl:162,g:6750,map:180,mat:120,fp:36,lrat:108,mp:12,atgm:36,c105:18,mol:18,mom:18,cl:135,cll:24,amb:13,vc:26,vm:4,vrs:2,bl:0,vb:26},
   BIMo:{s:2700,fa:2300,p:900,ml:90,mag:54,hmg:24,pm:140,ugl:180,g:7200,map:240,mat:120,fp:72,lrat:150,mp:18,atgm:42,c105:18,mol:27,mom:18,moh:12,cl:105,cll:18,amb:13,vc:26,vm:4,vrs:2,bl:0,vb:20},
   BIMot:{s:3000,fa:1980,p:1200,ml:54,mag:72,hmg:90,pm:270,ugl:162,g:6600,map:120,mat:180,fp:27,lrat:180,mp:18,atgm:72,spgc:18,mom:18,moh:12,cl:50,cll:66,amb:17,vc:36,vrb:9,vm:26,vrs:4,apc:144,bl:0,vb:34},
   BIMec:{s:3150,fa:1980,p:1350,ml:54,mag:54,hmg:36,pm:330,ugl:135,g:6000,map:120,mat:180,fp:24,lrat:144,mp:24,atgm:90,spga:18,mom:18,moh:12,cl:52,cll:66,amb:17,vc:36,vrb:18,vm:34,vrs:4,ifv:126,apc:18,bl:18,vb:28},
   BB:{s:2550,fa:1380,p:1950,ml:18,mag:18,hmg:72,pm:630,ugl:45,g:3600,map:40,mat:180,fp:8,lrat:108,mp:16,atgm:42,spga:18,mom:6,moh:12,cl:36,cll:74,amb:17,vc:32,vrb:26,vm:42,vrs:4,ifv:54,apc:10,bl:22,mbt:88,vb:24},
-  BAM:{s:2400,fa:2000,p:900,ml:72,mag:54,hmg:18,pm:110,ugl:162,g:6300,map:150,mat:90,fp:54,lrat:120,mp:18,atgm:48,c105:18,mol:27,mom:18,cl:105,cll:6,amb:16,vc:26,vm:4,vrs:2,bl:0,vb:32,hp:6,atp:6},
+  BAM:{s:2400,fa:2000,p:900,ml:72,mag:54,hmg:18,pm:110,ugl:162,g:6300,map:150,mat:90,fp:54,lrat:120,mp:18,atgm:48,c105:18,mol:27,mom:18,cl:105,cll:6,amb:16,vc:26,vm:4,vrs:2,bl:0,vb:32,hp:6},
   BAA:{s:2400,fa:1750,p:1000,ml:60,mag:48,hmg:24,pm:140,ugl:120,g:5600,map:100,mat:80,fp:24,lrat:120,mp:16,atgm:36,spgc:18,mol:18,mom:16,moh:8,cl:98,cll:46,amb:14,vc:32,vm:14,vrs:4,apc:48,bl:0,vb:36,hp:4},
   BBA:{s:2850,fa:1850,p:1750,ml:30,mag:24,hmg:60,pm:390,ugl:60,g:4800,map:50,mat:100,fp:12,lrat:108,mp:16,atgm:54,spgc:18,mol:9,mom:24,moh:4,cl:68,cll:54,amb:16,vc:38,vrb:8,vm:22,vrs:4,ifv:12,apc:36,bl:96,vb:36,hp:6},
   BA:{s:3120,i:490,fa:2060,p:3120,ml:18,mag:24,hmg:18,pm:212,ugl:48,g:3000,map:300,mat:300,fp:18,lrat:12,mp:66,atgm:6,c105:36,c155:36,spga:18,spgc:18,mol:8,mom:4,moh:0,lrm:18,cl:148,cll:136,amb:17,vc:40,vg:28,vew:12,vrb:16,vm:34,vrs:38,ifv:0,apc:8,dca:24,bl:0,br:8,mbt:0,vb:28,ha:0,ht15:18,ht55:6,hp:6},
+  BS:{s:2300,i:490,fa:1960,p:2700,ml:18,mag:18,pm:180,ugl:48,g:1500,map:300,mat:300,fp:18,lrat:12,mp:6,atgm:6,cl:118,cll:110,amb:25,vc:26,vg:28,vew:12,vrb:10,vm:29,vrs:12,apc:8,br:8,vb:32,at:4,atl:1},
   RIL:{s:750,fa:660,p:150,ml:27,mag:18,hmg:6,pm:30,ugl:54,g:2250,map:60,mat:40,fp:12,lrat:36,mp:4,atgm:12,mol:6,mom:6,cl:30,cll:6,amb:3,vc:4,vb:6},
   RIMo:{s:800,fa:700,p:200,ml:30,mag:18,hmg:8,pm:40,ugl:60,g:2400,map:80,mat:40,fp:24,lrat:50,mp:6,atgm:14,mol:9,mom:6,moh:4,cl:20,cll:4,amb:3,vc:4,vb:4},
   RIMot:{s:900,fa:600,p:300,ml:18,mag:24,hmg:30,pm:80,ugl:54,g:2200,map:40,mat:60,fp:9,lrat:60,mp:6,atgm:24,mom:6,moh:4,cl:8,cll:12,amb:4,vc:6,vrb:3,vm:6,apc:48,vb:8},
   RIMec:{s:950,fa:600,p:350,ml:18,mag:18,hmg:12,pm:100,ugl:45,g:2000,map:40,mat:60,fp:8,lrat:48,mp:8,atgm:30,mom:6,moh:4,cl:8,cll:12,amb:4,vc:6,vrb:4,vm:8,ifv:42,apc:6,bl:6,vb:6},
   RB:{s:650,fa:300,p:650,hmg:30,pm:250,g:800,mat:60,lrat:30,mp:4,atgm:6,moh:4,cll:16,amb:4,vc:4,vrb:8,vm:12,ifv:6,apc:2,bl:8,mbt:44,vb:4},
   RC:{s:600,fa:350,p:350,mag:12,hmg:18,pm:80,ugl:24,g:800,fp:12,lrat:24,mp:6,atgm:18,mom:4,amb:2,vc:4,vew:4,vrb:3,vm:6,vrs:6,ifv:4,bl:12,br:36,vb:18},
-  RPara:{s:700,fa:600,p:200,ml:24,mag:18,hmg:6,pm:30,ugl:54,g:2100,map:50,mat:30,fp:18,lrat:40,mp:6,atgm:16,mol:9,mom:6,cl:20,amb:4,vc:4,vb:8,atp:2},
+  RPara:{s:700,fa:600,p:200,ml:24,mag:18,hmg:6,pm:30,ugl:54,g:2100,map:50,mat:30,fp:18,lrat:40,mp:6,atgm:16,mol:9,mom:6,cl:20,amb:4,vc:4,vb:8},
   RIMa:{s:950,fa:700,p:250,ml:30,mag:24,hmg:12,pm:50,ugl:60,g:2800,map:50,mat:40,fp:12,lrat:60,mp:8,atgm:18,mol:9,mom:8,moh:4,cl:30,cll:8,amb:4,vc:6,vm:4,apc:24,vb:12},
   RBA:{s:700,fa:400,p:500,hmg:24,pm:150,g:1000,mat:30,lrat:24,mp:4,atgm:18,mom:8,cll:8,amb:3,vc:6,vrb:4,vm:6,ifv:6,apc:6,bl:48,vb:6},
   RAT:{s:760,fa:520,p:760,ml:6,pm:34,g:850,c105:18,c155:18,mol:4,mom:2,cl:45,cll:32,amb:4,vc:12,vm:8,vrs:5,vb:7},
@@ -1329,14 +1330,14 @@ const EQ_REF = {
   RLRM:{s:480,fa:320,p:480,ml:6,pm:24,g:400,lrm:18,cl:18,cll:30,amb:2,vc:6,vm:4,vrs:6,vb:4},
   RDA:{s:700,fa:450,p:700,ml:12,mag:6,pm:40,g:600,mp:48,cl:24,amb:3,vc:6,vm:4,vrs:12,dca:24,vb:6},
   RG:{s:500,i:350,fa:650,p:850,ml:12,mag:12,pm:30,ugl:24,g:700,map:300,mat:300,atgm:6,cl:30,cll:24,amb:3,vc:4,vg:28,vrb:4,vm:6,apc:8,vb:6},
-  RT:{s:1000,i:60,fa:750,p:1000,ml:6,pm:60,ugl:12,g:500,lrat:12,mp:6,cl:50,cll:80,amb:18,vc:6,vrb:6,vm:18,vb:8},
+  RT:{s:1000,i:60,fa:750,p:1000,ml:6,pm:60,ugl:12,g:500,lrat:12,mp:6,cl:50,cll:80,amb:18,vc:6,vrb:6,vm:18,vb:8,at:4,atl:1},
   RGE:{s:500,i:80,fa:380,p:550,mag:6,pm:60,ugl:12,g:300,fp:18,cl:30,amb:2,vc:6,vew:12,vm:3,vrs:12,br:8,vb:12},
   RHC:{s:520,fa:330,p:520,pm:70,g:360,mp:12,cl:24,cll:8,amb:4,vc:5,vm:14,vrs:2,ha:24,hp:8},
   RHM:{s:620,fa:390,p:620,pm:65,g:420,mp:12,cl:26,cll:10,amb:5,vc:5,vm:15,vrs:2,ht15:18,ht55:6,hp:12},
-  RFSA:{s:560,fa:430,p:560,ml:18,mag:12,hmg:6,pm:90,ugl:36,g:1600,fp:36,lrat:30,mp:6,atgm:12,mol:6,mom:4,cl:14,cll:4,amb:3,vc:6,vb:18,hp:4},
-  RFSP:{s:620,fa:500,p:620,ml:20,mag:12,hmg:6,pm:80,ugl:42,g:1800,map:40,mat:20,fp:42,lrat:36,mp:8,atgm:14,mol:8,mom:6,cl:18,cll:4,amb:3,vc:6,vb:16,atp:4},
-  RFST:{s:480,fa:390,p:480,ml:16,mag:10,hmg:4,pm:120,ugl:30,g:1300,map:60,mat:30,fp:48,lrat:28,mp:4,atgm:10,mol:6,cl:16,amb:3,vc:7,vew:4,vrs:4,vb:20},
-  RFSM:{s:540,fa:420,p:540,ml:18,mag:12,hmg:6,pm:100,ugl:36,g:1500,fp:34,lrat:32,mp:6,atgm:12,mol:6,mom:4,cl:16,cll:6,amb:3,vc:6,apc:8,vb:18,hp:2},
+  RFSA:{fs:560,fa:430,p:560,ml:18,mag:12,hmg:6,pm:90,ugl:36,g:1600,fp:36,lrat:30,mp:6,atgm:12,mol:6,mom:4,cl:14,cll:4,amb:3,vc:6,vb:18,hp:4},
+  RFSP:{fs:620,fa:500,p:620,ml:20,mag:12,hmg:6,pm:80,ugl:42,g:1800,map:40,mat:20,fp:42,lrat:36,mp:8,atgm:14,mol:8,mom:6,cl:18,cll:4,amb:3,vc:6,vb:16,atp:4},
+  RFST:{fs:480,fa:390,p:480,ml:16,mag:10,hmg:4,pm:120,ugl:30,g:1300,map:60,mat:30,fp:48,lrat:28,mp:4,atgm:10,mol:6,cl:16,amb:3,vc:7,vew:4,vrs:4,vb:20},
+  RFSM:{fs:540,fa:420,p:540,ml:18,mag:12,hmg:6,pm:100,ugl:36,g:1500,fp:34,lrat:32,mp:6,atgm:12,mol:6,mom:4,cl:16,cll:6,amb:3,vc:6,apc:8,vb:18,hp:2},
   CIA:{s:160,fa:110,p:160,ml:6,mag:3,pm:24,ugl:8,g:320,fp:4,lrat:4,mol:3,cl:12,cll:2,amb:2,vc:4,vb:8},
   CTA:{s:90,i:12,fa:60,p:90,pm:18,g:120,cl:8,cll:2,amb:1,vc:6,vew:3,vrs:4,vb:4},
   CLA:{s:130,i:10,fa:75,p:130,ml:4,pm:20,g:180,cl:16,cll:12,amb:3,vc:4,vm:6,vb:4},
@@ -1344,7 +1345,7 @@ const EQ_REF = {
 };
 
 const EL = {
-  s:'Soldats',i:'Ingénieurs',fa:"Fusils d'assaut",p:'Pistolets',ml:'Mitrailleuse légère',
+  s:'Soldats',fs:'Forces spéciales',i:'Ingénieurs',fa:"Fusils d'assaut",p:'Pistolets',ml:'Mitrailleuse légère',
   mag:'Mitrailleuse polyvalente',hmg:'Mitrailleuse lourde',pm:'Pistolet-mitrailleur',
   ugl:'Lance-grenades',g:'Grenades à main',map:'Mine antipersonnel',mat:'Mine antichar',
   fp:'Fusil de précision',lrat:'Lance-roquettes AT',mp:'MANPADS',atgm:'ATGM',
@@ -1355,15 +1356,16 @@ const EL = {
   vrs:'Véh. radar/SIGINT',ifv:'IFV',apc:'APC',dca:'DCA',bl:'Blindé léger',
   br:'Blindé de reco.',mbt:'MBT',vb:'Voitures blindées',ha:"Hélico. d'attaque",
   ht15:'Hélico. transport (15 soldats)',ht55:'Hélico. transport (55 soldats)',
-  hp:'Hélicoptères polyvalents',atp:'Avions transport parachutiste'
+  hp:'Hélicoptères polyvalents',at:'Avion de Transport (type C-130)',
+  atl:'Avion de Transport Lourd (type C-5 Galaxy)',atp:'Avions transport parachutiste'
 };
 const EC = {
-  s:'per',i:'per',fa:'per',p:'per',ml:'arm',mag:'arm',hmg:'arm',pm:'arm',ugl:'arm',g:'arm',
+  s:'per',fs:'per',i:'per',fa:'per',p:'per',ml:'arm',mag:'arm',hmg:'arm',pm:'arm',ugl:'arm',g:'arm',
   map:'arm',mat:'arm',fp:'arm',lrat:'arm',mp:'arm',atgm:'arm',c105:'art',c155:'art',
   spga:'art',spgc:'art',mol:'art',mom:'art',moh:'art',lrm:'art',cl:'veh',cll:'veh',
   amb:'veh',vc:'veh',vg:'veh',vew:'veh',vrb:'veh',vm:'veh',vrs:'veh',ifv:'bld',apc:'bld',
   dca:'bld',bl:'bld',br:'bld',mbt:'bld',vb:'bld',ha:'avi',ht15:'avi',ht55:'avi',hp:'avi',
-  atp:'avi'
+  at:'avi',atl:'avi',atp:'avi'
 };
 const CAT_ORDER = ['per','arm','art','bld','veh','avi'];
 const CAT_LABELS = {
@@ -1427,23 +1429,24 @@ const BRIG = {
   BAM:  {n:"Brigade Aéromobile",              s:'BAM',   r:"Régiments aéroportés, projection héliportée, saisie d'objectif, sans artillerie organique",  qg:'QGB_L',  c:[['RPara',3]]},
   BAA:  {n:"Brigade d'Assaut Amphibie",       s:'BAA',   r:"Infanterie de marine, première vague d'assaut, conquête de tête de pont",                   qg:'QGB_Mar', c:[['RIMa',2]]},
   BBA:  {n:"Brigade Blindée Amphibie",        s:'BBA',   r:"Blindé amphibie, exploitation de tête de pont, percée littorale",                           qg:'QGB_Mar', c:[['RBA',2],['RIMa',1]]},
-  BA:   {n:"Brigade d'Artillerie",            s:'BA',    r:"Artillerie divisionnaire, appui-feu toutes distances, regroupement interarmes",              qg:'QGB_M',  c:[['RAT',2],['RAM',1],['RLRM',1]]}
+  BA:   {n:"Brigade d'Artillerie",            s:'BA',    r:"Artillerie divisionnaire, appui-feu toutes distances, regroupement interarmes",              qg:'QGB_M',  c:[['RAT',2],['RAM',1],['RLRM',1]]},
+  BS:   {n:"Brigade de Support",              s:'BS',    r:"Soutien divisionnaire regroupant génie, logistique, renseignement et guerre électronique",    qg:'QGB_M',  c:[['RG',1],['RT',1],['RGE',1]]}
 };
 
 /* ══════════════════════════════════════════
    DATA — Divisions (source CSV, verifie)
 ══════════════════════════════════════════ */
 const DIV = {
-  DIL:  {n:"Division d'Infanterie Légère",    s:'DIL',  r:"Projection rapide, contre-insurrection, terrain difficile, contrôle de zone vaste. ~14 050 soldats",
-         qg:'QGD', c:[['B','BIL',3],['B','BA',1],['R','RG',1],['R','RT',1],['R','RDA',1],['R','RGE',1],['R','RHM',1]]},
-  DIM:  {n:"Division d'Infanterie Mécanisée", s:'DIM',  r:"Combat conventionnel équilibré, manœuvre mécanisée avec appui blindé. ~16 960 soldats",
-         qg:'QGD', c:[['B','BIMec',2],['B','BB',1],['B','BA',1],['R','RG',1],['R','RT',1],['R','RDA',1],['R','RGE',1],['R','RHC',1],['R','RHM',1]]},
-  DB:   {n:"Division Blindée",                s:'DB',   r:"Percée, exploitation blindée, contre-attaque, choc mécanisé décisif. ~16 360 soldats",
-         qg:'QGD', c:[['B','BB',2],['B','BIMec',1],['B','BA',1],['R','RG',1],['R','RT',1],['R','RDA',1],['R','RGE',1],['R','RHC',1],['R','RHM',1]]},
-  DAM:  {n:"Division Aéromobile",             s:'DAM',  r:"Projection héliportée stratégique, saisie aéroportée, opérations à longue portée. ~13 470 soldats",
-         qg:'QGD', c:[['B','BAM',3],['B','BA',1],['R','RHC',1],['R','RHM',1],['R','RG',1],['R','RT',1],['R','RDA',1],['R','RGE',1]]},
-  DMar: {n:"Division de Marine",              s:'DMar', r:"Projection littorale, débarquement amphibie, opérations côtières interarmes. ~14 610 soldats",
-         qg:'QGD', c:[['B','BAA',2],['B','BBA',1],['B','BA',1],['R','RG',1],['R','RT',1],['R','RDA',1],['R','RGE',1],['R','RHC',1],['R','RHM',1]]}
+  DIL:  {n:"Division d'Infanterie Légère",    s:'DIL',  r:"Projection rapide, contre-insurrection, terrain difficile, contrôle de zone vaste. ~14 350 soldats",
+         qg:'QGD', c:[['B','BIL',3],['B','BA',1],['B','BS',1],['R','RDA',1],['R','RHM',1]]},
+  DIM:  {n:"Division d'Infanterie Mécanisée", s:'DIM',  r:"Combat conventionnel équilibré, manœuvre mécanisée avec appui blindé. ~17 260 soldats",
+         qg:'QGD', c:[['B','BIMec',2],['B','BB',1],['B','BA',1],['B','BS',1],['R','RDA',1],['R','RHC',1],['R','RHM',1]]},
+  DB:   {n:"Division Blindée",                s:'DB',   r:"Percée, exploitation blindée, contre-attaque, choc mécanisé décisif. ~16 660 soldats",
+         qg:'QGD', c:[['B','BB',2],['B','BIMec',1],['B','BA',1],['B','BS',1],['R','RDA',1],['R','RHC',1],['R','RHM',1]]},
+  DAM:  {n:"Division Aéromobile",             s:'DAM',  r:"Projection héliportée stratégique, saisie aéroportée, opérations à longue portée. ~13 770 soldats",
+         qg:'QGD', c:[['B','BAM',3],['B','BA',1],['B','BS',1],['R','RHC',1],['R','RHM',1],['R','RDA',1]]},
+  DMar: {n:"Division de Marine",              s:'DMar', r:"Projection littorale, débarquement amphibie, opérations côtières interarmes. ~14 910 soldats",
+         qg:'QGD', c:[['B','BAA',2],['B','BBA',1],['B','BA',1],['B','BS',1],['R','RDA',1],['R','RHC',1],['R','RHM',1]]}
 };
 
 /* ══════════════════════════════════════════
@@ -1502,7 +1505,8 @@ const NOMENC = [
   {code:'JT',  type:'Aile Volante (Stealth)',       cat:'Aviation',      origine:"Janah Ta'ir"},
   {code:'TD',  type:'Entraînement / Biplace',       cat:'Aviation',      origine:'Tadrib'},
   {code:'TY',  type:'Drone / Scout',                cat:'Aviation',      origine:'Tayara'},
-  {code:'NT',  type:'Avion de Transport',           cat:'Aviation',      origine:"Naql Ta'ira"},
+  {code:'NT',  type:'Avion de Transport (type C-130)', cat:'Aviation',   origine:"Naql Ta'ira"},
+  {code:'NTL', type:'Avion de Transport Lourd (type C-5 Galaxy)', cat:'Aviation', origine:"Naql Ta'ira Thaqila"},
   {code:'NTC', type:'Avion de Transport Cargo',     cat:'Aviation',      origine:"Naql Ta'ira Shahn"},
   {code:'NMP', type:'Avion de Transport Parachutiste', cat:'Aviation',   origine:'Naql Mouzalli'},
   {code:'WD',  type:'Ravitailleur en vol',          cat:'Aviation',      origine:'Waqoud'},
@@ -1826,7 +1830,7 @@ function getEQ(k) {
    HELPERS
 ══════════════════════════════════════════ */
 function fmt(n) { return Number(n).toLocaleString('fr-FR'); }
-function rEff(k) { const e = getEQ(k); return (e.s||0) + (e.i||0); }
+function rEff(k) { const e = getEQ(k); return (e.s||0) + (e.fs||0) + (e.i||0); }
 
 function brigRegs(bk) {
   const b = BRIG[bk]; if (!b) return [];
