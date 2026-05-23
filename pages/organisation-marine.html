@@ -200,45 +200,35 @@ body.military-auth-pending .org-hero,body.military-auth-pending .org-tabs,body.m
 const LS_FLEET = 'hussein_navy_fleet_v1';
 
 const SHIPS = {
-  PA:  {n:'Porte-avions nucléaire', s:'PA',  r:'Projection aéronavale, commandement océanique, défense aérienne de zone', c:{pa:1, chnav:48, drnav:12}},
-  PHA: {n:'Porte-hélicoptères amphibie', s:'PHA', r:'Assaut amphibie, poste de commandement maritime, évacuation et soutien littoral', c:{pha:1, hel:18, lc:4}},
-  FDA: {n:'Frégate de défense aérienne', s:'FDA', r:'Bouclier antiaérien de flotte, escorte de porte-avions, missiles surface-air', c:{fda:1, vls:64, hel:1}},
-  FASM:{n:'Frégate anti-sous-marine', s:'FASM', r:'Lutte sous-marine, escorte océanique, sonar remorqué et hélicoptère embarqué', c:{fasm:1, vls:32, torp:24, hel:1}},
-  FMM: {n:'Frégate multirôle', s:'FMM', r:'Escorte polyvalente, frappe mer-terre, contrôle maritime et protection de convoi', c:{fmm:1, vls:32, ash:8, hel:1}},
-  COR: {n:'Corvette lance-missiles', s:'COR', r:'Défense littorale, interception rapide, frappe antinavire en zone côtière', c:{cor:1, ash:8, vls:16}},
-  PAT: {n:'Patrouilleur hauturier', s:'PAT', r:'Présence maritime, souveraineté, police des pêches, escorte légère', c:{pat:1, drone:2}},
-  SNA: {n:'Sous-marin nucléaire d’attaque', s:'SNA', r:'Dissuasion conventionnelle, chasse sous-marine, renseignement et frappe discrète', c:{sna:1, torp:32, cruise:12}},
-  SSK: {n:'Sous-marin anaérobie', s:'SSK', r:'Déni d’accès littoral, embuscade sous-marine, surveillance des détroits', c:{ssk:1, torp:20}},
-  BRV: {n:'Bâtiment ravitailleur de flotte', s:'BRV', r:'Ravitaillement en mer, munitions, carburant, soutien prolongé de groupe naval', c:{brv:1}},
-  MCM: {n:'Chasseur de mines autonome', s:'MCM', r:'Ouverture de chenal, guerre des mines, drones de surface et sous-marins', c:{mcm:1, drone:8}},
-  BCR: {n:'Bâtiment de commandement et renseignement', s:'BCR', r:'Commandement interarmées, relais longue portée, guerre électronique navale', c:{bcr:1, drone:6}}
+  KAGA:       {n:'Classe Kaga',       s:'KAGA', r:'Super porte-avions IHI, noyau aéronaval lourd et projection océanique majeure. Catalogue: 300 000 000 ₵', c:{kaga:1}},
+  NAGARA:     {n:'Classe Nagara',     s:'NAGARA', r:'Croiseur léger IHI, commandement de ligne, escorte lourde et appui de groupe naval. Catalogue: 10 000 000 ₵', c:{nagara:1}},
+  AMATSUKAZE: {n:'Classe Amatsukaze', s:'AMAT', r:'Destroyer IHI, écran antimissile, défense antiaérienne et frappe d’escorte. Catalogue: 1 800 000 ₵', c:{amatsukaze:1}},
+  ATAMI:      {n:'Classe Atami',      s:'ATAMI', r:'Frégate IHI, escorte polyvalente, patrouille hauturière et protection de convois. Catalogue: 1 000 000 ₵', c:{atami:1}},
+  NAGINATA:   {n:'Classe Naginata',   s:'NAGIN', r:'Patrouilleur ou navire léger à missile IHI, interception côtière et saturation littorale. Catalogue: 600 000 ₵', c:{naginata:1}},
+  DAIHATSU2:  {n:'Classe Daihatsu II',s:'DAIH2', r:'Barge de débarquement IHI, transport de plage et mise à terre de véhicules légers. Catalogue: 150 000 ₵', c:{daihatsu2:1}}
 };
 
 const GROUPS = {
-  GAN: {n:'Groupe Aéronaval', s:'GAN', r:'Force océanique centrée sur porte-avions, supériorité aérienne et frappe stratégique', c:[['PA',1],['FDA',2],['FASM',2],['FMM',1],['SNA',1],['BRV',1]]},
-  GAA: {n:'Groupe Amphibie d’Assaut', s:'GAA', r:'Projection littorale, débarquement vertical, appui d’une tête de pont', c:[['PHA',2],['FMM',2],['COR',2],['SNA',1],['BRV',1]]},
-  EOE: {n:'Escadre Océanique d’Escorte', s:'EOE', r:'Protection de convois stratégiques, couverture antiaérienne et lutte sous-marine', c:[['FDA',1],['FASM',3],['FMM',2],['BRV',1]]},
-  FLC: {n:'Flottille Littorale de Combat', s:'FLC', r:'Contrôle côtier, interdiction navale rapide, protection des approches portuaires', c:[['COR',4],['PAT',6],['SSK',1]]},
-  FSM: {n:'Flottille Sous-Marine', s:'FSM', r:'Déni d’accès, surveillance océanique, frappe discrète et chasse de surface', c:[['SNA',2],['SSK',3],['BCR',1]]},
-  GML: {n:'Groupe de Mines et Littoral', s:'GML', r:'Sécurisation des détroits, ouverture de ports, drones navals et guerre des mines', c:[['MCM',6],['PAT',2],['BCR',1]]},
-  GLN: {n:'Groupe Logistique Naval', s:'GLN', r:'Soutien hauturier, ravitaillement de théâtre, ateliers et relais de flotte', c:[['BRV',3],['FMM',1],['PAT',2]]},
-  GSR: {n:'Groupe Surveillance et Renseignement', s:'GSR', r:'ISR maritime, guerre électronique, pistage longue distance et relais drones', c:[['BCR',2],['FMM',1],['PAT',4],['MCM',2]]}
+  GAN: {n:'Groupe Aéronaval Kaga', s:'GAN', r:'Force de frappe principale centrée sur un super porte-avions, avec escorte lourde et écran antiaérien', c:[['KAGA',1],['NAGARA',2],['AMATSUKAZE',4],['ATAMI',4],['NAGINATA',6]]},
+  GCS: {n:'Groupe de Croiseurs', s:'GCS', r:'Noyau de surface lourd pour commandement tactique, supériorité navale et bombardement littoral', c:[['NAGARA',3],['AMATSUKAZE',3],['ATAMI',4],['NAGINATA',4]]},
+  EOE: {n:'Escadre Océanique d’Escorte', s:'EOE', r:'Protection de convois stratégiques et couverture des axes maritimes en haute mer', c:[['AMATSUKAZE',2],['ATAMI',6],['NAGINATA',4]]},
+  FLC: {n:'Flottille Littorale de Combat', s:'FLC', r:'Défense côtière, patrouille armée, interception rapide et frappe à missile en zone resserrée', c:[['NAGINATA',10],['ATAMI',2]]},
+  GDA: {n:'Groupe de Débarquement Amphibie', s:'GDA', r:'Mise à terre de forces, contrôle d’une plage et couverture rapprochée d’une tête de pont', c:[['DAIHATSU2',18],['NAGINATA',6],['ATAMI',3],['AMATSUKAZE',1]]},
+  ECR: {n:'Ecran de Destroyers', s:'ECR', r:'Rideau mobile de destroyers pour défense aérienne, piquet radar et interception de missiles', c:[['AMATSUKAZE',6],['ATAMI',2],['NAGINATA',4]]},
+  FRI: {n:'Force de Raid Insulaire', s:'FRI', r:'Action rapide contre îles, ports secondaires et archipels avec appui léger de débarquement', c:[['NAGINATA',8],['DAIHATSU2',10],['ATAMI',2]]},
+  GPL: {n:'Groupe de Présence Lointaine', s:'GPL', r:'Patrouille prolongée, souveraineté maritime, escorte diplomatique et contrôle de zone', c:[['NAGARA',1],['ATAMI',3],['NAGINATA',6]]}
 };
 
 const EL = {
-  pa:'Porte-avions', pha:'Porte-hélicoptères', fda:'Frégates AA', fasm:'Frégates ASM', fmm:'Frégates multirôles',
-  cor:'Corvettes', pat:'Patrouilleurs', sna:'SNA', ssk:'Sous-marins AIP', brv:'Ravitailleurs', mcm:'Chasseurs de mines',
-  bcr:'Commandement', chnav:'Chasseurs embarqués', hel:'Hélicoptères', drnav:'Drones embarqués', drone:'Drones navals',
-  lc:'Engins de débarquement', vls:'Cellules VLS', ash:'Missiles antinavires', torp:'Torpilles', cruise:'Missiles de croisière'
+  kaga:'Classe Kaga', nagara:'Classe Nagara', amatsukaze:'Classe Amatsukaze',
+  atami:'Classe Atami', naginata:'Classe Naginata', daihatsu2:'Classe Daihatsu II'
 };
 const EC = {
-  pa:'cap', pha:'amp', fda:'esc', fasm:'esc', fmm:'esc', cor:'esc', pat:'esc',
-  sna:'sub', ssk:'sub', brv:'sup', mcm:'sup', bcr:'sup', chnav:'air', hel:'air',
-  drnav:'air', drone:'air', lc:'amp', vls:'esc', ash:'esc', torp:'sub', cruise:'sub'
+  kaga:'cap', nagara:'cap', amatsukaze:'esc', atami:'esc', naginata:'esc', daihatsu2:'amp'
 };
-const CAT_ORDER = ['cap','esc','sub','amp','sup','air'];
+const CAT_ORDER = ['cap','esc','amp'];
 const CAT_LABELS = {
-  cap:'Navires capitaux', esc:'Escorte et armement', sub:'Sous-marin', amp:'Amphibie', sup:'Soutien et guerre des mines', air:'Aéronavale et drones'
+  cap:'Navires capitaux', esc:'Escorte et combat de surface', amp:'Débarquement amphibie'
 };
 
 let fleet = [];
@@ -246,7 +236,13 @@ let _uid = 0;
 const uid = () => 'n' + (++_uid);
 const fmt = n => Number(n).toLocaleString('fr-FR');
 
-function loadFleet(){try{fleet=JSON.parse(localStorage.getItem(LS_FLEET))||[]}catch(e){fleet=[]}}
+function loadFleet(){
+  try {
+    fleet = (JSON.parse(localStorage.getItem(LS_FLEET)) || []).filter(row => unitData(row.type));
+  } catch(e) {
+    fleet = [];
+  }
+}
 function saveFleet(){localStorage.setItem(LS_FLEET,JSON.stringify(fleet))}
 function unitData(k){return GROUPS[k] || SHIPS[k] || null}
 function isGroup(k){return Boolean(GROUPS[k])}
