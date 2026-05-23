@@ -195,6 +195,37 @@
     white-space: nowrap;
 }
 .btn-add:hover { background: rgba(201,168,76,0.22); border-color: var(--gold); }
+.army-io-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    margin: -8px 0 24px;
+}
+.btn-io {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: var(--font-display);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    padding: 9px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.btn-io:hover {
+    border-color: rgba(201,168,76,0.45);
+    color: var(--gold);
+    background: rgba(201,168,76,0.08);
+}
+.io-hint {
+    color: var(--text-muted);
+    font-size: 11px;
+    margin-right: auto;
+}
 
 /* ═══════════════════════════════════════════
    ROSTER TABLE
@@ -1057,6 +1088,12 @@ body.military-auth-denied .save-toast {
             </div>
             <button class="btn-add" id="btn-add-unit">+ AJOUTER</button>
         </div>
+        <div class="army-io-bar">
+            <span class="io-hint">Sauvegarde locale de la composition actuelle au format JSON.</span>
+            <button class="btn-io" id="btn-export-army" type="button">EXPORTER JSON</button>
+            <button class="btn-io" id="btn-import-army" type="button">IMPORTER JSON</button>
+            <input type="file" id="army-import-file" accept="application/json,.json" hidden>
+        </div>
 
         <!-- Stats -->
         <div class="sec-title">BILAN DES EFFECTIFS</div>
@@ -1812,6 +1849,71 @@ function loadArmy() {
 function saveArmy() {
   localStorage.setItem(LS_ARMY, JSON.stringify(army));
 }
+function normalizeArmyRows(rows) {
+  if (!Array.isArray(rows)) return [];
+  return rows.map(row => {
+    const type = String(row.type || '').trim();
+    if (!type || !unitData(type)) return null;
+    return {
+      id: uid(),
+      type,
+      service: Math.max(0, parseInt(row.service, 10) || 0),
+      ordered: Math.max(0, parseInt(row.ordered, 10) || 0)
+    };
+  }).filter(Boolean);
+}
+function buildArmyExport() {
+  return {
+    schema: 'hussein_army_roster',
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    units: army.map(row => ({
+      type: row.type,
+      service: Math.max(0, parseInt(row.service, 10) || 0),
+      ordered: Math.max(0, parseInt(row.ordered, 10) || 0)
+    }))
+  };
+}
+function exportArmyJson() {
+  const data = buildArmyExport();
+  const stamp = new Date().toISOString().slice(0, 10);
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `ordre-bataille-hussein-${stamp}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  showToast('ORDRE EXPORTE');
+}
+function parseArmyImport(payload) {
+  const data = JSON.parse(payload);
+  const rows = Array.isArray(data) ? data : (data.units || data.army || data.roster || []);
+  return normalizeArmyRows(rows);
+}
+function importArmyJsonFile(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const imported = parseArmyImport(String(reader.result || ''));
+      if (!imported.length) {
+        showToast('IMPORT VIDE OU INVALIDE');
+        return;
+      }
+      if (army.length && !confirm('Remplacer la composition actuelle par le fichier importe ?')) return;
+      army = imported;
+      saveArmy();
+      renderArmy();
+      showToast('ORDRE IMPORTE');
+    } catch(e) {
+      showToast('JSON INVALIDE');
+    }
+  };
+  reader.readAsText(file);
+}
 function getOverrides() {
   try { return JSON.parse(localStorage.getItem(LS_EQ)) || {}; } catch(e) { return {}; }
 }
@@ -2481,6 +2583,16 @@ function init() {
     renderArmy();
     document.getElementById('add-service').value = '1';
     document.getElementById('add-ordered').value = '0';
+  });
+
+  // JSON import/export
+  document.getElementById('btn-export-army').addEventListener('click', exportArmyJson);
+  document.getElementById('btn-import-army').addEventListener('click', () => {
+    document.getElementById('army-import-file').click();
+  });
+  document.getElementById('army-import-file').addEventListener('change', e => {
+    importArmyJsonFile(e.target.files && e.target.files[0]);
+    e.target.value = '';
   });
 
   // Totals toggles
