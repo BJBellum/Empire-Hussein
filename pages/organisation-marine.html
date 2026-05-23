@@ -30,6 +30,7 @@
 .form-select,.form-input{background:var(--bg-section);border:1px solid var(--border);color:var(--text-primary);font-family:var(--font-body);font-size:13px;padding:8px 12px;border-radius:4px;outline:none;transition:border-color .2s}
 .form-select{min-width:260px;cursor:pointer}.form-select:focus,.form-input:focus{border-color:var(--gold)}.form-input{width:88px;text-align:center}.form-input::placeholder{color:var(--text-muted)}
 .btn-add{background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.35);color:var(--gold);font-family:var(--font-display);font-size:9px;letter-spacing:.22em;padding:9px 22px;border-radius:4px;cursor:pointer;transition:all .2s;white-space:nowrap}.btn-add:hover{background:rgba(201,168,76,.22);border-color:var(--gold)}
+.fleet-io-bar{display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap;margin:-8px 0 24px}.io-hint{color:var(--text-muted);font-size:11px;margin-right:auto}.btn-io{background:transparent;border:1px solid var(--border);color:var(--text-muted);font-family:var(--font-display);font-size:9px;letter-spacing:.18em;padding:9px 16px;border-radius:4px;cursor:pointer;transition:all .2s;white-space:nowrap}.btn-io:hover{border-color:rgba(201,168,76,.45);color:var(--gold);background:rgba(201,168,76,.08)}
 .roster-wrap{border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:24px}.roster-table{width:100%;border-collapse:collapse;font-size:13px}.roster-table th{text-align:left;padding:10px 14px;font-family:var(--font-display);font-size:8px;letter-spacing:.22em;color:var(--text-muted);border-bottom:1px solid var(--border);background:var(--bg-card);white-space:nowrap}.roster-table td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text-primary);background:var(--bg-section);vertical-align:middle}.roster-table tr:last-child td{border-bottom:none}.roster-table tr:hover td{background:rgba(201,168,76,.03)}
 .roster-input{width:72px;background:var(--bg-card);border:1px solid var(--border);color:var(--text-primary);font-family:var(--font-body);font-size:13px;padding:6px 8px;border-radius:4px;text-align:center;outline:none;transition:border-color .2s}.roster-input:focus{border-color:var(--gold)}
 .btn-remove{background:none;border:1px solid rgba(220,80,80,.2);color:rgba(220,100,100,.55);padding:5px 11px;border-radius:4px;font-size:12px;cursor:pointer;transition:all .2s;font-family:var(--font-body)}.btn-remove:hover{border-color:rgba(220,80,80,.5);color:rgba(220,100,100,.9)}
@@ -115,6 +116,12 @@ body.military-auth-pending .org-hero,body.military-auth-pending .org-tabs,body.m
                 <input type="number" class="form-input" id="add-ordered" value="0" min="0" max="999" placeholder="0">
             </div>
             <button class="btn-add" id="btn-add-unit">+ AJOUTER</button>
+        </div>
+        <div class="fleet-io-bar">
+            <span class="io-hint">Sauvegarde locale de la composition actuelle au format JSON.</span>
+            <button class="btn-io" id="btn-export-fleet" type="button">EXPORTER JSON</button>
+            <button class="btn-io" id="btn-import-fleet" type="button">IMPORTER JSON</button>
+            <input type="file" id="fleet-import-file" accept="application/json,.json" hidden>
         </div>
 
         <div class="sec-title">BILAN DE FLOTTE</div>
@@ -244,6 +251,68 @@ function loadFleet(){
   }
 }
 function saveFleet(){localStorage.setItem(LS_FLEET,JSON.stringify(fleet))}
+function normalizeFleetRows(rows){
+  if (!Array.isArray(rows)) return [];
+  return rows.map(row => {
+    const type = String(row.type || '').trim();
+    if (!type || !unitData(type)) return null;
+    return {
+      id: 'f' + Date.now() + Math.random().toString(16).slice(2),
+      type,
+      service: Math.max(0, parseInt(row.service, 10) || 0),
+      ordered: Math.max(0, parseInt(row.ordered, 10) || 0)
+    };
+  }).filter(Boolean);
+}
+function buildFleetExport(){
+  return {
+    schema: 'hussein_navy_roster',
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    units: fleet.map(row => ({
+      type: row.type,
+      service: Math.max(0, parseInt(row.service, 10) || 0),
+      ordered: Math.max(0, parseInt(row.ordered, 10) || 0)
+    }))
+  };
+}
+function exportFleetJson(){
+  const stamp = new Date().toISOString().slice(0, 10);
+  const blob = new Blob([JSON.stringify(buildFleetExport(), null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `ordre-naval-hussein-${stamp}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+function parseFleetImport(payload){
+  const data = JSON.parse(payload);
+  const rows = Array.isArray(data) ? data : (data.units || data.fleet || data.roster || []);
+  return normalizeFleetRows(rows);
+}
+function importFleetJsonFile(file){
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const imported = parseFleetImport(String(reader.result || ''));
+      if (!imported.length) {
+        alert('Import vide ou invalide.');
+        return;
+      }
+      if (fleet.length && !confirm('Remplacer la composition actuelle par le fichier importe ?')) return;
+      fleet = imported;
+      saveFleet();
+      renderRoster();
+    } catch(e) {
+      alert('JSON invalide.');
+    }
+  };
+  reader.readAsText(file);
+}
 function unitData(k){return GROUPS[k] || SHIPS[k] || null}
 function isGroup(k){return Boolean(GROUPS[k])}
 function unitCount(k){
@@ -454,6 +523,15 @@ function init(){
     }
     saveFleet();
     renderRoster();
+  });
+
+  document.getElementById('btn-export-fleet').addEventListener('click', exportFleetJson);
+  document.getElementById('btn-import-fleet').addEventListener('click', () => {
+    document.getElementById('fleet-import-file').click();
+  });
+  document.getElementById('fleet-import-file').addEventListener('change', e => {
+    importFleetJsonFile(e.target.files && e.target.files[0]);
+    e.target.value = '';
   });
 
   document.getElementById('totals-toggle').addEventListener('click', () => tg('totals-body','totals-chevron'));
