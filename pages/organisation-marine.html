@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculateur de flotte et référentiel naval des Forces Armées Impériales">
+    <title>Organisation Navale — Empire Hussein</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" type="image/png" href="../assets/Hussein Empire Coat of Arms.png">
+    <script>if(location.pathname.endsWith('.html'))history.replaceState(null,'',location.pathname.replace('.html',''));</script>
+    <style>
+.org-wrap{max-width:1200px;margin:0 auto;padding:0 clamp(20px,5vw,48px) 100px}
+.org-hero{padding:calc(var(--header-h) + 52px) 0 44px;text-align:center;border-bottom:1px solid var(--border)}
+.org-badge{display:inline-block;font-family:var(--font-display);font-size:9px;letter-spacing:.35em;color:var(--gold);border:1px solid rgba(201,168,76,.3);padding:6px 18px;margin-bottom:22px}
+.org-title{font-family:var(--font-display);font-size:clamp(26px,5vw,50px);letter-spacing:.12em;color:var(--text-primary);margin-bottom:12px}
+.org-sub{font-size:15px;color:var(--text-secondary);max-width:620px;margin:0 auto;line-height:1.6}
+.org-tabs{display:flex;border-bottom:1px solid var(--border);position:sticky;top:var(--header-h);background:var(--bg-deep);z-index:90;margin-bottom:32px}
+.org-tabs .org-wrap{overflow-x:auto;scrollbar-width:thin;scrollbar-color:rgba(201,168,76,.35) transparent}
+.org-tab{font-family:var(--font-display);font-size:10px;letter-spacing:.22em;color:var(--text-muted);padding:16px 22px;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .2s,border-color .2s;white-space:nowrap}
+.org-tab:hover{color:var(--text-secondary)}.org-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.org-panel{display:none}.org-panel.active{display:block}
+.sec-title{font-family:var(--font-display);font-size:10px;letter-spacing:.28em;color:var(--gold);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;margin-bottom:28px}
+.stat-card{padding:18px 20px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px}
+.stat-label{font-family:var(--font-display);font-size:8px;letter-spacing:.22em;color:var(--text-muted);margin-bottom:7px}
+.stat-value{font-size:28px;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1}
+.stat-sub{font-size:11px;color:var(--text-secondary);margin-top:5px}.stat-card.cmd .stat-value{color:var(--text-secondary)}.stat-card.total .stat-value{color:var(--gold-light)}
+.calc-add-form{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;padding:18px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;margin-bottom:20px}
+.form-field{display:flex;flex-direction:column;gap:6px}.form-label{font-family:var(--font-display);font-size:8px;letter-spacing:.2em;color:var(--text-muted)}
+.form-select,.form-input{background:var(--bg-section);border:1px solid var(--border);color:var(--text-primary);font-family:var(--font-body);font-size:13px;padding:8px 12px;border-radius:4px;outline:none;transition:border-color .2s}
+.form-select{min-width:260px;cursor:pointer}.form-select:focus,.form-input:focus{border-color:var(--gold)}.form-input{width:88px;text-align:center}.form-input::placeholder{color:var(--text-muted)}
+.btn-add{background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.35);color:var(--gold);font-family:var(--font-display);font-size:9px;letter-spacing:.22em;padding:9px 22px;border-radius:4px;cursor:pointer;transition:all .2s;white-space:nowrap}.btn-add:hover{background:rgba(201,168,76,.22);border-color:var(--gold)}
+.roster-wrap{border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:24px}.roster-table{width:100%;border-collapse:collapse;font-size:13px}.roster-table th{text-align:left;padding:10px 14px;font-family:var(--font-display);font-size:8px;letter-spacing:.22em;color:var(--text-muted);border-bottom:1px solid var(--border);background:var(--bg-card);white-space:nowrap}.roster-table td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text-primary);background:var(--bg-section);vertical-align:middle}.roster-table tr:last-child td{border-bottom:none}.roster-table tr:hover td{background:rgba(201,168,76,.03)}
+.roster-input{width:72px;background:var(--bg-card);border:1px solid var(--border);color:var(--text-primary);font-family:var(--font-body);font-size:13px;padding:6px 8px;border-radius:4px;text-align:center;outline:none;transition:border-color .2s}.roster-input:focus{border-color:var(--gold)}
+.btn-remove{background:none;border:1px solid rgba(220,80,80,.2);color:rgba(220,100,100,.55);padding:5px 11px;border-radius:4px;font-size:12px;cursor:pointer;transition:all .2s;font-family:var(--font-body)}.btn-remove:hover{border-color:rgba(220,80,80,.5);color:rgba(220,100,100,.9)}
+.ship-service{color:var(--gold);font-weight:600}.ship-cmd{color:var(--text-secondary)}.roster-empty{text-align:center;padding:44px 20px;color:var(--text-muted);background:var(--bg-section);font-size:13px}
+.totals-block{border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:24px}.totals-toggle{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;background:var(--bg-card);cursor:pointer;font-size:13px;font-weight:600;color:var(--text-primary);user-select:none;transition:background .15s;border:none;width:100%;text-align:left;font-family:var(--font-body)}.totals-toggle:hover{background:rgba(201,168,76,.04)}.totals-chevron{color:var(--text-muted);font-size:11px;transition:transform .2s}.totals-chevron.open{transform:rotate(90deg)}.totals-body{display:none;padding:16px;background:var(--bg-section);border-top:1px solid var(--border)}.totals-body.open{display:block}.totals-note{font-size:11px;color:var(--text-muted);font-style:italic;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.eq-section{margin-bottom:14px}.eq-section:last-child{margin-bottom:0}.eq-cat-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px;padding-bottom:4px;border-bottom:1px solid}.eq-grid{display:flex;flex-wrap:wrap;gap:5px}.eq-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5px 10px;border-radius:5px;border:1px solid;min-width:70px;text-align:center}.eq-val{font-size:15px;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}.eq-lbl{font-size:10px;margin-top:2px;line-height:1.3;opacity:.85}
+.cat-cap .eq-cat-label{color:#4C9EC9;border-color:rgba(76,158,201,.3)}.cat-cap .eq-item{background:rgba(76,158,201,.07);border-color:rgba(76,158,201,.22);color:#4C9EC9}.cat-esc .eq-cat-label{color:#C9A84C;border-color:rgba(201,168,76,.3)}.cat-esc .eq-item{background:rgba(201,168,76,.07);border-color:rgba(201,168,76,.22);color:#C9A84C}.cat-sub .eq-cat-label{color:#8080C9;border-color:rgba(128,128,201,.3)}.cat-sub .eq-item{background:rgba(128,128,201,.07);border-color:rgba(128,128,201,.22);color:#8080C9}.cat-amp .eq-cat-label{color:#C9784C;border-color:rgba(201,120,76,.3)}.cat-amp .eq-item{background:rgba(201,120,76,.07);border-color:rgba(201,120,76,.22);color:#C9784C}.cat-sup .eq-cat-label{color:#7CA84C;border-color:rgba(124,168,76,.3)}.cat-sup .eq-item{background:rgba(124,168,76,.07);border-color:rgba(124,168,76,.22);color:#7CA84C}.cat-air .eq-cat-label{color:#4CAF82;border-color:rgba(76,175,130,.3)}.cat-air .eq-item{background:rgba(76,175,130,.07);border-color:rgba(76,175,130,.22);color:#4CAF82}
+.mil-card{border:1px solid var(--border);border-radius:8px;margin-bottom:8px;overflow:hidden;background:var(--bg-card)}.mil-card-hdr{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;user-select:none;transition:background .15s}.mil-card-hdr:hover{background:rgba(201,168,76,.04)}.mil-chip{font-family:var(--font-display);font-size:9px;letter-spacing:.08em;padding:3px 10px;border-radius:3px;flex-shrink:0;min-width:52px;text-align:center}.chip-fleet{background:rgba(201,168,76,.18);color:var(--gold);border:1px solid rgba(201,168,76,.38)}.chip-group{background:rgba(192,178,160,.1);color:var(--text-secondary);border:1px solid rgba(192,178,160,.22)}.chip-ship{background:rgba(76,158,201,.08);color:#7fb8d6;border:1px solid rgba(76,158,201,.2)}
+.mil-info{flex:1;min-width:0}.mil-name{font-size:14px;font-weight:600;color:var(--text-primary);line-height:1.3}.mil-role{font-size:11px;color:var(--text-secondary);margin-top:3px;line-height:1.4}.mil-eff{font-size:13px;font-weight:600;color:var(--gold);flex-shrink:0;font-variant-numeric:tabular-nums}.mil-chev{color:var(--text-muted);font-size:10px;flex-shrink:0;margin-left:4px;transition:transform .2s}.mil-chev.open{transform:rotate(90deg)}.mil-body{display:none;padding:8px 14px 14px;background:var(--bg-section);border-top:1px solid var(--border)}.mil-body.open{display:block}
+.sub-card{border:1px solid rgba(255,255,255,.06);border-radius:6px;margin:4px 0;overflow:hidden}.sub-card-hdr{display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer;user-select:none;background:var(--bg-card);transition:background .15s}.sub-card-hdr:hover{background:rgba(255,255,255,.04)}.sub-cnt{background:rgba(201,168,76,.18);color:var(--gold);font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;min-width:28px;text-align:center;flex-shrink:0;font-family:var(--font-display);letter-spacing:.05em}.sub-body{display:none;padding:0 0 6px 10px;background:rgba(0,0,0,.2)}.sub-body.open{display:block}.eq-panel{padding:12px 14px;background:var(--bg-card);border-top:1px solid rgba(255,255,255,.05)}
+.fleet-note{padding:8px 12px;margin:6px 0 10px;background:var(--bg-card);border-left:3px solid var(--gold-dark);border-radius:0 4px 4px 0;font-size:12px;color:var(--text-secondary)}.fleet-note b{color:var(--text-primary)}
+body.military-auth-pending .org-hero,body.military-auth-pending .org-tabs,body.military-auth-pending .org-wrap,body.military-auth-denied .org-hero,body.military-auth-denied .org-tabs,body.military-auth-denied .org-wrap{display:none}
+.military-access-gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:calc(var(--header-h) + 32px) clamp(20px,5vw,48px) 48px;background:radial-gradient(circle at 50% 0%,rgba(201,168,76,.08),transparent 42%),var(--bg-deep)}.military-access-box{width:min(560px,100%);border:1px solid var(--border);border-radius:8px;background:var(--bg-card);padding:clamp(24px,5vw,40px);text-align:center}.military-access-kicker{font-family:var(--font-display);font-size:9px;letter-spacing:.28em;color:var(--gold);margin-bottom:18px}.military-access-title{font-family:var(--font-display);font-size:clamp(22px,4vw,36px);letter-spacing:.14em;color:var(--text-primary);margin-bottom:14px}.military-access-copy{color:var(--text-secondary);font-size:15px;line-height:1.65;max-width:46ch;margin:0 auto 24px}.military-access-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}.military-access-btn{font-family:var(--font-display);font-size:9px;letter-spacing:.18em;color:var(--gold);border:1px solid rgba(201,168,76,.45);border-radius:4px;background:rgba(201,168,76,.12);padding:11px 20px;transition:background .2s,border-color .2s,color .2s}.military-access-btn:hover{border-color:var(--gold);background:rgba(201,168,76,.2)}.military-access-btn.secondary{color:var(--text-muted);border-color:var(--border);background:transparent}.military-access-btn.secondary:hover{color:var(--gold);border-color:var(--gold)}
+@media (max-width:700px){.calc-add-form{flex-direction:column;align-items:stretch}.form-select{min-width:0;width:100%}.stats-grid{grid-template-columns:repeat(2,1fr)}.roster-wrap{overflow-x:auto}.mil-card-hdr,.sub-card-hdr{align-items:flex-start}.mil-eff{display:none}}
+    </style>
+</head>
+<body data-requires-military-access="true" class="military-auth-pending">
+
+<header id="header" class="header--solid">
+    <div class="header-inner">
+        <nav class="nav-links">
+            <a href="../" class="nav-link"><span class="nav-link-text">ACCUEIL</span><span class="nav-link-line"></span></a>
+            <a href="economie.html" class="nav-link"><span class="nav-link-text">ECONOMIE</span><span class="nav-link-line"></span></a>
+            <a href="catalogues.html" class="nav-link"><span class="nav-link-text">CATALOGUES</span><span class="nav-link-line"></span></a>
+            <a href="energie.html" class="nav-link"><span class="nav-link-text">ENERGIE</span><span class="nav-link-line"></span></a>
+            <a href="forces-armees.html" class="nav-link nav-link--locked" id="nav-forces">
+                <span class="nav-link-text">FORCES ARMEES</span>
+                <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                <span class="nav-link-line"></span>
+            </a>
+            <button class="btn-discord" id="btn-discord" aria-label="Connexion Discord">
+                <svg class="discord-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286z"/></svg>
+                <span class="btn-discord-text">CONNEXION</span>
+            </button>
+        </nav>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+</header>
+
+<div class="mobile-nav" id="mobile-nav">
+    <a href="../" class="mobile-nav-link">ACCUEIL</a>
+    <a href="economie.html" class="mobile-nav-link">ECONOMIE</a>
+    <a href="catalogues.html" class="mobile-nav-link">CATALOGUES</a>
+    <a href="energie.html" class="mobile-nav-link">ENERGIE</a>
+    <a href="forces-armees.html" class="mobile-nav-link mobile-nav-link--locked" id="nav-forces-mobile">FORCES ARMEES
+        <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+    </a>
+    <button class="btn-discord btn-discord--mobile" id="btn-discord-mobile" aria-label="Connexion Discord">
+        <svg class="discord-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286z"/></svg>
+        <span>CONNEXION</span>
+    </button>
+</div>
+
+<div class="org-hero">
+    <div class="org-wrap">
+        <div class="org-badge">MARINE IMPERIALE</div>
+        <h1 class="org-title">ORDRE NAVAL</h1>
+        <p class="org-sub">Calculateur de flotte, groupes navals modernes et composition détaillée des bâtiments impériaux.</p>
+    </div>
+</div>
+
+<div class="org-tabs">
+    <div class="org-wrap" style="display:flex;padding-top:0;padding-bottom:0;width:100%;max-width:1200px;margin:0 auto;">
+        <button class="org-tab active" data-tab="flotte">MA FLOTTE</button>
+        <button class="org-tab" data-tab="referentiel">REFERENTIEL</button>
+    </div>
+</div>
+
+<div class="org-wrap">
+    <div id="tab-flotte" class="org-panel active">
+        <div class="sec-title">AJOUTER UNE UNITE NAVALE</div>
+        <div class="calc-add-form">
+            <div class="form-field">
+                <label class="form-label">TYPE D'UNITE</label>
+                <select class="form-select" id="add-type"></select>
+            </div>
+            <div class="form-field">
+                <label class="form-label">EN SERVICE</label>
+                <input type="number" class="form-input" id="add-service" value="1" min="0" max="999" placeholder="0">
+            </div>
+            <div class="form-field">
+                <label class="form-label">COMMANDEES</label>
+                <input type="number" class="form-input" id="add-ordered" value="0" min="0" max="999" placeholder="0">
+            </div>
+            <button class="btn-add" id="btn-add-unit">+ AJOUTER</button>
+        </div>
+
+        <div class="sec-title">BILAN DE FLOTTE</div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">EN SERVICE</div>
+                <div class="stat-value" id="stat-service">0</div>
+                <div class="stat-sub">bâtiments opérationnels</div>
+            </div>
+            <div class="stat-card cmd">
+                <div class="stat-label">COMMANDEES</div>
+                <div class="stat-value" id="stat-ordered">0</div>
+                <div class="stat-sub">bâtiments en commande</div>
+            </div>
+            <div class="stat-card total">
+                <div class="stat-label">TOTAL PROJETE</div>
+                <div class="stat-value" id="stat-total">0</div>
+                <div class="stat-sub">flotte finale</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">UNITES</div>
+                <div class="stat-value" id="stat-units">0</div>
+                <div class="stat-sub">formations enregistrées</div>
+            </div>
+        </div>
+
+        <div class="sec-title">COMPOSITION DE LA FLOTTE</div>
+        <div class="roster-wrap">
+            <table class="roster-table">
+                <thead>
+                    <tr>
+                        <th>TYPE</th>
+                        <th>DESIGNATION</th>
+                        <th>EN SERVICE</th>
+                        <th>COMMANDEES</th>
+                        <th>NAVIRES SERVICE</th>
+                        <th>NAVIRES CMD</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="roster-body">
+                    <tr><td colspan="7" class="roster-empty">Aucune unité navale enregistrée. Utilisez le formulaire ci-dessus pour composer votre flotte.</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="totals-block" id="totals-block" style="display:none">
+            <button class="totals-toggle" id="totals-toggle">
+                <span>Composition détaillée — flotte en service</span>
+                <span class="totals-chevron" id="totals-chevron">▶</span>
+            </button>
+            <div class="totals-body" id="totals-body">
+                <div class="totals-note" id="totals-note"></div>
+                <div id="totals-eq"></div>
+            </div>
+        </div>
+
+        <div class="totals-block" id="totals-block-cmd" style="display:none">
+            <button class="totals-toggle" id="totals-toggle-cmd">
+                <span>Composition détaillée — flotte commandée</span>
+                <span class="totals-chevron" id="totals-chevron-cmd">▶</span>
+            </button>
+            <div class="totals-body" id="totals-body-cmd">
+                <div class="totals-note" id="totals-note-cmd"></div>
+                <div id="totals-eq-cmd"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-referentiel" class="org-panel">
+        <div class="sec-title">GROUPES DE FLOTTE MODERNES</div>
+        <div id="ref-groups"></div>
+        <div class="sec-title" style="margin-top:24px">BATIMENTS ET MOYENS</div>
+        <div id="ref-ships"></div>
+    </div>
+</div>
+
+<script src="../js/auth.js"></script>
+<script src="../js/main.js"></script>
+<script>
+'use strict';
+
+const LS_FLEET = 'hussein_navy_fleet_v1';
+
+const SHIPS = {
+  PA:  {n:'Porte-avions nucléaire', s:'PA',  r:'Projection aéronavale, commandement océanique, défense aérienne de zone', c:{pa:1, chnav:48, drnav:12}},
+  PHA: {n:'Porte-hélicoptères amphibie', s:'PHA', r:'Assaut amphibie, poste de commandement maritime, évacuation et soutien littoral', c:{pha:1, hel:18, lc:4}},
+  FDA: {n:'Frégate de défense aérienne', s:'FDA', r:'Bouclier antiaérien de flotte, escorte de porte-avions, missiles surface-air', c:{fda:1, vls:64, hel:1}},
+  FASM:{n:'Frégate anti-sous-marine', s:'FASM', r:'Lutte sous-marine, escorte océanique, sonar remorqué et hélicoptère embarqué', c:{fasm:1, vls:32, torp:24, hel:1}},
+  FMM: {n:'Frégate multirôle', s:'FMM', r:'Escorte polyvalente, frappe mer-terre, contrôle maritime et protection de convoi', c:{fmm:1, vls:32, ash:8, hel:1}},
+  COR: {n:'Corvette lance-missiles', s:'COR', r:'Défense littorale, interception rapide, frappe antinavire en zone côtière', c:{cor:1, ash:8, vls:16}},
+  PAT: {n:'Patrouilleur hauturier', s:'PAT', r:'Présence maritime, souveraineté, police des pêches, escorte légère', c:{pat:1, drone:2}},
+  SNA: {n:'Sous-marin nucléaire d’attaque', s:'SNA', r:'Dissuasion conventionnelle, chasse sous-marine, renseignement et frappe discrète', c:{sna:1, torp:32, cruise:12}},
+  SSK: {n:'Sous-marin anaérobie', s:'SSK', r:'Déni d’accès littoral, embuscade sous-marine, surveillance des détroits', c:{ssk:1, torp:20}},
+  BRV: {n:'Bâtiment ravitailleur de flotte', s:'BRV', r:'Ravitaillement en mer, munitions, carburant, soutien prolongé de groupe naval', c:{brv:1}},
+  MCM: {n:'Chasseur de mines autonome', s:'MCM', r:'Ouverture de chenal, guerre des mines, drones de surface et sous-marins', c:{mcm:1, drone:8}},
+  BCR: {n:'Bâtiment de commandement et renseignement', s:'BCR', r:'Commandement interarmées, relais longue portée, guerre électronique navale', c:{bcr:1, drone:6}}
+};
+
+const GROUPS = {
+  GAN: {n:'Groupe Aéronaval', s:'GAN', r:'Force océanique centrée sur porte-avions, supériorité aérienne et frappe stratégique', c:[['PA',1],['FDA',2],['FASM',2],['FMM',1],['SNA',1],['BRV',1]]},
+  GAA: {n:'Groupe Amphibie d’Assaut', s:'GAA', r:'Projection littorale, débarquement vertical, appui d’une tête de pont', c:[['PHA',2],['FMM',2],['COR',2],['SNA',1],['BRV',1]]},
+  EOE: {n:'Escadre Océanique d’Escorte', s:'EOE', r:'Protection de convois stratégiques, couverture antiaérienne et lutte sous-marine', c:[['FDA',1],['FASM',3],['FMM',2],['BRV',1]]},
+  FLC: {n:'Flottille Littorale de Combat', s:'FLC', r:'Contrôle côtier, interdiction navale rapide, protection des approches portuaires', c:[['COR',4],['PAT',6],['SSK',1]]},
+  FSM: {n:'Flottille Sous-Marine', s:'FSM', r:'Déni d’accès, surveillance océanique, frappe discrète et chasse de surface', c:[['SNA',2],['SSK',3],['BCR',1]]},
+  GML: {n:'Groupe de Mines et Littoral', s:'GML', r:'Sécurisation des détroits, ouverture de ports, drones navals et guerre des mines', c:[['MCM',6],['PAT',2],['BCR',1]]},
+  GLN: {n:'Groupe Logistique Naval', s:'GLN', r:'Soutien hauturier, ravitaillement de théâtre, ateliers et relais de flotte', c:[['BRV',3],['FMM',1],['PAT',2]]},
+  GSR: {n:'Groupe Surveillance et Renseignement', s:'GSR', r:'ISR maritime, guerre électronique, pistage longue distance et relais drones', c:[['BCR',2],['FMM',1],['PAT',4],['MCM',2]]}
+};
+
+const EL = {
+  pa:'Porte-avions', pha:'Porte-hélicoptères', fda:'Frégates AA', fasm:'Frégates ASM', fmm:'Frégates multirôles',
+  cor:'Corvettes', pat:'Patrouilleurs', sna:'SNA', ssk:'Sous-marins AIP', brv:'Ravitailleurs', mcm:'Chasseurs de mines',
+  bcr:'Commandement', chnav:'Chasseurs embarqués', hel:'Hélicoptères', drnav:'Drones embarqués', drone:'Drones navals',
+  lc:'Engins de débarquement', vls:'Cellules VLS', ash:'Missiles antinavires', torp:'Torpilles', cruise:'Missiles de croisière'
+};
+const EC = {
+  pa:'cap', pha:'amp', fda:'esc', fasm:'esc', fmm:'esc', cor:'esc', pat:'esc',
+  sna:'sub', ssk:'sub', brv:'sup', mcm:'sup', bcr:'sup', chnav:'air', hel:'air',
+  drnav:'air', drone:'air', lc:'amp', vls:'esc', ash:'esc', torp:'sub', cruise:'sub'
+};
+const CAT_ORDER = ['cap','esc','sub','amp','sup','air'];
+const CAT_LABELS = {
+  cap:'Navires capitaux', esc:'Escorte et armement', sub:'Sous-marin', amp:'Amphibie', sup:'Soutien et guerre des mines', air:'Aéronavale et drones'
+};
+
+let fleet = [];
+let _uid = 0;
+const uid = () => 'n' + (++_uid);
+const fmt = n => Number(n).toLocaleString('fr-FR');
+
+function loadFleet(){try{fleet=JSON.parse(localStorage.getItem(LS_FLEET))||[]}catch(e){fleet=[]}}
+function saveFleet(){localStorage.setItem(LS_FLEET,JSON.stringify(fleet))}
+function unitData(k){return GROUPS[k] || SHIPS[k] || null}
+function isGroup(k){return Boolean(GROUPS[k])}
+function unitCount(k){
+  if (SHIPS[k]) return 1;
+  const g = GROUPS[k];
+  return g ? g.c.reduce((sum,[sk,n]) => sum + unitCount(sk) * n, 0) : 0;
+}
+function unitComposition(k){
+  if (SHIPS[k]) return Object.assign({}, SHIPS[k].c);
+  const out = {};
+  const g = GROUPS[k];
+  if (!g) return out;
+  for (const [sk,n] of g.c) {
+    const c = unitComposition(sk);
+    for (const [ck,v] of Object.entries(c)) out[ck] = (out[ck] || 0) + v * n;
+  }
+  return out;
+}
+function sumComposition(list){
+  const out = {};
+  for (const [k,n] of list) {
+    const c = unitComposition(k);
+    for (const [ck,v] of Object.entries(c)) out[ck] = (out[ck] || 0) + v * n;
+  }
+  return out;
+}
+function renderEqPanel(eq){
+  const groups = {};
+  for (const [k,v] of Object.entries(eq)) {
+    const c = EC[k];
+    if (!c || !v) continue;
+    if (!groups[c]) groups[c] = [];
+    groups[c].push([k,v]);
+  }
+  let html = '';
+  for (const c of CAT_ORDER) {
+    if (!groups[c]) continue;
+    html += `<div class="eq-section cat-${c}"><div class="eq-cat-label">${CAT_LABELS[c]}</div><div class="eq-grid">`;
+    for (const [k,v] of groups[c]) html += `<div class="eq-item"><span class="eq-val">${fmt(v)}</span><span class="eq-lbl">${EL[k] || k}</span></div>`;
+    html += '</div></div>';
+  }
+  return html || '<div style="color:var(--text-muted);font-size:12px;font-style:italic">Aucune capacité définie.</div>';
+}
+
+function tg(id, chevId){
+  const el = document.getElementById(id);
+  const ch = document.getElementById(chevId);
+  if (!el) return;
+  el.classList.toggle('open');
+  if (ch) ch.classList.toggle('open');
+}
+
+function renderShipWithCount(sk,n){
+  const s = SHIPS[sk];
+  if (!s) return '';
+  const id = uid();
+  const total = unitCount(sk) * n;
+  return `<div class="sub-card">
+    <div class="sub-card-hdr" onclick="tg('${id}','chev${id}')">
+      <span class="sub-cnt">x${n}</span>
+      <div class="mil-info"><div class="mil-name">${s.n}</div><div class="mil-role">${s.r}</div></div>
+      <span class="mil-eff">${fmt(total)} bâtiment${total>1?'s':''}</span>
+      <span class="mil-chev" id="chev${id}">▶</span>
+    </div>
+    <div class="sub-body" id="${id}"><div class="eq-panel">${renderEqPanel(unitComposition(sk))}</div></div>
+  </div>`;
+}
+
+function renderGroupCard(gk){
+  const g = GROUPS[gk];
+  if (!g) return '';
+  const id = uid();
+  let body = `<div class="fleet-note"><b>Mission</b> - ${g.r}</div>`;
+  for (const [sk,n] of g.c) body += renderShipWithCount(sk,n);
+  body += `<div class="eq-panel" style="margin-top:10px">${renderEqPanel(unitComposition(gk))}</div>`;
+  return `<div class="mil-card">
+    <div class="mil-card-hdr" onclick="tg('${id}','chev${id}')">
+      <span class="mil-chip chip-fleet">${g.s}</span>
+      <div class="mil-info"><div class="mil-name">${g.n}</div><div class="mil-role">${g.r}</div></div>
+      <span class="mil-eff">${fmt(unitCount(gk))} bâtiments</span>
+      <span class="mil-chev" id="chev${id}">▶</span>
+    </div>
+    <div class="mil-body" id="${id}">${body}</div>
+  </div>`;
+}
+
+function renderShipCard(sk){
+  const s = SHIPS[sk];
+  if (!s) return '';
+  const id = uid();
+  return `<div class="mil-card">
+    <div class="mil-card-hdr" onclick="tg('${id}','chev${id}')">
+      <span class="mil-chip chip-ship">${s.s}</span>
+      <div class="mil-info"><div class="mil-name">${s.n}</div><div class="mil-role">${s.r}</div></div>
+      <span class="mil-eff">1 bâtiment</span>
+      <span class="mil-chev" id="chev${id}">▶</span>
+    </div>
+    <div class="mil-body" id="${id}"><div class="eq-panel">${renderEqPanel(unitComposition(sk))}</div></div>
+  </div>`;
+}
+
+function renderRoster(){
+  const tbody = document.getElementById('roster-body');
+  if (!fleet.length) {
+    tbody.innerHTML = '<tr><td colspan="7" class="roster-empty">Aucune unité navale enregistrée. Utilisez le formulaire ci-dessus pour composer votre flotte.</td></tr>';
+    document.getElementById('totals-block').style.display = 'none';
+    document.getElementById('totals-block-cmd').style.display = 'none';
+    renderStats();
+    return;
+  }
+  let rows = '';
+  for (const row of fleet) {
+    const unit = unitData(row.type);
+    const per = unitCount(row.type);
+    rows += `<tr data-id="${row.id}">
+      <td><span class="mil-chip ${isGroup(row.type)?'chip-fleet':'chip-ship'}">${row.type}</span></td>
+      <td style="color:var(--text-primary)">${unit ? unit.n : row.type}</td>
+      <td><input type="number" class="roster-input" min="0" max="999" value="${row.service}" data-field="service" data-id="${row.id}"></td>
+      <td><input type="number" class="roster-input" min="0" max="999" value="${row.ordered}" data-field="ordered" data-id="${row.id}"></td>
+      <td class="ship-service">${fmt(per * row.service)}</td>
+      <td class="ship-cmd">${fmt(per * row.ordered)}</td>
+      <td><button class="btn-remove" data-id="${row.id}">✕</button></td>
+    </tr>`;
+  }
+  tbody.innerHTML = rows;
+  tbody.querySelectorAll('.roster-input').forEach(input => {
+    input.addEventListener('input', e => {
+      const row = fleet.find(item => item.id === e.target.dataset.id);
+      if (!row) return;
+      row[e.target.dataset.field] = Math.max(0, parseInt(e.target.value,10) || 0);
+      saveFleet();
+      const tr = e.target.closest('tr');
+      const per = unitCount(row.type);
+      tr.querySelector('.ship-service').textContent = fmt(per * row.service);
+      tr.querySelector('.ship-cmd').textContent = fmt(per * row.ordered);
+      renderStats();
+      renderTotals();
+    });
+  });
+  tbody.querySelectorAll('.btn-remove').forEach(btn => {
+    btn.addEventListener('click', e => {
+      fleet = fleet.filter(row => row.id !== e.target.dataset.id);
+      saveFleet();
+      renderRoster();
+    });
+  });
+  renderStats();
+  renderTotals();
+}
+
+function renderStats(){
+  let svc = 0, cmd = 0, units = 0;
+  for (const row of fleet) {
+    const per = unitCount(row.type);
+    svc += per * row.service;
+    cmd += per * row.ordered;
+    units += row.service + row.ordered;
+  }
+  document.getElementById('stat-service').textContent = fmt(svc);
+  document.getElementById('stat-ordered').textContent = fmt(cmd);
+  document.getElementById('stat-total').textContent = fmt(svc + cmd);
+  document.getElementById('stat-units').textContent = fmt(units);
+}
+
+function renderTotals(){
+  const svcRows = fleet.filter(row => row.service > 0).map(row => [row.type,row.service]);
+  const cmdRows = fleet.filter(row => row.ordered > 0).map(row => [row.type,row.ordered]);
+  document.getElementById('totals-block').style.display = svcRows.length ? '' : 'none';
+  document.getElementById('totals-block-cmd').style.display = cmdRows.length ? '' : 'none';
+  if (svcRows.length) {
+    const count = svcRows.reduce((sum,[k,n]) => sum + unitCount(k) * n, 0);
+    document.getElementById('totals-note').textContent = `Cumul des bâtiments en service — ${fmt(count)} navires et plateformes`;
+    document.getElementById('totals-eq').innerHTML = renderEqPanel(sumComposition(svcRows));
+  }
+  if (cmdRows.length) {
+    const count = cmdRows.reduce((sum,[k,n]) => sum + unitCount(k) * n, 0);
+    document.getElementById('totals-note-cmd').textContent = `Cumul des bâtiments commandés — ${fmt(count)} navires et plateformes`;
+    document.getElementById('totals-eq-cmd').innerHTML = renderEqPanel(sumComposition(cmdRows));
+  }
+}
+
+function init(){
+  document.querySelectorAll('.org-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.org-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.org-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  const select = document.getElementById('add-type');
+  const groupOptions = Object.keys(GROUPS).map(k => `<option value="${k}">${k} — ${GROUPS[k].n}</option>`).join('');
+  const shipOptions = Object.keys(SHIPS).map(k => `<option value="${k}">${k} — ${SHIPS[k].n}</option>`).join('');
+  select.innerHTML = `<optgroup label="Groupes de flotte">${groupOptions}</optgroup><optgroup label="Bâtiments unitaires">${shipOptions}</optgroup>`;
+
+  document.getElementById('btn-add-unit').addEventListener('click', () => {
+    const type = select.value;
+    const service = Math.max(0, parseInt(document.getElementById('add-service').value,10) || 0);
+    const ordered = Math.max(0, parseInt(document.getElementById('add-ordered').value,10) || 0);
+    if (!type || (!service && !ordered)) return;
+    const existing = fleet.find(row => row.type === type);
+    if (existing) {
+      existing.service += service;
+      existing.ordered += ordered;
+    } else {
+      fleet.push({id:'f' + Date.now() + Math.random().toString(16).slice(2), type, service, ordered});
+    }
+    saveFleet();
+    renderRoster();
+  });
+
+  document.getElementById('totals-toggle').addEventListener('click', () => tg('totals-body','totals-chevron'));
+  document.getElementById('totals-toggle-cmd').addEventListener('click', () => tg('totals-body-cmd','totals-chevron-cmd'));
+
+  document.getElementById('ref-groups').innerHTML = Object.keys(GROUPS).map(renderGroupCard).join('');
+  document.getElementById('ref-ships').innerHTML = Object.keys(SHIPS).map(renderShipCard).join('');
+  loadFleet();
+  renderRoster();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
