@@ -2314,7 +2314,7 @@
     height: 150px;
     flex-shrink: 0;
     border: 1px dashed var(--border);
-    background: var(--bg-section);
+    background: transparent;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -2326,7 +2326,14 @@
 
 .canal-flag-preview.has-image {
     border-style: solid;
-    border-color: var(--gold-dark);
+    border-color: transparent;
+}
+
+.canal-flag-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
 }
 
 .canal-flag-preview svg {

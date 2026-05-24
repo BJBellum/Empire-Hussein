@@ -2989,42 +2989,33 @@ async function loadCanalItemsFromGithub(showToastOnSuccess) {
     }
 }
 
-/* ── FLAG UPLOAD (1:1 crop) ─────────────────── */
+/* ── FLAG UPLOAD (preserve original transparency) ─────────────────── */
 function handleCanalFlagUpload(e) {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
     reader.onload = ev => {
-        const img = new Image();
-        img.onload = () => {
-            const { dataUrl } = cropToSquare(img);
-            _canalPendingFlag = {
-                dataUrl,
-                base64: dataUrl.split(',')[1],
-                filename: slugify(file.name).replace(/\.[^.]+$/, '') + '-' + Date.now() + '.png'
-            };
-            updateFlagPreview(dataUrl);
+        const dataUrl = ev.target.result;
+        if (typeof dataUrl !== 'string') return;
+        _canalPendingFlag = {
+            dataUrl,
+            base64: dataUrl.split(',')[1],
+            filename: slugify(file.name).replace(/\.[^.]+$/, '') + '-' + Date.now() + getImageExtension(file, dataUrl)
         };
-        img.src = ev.target.result;
+        updateFlagPreview(dataUrl);
     };
     reader.readAsDataURL(file);
     e.target.value = '';
 }
 
-function cropToSquare(img) {
-    const srcW = img.naturalWidth;
-    const srcH = img.naturalHeight;
-    const size = Math.min(srcW, srcH);
-    const sx = (srcW - size) / 2;
-    const sy = (srcH - size) / 2;
-    const outSize = 150;
-    const canvas = document.createElement('canvas');
-    canvas.width = outSize;
-    canvas.height = outSize;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, outSize, outSize);
-    ctx.drawImage(img, sx, sy, size, size, 0, 0, outSize, outSize);
-    return { dataUrl: canvas.toDataURL('image/png') };
+function getImageExtension(file, dataUrl) {
+    const ext = (file.name.match(/\.[^.]+$/)?.[0] || '').toLowerCase();
+    if (['.png', '.webp', '.gif', '.jpg', '.jpeg'].includes(ext)) return ext;
+    if (dataUrl.startsWith('data:image/png')) return '.png';
+    if (dataUrl.startsWith('data:image/webp')) return '.webp';
+    if (dataUrl.startsWith('data:image/gif')) return '.gif';
+    if (dataUrl.startsWith('data:image/jpeg')) return '.jpg';
+    return '.png';
 }
 
 function updateFlagPreview(dataUrl) {
@@ -3032,7 +3023,7 @@ function updateFlagPreview(dataUrl) {
     const clearBtn = document.getElementById('canal-flag-clear');
     if (!preview) return;
     if (dataUrl) {
-        preview.innerHTML = `<img src="${dataUrl}" alt="Aperçu" style="width:150px;height:150px;object-fit:cover;">`;
+        preview.innerHTML = `<img src="${dataUrl}" alt="Aperçu">`;
         preview.classList.add('has-image');
         if (clearBtn) clearBtn.style.display = 'inline-flex';
     } else {
