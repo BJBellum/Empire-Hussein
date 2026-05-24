@@ -2555,19 +2555,23 @@ button {
 }
 
 .canal-flag {
-    width: 80px;
-    height: 54px;
-    overflow: hidden;
+    width: 92px;
+    height: 92px;
+    overflow: visible;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: rgba(245, 240, 232, 0.94);
+    border: 1px solid rgba(201, 168, 76, 0.14);
+    border-radius: 8px;
+    padding: 8px;
 }
 
 .canal-flag img {
-    width: 80px;
-    height: 54px;
-    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
     display: block;
 }
 
@@ -2699,8 +2703,7 @@ button {
 @media (max-width: 560px) {
     .canal-main { padding: 40px 0 60px; }
     .canal-card { padding: 16px; gap: 16px; }
-    .canal-flag { width: 60px; height: 40px; }
-    .canal-flag img { width: 60px; height: 40px; }
+    .canal-flag { width: 72px; height: 72px; padding: 6px; }
     .canal-tax-row { width: 100%; }
 }
 
