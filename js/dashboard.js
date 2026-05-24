@@ -1645,7 +1645,7 @@ async function saveCanalItem(pushToGh) {
 
     try {
         if (pushToGh && _canalPendingFlag) {
-            showCatPushStatus('Téléversement du drapeau…', null, statusEl);
+            showCanalPushStatus('Téléversement du drapeau…', null, statusEl);
             const path = await uploadCanalFlag(_canalPendingFlag);
             item.drapeau = path;
             _canalPendingFlag = null;
@@ -1659,9 +1659,9 @@ async function saveCanalItem(pushToGh) {
         setCanalCache(_canalItems);
 
         if (pushToGh) {
-            showCatPushStatus('Envoi de la liste des pays…', null, statusEl);
+            showCanalPushStatus('Envoi de la liste des pays…', null, statusEl);
             await pushCanalJson(`Update canal de suez: ${item.nom}`);
-            showCatPushStatus(`Pays « ${item.nom} » poussé sur GitHub`, true, statusEl);
+            showCanalPushStatus(`Pays « ${item.nom} » poussé sur GitHub`, true, statusEl);
             showToast(`« ${item.nom} » poussé sur GitHub`);
         } else {
             showToast(`« ${item.nom} » enregistré localement`);
@@ -1670,7 +1670,7 @@ async function saveCanalItem(pushToGh) {
         resetCanalForm();
         renderCanalList();
     } catch (err) {
-        showCatPushStatus(`Erreur : ${err.message}`, false, statusEl);
+        showCanalPushStatus(`Erreur : ${err.message}`, false, statusEl);
         showToast(`Erreur : ${err.message}`);
     } finally {
         if (saveBtn) saveBtn.disabled = false;
@@ -1739,6 +1739,13 @@ async function pushCanalJson(commitMessage) {
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Erreur push JSON');
     if (data.content?.sha) localStorage.setItem(CANAL_SHA_KEY, data.content.sha);
+}
+
+function showCanalPushStatus(msg, ok, el) {
+    if (!el) return;
+    el.style.display = 'block';
+    el.className = 'github-status' + (ok === true ? ' github-status--ok' : ok === false ? ' github-status--err' : '');
+    el.textContent = msg;
 }
 
 /* ── FORM RESET + EDIT ──────────────────────── */
