@@ -3001,7 +3001,7 @@ function handleCanalFlagUpload(e) {
             _canalPendingFlag = {
                 dataUrl,
                 base64: dataUrl.split(',')[1],
-                filename: slugify(file.name).replace(/\.[^.]+$/, '') + '-' + Date.now() + '.jpg'
+                filename: slugify(file.name).replace(/\.[^.]+$/, '') + '-' + Date.now() + '.png'
             };
             updateFlagPreview(dataUrl);
         };
@@ -3017,13 +3017,14 @@ function cropToSquare(img) {
     const size = Math.min(srcW, srcH);
     const sx = (srcW - size) / 2;
     const sy = (srcH - size) / 2;
-    const outSize = Math.min(400, size);
+    const outSize = 150;
     const canvas = document.createElement('canvas');
     canvas.width = outSize;
     canvas.height = outSize;
     const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, outSize, outSize);
     ctx.drawImage(img, sx, sy, size, size, 0, 0, outSize, outSize);
-    return { dataUrl: canvas.toDataURL('image/jpeg', 0.88) };
+    return { dataUrl: canvas.toDataURL('image/png') };
 }
 
 function updateFlagPreview(dataUrl) {
