@@ -1370,6 +1370,63 @@ button {
    CANAL DE SUEZ — PAGE PUBLIQUE
    ════════════════════════════════════════════ */
 
+.cat-header {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(58px, 8vw, 104px) 0 clamp(36px, 6vw, 64px);
+    text-align: center;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(201, 168, 76, 0.08), transparent 48%),
+        linear-gradient(180deg, rgba(17, 17, 17, 0.94), var(--bg-deep));
+    border-bottom: 1px solid var(--border);
+}
+
+.cat-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(201, 168, 76, 0.04) 1px, transparent 1px);
+    background-size: 100% 18px;
+    opacity: 0.18;
+    pointer-events: none;
+}
+
+.cat-header .container {
+    position: relative;
+    z-index: 1;
+}
+
+.cat-header-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 22px;
+    padding: 6px 18px;
+    border: 1px solid rgba(201, 168, 76, 0.28);
+    color: var(--gold);
+    font-family: var(--font-display);
+    font-size: 9px;
+    letter-spacing: 0.3em;
+}
+
+.cat-header-title {
+    margin: 0 0 16px;
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    font-size: clamp(32px, 6vw, 68px);
+    font-weight: normal;
+    letter-spacing: 0.16em;
+    line-height: 1.1;
+}
+
+.cat-header-sub {
+    max-width: 720px;
+    margin: 0 auto;
+    color: var(--text-secondary);
+    font-size: clamp(14px, 1.35vw, 16px);
+    line-height: 1.8;
+}
+
 .page-canal {
     padding-top: var(--header-h);
     min-height: 100vh;
@@ -1583,6 +1640,9 @@ button {
 }
 
 @media (max-width: 560px) {
+    .cat-header { padding: 44px 0 34px; }
+    .cat-header-badge { font-size: 8px; letter-spacing: 0.2em; }
+    .cat-header-title { font-size: clamp(26px, 10vw, 38px); letter-spacing: 0.11em; }
     .canal-main { padding: 40px 0 60px; }
     .canal-card { padding: 16px; gap: 16px; }
     .canal-flag { width: 72px; height: 72px; padding: 6px; }
