@@ -73,7 +73,7 @@
       "matieres_premieres": 70,
       "produits_manufactures": 60,
       "materiel_militaire": null,
-      "materiel_industriel": null,
+      "materiel_industriel": 70,
       "ressources_energetiques": 70
     }
   },
