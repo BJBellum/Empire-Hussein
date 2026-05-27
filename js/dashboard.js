@@ -1504,6 +1504,7 @@ function initCanalAdmin() {
     document.getElementById('canal-import-btn')?.addEventListener('click', () =>
         document.getElementById('canal-import-input')?.click());
     document.getElementById('canal-import-input')?.addEventListener('change', handleTransitJsonImport);
+    document.getElementById('canal-download-json-btn')?.addEventListener('click', downloadCanalJson);
     document.getElementById('canal-push-json-btn')?.addEventListener('click', pushCurrentTransitJson);
     document.getElementById('canal-flag-btn')?.addEventListener('click', () =>
         document.getElementById('canal-flag-input')?.click());
@@ -1663,6 +1664,20 @@ function normalizeTransitItems(parsed) {
                 taxes
             };
         });
+}
+
+function downloadCanalJson() {
+    if (!_canalItems.length) { showToast('Aucun pays à télécharger'); return; }
+    const transit = getActiveTransitConfig();
+    const json = JSON.stringify(_canalItems, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = transit.jsonPath.split('/').pop();
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast(`${transit.shortLabel} téléchargé`);
 }
 
 async function pushCurrentTransitJson() {
