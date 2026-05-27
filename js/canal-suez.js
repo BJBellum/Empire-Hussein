@@ -1,6 +1,21 @@
 /* ════════════════════════════════════════════
-   CANAL DE SUEZ — Rendu public
+   TRANSITS STRATEGIQUES — Rendu public
    ════════════════════════════════════════════ */
+
+const TRANSIT_PUBLIC_CONFIGS = {
+    suez: {
+        dataPath: '../data/canal-suez.json',
+        cacheKey: 'empire_canal_v1',
+        emptyTitle: 'AUCUN PAYS ENREGISTRE',
+        emptyText: 'Les conditions de transit n\'ont pas encore été définies.'
+    },
+    gibraltar: {
+        dataPath: '../data/detroit-gibraltar.json',
+        cacheKey: 'empire_gibraltar_v1',
+        emptyTitle: 'AUCUN PAYS ENREGISTRE',
+        emptyText: 'Les conditions de passage du détroit n\'ont pas encore été définies.'
+    }
+};
 
 const CANAL_CATS_PUBLIC = [
     { id: 'matieres_premieres',      label: 'Matières Premières' },
@@ -16,15 +31,18 @@ async function initCanalPublic() {
     const empty   = document.getElementById('canal-empty');
     if (!grid) return;
 
+    const transitKey = document.body?.dataset.transit || 'suez';
+    const cfg = TRANSIT_PUBLIC_CONFIGS[transitKey] || TRANSIT_PUBLIC_CONFIGS.suez;
+
     try {
-        const res = await fetch('../data/canal-suez.json?t=' + Date.now());
+        const res = await fetch(cfg.dataPath + '?t=' + Date.now());
         if (!res.ok) throw new Error('HTTP ' + res.status);
         let data = await res.json();
 
         // Si le fichier déployé est vide, utiliser le cache localStorage (mis à jour au push)
         if (!Array.isArray(data) || data.length === 0) {
             try {
-                const cached = JSON.parse(localStorage.getItem('empire_canal_v1') || '{}');
+                const cached = JSON.parse(localStorage.getItem(cfg.cacheKey) || '{}');
                 if (Array.isArray(cached.items) && cached.items.length > 0) data = cached.items;
             } catch {}
         }
@@ -32,6 +50,7 @@ async function initCanalPublic() {
         if (loading) loading.style.display = 'none';
 
         if (!Array.isArray(data) || data.length === 0) {
+            setEmptyCopy(empty, cfg.emptyTitle, cfg.emptyText);
             if (empty) empty.style.display = 'flex';
             return;
         }
@@ -76,11 +95,18 @@ async function initCanalPublic() {
     } catch (err) {
         if (loading) loading.style.display = 'none';
         if (empty) {
+            setEmptyCopy(empty, cfg.emptyTitle, 'Erreur de chargement des données.');
             empty.style.display = 'flex';
-            const textEl = empty.querySelector('.canal-empty-text');
-            if (textEl) textEl.textContent = 'Erreur de chargement des données.';
         }
     }
+}
+
+function setEmptyCopy(empty, title, text) {
+    if (!empty) return;
+    const titleEl = empty.querySelector('.canal-empty-title');
+    const textEl = empty.querySelector('.canal-empty-text');
+    if (titleEl) titleEl.textContent = title;
+    if (textEl) textEl.textContent = text;
 }
 
 function taxColor(val) {

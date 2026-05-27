@@ -1453,12 +1453,32 @@ function slugify(str) {
 }
 
 /* ════════════════════════════════════════════
-   CANAL DE SUEZ — ADMIN
+   TRANSITS STRATEGIQUES — ADMIN
    ════════════════════════════════════════════ */
-const CANAL_JSON_PATH = 'data/canal-suez.json';
+const TRANSIT_CONFIGS = {
+    suez: {
+        label: 'Canal de Suez',
+        shortLabel: 'Suez',
+        jsonPath: 'data/canal-suez.json',
+        cacheKey: 'empire_canal_v1',
+        shaKey: 'empire_canal_sha',
+        idPrefix: 'canal',
+        localFetchPath: '../data/canal-suez.json',
+        description: 'Ajoutez ou modifiez un pays autorisé à transiter par le Canal de Suez. Définissez les taxes par catégorie de marchandise.'
+    },
+    gibraltar: {
+        label: 'Détroit de Gibraltar',
+        shortLabel: 'Gibraltar',
+        jsonPath: 'data/detroit-gibraltar.json',
+        cacheKey: 'empire_gibraltar_v1',
+        shaKey: 'empire_gibraltar_sha',
+        idPrefix: 'gibraltar',
+        localFetchPath: '../data/detroit-gibraltar.json',
+        description: 'Ajoutez ou modifiez un pays autorisé à passer par le Détroit de Gibraltar, co-géré par l\'Empire Hussein et la République Arabe du Maghreb.'
+    }
+};
+
 const CANAL_IMG_DIR   = 'assets/drapeaux';
-const CANAL_CACHE_KEY = 'empire_canal_v1';
-const CANAL_SHA_KEY   = 'empire_canal_sha';
 
 const CANAL_TAXES = [
     { id: 'matieres_premieres',      label: 'Matières Premières' },
@@ -1472,11 +1492,19 @@ let _canalItems          = [];
 let _canalEditingId      = null;
 let _canalPendingFlag    = null;
 let _canalDeleteTargetId = null;
+let _canalTransitKey     = 'suez';
 
 /* ── INIT ───────────────────────────────────── */
 function initCanalAdmin() {
     if (!document.getElementById('panel-canal')) return;
 
+    document.getElementById('canal-transit-select')?.addEventListener('change', e => {
+        setActiveTransit(e.target.value);
+    });
+    document.getElementById('canal-import-btn')?.addEventListener('click', () =>
+        document.getElementById('canal-import-input')?.click());
+    document.getElementById('canal-import-input')?.addEventListener('change', handleTransitJsonImport);
+    document.getElementById('canal-push-json-btn')?.addEventListener('click', pushCurrentTransitJson);
     document.getElementById('canal-flag-btn')?.addEventListener('click', () =>
         document.getElementById('canal-flag-input')?.click());
     document.getElementById('canal-flag-input')?.addEventListener('change', handleCanalFlagUpload);
@@ -1509,37 +1537,69 @@ function initCanalAdmin() {
     delModal?.addEventListener('click', e => { if (e.target === delModal) closeDel(); });
     delConfirm?.addEventListener('click', () => deleteCanalItem(_canalDeleteTargetId));
 
+    updateTransitUiCopy();
+    resetCanalForm();
     const cached = getCanalCache();
     if (cached.items) { _canalItems = cached.items; renderCanalList(); } else { renderCanalList(); }
     loadCanalItemsFromGithub(false);
 }
 
 /* ── DATA ───────────────────────────────────── */
+function getActiveTransitConfig() {
+    return TRANSIT_CONFIGS[_canalTransitKey] || TRANSIT_CONFIGS.suez;
+}
+
+function setActiveTransit(key) {
+    const nextKey = TRANSIT_CONFIGS[key] ? key : 'suez';
+    if (_canalTransitKey === nextKey) return;
+    _canalTransitKey = nextKey;
+    _canalItems = [];
+    resetCanalForm();
+    updateTransitUiCopy();
+    const cached = getCanalCache();
+    if (cached.items) _canalItems = cached.items;
+    renderCanalList();
+    loadCanalItemsFromGithub(false);
+}
+
+function updateTransitUiCopy() {
+    const cfg = getActiveTransitConfig();
+    const select = document.getElementById('canal-transit-select');
+    const desc = document.getElementById('canal-form-desc');
+    const path = document.getElementById('canal-data-path');
+    const syncBtn = document.getElementById('canal-sync-btn');
+    if (select) select.value = _canalTransitKey;
+    if (desc) desc.textContent = cfg.description;
+    if (path) path.textContent = `Fichier : ${cfg.jsonPath}`;
+    if (syncBtn) syncBtn.textContent = `Recharger ${cfg.shortLabel} depuis GitHub`;
+}
+
 function getCanalCache() {
-    try { return JSON.parse(localStorage.getItem(CANAL_CACHE_KEY) || '{}'); }
+    try { return JSON.parse(localStorage.getItem(getActiveTransitConfig().cacheKey) || '{}'); }
     catch { return {}; }
 }
 
 function setCanalCache(items) {
-    localStorage.setItem(CANAL_CACHE_KEY, JSON.stringify({ items, ts: Date.now() }));
+    localStorage.setItem(getActiveTransitConfig().cacheKey, JSON.stringify({ items, ts: Date.now() }));
 }
 
 async function loadCanalItemsFromGithub(showToastOnSuccess) {
     const cfg = getGithubConfig();
+    const transit = getActiveTransitConfig();
     try {
         let data;
         if (cfg && cfg.repo && cfg.pat) {
             const res = await fetch(
-                `https://api.github.com/repos/${cfg.repo}/contents/${CANAL_JSON_PATH}?ref=${cfg.branch || 'main'}`,
+                `https://api.github.com/repos/${cfg.repo}/contents/${transit.jsonPath}?ref=${cfg.branch || 'main'}`,
                 { headers: { Authorization: `token ${cfg.pat}`, Accept: 'application/vnd.github.v3+json' } }
             );
             if (!res.ok) throw new Error((await res.json()).message || 'Erreur GitHub');
             const payload = await res.json();
-            localStorage.setItem(CANAL_SHA_KEY, payload.sha);
+            localStorage.setItem(transit.shaKey, payload.sha);
             const raw = atob(payload.content.replace(/\n/g, ''));
             data = JSON.parse(decodeURIComponent(escape(raw)));
         } else {
-            const res = await fetch('../data/canal-suez.json?t=' + Date.now());
+            const res = await fetch(transit.localFetchPath + '?t=' + Date.now());
             if (!res.ok) throw new Error('HTTP ' + res.status);
             data = await res.json();
         }
@@ -1550,13 +1610,77 @@ async function loadCanalItemsFromGithub(showToastOnSuccess) {
             setCanalCache(_canalItems);
         }
         renderCanalList();
-        if (showToastOnSuccess) showToast(`${_canalItems.length} pays chargé(s)`);
+        if (showToastOnSuccess) showToast(`${_canalItems.length} pays chargé(s) pour ${transit.shortLabel}`);
     } catch (err) {
         const listEl = document.getElementById('canal-admin-list');
         if (listEl && _canalItems.length === 0) {
             listEl.innerHTML = `<div class="cat-admin-empty">Erreur : ${escapeHtml(err.message)}</div>`;
         }
         if (showToastOnSuccess) showToast(`Erreur : ${err.message}`);
+    }
+}
+
+function handleTransitJsonImport(e) {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = ev => {
+        try {
+            const parsed = JSON.parse(ev.target.result);
+            const items = normalizeTransitItems(parsed);
+            if (!items.length) throw new Error('Le JSON ne contient aucun pays valide');
+            _canalItems = items;
+            setCanalCache(_canalItems);
+            resetCanalForm();
+            renderCanalList();
+            showToast(`${items.length} pays importé(s) dans ${getActiveTransitConfig().shortLabel}`);
+        } catch (err) {
+            showToast(`Import JSON impossible : ${err.message}`);
+        }
+    };
+    reader.readAsText(file);
+}
+
+function normalizeTransitItems(parsed) {
+    const rawItems = Array.isArray(parsed) ? parsed : (Array.isArray(parsed?.items) ? parsed.items : []);
+    return rawItems
+        .filter(item => item && typeof item === 'object' && String(item.nom || '').trim())
+        .map((item, idx) => {
+            const taxes = {};
+            CANAL_TAXES.forEach(cat => {
+                const raw = item.taxes?.[cat.id];
+                taxes[cat.id] = (raw === null || raw === undefined || raw === '')
+                    ? null
+                    : Math.min(100, Math.max(0, parseFloat(raw) || 0));
+            });
+            return {
+                id: String(item.id || `${getActiveTransitConfig().idPrefix}_${Date.now()}_${idx}`),
+                nom: String(item.nom || '').trim(),
+                continent: String(item.continent || '').trim(),
+                drapeau: item.drapeau || null,
+                taxes
+            };
+        });
+}
+
+async function pushCurrentTransitJson() {
+    if (!_canalItems.length) { showToast('Aucun pays à pousser'); return; }
+    const btn = document.getElementById('canal-push-json-btn');
+    const statusEl = document.getElementById('canal-push-status');
+    const transit = getActiveTransitConfig();
+    if (btn) btn.disabled = true;
+    try {
+        showCanalPushStatus(`Envoi du JSON ${transit.shortLabel}…`, null, statusEl);
+        await pushCanalJson(`Update ${transit.label}: import JSON`);
+        showCanalPushStatus(`JSON ${transit.shortLabel} poussé sur GitHub`, true, statusEl);
+        showToast(`JSON ${transit.shortLabel} poussé sur GitHub`);
+    } catch (err) {
+        showCanalPushStatus(`Erreur : ${err.message}`, false, statusEl);
+        showToast(`Erreur push JSON : ${err.message}`);
+    } finally {
+        if (btn) btn.disabled = false;
     }
 }
 
@@ -1594,7 +1718,7 @@ function updateFlagPreview(dataUrl) {
     const clearBtn = document.getElementById('canal-flag-clear');
     if (!preview) return;
     if (dataUrl) {
-        preview.innerHTML = `<img src="${dataUrl}" alt="Aperçu">`;
+        preview.innerHTML = `<img src="${dashboardAssetSrc(dataUrl)}" alt="Aperçu">`;
         preview.classList.add('has-image');
         if (clearBtn) clearBtn.style.display = 'inline-flex';
     } else {
@@ -1617,7 +1741,7 @@ function clearCanalFlag() {
 
 /* ── FORM SAVE ──────────────────────────────── */
 function collectCanalFormItem() {
-    const id   = _canalEditingId || 'canal_' + Date.now();
+    const id   = _canalEditingId || `${getActiveTransitConfig().idPrefix}_${Date.now()}`;
     const taxes = {};
     CANAL_TAXES.forEach(cat => {
         const blocked = document.getElementById(`canal-blocked-${cat.id}`)?.checked;
@@ -1660,7 +1784,7 @@ async function saveCanalItem(pushToGh) {
 
         if (pushToGh) {
             showCanalPushStatus('Envoi de la liste des pays…', null, statusEl);
-            await pushCanalJson(`Update canal de suez: ${item.nom}`);
+            await pushCanalJson(`Update ${getActiveTransitConfig().label}: ${item.nom}`);
             showCanalPushStatus(`Pays « ${item.nom} » poussé sur GitHub`, true, statusEl);
             showToast(`« ${item.nom} » poussé sur GitHub`);
         } else {
@@ -1705,15 +1829,16 @@ async function uploadCanalFlag(pending) {
 
 async function pushCanalJson(commitMessage) {
     const cfg = getGithubConfig();
+    const transit = getActiveTransitConfig();
     if (!cfg || !cfg.repo || !cfg.pat) throw new Error('Configuration GitHub requise');
 
-    let sha = localStorage.getItem(CANAL_SHA_KEY);
+    let sha = localStorage.getItem(transit.shaKey);
     try {
         const probe = await fetch(
-            `https://api.github.com/repos/${cfg.repo}/contents/${CANAL_JSON_PATH}?ref=${cfg.branch || 'main'}`,
+            `https://api.github.com/repos/${cfg.repo}/contents/${transit.jsonPath}?ref=${cfg.branch || 'main'}`,
             { headers: { Authorization: `token ${cfg.pat}`, Accept: 'application/vnd.github.v3+json' } }
         );
-        if (probe.ok) { sha = (await probe.json()).sha; localStorage.setItem(CANAL_SHA_KEY, sha); }
+        if (probe.ok) { sha = (await probe.json()).sha; localStorage.setItem(transit.shaKey, sha); }
     } catch {}
 
     const json = JSON.stringify(_canalItems, null, 2);
@@ -1725,7 +1850,7 @@ async function pushCanalJson(commitMessage) {
     if (sha) body.sha = sha;
 
     const res = await fetch(
-        `https://api.github.com/repos/${cfg.repo}/contents/${CANAL_JSON_PATH}`,
+        `https://api.github.com/repos/${cfg.repo}/contents/${transit.jsonPath}`,
         {
             method: 'PUT',
             headers: {
@@ -1738,7 +1863,7 @@ async function pushCanalJson(commitMessage) {
     );
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Erreur push JSON');
-    if (data.content?.sha) localStorage.setItem(CANAL_SHA_KEY, data.content.sha);
+    if (data.content?.sha) localStorage.setItem(transit.shaKey, data.content.sha);
 }
 
 function showCanalPushStatus(msg, ok, el) {
@@ -1752,7 +1877,7 @@ function showCanalPushStatus(msg, ok, el) {
 function resetCanalForm() {
     _canalEditingId  = null;
     _canalPendingFlag = null;
-    document.getElementById('canal-form-title').textContent = 'NOUVEAU PAYS';
+    document.getElementById('canal-form-title').textContent = `NOUVEAU PAYS — ${getActiveTransitConfig().shortLabel.toUpperCase()}`;
     document.getElementById('canal-nom').value = '';
     const contSel = document.getElementById('canal-continent');
     if (contSel) contSel.value = '';
@@ -1824,7 +1949,7 @@ async function deleteCanalItem(id) {
 
         const cfg = getGithubConfig();
         if (cfg && cfg.repo && cfg.pat) {
-            await pushCanalJson(`Remove canal de suez: ${item.nom}`);
+            await pushCanalJson(`Remove ${getActiveTransitConfig().label}: ${item.nom}`);
             showToast(`« ${item.nom} » supprimé (local + GitHub)`);
         } else {
             showToast(`« ${item.nom} » supprimé localement`);
@@ -1858,7 +1983,7 @@ function renderCanalList() {
 
     listEl.innerHTML = items.map(item => {
         const flagHtml = item.drapeau
-            ? `<img src="${escapeHtml(item.drapeau)}" alt="" loading="lazy" onerror="this.style.display='none'">`
+            ? `<img src="${escapeHtml(dashboardAssetSrc(item.drapeau))}" alt="" loading="lazy" onerror="this.style.display='none'">`
             : '';
 
         const taxSummary = CANAL_TAXES.map(cat => {
@@ -1913,6 +2038,12 @@ function renderCanalList() {
         attachCanalMoveBtn(el.querySelector('.canal-move-up'),   id, 'up');
         attachCanalMoveBtn(el.querySelector('.canal-move-down'), id, 'down');
     });
+}
+
+function dashboardAssetSrc(src) {
+    if (!src) return '';
+    if (/^(data:|https?:|\.{0,2}\/)/.test(src)) return src;
+    return `../${src}`;
 }
 
 function attachCanalMoveBtn(btn, id, dir) {

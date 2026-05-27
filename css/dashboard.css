@@ -1928,6 +1928,23 @@
 .cat-admin-section-actions {
     display: flex;
     gap: 8px;
+    flex-wrap: wrap;
+}
+
+.transit-admin-switch {
+    display: grid;
+    grid-template-columns: 180px minmax(240px, 360px) 1fr;
+    gap: 10px 14px;
+    align-items: center;
+}
+
+.transit-admin-switch .form-label {
+    margin: 0;
+}
+
+.transit-admin-switch .form-hint {
+    margin: 0;
+    align-self: center;
 }
 
 /* ── Image uploader ─────────────────────────── */
@@ -2250,6 +2267,10 @@
 
 /* ── Responsive ────────────────────────────── */
 @media (max-width: 900px) {
+    .transit-admin-switch {
+        grid-template-columns: 1fr;
+    }
+
     .cat-form-grid {
         grid-template-columns: 1fr;
     }

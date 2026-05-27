@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Canal de Suez — Conditions de transit et taxes par nation">
-    <title>Canal de Suez — Empire Hussein</title>
+    <meta name="description" content="Détroit de Gibraltar — Conditions de passage et taxes par nation">
+    <title>Détroit de Gibraltar — Empire Hussein</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="icon" type="image/png" href="../assets/Hussein Empire Coat of Arms.png">
     <!-- Clean URL: retire .html de la barre d'adresse instantanément -->
     <script>if(location.pathname.endsWith('.html'))history.replaceState(null,'',location.pathname.replace('.html',''));</script>
 </head>
-<body class="page-canal" data-transit="suez">
+<body class="page-canal" data-transit="gibraltar">
 
-    <!-- ═══════════════════════════════════════ -->
-    <!-- HEADER / NAVIGATION                     -->
-    <!-- ═══════════════════════════════════════ -->
+    <!-- HEADER / NAVIGATION -->
     <header id="header" class="header--solid">
         <div class="header-inner">
             <nav class="nav-links">
@@ -70,23 +68,20 @@
         </button>
     </div>
 
-    <!-- ═══════════════════════════════════════ -->
-    <!-- HEADER DE PAGE                          -->
-    <!-- ═══════════════════════════════════════ -->
+    <!-- HEADER DE PAGE -->
     <section class="cat-header">
         <div class="container">
             <div class="cat-header-badge">ECONOMIE — TRANSIT</div>
-            <h1 class="cat-header-title">CANAL DE SUEZ</h1>
+            <h1 class="cat-header-title">DETROIT DE GIBRALTAR</h1>
             <p class="cat-header-sub">
-                Registre officiel des nations autorisées au transit et des taxes
-                applicables par catégorie de marchandise, sous l'autorité de l'Empire Hussein.
+                Registre officiel des nations autorisées au passage et des taxes applicables
+                par catégorie de marchandise. Le détroit est co-géré par l'Empire Hussein
+                et la République Arabe du Maghreb.
             </p>
         </div>
     </section>
 
-    <!-- ═══════════════════════════════════════ -->
-    <!-- CONTENU PRINCIPAL                       -->
-    <!-- ═══════════════════════════════════════ -->
+    <!-- CONTENU PRINCIPAL -->
     <main class="canal-main">
         <div class="container">
 
@@ -97,7 +92,6 @@
             <div class="canal-grid" id="canal-grid" style="display:none;"></div>
 
             <div class="canal-empty-state" id="canal-empty" style="display:none;">
-                <!-- icones.js.org — tabler:anchor -->
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 3a2 2 0 1 0 4 0a2 2 0 0 0-4 0"/>
                     <path d="M12 5v16"/>
@@ -105,15 +99,13 @@
                     <path d="M5 12a7 7 0 0 0 14 0"/>
                 </svg>
                 <div class="canal-empty-title">AUCUN PAYS ENREGISTRE</div>
-                <p class="canal-empty-text">Les conditions de transit n'ont pas encore été définies.</p>
+                <p class="canal-empty-text">Les conditions de passage du détroit n'ont pas encore été définies.</p>
             </div>
 
         </div>
     </main>
 
-    <!-- ═══════════════════════════════════════ -->
-    <!-- FOOTER                                  -->
-    <!-- ═══════════════════════════════════════ -->
+    <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
             <div class="footer-inner">
@@ -124,10 +116,8 @@
         </div>
     </footer>
 
-    <!-- Toast notification -->
     <div class="toast" id="toast" role="alert" aria-live="polite"></div>
 
-    <!-- Discord user badge (shown when logged in) -->
     <div class="user-badge" id="user-badge" style="display:none;">
         <img class="user-badge-avatar" id="user-avatar" alt="Avatar" width="32" height="32">
         <span class="user-badge-name" id="user-name"></span>

@@ -55,11 +55,11 @@
                         </svg>
                         <span>BOURSE DU CAIRE</span>
                     </a>
-                    <a class="nav-item" data-panel="canal" data-title="CANAL DE SUEZ">
+                    <a class="nav-item" data-panel="canal" data-title="TRANSITS STRATEGIQUES">
                         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
                             <path d="M2 10h16M2 7h16M2 13h16" stroke-linecap="round"/>
                         </svg>
-                        <span>CANAL DE SUEZ</span>
+                        <span>TRANSITS STRATEGIQUES</span>
                     </a>
                 </div>
 
@@ -171,10 +171,31 @@
                 </div>
 
                 <!-- ══════════════════════════ -->
-                <!-- CANAL DE SUEZ             -->
+                <!-- TRANSITS STRATEGIQUES     -->
                 <!-- ══════════════════════════ -->
                 <div class="panel hidden" id="panel-canal">
                     <div class="cat-admin-layout">
+
+                        <!-- SELECTEUR DE TRANSIT -->
+                        <section class="cat-admin-section">
+                            <div class="cat-admin-section-head">
+                                <h3 class="cat-admin-section-title">POINT DE TRANSIT</h3>
+                                <div class="cat-admin-section-actions">
+                                    <button class="btn-secondary" id="canal-import-btn" type="button">Importer JSON</button>
+                                    <button class="btn-secondary" id="canal-push-json-btn" type="button">Pousser JSON</button>
+                                    <input type="file" id="canal-import-input" accept="application/json,.json" style="display:none;">
+                                </div>
+                            </div>
+                            <p class="cat-admin-section-desc">Choisissez le registre à modifier. Un fichier JSON importé remplace la liste locale du point de transit sélectionné, puis peut être poussé sur GitHub.</p>
+                            <div class="transit-admin-switch">
+                                <label class="form-label" for="canal-transit-select">Registre actif</label>
+                                <select class="form-input" id="canal-transit-select">
+                                    <option value="suez">Canal de Suez</option>
+                                    <option value="gibraltar">Détroit de Gibraltar</option>
+                                </select>
+                                <small class="form-hint" id="canal-data-path">Fichier : data/canal-suez.json</small>
+                            </div>
+                        </section>
 
                         <!-- FORMULAIRE -->
                         <section class="cat-admin-section" id="canal-form-section">
@@ -182,7 +203,7 @@
                                 <h3 class="cat-admin-section-title" id="canal-form-title">NOUVEAU PAYS</h3>
                                 <button class="btn-secondary" id="canal-form-reset" type="button">Annuler</button>
                             </div>
-                            <p class="cat-admin-section-desc">Ajoutez ou modifiez un pays autorisé à transiter par le Canal de Suez. Définissez les taxes par catégorie de marchandise.</p>
+                            <p class="cat-admin-section-desc" id="canal-form-desc">Ajoutez ou modifiez un pays autorisé à transiter. Définissez les taxes par catégorie de marchandise.</p>
 
                             <!-- Upload drapeau -->
                             <div class="form-group">

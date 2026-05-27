@@ -1,0 +1,28 @@
+[
+  {
+    "id": "gibraltar_empire_hussein",
+    "nom": "Empire Hussein",
+    "continent": "Afrique",
+    "drapeau": null,
+    "taxes": {
+      "matieres_premieres": 0,
+      "produits_manufactures": 0,
+      "materiel_militaire": 0,
+      "materiel_industriel": 0,
+      "ressources_energetiques": 0
+    }
+  },
+  {
+    "id": "gibraltar_republique_arabe_maghreb",
+    "nom": "République Arabe du Maghreb",
+    "continent": "Afrique",
+    "drapeau": null,
+    "taxes": {
+      "matieres_premieres": 0,
+      "produits_manufactures": 0,
+      "materiel_militaire": 0,
+      "materiel_industriel": 0,
+      "ressources_energetiques": 0
+    }
+  }
+]
