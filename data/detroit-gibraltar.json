@@ -382,11 +382,11 @@
     "continent": "Europe",
     "drapeau": "data:image/webp;base64,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",
     "taxes": {
-      "matieres_premieres": 30,
-      "produits_manufactures": 30,
+      "matieres_premieres": 50,
+      "produits_manufactures": 50,
       "materiel_militaire": null,
-      "materiel_industriel": 30,
-      "ressources_energetiques": 30
+      "materiel_industriel": 50,
+      "ressources_energetiques": 50
     }
   }
 ]
