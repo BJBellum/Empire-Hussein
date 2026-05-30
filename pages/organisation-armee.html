@@ -1334,8 +1334,8 @@ const EQ_BASE = {
 
 const EQ_REF = {
   DI:{s:13860,i:490,fa:11230,p:8860,ml:279,mag:186,hmg:54,pm:739,ugl:534,g:24570,map:840,mat:660,fp:126,lrat:336,mp:102,atgm:114,c105:54,c155:18,spgc:3,mol:66,mom:56,cl:618,cll:228,amb:79,vc:140,vg:28,vew:14,vrb:10,vm:66,vrs:36,apc:352,dca_missile_courte:4,dca_missile_moyenne:2,dca_missile_longue:1,dca_canon:12,bl:0,br:8,vb:132,ht15:18,ht55:6,hp:12,at:4,atl:1},
-  DIM:{s:16770,i:490,fa:10690,p:12970,ml:162,mag:150,hmg:216,pm:1999,ugl:363,g:21680,map:580,mat:840,fp:74,lrat:408,mp:142,atgm:228,spgc:18,mom:42,moh:36,lrm:18,cl:385,cll:394,amb:97,vc:175,vg:28,vew:14,vrb:78,vm:184,vrs:50,ifv:306,apc:54,dca_missile_courte:4,dca_missile_moyenne:2,dca_missile_longue:1,dca_canon:12,bl:58,br:8,mbt:88,vb:136,ha:24,ht15:18,ht55:6,hp:20,at:4,atl:1},
-  DB:{s:16170,i:490,fa:10090,p:13570,ml:126,mag:114,hmg:252,pm:2299,ugl:273,g:19280,map:500,mat:840,fp:58,lrat:372,mp:134,atgm:180,spgc:12,mom:30,moh:36,lrm:18,cl:369,cll:402,amb:97,vc:171,vg:28,vew:14,vrb:86,vm:192,vrs:50,ifv:234,apc:46,dca_missile_courte:4,dca_missile_moyenne:2,dca_missile_longue:1,dca_canon:12,bl:62,br:8,mbt:176,vb:132,ha:24,ht15:18,ht55:6,hp:20,at:4,atl:1},
+  DIM:{s:16770,i:490,fa:10690,p:12970,ml:162,mag:150,hmg:216,pm:1999,ugl:363,g:21680,map:580,mat:840,fp:74,lrat:408,mp:142,atgm:228,c155:22,spgc:18,mom:42,moh:36,lrm:18,cl:385,cll:394,amb:97,vc:175,vg:28,vew:14,vrb:78,vm:184,vrs:50,ifv:306,apc:54,dca_missile_courte:4,dca_missile_moyenne:2,dca_missile_longue:1,dca_canon:12,bl:58,br:8,mbt:88,vb:136,ha:24,ht15:18,ht55:6,hp:20,at:4,atl:1},
+  DB:{s:16170,i:490,fa:10090,p:13570,ml:126,mag:114,hmg:252,pm:2299,ugl:273,g:19280,map:500,mat:840,fp:58,lrat:372,mp:134,atgm:180,c155:16,spgc:12,mom:30,moh:36,lrm:18,cl:369,cll:402,amb:97,vc:171,vg:28,vew:14,vrb:86,vm:192,vrs:50,ifv:234,apc:46,dca_missile_courte:4,dca_missile_moyenne:2,dca_missile_longue:1,dca_canon:12,bl:62,br:8,mbt:176,vb:132,ha:24,ht15:18,ht55:6,hp:20,at:4,atl:1},
   DAM:{s:13280,i:490,fa:10570,p:9180,ml:246,mag:186,hmg:54,pm:835,ugl:534,g:22980,map:750,mat:570,fp:180,lrat:372,mp:132,atgm:150,c105:54,mol:93,mom:54,cl:522,cll:152,amb:89,vc:135,vg:28,vew:14,vrb:10,vm:74,vrs:34,apc:8,dca_missile_courte:4,dca_missile_moyenne:2,dca_missile_longue:1,dca_canon:12,bl:0,br:8,vb:144,ha:24,ht15:18,ht55:6,hp:44,at:4,atl:1},
   DMar:{s:14420,i:490,fa:10240,p:10920,ml:186,mag:144,hmg:108,pm:1259,ugl:348,g:20780,map:550,mat:560,fp:78,lrat:360,mp:126,atgm:132,spgc:18,mol:45,mom:56,moh:20,lrm:18,cl:489,cll:310,amb:87,vc:165,vg:28,vew:14,vrb:18,vm:116,vrs:46,ifv:12,apc:140,dca_missile_courte:4,dca_missile_moyenne:2,dca_missile_longue:1,dca_canon:12,bl:96,br:8,vb:160,ha:24,ht15:18,ht55:6,hp:40,at:4,atl:1},
   BIL:{s:2550,fa:2180,p:750,ml:81,mag:54,hmg:18,pm:110,ugl:162,g:6750,map:180,mat:120,fp:36,lrat:108,mp:12,atgm:36,c105:18,mol:18,mom:18,cl:135,cll:24,amb:13,vc:26,vm:4,vrs:2,bl:0,vb:26},
@@ -1479,6 +1479,17 @@ const DIV = {
          qg:'QGD', c:[['B','BAM',3],['B','BA',1],['B','BS',1],['R','RHC',1],['R','RHM',1],['R','RDA',1]]},
   DMar: {n:"Division de Marine",              s:'DMar', r:"Projection littorale, débarquement amphibie, opérations côtières interarmes. ~14 910 soldats",
          qg:'QGD', c:[['B','BAA',2],['B','BBA',1],['B','BA',1],['B','BS',1],['R','RDA',1],['R','RHC',1],['R','RHM',1]]}
+};
+
+const DIV_BRIG_VARIANTS = {
+  DI: {BA:{total:{c105:54,c155:18,spga:null,spgc:3,lrm:null}, regs:{RAT:{c105:27,c155:9},RAM:{spga:null,spgc:3},RLRM:false}}},
+  DIM:{BA:{total:{c105:null,c155:22,spga:null,spgc:18,lrm:18}, regs:{RAT:{c105:null,c155:11},RAM:{spga:null,spgc:18}}}},
+  DB: {BA:{total:{c105:null,c155:16,spga:null,spgc:12,lrm:18}, regs:{RAT:{c105:null,c155:8},RAM:{spga:null,spgc:12}}}},
+  DAM:{BA:{total:{c105:54,c155:null,spga:null,spgc:null,lrm:null}, regs:{RAT:{c105:27,c155:null},RAM:false,RLRM:false}}},
+  DMar:{BA:{total:{c105:null,c155:null,spga:null,spgc:18,lrm:18}, regs:{RAT:false,RAM:{spga:null,spgc:18}}}}
+};
+const DIV_ORGANIC_EQ = {
+  DI:{apc:336}
 };
 
 /* ══════════════════════════════════════════
@@ -1832,10 +1843,11 @@ const RANKS = {
 ══════════════════════════════════════════ */
 const LS_ARMY = 'hussein_army_v1';
 const LS_EQ   = 'hussein_eq_overrides_v1';
-const STALE_SPAG_OVERRIDES = {
-  DI: ['spga', 'spgc'],
-  DIM: ['spga', 'spgc'],
-  DB: ['spga', 'spgc'],
+const LS_EQ_MIGRATION = 'hussein_eq_migration_v3';
+const STALE_EQ_OVERRIDES = {
+  DI: ['apc', 'c155', 'spga', 'spgc'],
+  DIM: ['c155', 'spga', 'spgc'],
+  DB: ['c155', 'spga', 'spgc'],
   DMar: ['spgc'],
   BIMot: ['spgc'],
   BIMec: ['spga'],
@@ -1947,15 +1959,18 @@ function getOverrides() {
       delete o.DIL;
       changed = true;
     }
-    for (const [unit, keys] of Object.entries(STALE_SPAG_OVERRIDES)) {
-      if (!o[unit]) continue;
-      for (const key of keys) {
-        if (Object.prototype.hasOwnProperty.call(o[unit], key)) {
-          delete o[unit][key];
-          changed = true;
+    if (!localStorage.getItem(LS_EQ_MIGRATION)) {
+      for (const [unit, keys] of Object.entries(STALE_EQ_OVERRIDES)) {
+        if (!o[unit]) continue;
+        for (const key of keys) {
+          if (Object.prototype.hasOwnProperty.call(o[unit], key)) {
+            delete o[unit][key];
+            changed = true;
+          }
         }
+        if (!Object.keys(o[unit]).length) delete o[unit];
       }
-      if (!Object.keys(o[unit]).length) delete o[unit];
+      localStorage.setItem(LS_EQ_MIGRATION, '1');
     }
     if (changed) saveOverrides(o);
     return o;
@@ -2054,6 +2069,17 @@ function sumEq(list) {
     for (const [ek, v] of Object.entries(e)) r[ek] = (r[ek]||0) + v*n;
   }
   return r;
+}
+function mergeEq(base, changes) {
+  const r = Object.assign({}, base || {});
+  for (const [k, v] of Object.entries(changes || {})) {
+    if (v == null) delete r[k];
+    else r[k] = v;
+  }
+  return r;
+}
+function brigVariantEq(bk, variant) {
+  return variant ? mergeEq(getEQ(bk), variant.total) : getEQ(bk);
 }
 
 /* ══════════════════════════════════════════
@@ -2223,10 +2249,10 @@ function renderRegCard(rk, topLevel) {
   </div>`;
 }
 
-function renderRegWithCount(rk, n) {
+function renderRegWithCount(rk, n, eqOverride) {
   const r = REG[rk]; if (!r) return '';
   const id = uid();
-  const eq = getEQ(rk);
+  const eq = mergeEq(getEQ(rk), eqOverride);
   const eff = rEff(rk) * n;
   return `<div class="sub-card">
     <div class="sub-card-hdr" onclick="tg('${id}','chev${id}')">
@@ -2240,7 +2266,7 @@ function renderRegWithCount(rk, n) {
     </div>
     <div class="sub-body" id="${id}">
       <div class="eq-panel" id="eq-${rk}-${id}">
-        ${renderEqPanel(getEQ(rk), editMode, rk)}
+        ${renderEqPanel(eq, eqOverride ? false : editMode, eqOverride ? null : rk)}
       </div>
     </div>
   </div>`;
@@ -2324,7 +2350,7 @@ function renderBatCard(bk) {
   </div>`;
 }
 
-function renderBrigCard(bk, count, topLevel) {
+function renderBrigCard(bk, count, topLevel, variant) {
   const b = BRIG[bk]; if (!b) return '';
   const id = uid();
   const regs = brigRegs(bk);
@@ -2335,17 +2361,20 @@ function renderBrigCard(bk, count, topLevel) {
   if (b.qg) {
     body += `<div class="qg-box"><b>QG Brigade (${b.qg})</b> - ${fmt(qgData.s||0)} soldats - commandement, transmissions, soutien immédiat</div>`;
   }
-  for (const [rk, rn] of b.c) body += renderRegWithCount(rk, rn);
+  for (const [rk, rn] of b.c) {
+    const regVariant = variant?.regs?.[rk];
+    if (regVariant !== false) body += renderRegWithCount(rk, rn, regVariant);
+  }
 
   // Aggregate toggle
   const aggId = uid();
-  const totalEq = getEQ(bk);
+  const totalEq = brigVariantEq(bk, variant);
   body += `<div class="agg-toggle" onclick="tg('${aggId}','achev${aggId}')">
     <span>Équipement total de la brigade</span>
     <span class="mil-chev" id="achev${aggId}">▶</span>
   </div>
   <div class="agg-body" id="${aggId}">
-    <div class="agg-note">Total référentiel CSV — ${fmt(brigEff(bk))} soldats</div>
+    <div class="agg-note">${variant ? 'Variante divisionnaire' : 'Total référentiel CSV'} — ${fmt(brigEff(bk))} soldats</div>
     <div class="eq-panel">${renderEqPanel(totalEq, editMode && topLevel, topLevel ? bk : null)}</div>
   </div>`;
 
@@ -2389,12 +2418,22 @@ function renderDivCard(dk) {
     body += `<div class="qg-box"><b>QG Division (${d.qg})</b> - ${fmt(qgData.s||0)} soldats - PC, transmissions, EW divisionnaire, médical avancé</div>`;
   }
   for (const [t, kk, n] of d.c) {
-    if (t === 'B') body += renderBrigCard(kk, n, false);
+    if (t === 'B') body += renderBrigCard(kk, n, false, DIV_BRIG_VARIANTS[dk]?.[kk]);
     else if (t === 'R') body += renderRegWithCount(kk, n);
   }
 
   const aggId = uid();
   const totalEq = getEQ(dk);
+  const organicEq = DIV_ORGANIC_EQ[dk];
+  if (organicEq) {
+    body += `<div class="agg-toggle">
+      <span>Dotation organique divisionnaire</span>
+    </div>
+    <div class="agg-body" style="display:block">
+      <div class="agg-note">Parc directement rattaché à la division, hors brigades et régiments.</div>
+      <div class="eq-panel">${renderEqPanel(organicEq, false, null)}</div>
+    </div>`;
+  }
   body += `<div class="agg-toggle" onclick="tg('${aggId}','achev${aggId}')">
     <span>Équipement total de la division</span>
     <span class="mil-chev" id="achev${aggId}">▶</span>
