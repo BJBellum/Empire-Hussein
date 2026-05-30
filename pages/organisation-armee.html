@@ -1832,6 +1832,19 @@ const RANKS = {
 ══════════════════════════════════════════ */
 const LS_ARMY = 'hussein_army_v1';
 const LS_EQ   = 'hussein_eq_overrides_v1';
+const STALE_SPAG_OVERRIDES = {
+  DI: ['spga'],
+  DIM: ['spga'],
+  DB: ['spga'],
+  DMar: ['spgc'],
+  BIMot: ['spgc'],
+  BIMec: ['spga'],
+  BB: ['spga'],
+  BAA: ['spgc'],
+  BBA: ['spgc'],
+  BA: ['spgc'],
+  RAM: ['spgc']
+};
 
 let army = [];
 let editMode = false;
@@ -1925,11 +1938,26 @@ function importArmyJsonFile(file) {
 function getOverrides() {
   try {
     const o = JSON.parse(localStorage.getItem(LS_EQ)) || {};
+    let changed = false;
     if (o.DIL && !o.DI) {
       o.DI = o.DIL;
       delete o.DIL;
-      saveOverrides(o);
+      changed = true;
+    } else if (o.DIL) {
+      delete o.DIL;
+      changed = true;
     }
+    for (const [unit, keys] of Object.entries(STALE_SPAG_OVERRIDES)) {
+      if (!o[unit]) continue;
+      for (const key of keys) {
+        if (Object.prototype.hasOwnProperty.call(o[unit], key)) {
+          delete o[unit][key];
+          changed = true;
+        }
+      }
+      if (!Object.keys(o[unit]).length) delete o[unit];
+    }
+    if (changed) saveOverrides(o);
     return o;
   } catch(e) { return {}; }
 }
