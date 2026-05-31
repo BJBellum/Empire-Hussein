@@ -3,39 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Organisation doctrinale de l'Armée de l'air impériale">
+    <meta name="description" content="Calculateur de forces et référentiel aérien des Forces Armées Impériales">
     <title>Organisation Aérienne — Empire Hussein</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="icon" type="image/png" href="../assets/Hussein Empire Coat of Arms.png">
     <script>if(location.pathname.endsWith('.html'))history.replaceState(null,'',location.pathname.replace('.html',''));</script>
     <style>
-.air-shell{max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,52px)}
-.air-hero{padding:calc(var(--header-h) + 72px) 0 54px;border-bottom:1px solid var(--border);background:radial-gradient(circle at 78% 20%,rgba(201,168,76,.1),transparent 30%),var(--bg-deep)}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,.55fr);gap:48px;align-items:end}
-.air-kicker,.eyebrow{font-family:var(--font-display);font-size:9px;letter-spacing:.3em;color:var(--gold)}
-.air-kicker{display:inline-block;padding:6px 14px;border:1px solid rgba(201,168,76,.34);margin-bottom:22px}
-.air-title{font-family:var(--font-display);font-size:clamp(34px,6vw,70px);letter-spacing:.12em;line-height:1.05;color:var(--text-primary);max-width:780px}
-.air-lead{font-size:16px;line-height:1.75;color:var(--text-secondary);max-width:720px;margin-top:20px}
-.hero-dossier{border-left:1px solid var(--gold-dark);padding:12px 0 12px 20px}
-.dossier-row{display:flex;justify-content:space-between;gap:20px;padding:10px 0;border-bottom:1px solid var(--border)}
-.dossier-row:last-child{border-bottom:0}.dossier-key{font-family:var(--font-display);font-size:8px;letter-spacing:.18em;color:var(--text-muted)}.dossier-val{font-size:13px;text-align:right;color:var(--gold)}
-.air-tabs{position:sticky;top:var(--header-h);z-index:80;background:rgba(6,6,6,.94);border-bottom:1px solid var(--border)}
-.tabs-row{display:flex;overflow-x:auto;scrollbar-width:thin;scrollbar-color:rgba(201,168,76,.35) transparent}
-.air-tab{padding:17px 20px;border-bottom:2px solid transparent;margin-bottom:-1px;font-family:var(--font-display);font-size:9px;letter-spacing:.22em;color:var(--text-muted);white-space:nowrap;transition:color .2s,border-color .2s}.air-tab:hover{color:var(--text-secondary)}.air-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
-.air-main{padding:36px 0 100px}.air-panel{display:none}.air-panel.active{display:block}
-.section-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,.48fr);gap:32px;margin:0 0 22px;padding-bottom:16px;border-bottom:1px solid var(--border)}
-.section-title{font-family:var(--font-display);font-size:clamp(18px,3vw,28px);letter-spacing:.13em;color:var(--text-primary)}.section-copy{color:var(--text-secondary);font-size:14px;line-height:1.65}.section-meta{font-size:12px;color:var(--text-muted);line-height:1.65}
-.doctrine-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:14px;margin-bottom:34px}.doctrine-primary{padding:26px;border:1px solid rgba(201,168,76,.28);background:rgba(201,168,76,.045)}.doctrine-aside{display:grid;gap:14px}.doctrine-note{padding:18px;border-top:1px solid var(--border);background:var(--bg-section)}.doctrine-title{font-family:var(--font-display);font-size:10px;letter-spacing:.2em;color:var(--gold);margin-bottom:12px}.doctrine-text{font-size:14px;color:var(--text-secondary);line-height:1.7}
-.chain{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);margin-bottom:38px}.chain-step{padding:18px;border-right:1px solid var(--border);background:var(--bg-section)}.chain-step:last-child{border-right:0}.chain-code{font-family:var(--font-display);font-size:9px;letter-spacing:.2em;color:var(--gold)}.chain-name{font-weight:700;font-size:15px;color:var(--text-primary);margin:8px 0 4px}.chain-desc{font-size:12px;line-height:1.55;color:var(--text-muted)}
-.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.filter-btn{padding:8px 12px;border:1px solid var(--border);font-family:var(--font-display);font-size:8px;letter-spacing:.16em;color:var(--text-muted);transition:all .2s}.filter-btn:hover,.filter-btn.active{color:var(--gold);border-color:rgba(201,168,76,.52);background:rgba(201,168,76,.07)}.filter-btn:active,.air-tab:active{transform:translateY(1px)}
-.wing-list{display:grid;gap:11px}.wing{border:1px solid var(--border);background:var(--bg-section)}.wing-head{display:grid;grid-template-columns:110px minmax(0,1fr) auto;gap:16px;align-items:center;padding:17px 18px;cursor:pointer;transition:background .2s}.wing-head:hover{background:rgba(201,168,76,.04)}.wing-code{font-family:var(--font-display);font-size:11px;letter-spacing:.16em;color:var(--gold)}.wing-name{font-size:16px;font-weight:700;color:var(--text-primary)}.wing-role{font-size:12px;color:var(--text-secondary);margin-top:3px}.wing-count{font-family:var(--font-display);font-size:9px;letter-spacing:.15em;color:var(--text-muted);white-space:nowrap}.wing-body{display:none;padding:0 18px 18px;border-top:1px solid var(--border)}.wing.open .wing-body{display:block}.wing.open .wing-head{background:rgba(201,168,76,.035)}
-.wing-doctrine{font-size:13px;line-height:1.65;color:var(--text-secondary);padding:15px 0}.squad-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.squad{padding:12px;border-left:2px solid var(--gold-dark);background:var(--bg-card)}.squad-name{font-size:13px;font-weight:700;color:var(--text-primary)}.squad-eq{font-size:12px;color:var(--gold);margin-top:4px}.squad-task{font-size:11px;color:var(--text-muted);line-height:1.5;margin-top:5px}
-.inventory{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.aircraft{display:grid;grid-template-columns:86px 1fr;gap:14px;padding:15px;border-top:1px solid var(--border);background:var(--bg-section)}.aircraft-code{font-family:var(--font-display);font-size:10px;letter-spacing:.14em;color:var(--gold)}.aircraft-name{font-size:14px;font-weight:700;color:var(--text-primary)}.aircraft-role{font-size:12px;color:var(--text-secondary);line-height:1.55;margin-top:4px}.aircraft-ref{font-size:11px;color:var(--text-muted);margin-top:5px}
-.rank-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.rank-group{border-top:1px solid var(--border);background:var(--bg-section)}.rank-title{padding:12px 14px;font-family:var(--font-display);font-size:9px;letter-spacing:.2em;color:var(--gold);background:var(--bg-card)}.rank-row{display:grid;grid-template-columns:26px minmax(0,1fr) minmax(120px,.85fr) 48px;gap:10px;padding:10px 14px;border-top:1px solid rgba(255,255,255,.045);align-items:center}.rank-num{font-size:11px;color:var(--text-muted)}.rank-name{font-size:13px;font-weight:700;color:var(--text-primary)}.rank-equiv{font-size:12px;color:var(--text-secondary)}.rank-stars{font-size:11px;color:var(--gold);text-align:right;letter-spacing:.08em}
+.org-wrap{max-width:1200px;margin:0 auto;padding:0 clamp(20px,5vw,48px) 100px}
+.org-hero{padding:calc(var(--header-h) + 52px) 0 44px;text-align:center;border-bottom:1px solid var(--border)}
+.org-badge{display:inline-block;font-family:var(--font-display);font-size:9px;letter-spacing:.35em;color:var(--gold);border:1px solid rgba(201,168,76,.3);padding:6px 18px;margin-bottom:22px}
+.org-title{font-family:var(--font-display);font-size:clamp(26px,5vw,50px);letter-spacing:.12em;color:var(--text-primary);margin-bottom:12px}
+.org-sub{font-size:15px;color:var(--text-secondary);max-width:620px;margin:0 auto;line-height:1.6}
+.org-tabs{display:flex;border-bottom:1px solid var(--border);position:sticky;top:var(--header-h);background:var(--bg-deep);z-index:90;margin-bottom:32px}
+.org-tabs .org-wrap{overflow-x:auto;scrollbar-width:thin;scrollbar-color:rgba(201,168,76,.35) transparent}
+.org-tab{font-family:var(--font-display);font-size:10px;letter-spacing:.22em;color:var(--text-muted);padding:16px 22px;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .2s,border-color .2s;white-space:nowrap}
+.org-tab:hover{color:var(--text-secondary)}.org-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.org-panel{display:none}.org-panel.active{display:block}
+.sec-title{font-family:var(--font-display);font-size:10px;letter-spacing:.28em;color:var(--gold);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;margin-bottom:28px}
+.stat-card{padding:18px 20px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px}
+.stat-label{font-family:var(--font-display);font-size:8px;letter-spacing:.22em;color:var(--text-muted);margin-bottom:7px}
+.stat-value{font-size:28px;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1}
+.stat-sub{font-size:11px;color:var(--text-secondary);margin-top:5px}.stat-card.cmd .stat-value{color:var(--text-secondary)}.stat-card.total .stat-value{color:var(--gold-light)}
+.calc-add-form{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;padding:18px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;margin-bottom:20px}
+.form-field{display:flex;flex-direction:column;gap:6px}.form-label{font-family:var(--font-display);font-size:8px;letter-spacing:.2em;color:var(--text-muted)}
+.form-select,.form-input{background:var(--bg-section);border:1px solid var(--border);color:var(--text-primary);font-family:var(--font-body);font-size:13px;padding:8px 12px;border-radius:4px;outline:none;transition:border-color .2s}
+.form-select{min-width:280px;cursor:pointer}.form-select:focus,.form-input:focus{border-color:var(--gold)}.form-input{width:88px;text-align:center}
+.btn-add{background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.35);color:var(--gold);font-family:var(--font-display);font-size:9px;letter-spacing:.22em;padding:9px 22px;border-radius:4px;cursor:pointer;transition:all .2s;white-space:nowrap}.btn-add:hover{background:rgba(201,168,76,.22);border-color:var(--gold)}
+.air-io-bar{display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap;margin:-8px 0 24px}.io-hint{color:var(--text-muted);font-size:11px;margin-right:auto}.btn-io{background:transparent;border:1px solid var(--border);color:var(--text-muted);font-family:var(--font-display);font-size:9px;letter-spacing:.18em;padding:9px 16px;border-radius:4px;cursor:pointer;transition:all .2s;white-space:nowrap}.btn-io:hover{border-color:rgba(201,168,76,.45);color:var(--gold);background:rgba(201,168,76,.08)}
+.roster-wrap{border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:24px}.roster-table{width:100%;border-collapse:collapse;font-size:13px}.roster-table th{text-align:left;padding:10px 14px;font-family:var(--font-display);font-size:8px;letter-spacing:.22em;color:var(--text-muted);border-bottom:1px solid var(--border);background:var(--bg-card);white-space:nowrap}.roster-table td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text-primary);background:var(--bg-section);vertical-align:middle}.roster-table tr:last-child td{border-bottom:none}.roster-table tr:hover td{background:rgba(201,168,76,.03)}
+.roster-input{width:72px;background:var(--bg-card);border:1px solid var(--border);color:var(--text-primary);font-family:var(--font-body);font-size:13px;padding:6px 8px;border-radius:4px;text-align:center;outline:none}.roster-input:focus{border-color:var(--gold)}
+.btn-remove{background:none;border:1px solid rgba(220,80,80,.2);color:rgba(220,100,100,.55);padding:5px 11px;border-radius:4px;font-size:12px;cursor:pointer;transition:all .2s}.btn-remove:hover{border-color:rgba(220,80,80,.5);color:rgba(220,100,100,.9)}
+.unit-service{color:var(--gold);font-weight:600}.unit-cmd{color:var(--text-secondary)}.roster-empty{text-align:center;padding:44px 20px;color:var(--text-muted);background:var(--bg-section);font-size:13px}
+.totals-block{border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:24px}.totals-toggle{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;background:var(--bg-card);cursor:pointer;font-size:13px;font-weight:600;color:var(--text-primary);user-select:none;border:none;width:100%;text-align:left}.totals-toggle:hover{background:rgba(201,168,76,.04)}.totals-chevron{color:var(--text-muted);font-size:11px;transition:transform .2s}.totals-chevron.open{transform:rotate(90deg)}.totals-body{display:none;padding:16px;background:var(--bg-section);border-top:1px solid var(--border)}.totals-body.open{display:block}.totals-note{font-size:11px;color:var(--text-muted);font-style:italic;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.eq-section{margin-bottom:14px}.eq-section:last-child{margin-bottom:0}.eq-cat-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px;padding-bottom:4px;border-bottom:1px solid}.eq-grid{display:flex;flex-wrap:wrap;gap:5px}.eq-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5px 10px;border-radius:5px;border:1px solid;min-width:84px;text-align:center}.eq-val{font-size:15px;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}.eq-lbl{font-size:10px;margin-top:2px;line-height:1.3;opacity:.85}
+.cat-combat .eq-cat-label{color:#C9A84C;border-color:rgba(201,168,76,.3)}.cat-combat .eq-item{background:rgba(201,168,76,.07);border-color:rgba(201,168,76,.22);color:#C9A84C}.cat-strike .eq-cat-label{color:#C9784C;border-color:rgba(201,120,76,.3)}.cat-strike .eq-item{background:rgba(201,120,76,.07);border-color:rgba(201,120,76,.22);color:#C9784C}.cat-isr .eq-cat-label{color:#4C9EC9;border-color:rgba(76,158,201,.3)}.cat-isr .eq-item{background:rgba(76,158,201,.07);border-color:rgba(76,158,201,.22);color:#4C9EC9}.cat-mob .eq-cat-label{color:#7CA84C;border-color:rgba(124,168,76,.3)}.cat-mob .eq-item{background:rgba(124,168,76,.07);border-color:rgba(124,168,76,.22);color:#7CA84C}.cat-rotary .eq-cat-label{color:#4CAF82;border-color:rgba(76,175,130,.3)}.cat-rotary .eq-item{background:rgba(76,175,130,.07);border-color:rgba(76,175,130,.22);color:#4CAF82}.cat-training .eq-cat-label{color:#A28BC9;border-color:rgba(162,139,201,.3)}.cat-training .eq-item{background:rgba(162,139,201,.07);border-color:rgba(162,139,201,.22);color:#A28BC9}
+.mil-card{border:1px solid var(--border);border-radius:8px;margin-bottom:8px;overflow:hidden;background:var(--bg-card)}.mil-card-hdr{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;user-select:none;transition:background .15s}.mil-card-hdr:hover{background:rgba(201,168,76,.04)}.mil-chip{font-family:var(--font-display);font-size:9px;letter-spacing:.08em;padding:3px 10px;border-radius:3px;flex-shrink:0;min-width:58px;text-align:center}.chip-wing{background:rgba(201,168,76,.18);color:var(--gold);border:1px solid rgba(201,168,76,.38)}.chip-squad{background:rgba(76,158,201,.08);color:#7fb8d6;border:1px solid rgba(76,158,201,.2)}
+.mil-info{flex:1;min-width:0}.mil-name{font-size:14px;font-weight:600;color:var(--text-primary);line-height:1.3}.mil-role{font-size:11px;color:var(--text-secondary);margin-top:3px;line-height:1.4}.mil-eff{font-size:13px;font-weight:600;color:var(--gold);flex-shrink:0;font-variant-numeric:tabular-nums}.mil-chev{color:var(--text-muted);font-size:10px;flex-shrink:0;margin-left:4px;transition:transform .2s}.mil-chev.open{transform:rotate(90deg)}.mil-body{display:none;padding:8px 14px 14px;background:var(--bg-section);border-top:1px solid var(--border)}.mil-body.open{display:block}
+.fleet-note{padding:8px 12px;margin:6px 0 10px;background:var(--bg-card);border-left:3px solid var(--gold-dark);font-size:12px;color:var(--text-secondary)}
+.rank-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.rank-group{border:1px solid var(--border);background:var(--bg-section)}.rank-title{padding:11px 14px;background:var(--bg-card);font-family:var(--font-display);font-size:9px;letter-spacing:.18em;color:var(--gold)}.rank-row{display:grid;grid-template-columns:24px 1fr 1fr 46px;gap:8px;padding:9px 14px;border-top:1px solid rgba(255,255,255,.04);font-size:12px}.rank-num{color:var(--text-muted)}.rank-name{color:var(--text-primary);font-weight:700}.rank-equiv{color:var(--text-secondary)}.rank-stars{text-align:right;color:var(--gold)}
+body.military-auth-pending .org-hero,body.military-auth-pending .org-tabs,body.military-auth-pending .org-wrap,body.military-auth-denied .org-hero,body.military-auth-denied .org-tabs,body.military-auth-denied .org-wrap{display:none}
 .military-access-gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:calc(var(--header-h) + 32px) clamp(20px,5vw,48px) 48px;background:radial-gradient(circle at 50% 0%,rgba(201,168,76,.08),transparent 42%),var(--bg-deep)}.military-access-box{width:min(560px,100%);border:1px solid var(--border);border-radius:8px;background:var(--bg-card);padding:clamp(24px,5vw,40px);text-align:center}.military-access-kicker{font-family:var(--font-display);font-size:9px;letter-spacing:.28em;color:var(--gold);margin-bottom:18px}.military-access-title{font-family:var(--font-display);font-size:clamp(22px,4vw,36px);letter-spacing:.14em;color:var(--text-primary);margin-bottom:14px}.military-access-copy{color:var(--text-secondary);font-size:15px;line-height:1.65;max-width:46ch;margin:0 auto 24px}.military-access-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}.military-access-btn{font-family:var(--font-display);font-size:9px;letter-spacing:.18em;color:var(--gold);border:1px solid rgba(201,168,76,.45);border-radius:4px;background:rgba(201,168,76,.12);padding:11px 20px}.military-access-btn.secondary{color:var(--text-muted);border-color:var(--border);background:transparent}
-body.military-auth-pending .air-hero,body.military-auth-pending .air-tabs,body.military-auth-pending .air-main,body.military-auth-denied .air-hero,body.military-auth-denied .air-tabs,body.military-auth-denied .air-main{display:none}
-@media(max-width:820px){.hero-grid,.section-head,.doctrine-grid{grid-template-columns:1fr}.chain{grid-template-columns:1fr 1fr}.chain-step:nth-child(2){border-right:0}.chain-step{border-bottom:1px solid var(--border)}.wing-head{grid-template-columns:82px 1fr}.wing-count{grid-column:2}.inventory,.rank-grid,.squad-grid{grid-template-columns:1fr}}
-@media(max-width:520px){.chain{grid-template-columns:1fr}.chain-step{border-right:0}.wing-head{grid-template-columns:1fr;gap:5px}.wing-count{grid-column:1}.rank-row{grid-template-columns:22px 1fr}.rank-equiv,.rank-stars{grid-column:2;text-align:left}}
+@media(max-width:700px){.calc-add-form{flex-direction:column;align-items:stretch}.form-select{min-width:0;width:100%}.stats-grid{grid-template-columns:repeat(2,1fr)}.roster-wrap{overflow-x:auto}.mil-card-hdr{align-items:flex-start}.mil-eff{display:none}.rank-grid{grid-template-columns:1fr}.rank-row{grid-template-columns:24px 1fr}.rank-equiv,.rank-stars{grid-column:2;text-align:left}}
     </style>
 </head>
 <body data-requires-military-access="true" class="military-auth-pending">
@@ -45,7 +54,7 @@ body.military-auth-pending .air-hero,body.military-auth-pending .air-tabs,body.m
             <a href="../" class="nav-link"><span class="nav-link-text">ACCUEIL</span><span class="nav-link-line"></span></a>
             <a href="economie.html" class="nav-link"><span class="nav-link-text">ECONOMIE</span><span class="nav-link-line"></span></a>
             <a href="energie.html" class="nav-link"><span class="nav-link-text">ENERGIE</span><span class="nav-link-line"></span></a>
-            <a href="forces-armees.html" class="nav-link nav-link--active" id="nav-forces"><span class="nav-link-text">FORCES ARMEES</span><span class="nav-link-line"></span></a>
+            <a href="forces-armees.html" class="nav-link nav-link--locked" id="nav-forces"><span class="nav-link-text">FORCES ARMEES</span><span class="nav-link-line"></span></a>
             <button class="btn-discord" id="btn-discord" aria-label="Connexion Discord"><span class="btn-discord-text">CONNEXION</span></button>
         </nav>
         <button class="menu-toggle" id="menu-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -55,150 +64,125 @@ body.military-auth-pending .air-hero,body.military-auth-pending .air-tabs,body.m
     <a href="../" class="mobile-nav-link">ACCUEIL</a>
     <a href="economie.html" class="mobile-nav-link">ECONOMIE</a>
     <a href="energie.html" class="mobile-nav-link">ENERGIE</a>
-    <a href="forces-armees.html" class="mobile-nav-link mobile-nav-link--active" id="nav-forces-mobile">FORCES ARMEES</a>
+    <a href="forces-armees.html" class="mobile-nav-link mobile-nav-link--locked" id="nav-forces-mobile">FORCES ARMEES</a>
     <button class="btn-discord btn-discord--mobile" id="btn-discord-mobile" aria-label="Connexion Discord"><span>CONNEXION</span></button>
 </div>
 
-<section class="air-hero">
-    <div class="air-shell hero-grid">
-        <div>
-            <div class="air-kicker">CORPS SIROCCO</div>
-            <h1 class="air-title">ORDRE AERIEN IMPERIAL</h1>
-            <p class="air-lead">Organisation de l'Armée de l'air impériale : commandement du ciel, frappe dans la profondeur, renseignement électromagnétique et projection stratégique au service du Trône du Lion d'Or.</p>
-        </div>
-        <div class="hero-dossier">
-            <div class="dossier-row"><span class="dossier-key">AUTORITE</span><span class="dossier-val">Padishah-Sirocco</span></div>
-            <div class="dossier-row"><span class="dossier-key">DOCTRINE</span><span class="dossier-val">Ciel unique, frappe profonde</span></div>
-            <div class="dossier-row"><span class="dossier-key">NIVEAU</span><span class="dossier-val">Référentiel impérial</span></div>
-        </div>
+<div class="org-hero">
+    <div class="org-wrap">
+        <div class="org-badge">CORPS SIROCCO</div>
+        <h1 class="org-title">ORDRE AERIEN</h1>
+        <p class="org-sub">Calculateur de forces aériennes, escadres modernes et composition détaillée des moyens impériaux.</p>
     </div>
-</section>
+</div>
 
-<nav class="air-tabs">
-    <div class="air-shell tabs-row">
-        <button class="air-tab active" data-tab="doctrine">DOCTRINE</button>
-        <button class="air-tab" data-tab="ordre">ESCADRES</button>
-        <button class="air-tab" data-tab="inventaire">AERONEFS</button>
-        <button class="air-tab" data-tab="grades">GRADES</button>
+<div class="org-tabs">
+    <div class="org-wrap" style="display:flex;padding-top:0;padding-bottom:0;width:100%;max-width:1200px;margin:0 auto;">
+        <button class="org-tab active" data-tab="force">MA FORCE AERIENNE</button>
+        <button class="org-tab" data-tab="referentiel">REFERENTIEL</button>
+        <button class="org-tab" data-tab="grades">GRADES</button>
     </div>
-</nav>
+</div>
 
-<main class="air-shell air-main">
-    <section class="air-panel active" id="tab-doctrine">
-        <div class="section-head">
-            <div><div class="eyebrow">STRUCTURE MODERNE</div><h2 class="section-title">COMMANDEMENT ET EMPLOI</h2></div>
-            <p class="section-meta">Modèle inspiré des armées de l'air contemporaines : commandements spécialisés, escadres multi-escadrilles et moyens de soutien intégrés.</p>
+<div class="org-wrap">
+    <div id="tab-force" class="org-panel active">
+        <div class="sec-title">AJOUTER UNE FORMATION AERIENNE</div>
+        <div class="calc-add-form">
+            <div class="form-field"><label class="form-label">TYPE DE FORMATION</label><select class="form-select" id="add-type"></select></div>
+            <div class="form-field"><label class="form-label">EN SERVICE</label><input type="number" class="form-input" id="add-service" value="1" min="0" max="999"></div>
+            <div class="form-field"><label class="form-label">COMMANDEES</label><input type="number" class="form-input" id="add-ordered" value="0" min="0" max="999"></div>
+            <button class="btn-add" id="btn-add-unit">+ AJOUTER</button>
         </div>
-        <div class="doctrine-grid">
-            <article class="doctrine-primary">
-                <div class="doctrine-title">PRINCIPE DU CORPS SIROCCO</div>
-                <p class="doctrine-text">Chaque escadre constitue un outil opérationnel cohérent : aéronefs, maintenance, protection de base, transmissions et planification de mission. Les escadrilles concentrent les appareils d'un même emploi. Les moyens rares, comme les AWACS, les plateformes ELINT ou les ravitailleurs, sont centralisés et détachés au profit des opérations.</p>
-            </article>
-            <div class="doctrine-aside">
-                <article class="doctrine-note"><div class="doctrine-title">ALERTE</div><p class="doctrine-text">Intercepteurs et AWACS maintiennent une posture permanente de police du ciel.</p></article>
-                <article class="doctrine-note"><div class="doctrine-title">PROJECTION</div><p class="doctrine-text">Bombardiers, ravitailleurs et transports forment la réserve stratégique du Trône.</p></article>
-            </div>
+        <div class="air-io-bar">
+            <span class="io-hint">Sauvegarde locale de la composition actuelle au format JSON.</span>
+            <button class="btn-io" id="btn-export-air" type="button">EXPORTER JSON</button>
+            <button class="btn-io" id="btn-import-air" type="button">IMPORTER JSON</button>
+            <input type="file" id="air-import-file" accept="application/json,.json" hidden>
         </div>
-        <div class="chain">
-            <article class="chain-step"><div class="chain-code">NIVEAU 01</div><div class="chain-name">État-major Sirocco</div><p class="chain-desc">Doctrine, planification, priorités impériales et coordination interarmées.</p></article>
-            <article class="chain-step"><div class="chain-code">NIVEAU 02</div><div class="chain-name">Commandement</div><p class="chain-desc">Grand ensemble fonctionnel : combat, stratégie, ISR, mobilité ou formation.</p></article>
-            <article class="chain-step"><div class="chain-code">NIVEAU 03</div><div class="chain-name">Escadre</div><p class="chain-desc">Unité organique comparable à une wing moderne, responsable de sa base et de sa mission.</p></article>
-            <article class="chain-step"><div class="chain-code">NIVEAU 04</div><div class="chain-name">Escadrille</div><p class="chain-desc">Formation tactique homogène, généralement de 4 à 24 aéronefs selon la spécialité.</p></article>
+        <div class="sec-title">BILAN DE FORCE</div>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-label">EN SERVICE</div><div class="stat-value" id="stat-service">0</div><div class="stat-sub">aéronefs opérationnels</div></div>
+            <div class="stat-card cmd"><div class="stat-label">COMMANDEES</div><div class="stat-value" id="stat-ordered">0</div><div class="stat-sub">aéronefs en commande</div></div>
+            <div class="stat-card total"><div class="stat-label">TOTAL PROJETE</div><div class="stat-value" id="stat-total">0</div><div class="stat-sub">parc aérien final</div></div>
+            <div class="stat-card"><div class="stat-label">FORMATIONS</div><div class="stat-value" id="stat-units">0</div><div class="stat-sub">unités enregistrées</div></div>
         </div>
-    </section>
-
-    <section class="air-panel" id="tab-ordre">
-        <div class="section-head">
-            <div><div class="eyebrow">ORDRE DE BATAILLE TYPE</div><h2 class="section-title">ESCADRES ET ESCADRILLES</h2></div>
-            <p class="section-meta">Ouvrez une escadre pour afficher ses escadrilles organiques. Les volumes servent de modèle doctrinal et peuvent être adaptés aux théâtres.</p>
+        <div class="sec-title">COMPOSITION DE LA FORCE</div>
+        <div class="roster-wrap">
+            <table class="roster-table"><thead><tr><th>TYPE</th><th>DESIGNATION</th><th>EN SERVICE</th><th>COMMANDEES</th><th>AERONEFS SERVICE</th><th>AERONEFS CMD</th><th></th></tr></thead><tbody id="roster-body"></tbody></table>
         </div>
-        <div class="filter-row" id="wing-filters"></div>
-        <div class="wing-list" id="wing-list"></div>
-    </section>
-
-    <section class="air-panel" id="tab-inventaire">
-        <div class="section-head">
-            <div><div class="eyebrow">NOMENCLATURE AERIENNE</div><h2 class="section-title">AERONEFS DU CORPS SIROCCO</h2></div>
-            <p class="section-meta">Les références IRL indiquent la famille d'emploi recherchée, sans imposer une copie technique exacte.</p>
-        </div>
-        <div class="filter-row" id="aircraft-filters"></div>
-        <div class="inventory" id="aircraft-list"></div>
-    </section>
-
-    <section class="air-panel" id="tab-grades">
-        <div class="section-head">
-            <div><div class="eyebrow">CADRE IMPERIAL</div><h2 class="section-title">GRADES DU CORPS SIROCCO</h2></div>
-            <p class="section-meta">Hiérarchie aérienne alignée sur le référentiel général des forces impériales et adaptée au vocabulaire de Dune.</p>
-        </div>
-        <div class="rank-grid" id="rank-list"></div>
-    </section>
-</main>
-
+        <div class="totals-block" id="totals-block" style="display:none"><button class="totals-toggle" id="totals-toggle"><span>Composition détaillée — force en service</span><span class="totals-chevron" id="totals-chevron">▶</span></button><div class="totals-body" id="totals-body"><div class="totals-note" id="totals-note"></div><div id="totals-eq"></div></div></div>
+        <div class="totals-block" id="totals-block-cmd" style="display:none"><button class="totals-toggle" id="totals-toggle-cmd"><span>Composition détaillée — force commandée</span><span class="totals-chevron" id="totals-chevron-cmd">▶</span></button><div class="totals-body" id="totals-body-cmd"><div class="totals-note" id="totals-note-cmd"></div><div id="totals-eq-cmd"></div></div></div>
+    </div>
+    <div id="tab-referentiel" class="org-panel">
+        <div class="sec-title">ESCADRES MODERNES</div><div id="ref-groups"></div>
+        <div class="sec-title" style="margin-top:24px">ESCADRILLES ET MOYENS</div><div id="ref-units"></div>
+    </div>
+    <div id="tab-grades" class="org-panel">
+        <div class="sec-title">GRADES DU CORPS SIROCCO</div><div class="rank-grid" id="rank-list"></div>
+    </div>
+</div>
 <div class="toast" id="toast"></div>
 <script src="../js/auth.js"></script>
 <script src="../js/main.js"></script>
 <script>
 'use strict';
-const COMMANDS = [
-  ['all','TOUS'],['combat','COMBAT'],['strategique','STRATEGIQUE'],['isr','ISR ET C2'],
-  ['mobilite','MOBILITE'],['helico','HELICOPTERES'],['formation','FORMATION']
-];
-const WINGS = [
-  {c:'combat',code:'ESC-011',name:'Escadre de supériorité Shai-Hulud',role:'Supériorité aérienne et interception longue portée',desc:'Contrôle du ciel, protection des AWACS et défense aérienne avancée.',sq:[['11e Escadrille Al-Barq','18 Al-Barq I','Intercepteur lourd, analogue doctrinal F-15C / MiG-31'],['12e Escadrille Crysknife','18 Crysknife A','Chasseur de supériorité aérienne furtif'],['13e Escadrille Sayyadina','6 Sayyadina EW','Brouillage d’escorte et désignation électronique']]},
-  {c:'combat',code:'ESC-021',name:'Escadre multirôle Muad Dib',role:'Chasse multirôle, frappe tactique et SEAD',desc:'Force polyvalente de première entrée, capable d’assurer l’escorte, la frappe de précision et la suppression des défenses adverses.',sq:[['21e Escadrille Muad Dib','24 Muad Dib M','Chasseur multirôle, analogue doctrinal Rafale / F-16V'],['22e Escadrille Gom Jabbar','18 Gom Jabbar S','Frappe SEAD / DEAD et missile antiradar'],['23e Escadrille Fedaykin','12 Muad Dib N','Appui aéronaval et frappe maritime']]},
-  {c:'combat',code:'ESC-031',name:'Escadre d’appui Sardaukar',role:'Appui-feu rapproché et interdiction tactique',desc:'Soutien direct des forces terrestres, destruction de colonnes et couverture des zones disputées.',sq:[['31e Escadrille Sardaukar','18 Sardaukar A','Avion d’attaque blindé, analogue doctrinal A-10 / Su-25'],['32e Escadrille Ornithoptère','24 Ornithoptère H','Appui léger, liaison et reconnaissance armée']]},
-  {c:'strategique',code:'ESC-101',name:'Escadre lourde Arrakis',role:'Bombardement stratégique et frappe dans la profondeur',desc:'Réserve de frappe conventionnelle lourde du Trône, conçue pour l’endurance et l’emport massif.',sq:[['101e Escadrille Arrakis','16 Arrakis B','Bombardier lourd à grand rayon d’action, analogue doctrinal B-52'],['102e Escadrille Kanly','12 Kanly S','Bombardier pénétrant furtif, analogue doctrinal B-2 / B-21'],['103e Escadrille Harkonnen','8 Harkonnen M','Porte-missiles de croisière à longue portée']]},
-  {c:'strategique',code:'ESC-111',name:'Escadre de ravitaillement Al Ghayth',role:'Ravitaillement en vol et allonge stratégique',desc:'Allonge les patrouilles de chasse, les raids lourds et les déploiements inter-théâtres.',sq:[['111e Escadrille Al Ghayth','12 Al-Ghayth K','Ravitailleur lourd, analogue doctrinal KC-46 / A330 MRTT'],['112e Escadrille Melange','8 Melange T','Ravitailleur tactique et transport secondaire']]},
-  {c:'isr',code:'ESC-201',name:'Escadre de guet Prescience',role:'AWACS, commandement aéroporté et gestion de bataille',desc:'Produit l’image aérienne commune et dirige les interceptions au-delà de l’horizon.',sq:[['201e Escadrille Prescience','6 Prescience E','AWACS, analogue doctrinal E-3 / E-7 Wedgetail'],['202e Escadrille Mentat','6 Mentat C','Relais de commandement et communications aéroportées']]},
-  {c:'isr',code:'ESC-211',name:'Escadre de renseignement Ix',role:'ELINT, SIGINT, surveillance terrestre et reconnaissance',desc:'Collecte les émissions adverses, cartographie les réseaux et suit les mouvements au sol.',sq:[['211e Escadrille Ix','6 Ix EL','ELINT / SIGINT, analogue doctrinal RC-135 Rivet Joint'],['212e Escadrille Bene Gesserit','6 Bene Gesserit R','Radar de surveillance terrestre, analogue doctrinal JSTARS'],['213e Escadrille Aton','12 Aton H','Drone HALE ISR, analogue doctrinal RQ-4 Global Hawk']]},
-  {c:'isr',code:'ESC-221',name:'Escadre de patrouille Caladan',role:'Patrouille maritime, lutte anti-sous-marine et surveillance littorale',desc:'Protège les approches navales, les détroits et les groupes aéronavals.',sq:[['221e Escadrille Caladan','12 Caladan P','Patrouille maritime, analogue doctrinal P-8 Poseidon'],['222e Escadrille Ecume','8 Ecume D','Drone maritime longue endurance']]},
-  {c:'isr',code:'ESC-231',name:'Escadre de drones Aton',role:'Surveillance persistante, frappe téléopérée et accompagnement de chasse',desc:'Maintient une présence aérienne durable au-dessus des zones sensibles sans exposer les équipages.',sq:[['231e Escadrille Aton','12 Aton H','Drone HALE de renseignement persistant'],['232e Escadrille Hunter Seeker','24 Hunter Seeker M','Drone MALE armé, analogue doctrinal MQ-9 Reaper'],['233e Escadrille Ghola','18 Ghola C','Drone de combat collaboratif, loyal wingman']]},
-  {c:'mobilite',code:'ESC-301',name:'Escadre de transport Heighliner',role:'Projection stratégique et transport lourd',desc:'Déploie hommes, matériels lourds et aide humanitaire sur les longues distances.',sq:[['301e Escadrille Heighliner','12 Heighliner C','Transport stratégique lourd, analogue doctrinal C-17'],['302e Escadrille Guilde','8 Guilde G','Transport hors-gabarit, analogue doctrinal C-5M / An-124']]},
-  {c:'mobilite',code:'ESC-311',name:'Escadre de transport Fremen',role:'Transport tactique et aérolargage',desc:'Ravitaille les pistes sommaires et soutient les unités isolées dans le désert.',sq:[['311e Escadrille Fremen','18 Fremen T','Transport tactique, analogue doctrinal C-130J / A400M'],['312e Escadrille Sietch','12 Sietch L','Transport léger STOL et liaison']]},
-  {c:'mobilite',code:'ESC-321',name:'Escadre spéciale Fedaykin',role:'Infiltration, appui gunship et évacuation médicale',desc:'Soutient les opérations spéciales, les récupérations sensibles et les évacuations sous menace.',sq:[['321e Escadrille Fedaykin','12 Fedaykin S','Transport spécial basse altitude, analogue doctrinal MC-130'],['322e Escadrille Feyd','8 Feyd G','Gunship d’appui lourd, analogue doctrinal AC-130'],['323e Escadrille Suk','8 Suk V','Évacuation médicale et transport sanitaire']]},
-  {c:'helico',code:'ESC-401',name:'Escadre d’assaut Ornithoptère',role:'Manœuvre aéromobile, attaque et récupération',desc:'Voilures tournantes au profit des forces terrestres et des détachements Fedaykin.',sq:[['401e Escadrille Crysknife','18 Ornithoptère A','Hélicoptère d’attaque, analogue doctrinal AH-64'],['402e Escadrille Sietch','24 Ornithoptère M','Transport tactique, analogue doctrinal UH-60 / NH90'],['403e Escadrille Thufir','8 Ornithoptère CSAR','Recherche et sauvetage au combat']]},
-  {c:'formation',code:'ESC-501',name:'Escadre académique Salusa',role:'Formation, conversion opérationnelle et agresseurs',desc:'Prépare les équipages, maintient les standards et reproduit les tactiques adverses.',sq:[['501e Escadrille Cielago','24 Cielago T','Entraînement avancé et conversion chasse'],['502e Escadrille Corrino','16 Corrino A','Escadrille agresseur et simulation de menace'],['503e Escadrille Suk','8 Suk E','Instruction transport, médicalisation et sauvetage']]},
-];
-const AIRCRAFT = [
-  ['combat','ALB-I','Al-Barq I','Intercepteur lourd très longue portée','F-15C / MiG-31'],
-  ['combat','CRY-A','Crysknife A','Chasseur furtif de supériorité aérienne','F-22'],
-  ['combat','MUD-M','Muad Dib M','Chasseur multirôle de première ligne','Rafale / F-16V'],
-  ['combat','GOM-S','Gom Jabbar S','Suppression des défenses aériennes et guerre électronique','EA-18G / F-16CJ'],
-  ['combat','SAY-E','Sayyadina EW','Brouillage d’escorte et désignation électronique','EA-18G Growler'],
-  ['combat','SAR-A','Sardaukar A','Appui-feu rapproché blindé','A-10 / Su-25'],
-  ['strategique','ARR-B','Arrakis B','Bombardier lourd endurant et porte-missiles','B-52'],
-  ['strategique','KAN-S','Kanly S','Bombardier stratégique pénétrant furtif','B-2 / B-21'],
-  ['strategique','GHA-K','Al-Ghayth K','Ravitailleur lourd multirôle','KC-46 / A330 MRTT'],
-  ['strategique','MEL-T','Melange T','Ravitailleur tactique et transport secondaire','KC-130'],
-  ['isr','PRE-E','Prescience E','Guet aérien avancé et commandement aéroporté AWACS','E-3 / E-7'],
-  ['isr','MEN-C','Mentat C','Relais de commandement et communications aéroportées','E-11A BACN'],
-  ['isr','IX-EL','Ix EL','Collecte ELINT et SIGINT stratégique','RC-135 Rivet Joint'],
-  ['isr','BEN-R','Bene Gesserit R','Surveillance radar des mouvements terrestres','E-8 JSTARS'],
-  ['isr','ATO-H','Aton H','Drone HALE de reconnaissance persistante','RQ-4 Global Hawk'],
-  ['isr','CAL-P','Caladan P','Patrouille maritime et lutte anti-sous-marine','P-8 Poseidon'],
-  ['isr','HUN-M','Hunter Seeker M','Drone MALE armé et surveillance persistante','MQ-9 Reaper'],
-  ['isr','GHO-C','Ghola C','Drone de combat collaboratif','Loyal wingman'],
-  ['mobilite','HEI-C','Heighliner C','Transport stratégique lourd','C-17'],
-  ['mobilite','GUI-G','Guilde G','Transport hors-gabarit inter-théâtres','C-5M / An-124'],
-  ['mobilite','FRE-T','Fremen T','Transport tactique et aérolargage','C-130J / A400M'],
-  ['mobilite','FED-S','Fedaykin S','Infiltration spéciale à basse altitude','MC-130'],
-  ['mobilite','FEY-G','Feyd G','Gunship lourd d’appui aux forces spéciales','AC-130'],
-  ['helico','ORN-A','Ornithoptère A','Attaque antichar et escorte aéromobile','AH-64'],
-  ['helico','ORN-M','Ornithoptère M','Transport tactique et infiltration','UH-60 / NH90'],
-  ['formation','CIE-T','Cielago T','Entraînement avancé et conversion chasse','T-7 / M-346'],
-];
-const RANKS = [
-  ['MECANICIENS ET STAGIAIRES',[[1,'Mudir-Sol','Mécanicien sol',''],[2,'Cielago-Apprenti','Pilote stagiaire',''],[3,'Cielago','Pilote qualifié','']]],
-  ['PILOTES CONFIRMES',[[4,'Thoptériste','Pilote 2e classe',''],[5,'Thoptériste-Tau','Pilote 1re classe',''],[6,'Thoptériste-Prime','Pilote chef','']]],
-  ['OFFICIERS',[[7,'Aiel','Sous-lieutenant pilote',''],[8,'Aiel-Tau','Lieutenant pilote',''],[9,'Aiel-Bashar','Capitaine pilote',''],[10,'Razzia','Commandant pilote',''],[11,'Razzia-Bas','Lieutenant-colonel pilote',''],[12,'Razzia-Prime','Colonel pilote','']]],
-  ['OFFICIERS GENERAUX',[[13,'Sirocco-Legate','Général de brigade aérienne','★'],[14,'Grand-Sirocco','Général de division aérienne','★★'],[15,'Mudir-Sirocco','Général de corps aérien','★★★'],[16,'Padishah-Sirocco','Général d’armée aérienne','★★★★'],[17,'Lisan al-Gaib','Maréchal de l’air','★★★★★']]],
-];
-let wingFilter='all', aircraftFilter='all';
-function renderFilters(target,selected,handler){document.getElementById(target).innerHTML=COMMANDS.map(([id,label])=>`<button class="filter-btn ${id===selected?'active':''}" data-filter="${id}">${label}</button>`).join('');document.querySelectorAll(`#${target} .filter-btn`).forEach(btn=>btn.addEventListener('click',()=>handler(btn.dataset.filter)));}
-function renderWings(){renderFilters('wing-filters',wingFilter,id=>{wingFilter=id;renderWings()});document.getElementById('wing-list').innerHTML=WINGS.filter(w=>wingFilter==='all'||w.c===wingFilter).map(w=>`<article class="wing"><button class="wing-head" type="button"><span class="wing-code">${w.code}</span><span><span class="wing-name">${w.name}</span><span class="wing-role">${w.role}</span></span><span class="wing-count">${w.sq.length} ESCADRILLES</span></button><div class="wing-body"><p class="wing-doctrine">${w.desc}</p><div class="squad-grid">${w.sq.map(s=>`<article class="squad"><div class="squad-name">${s[0]}</div><div class="squad-eq">${s[1]}</div><div class="squad-task">${s[2]}</div></article>`).join('')}</div></div></article>`).join('');document.querySelectorAll('.wing-head').forEach(btn=>btn.addEventListener('click',()=>btn.closest('.wing').classList.toggle('open')));}
-function renderAircraft(){renderFilters('aircraft-filters',aircraftFilter,id=>{aircraftFilter=id;renderAircraft()});document.getElementById('aircraft-list').innerHTML=AIRCRAFT.filter(a=>aircraftFilter==='all'||a[0]===aircraftFilter).map(a=>`<article class="aircraft"><div class="aircraft-code">${a[1]}</div><div><div class="aircraft-name">${a[2]}</div><div class="aircraft-role">${a[3]}</div><div class="aircraft-ref">Référence IRL : ${a[4]}</div></div></article>`).join('');}
-function renderRanks(){document.getElementById('rank-list').innerHTML=RANKS.map(([title,rows])=>`<section class="rank-group"><div class="rank-title">${title}</div>${rows.map(r=>`<div class="rank-row"><span class="rank-num">${String(r[0]).padStart(2,'0')}</span><span class="rank-name">${r[1]}</span><span class="rank-equiv">${r[2]}</span><span class="rank-stars">${r[3]}</span></div>`).join('')}</section>`).join('');}
-document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('.air-tab').forEach(tab=>tab.addEventListener('click',()=>{document.querySelectorAll('.air-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.air-panel').forEach(p=>p.classList.remove('active'));tab.classList.add('active');document.getElementById('tab-'+tab.dataset.tab).classList.add('active')}));renderWings();renderAircraft();renderRanks();});
+const LS_AIR = 'hussein_air_force_v1';
+const UNITS = {
+  INT:{n:'Escadrille d’interception',s:'INT',r:'Interception longue portée et police du ciel',c:{int:12}},
+  CSA:{n:'Escadrille de supériorité aérienne',s:'CSA',r:'Combat aérien et escorte de haute valeur',c:{csa:18}},
+  CMR:{n:'Escadrille de chasse multirôle',s:'CMR',r:'Chasse, frappe tactique et appui polyvalent',c:{cmr:18}},
+  SEAD:{n:'Escadrille de suppression des défenses',s:'SEAD',r:'Guerre électronique, brouillage et neutralisation antiradar',c:{sead:12}},
+  CAS:{n:'Escadrille d’appui rapproché',s:'CAS',r:'Appui-feu des forces terrestres et interdiction tactique',c:{cas:16}},
+  BHL:{n:'Escadrille de bombardement lourd',s:'BHL',r:'Frappe stratégique conventionnelle à longue portée',c:{bhl:8}},
+  BHP:{n:'Escadrille de bombardement pénétrant',s:'BHP',r:'Frappe dans la profondeur en environnement contesté',c:{bhp:6}},
+  AWACS:{n:'Escadrille de guet aérien AWACS',s:'AWACS',r:'Détection aéroportée, commandement et gestion de bataille',c:{awacs:4}},
+  ELINT:{n:'Escadrille ELINT / SIGINT',s:'ELINT',r:'Renseignement électromagnétique et cartographie des émissions',c:{elint:4}},
+  JSTARS:{n:'Escadrille de surveillance terrestre',s:'JSTAR',r:'Veille radar des mouvements terrestres et désignation',c:{jstars:4}},
+  HALE:{n:'Escadrille de drones HALE',s:'HALE',r:'Renseignement persistant à haute altitude',c:{hale:8}},
+  UCAV:{n:'Escadrille de drones de combat',s:'UCAV',r:'Surveillance armée et frappe téléopérée',c:{ucav:12}},
+  RAV:{n:'Escadrille de ravitaillement en vol',s:'RAV',r:'Allonge stratégique des détachements aériens',c:{rav:8}},
+  TST:{n:'Escadrille de transport stratégique',s:'TST',r:'Projection inter-théâtres et transport lourd',c:{tst:8}},
+  TTC:{n:'Escadrille de transport tactique',s:'TTC',r:'Aérolargage, pistes sommaires et ravitaillement avancé',c:{ttc:12}},
+  PATMAR:{n:'Escadrille de patrouille maritime',s:'PATMAR',r:'Surveillance littorale et lutte anti-sous-marine',c:{patmar:8}},
+  HAT:{n:'Escadrille d’hélicoptères d’attaque',s:'HAT',r:'Appui antichar et escorte aéromobile',c:{hat:12}},
+  HTR:{n:'Escadrille d’hélicoptères de transport',s:'HTR',r:'Assaut aéromobile et infiltration tactique',c:{htr:16}},
+  CSAR:{n:'Escadrille de récupération CSAR',s:'CSAR',r:'Recherche et sauvetage au combat',c:{csar:6}},
+  ECOLE:{n:'Escadrille école',s:'ECOLE',r:'Formation avancée et conversion opérationnelle',c:{ecole:18}}
+};
+const GROUPS = {
+  ESD:{n:'Escadre de Supériorité du Désert',s:'ESD',r:'Défense aérienne, interception et escorte des moyens de haute valeur',c:[['INT',1],['CSA',2],['AWACS',1]]},
+  ECM:{n:'Escadre de Chasse Multirôle',s:'ECM',r:'Formation polyvalente de première ligne pour contrôle du ciel et frappe tactique',c:[['CMR',2],['SEAD',1],['CAS',1]]},
+  EFS:{n:'Escadre de Frappe Stratégique',s:'EFS',r:'Bombardement lourd, pénétration et frappe conventionnelle dans la profondeur',c:[['BHL',2],['BHP',1],['RAV',1]]},
+  ERI:{n:'Escadre de Renseignement Ix',s:'ERI',r:'Guet aérien, ELINT, SIGINT et surveillance persistante du théâtre',c:[['AWACS',1],['ELINT',1],['JSTARS',1],['HALE',1]]},
+  EDA:{n:'Escadre de Drones Aton',s:'EDA',r:'Surveillance de longue durée et frappe téléopérée',c:[['HALE',1],['UCAV',2]]},
+  EPM:{n:'Escadre de Patrouille Caladan',s:'EPM',r:'Surveillance maritime, protection des détroits et lutte anti-sous-marine',c:[['PATMAR',2],['HALE',1]]},
+  EMT:{n:'Escadre de Mobilité Heighliner',s:'EMT',r:'Projection stratégique, transport tactique et ravitaillement en vol',c:[['TST',1],['TTC',2],['RAV',1]]},
+  EOA:{n:'Escadre d’Ornithoptères d’Assaut',s:'EOA',r:'Assaut aéromobile, attaque et récupération de personnel isolé',c:[['HAT',1],['HTR',2],['CSAR',1]]},
+  EAS:{n:'Escadre Académique Salusa',s:'EAS',r:'Formation initiale, conversion et maintien des qualifications',c:[['ECOLE',2],['TTC',1]]}
+};
+const LABELS={int:'Intercepteurs',csa:'Chasseurs de supériorité',cmr:'Chasseurs multirôles',sead:'Appareils SEAD / EW',cas:'Appui rapproché',bhl:'Bombardiers lourds',bhp:'Bombardiers pénétrants',awacs:'AWACS',elint:'ELINT / SIGINT',jstars:'Surveillance terrestre',hale:'Drones HALE',ucav:'Drones de combat',rav:'Ravitailleurs',tst:'Transports stratégiques',ttc:'Transports tactiques',patmar:'Patrouille maritime',hat:'Hélicoptères d’attaque',htr:'Hélicoptères de transport',csar:'Moyens CSAR',ecole:'Appareils école'};
+const CATS={int:'combat',csa:'combat',cmr:'combat',sead:'strike',cas:'strike',bhl:'strike',bhp:'strike',awacs:'isr',elint:'isr',jstars:'isr',hale:'isr',ucav:'isr',rav:'mob',tst:'mob',ttc:'mob',patmar:'mob',hat:'rotary',htr:'rotary',csar:'rotary',ecole:'training'};
+const CAT_ORDER=['combat','strike','isr','mob','rotary','training'];
+const CAT_LABELS={combat:'Combat aérien',strike:'Frappe et pénétration',isr:'ISR, C2 et drones',mob:'Mobilité et patrouille',rotary:'Voilures tournantes',training:'Formation'};
+const RANKS=[['MECANICIENS ET STAGIAIRES',[[1,'Mudir-Sol','Mécanicien sol',''],[2,'Cielago-Apprenti','Pilote stagiaire',''],[3,'Cielago','Pilote qualifié','']]],['PILOTES CONFIRMES',[[4,'Thoptériste','Pilote 2e classe',''],[5,'Thoptériste-Tau','Pilote 1re classe',''],[6,'Thoptériste-Prime','Pilote chef','']]],['OFFICIERS',[[7,'Aiel','Sous-lieutenant pilote',''],[8,'Aiel-Tau','Lieutenant pilote',''],[9,'Aiel-Bashar','Capitaine pilote',''],[10,'Razzia','Commandant pilote',''],[11,'Razzia-Bas','Lieutenant-colonel pilote',''],[12,'Razzia-Prime','Colonel pilote','']]],['OFFICIERS GENERAUX',[[13,'Sirocco-Legate','Général de brigade aérienne','★'],[14,'Grand-Sirocco','Général de division aérienne','★★'],[15,'Mudir-Sirocco','Général de corps aérien','★★★'],[16,'Padishah-Sirocco','Général d’armée aérienne','★★★★'],[17,'Lisan al-Gaib','Maréchal de l’air','★★★★★']]]];
+let force=[];
+const fmt=n=>Number(n).toLocaleString('fr-FR');
+function data(k){return GROUPS[k]||UNITS[k]}function isGroup(k){return Boolean(GROUPS[k])}
+function unitComp(k){const d=data(k);if(!d)return{};if(!isGroup(k))return{...d.c};const out={};d.c.forEach(([uk,n])=>Object.entries(UNITS[uk].c).forEach(([ek,v])=>out[ek]=(out[ek]||0)+v*n));return out}
+function unitCount(k){return Object.values(unitComp(k)).reduce((a,b)=>a+b,0)}
+function sum(rows){const out={};rows.forEach(([k,n])=>Object.entries(unitComp(k)).forEach(([ek,v])=>out[ek]=(out[ek]||0)+v*n));return out}
+function save(){localStorage.setItem(LS_AIR,JSON.stringify(force))}
+function load(){try{force=(JSON.parse(localStorage.getItem(LS_AIR))||[]).filter(r=>data(r.type))}catch{force=[]}}
+function renderEq(comp){return CAT_ORDER.map(cat=>{const entries=Object.entries(comp).filter(([k,v])=>v&&CATS[k]===cat);if(!entries.length)return'';return`<div class="eq-section cat-${cat}"><div class="eq-cat-label">${CAT_LABELS[cat]}</div><div class="eq-grid">${entries.map(([k,v])=>`<div class="eq-item"><span class="eq-val">${fmt(v)}</span><span class="eq-lbl">${LABELS[k]}</span></div>`).join('')}</div></div>`}).join('')}
+function renderRoster(){const body=document.getElementById('roster-body');if(!force.length)body.innerHTML='<tr><td colspan="7" class="roster-empty">Aucune formation enregistrée. Utilisez le formulaire ci-dessus pour composer votre force aérienne.</td></tr>';else body.innerHTML=force.map((r,i)=>{const d=data(r.type),per=unitCount(r.type);return`<tr><td>${isGroup(r.type)?'ESCADRE':'ESCADRILLE'}</td><td>${d.n}</td><td><input class="roster-input" data-i="${i}" data-k="service" type="number" min="0" value="${r.service}"></td><td><input class="roster-input" data-i="${i}" data-k="ordered" type="number" min="0" value="${r.ordered}"></td><td class="unit-service">${fmt(per*r.service)}</td><td class="unit-cmd">${fmt(per*r.ordered)}</td><td><button class="btn-remove" data-remove="${i}">Retirer</button></td></tr>`}).join('');body.querySelectorAll('.roster-input').forEach(input=>input.addEventListener('input',()=>{force[input.dataset.i][input.dataset.k]=Math.max(0,parseInt(input.value)||0);save();render()}));body.querySelectorAll('[data-remove]').forEach(btn=>btn.addEventListener('click',()=>{force.splice(btn.dataset.remove,1);save();render()}));renderStats();renderTotals()}
+function renderStats(){let svc=0,cmd=0,formations=0;force.forEach(r=>{const per=unitCount(r.type);svc+=per*r.service;cmd+=per*r.ordered;formations+=r.service+r.ordered});document.getElementById('stat-service').textContent=fmt(svc);document.getElementById('stat-ordered').textContent=fmt(cmd);document.getElementById('stat-total').textContent=fmt(svc+cmd);document.getElementById('stat-units').textContent=fmt(formations)}
+function renderTotals(){[['',r=>r.service],['-cmd',r=>r.ordered]].forEach(([s,get])=>{const rows=force.filter(r=>get(r)>0).map(r=>[r.type,get(r)]),block=document.getElementById('totals-block'+s);block.style.display=rows.length?'':'none';if(rows.length){const count=rows.reduce((a,[k,n])=>a+unitCount(k)*n,0);document.getElementById('totals-note'+s).textContent=`Cumul des aéronefs ${s?'commandés':'en service'} — ${fmt(count)} appareils et plateformes`;document.getElementById('totals-eq'+s).innerHTML=renderEq(sum(rows))}})}
+function render(){renderRoster()}
+function refCard(k,d,group){const comp=unitComp(k);return`<article class="mil-card"><div class="mil-card-hdr"><span class="mil-chip ${group?'chip-wing':'chip-squad'}">${d.s}</span><span class="mil-info"><span class="mil-name">${d.n}</span><span class="mil-role">${d.r}</span></span><span class="mil-eff">${fmt(unitCount(k))} aéronefs</span><span class="mil-chev">▶</span></div><div class="mil-body">${group?`<div class="fleet-note"><b>Composition organique :</b> ${d.c.map(([uk,n])=>`${n} × ${UNITS[uk].n}`).join(' · ')}</div>`:''}${renderEq(comp)}</div></article>`}
+function exportJson(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(force,null,2)],{type:'application/json'}));a.download='force-aerienne-imperiale.json';a.click();URL.revokeObjectURL(a.href)}
+function importJson(file){if(!file)return;const reader=new FileReader();reader.onload=e=>{try{const rows=JSON.parse(e.target.result);if(!Array.isArray(rows))throw new Error();force=rows.filter(r=>data(r.type)).map(r=>({type:r.type,service:Math.max(0,parseInt(r.service)||0),ordered:Math.max(0,parseInt(r.ordered)||0)}));save();render()}catch{alert('Fichier JSON invalide.')}};reader.readAsText(file)}
+function init(){document.querySelectorAll('.org-tab').forEach(tab=>tab.addEventListener('click',()=>{document.querySelectorAll('.org-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.org-panel').forEach(p=>p.classList.remove('active'));tab.classList.add('active');document.getElementById('tab-'+tab.dataset.tab).classList.add('active')}));const select=document.getElementById('add-type');select.innerHTML=`<optgroup label="Escadres">${Object.keys(GROUPS).map(k=>`<option value="${k}">${k} — ${GROUPS[k].n}</option>`).join('')}</optgroup><optgroup label="Escadrilles unitaires">${Object.keys(UNITS).map(k=>`<option value="${k}">${k} — ${UNITS[k].n}</option>`).join('')}</optgroup>`;document.getElementById('btn-add-unit').addEventListener('click',()=>{const type=select.value,service=Math.max(0,parseInt(document.getElementById('add-service').value)||0),ordered=Math.max(0,parseInt(document.getElementById('add-ordered').value)||0);if(!type||(!service&&!ordered))return;const row=force.find(r=>r.type===type);if(row){row.service+=service;row.ordered+=ordered}else force.push({type,service,ordered});save();render()});document.getElementById('btn-export-air').addEventListener('click',exportJson);document.getElementById('btn-import-air').addEventListener('click',()=>document.getElementById('air-import-file').click());document.getElementById('air-import-file').addEventListener('change',e=>{importJson(e.target.files[0]);e.target.value='' });[['',''],['-cmd','-cmd']].forEach(([s])=>document.getElementById('totals-toggle'+s).addEventListener('click',()=>{document.getElementById('totals-body'+s).classList.toggle('open');document.getElementById('totals-chevron'+s).classList.toggle('open')}));document.getElementById('ref-groups').innerHTML=Object.entries(GROUPS).map(([k,d])=>refCard(k,d,true)).join('');document.getElementById('ref-units').innerHTML=Object.entries(UNITS).map(([k,d])=>refCard(k,d,false)).join('');document.querySelectorAll('.mil-card-hdr').forEach(h=>h.addEventListener('click',()=>{h.nextElementSibling.classList.toggle('open');h.querySelector('.mil-chev').classList.toggle('open')}));document.getElementById('rank-list').innerHTML=RANKS.map(([title,rows])=>`<section class="rank-group"><div class="rank-title">${title}</div>${rows.map(r=>`<div class="rank-row"><span class="rank-num">${String(r[0]).padStart(2,'0')}</span><span class="rank-name">${r[1]}</span><span class="rank-equiv">${r[2]}</span><span class="rank-stars">${r[3]}</span></div>`).join('')}</section>`).join('');load();render()}
+document.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
 </html>
