@@ -130,8 +130,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // 6. VIDEO FALLBACK
     // ────────────────────────────────────────
     const video = document.querySelector('.hero-video');
+    const heroSection = document.getElementById('hero');
     if (video) {
+        const source = video.querySelector('source');
+        const videoSrc = source ? source.getAttribute('src') : video.getAttribute('src');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const shouldSaveData = navigator.connection && navigator.connection.saveData;
+        let releaseTimer = null;
+        let videoReleased = false;
+        let videoFailed = false;
+        let heroVisible = true;
+
         const handleVideoError = () => {
+            if (videoReleased) return;
+            videoFailed = true;
             const container = document.querySelector('.hero-video-container');
             if (container) {
                 container.classList.add('hero-video-container--fallback');
@@ -141,30 +153,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
         video.addEventListener('error', handleVideoError);
 
-        // Also check if video can play
-        video.addEventListener('loadeddata', () => {
-            // Video loaded, good
-        });
-
-        // If video source doesn't exist, trigger fallback after a short delay
-        const source = video.querySelector('source');
         if (source) {
             source.addEventListener('error', handleVideoError);
         }
 
-        // Fallback timeout: if video hasn't loaded after 5s, show fallback
+        const releaseVideo = () => {
+            clearTimeout(releaseTimer);
+            releaseTimer = null;
+            video.pause();
+            if (videoReleased || !videoSrc) return;
+            if (source) source.removeAttribute('src');
+            else video.removeAttribute('src');
+            videoReleased = true;
+            video.load();
+        };
+
+        const restoreVideo = () => {
+            clearTimeout(releaseTimer);
+            releaseTimer = null;
+            if (prefersReducedMotion || shouldSaveData || document.hidden || !heroVisible || videoFailed || !videoSrc) return;
+            if (videoReleased) {
+                if (source) source.setAttribute('src', videoSrc);
+                else video.setAttribute('src', videoSrc);
+                video.load();
+                videoReleased = false;
+            }
+            video.play().catch(() => {});
+        };
+
+        const scheduleVideoRelease = () => {
+            video.pause();
+            clearTimeout(releaseTimer);
+            releaseTimer = setTimeout(releaseVideo, 1500);
+        };
+
+        if (prefersReducedMotion || shouldSaveData) releaseVideo();
+
         setTimeout(() => {
-            if (video.readyState === 0) {
+            if (!videoReleased && video.readyState === 0) {
                 handleVideoError();
             }
         }, 5000);
+
+        if (heroSection) {
+            new IntersectionObserver((entries) => {
+                heroVisible = entries[0].isIntersecting;
+                if (heroVisible) restoreVideo();
+                else scheduleVideoRelease();
+            }, { threshold: 0 }).observe(heroSection);
+        }
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) releaseVideo();
+            else restoreVideo();
+        });
     }
 
     // ────────────────────────────────────────
     // 7. PARALLAX-LIKE VIDEO SCROLL
     // ────────────────────────────────────────
     let videoTicking = false;
-    const heroSection = document.getElementById('hero');
 
     if (video && heroSection) {
         window.addEventListener('scroll', () => {

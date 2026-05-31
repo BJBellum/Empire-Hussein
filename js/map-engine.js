@@ -283,7 +283,19 @@
             if (f) onRightClick(f, path, svg, panZoom);
         });
 
-        return { svg, pathMap, panZoom };
+        return {
+            svg,
+            pathMap,
+            panZoom,
+            destroy: function () {
+                panZoom.destroy();
+                featureByPath.clear();
+                pathMap.clear();
+                const pop = document.getElementById(popupId);
+                if (pop) pop.remove();
+                svg.remove();
+            }
+        };
     }
 
     global.MapEngine = { build, formatPop, showPopup };

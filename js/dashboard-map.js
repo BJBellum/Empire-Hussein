@@ -26,7 +26,9 @@
     let _modeData     = {};
     let _savedData    = {};
     let _mapBuilt     = false;
+    let _mapLoading   = false;
     let _mapInstance  = null;
+    let _loadVersion  = 0;
 
     function currentMode() { return MapModes[_currentIdx]; }
 
@@ -63,7 +65,7 @@
         const el      = document.getElementById('carto-map');
         const wrapper = document.getElementById('carto-map-wrapper');
         if (!el || !_geoData) return;
-        if (_mapInstance) { _mapInstance.panZoom.destroy(); _mapInstance = null; }
+        if (_mapInstance) { _mapInstance.destroy(); _mapInstance = null; }
         el.innerHTML = '';
 
         const mode    = currentMode();
@@ -474,15 +476,28 @@
     }
 
     /* ── Panel activation ─────────────────────────── */
+    function releaseCartoPanel() {
+        ++_loadVersion;
+        if (_mapInstance) { _mapInstance.destroy(); _mapInstance = null; }
+        const el = document.getElementById('carto-map');
+        if (el) el.innerHTML = '';
+        _geoData = null;
+        _empireIds = new Set();
+        _mapBuilt = false;
+        _mapLoading = false;
+    }
+
     function initCartoPanel() {
         const el = document.getElementById('carto-map');
-        if (!el) return;
-        _mapBuilt = true;
+        if (!el || _mapBuilt || _mapLoading) return;
+        const loadVersion = ++_loadVersion;
+        _mapLoading = true;
         el.innerHTML = '<div class="map-loading">Chargement de la carte…</div>';
 
         fetch(GEOJSON_URL)
             .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
             .then(function (geoData) {
+                if (loadVersion !== _loadVersion) return;
                 _geoData   = geoData;
                 _empireIds = new Set();
                 for (const f of geoData.features) {
@@ -492,23 +507,30 @@
 
                 return Promise.all(
                     MapModes.map(mode => mode.dataFile
-                        ? fetch(DATA_PREFIX + mode.dataFile).then(r => r.ok ? r.json() : null).catch(() => null)
+                        ? (_modeData[mode.id] !== undefined
+                            ? Promise.resolve(_modeData[mode.id])
+                            : fetch(DATA_PREFIX + mode.dataFile).then(r => r.ok ? r.json() : null).catch(() => null))
                         : Promise.resolve(null)
                     )
                 ).then(function (results) {
+                    if (loadVersion !== _loadVersion) return;
                     MapModes.forEach(function (mode, i) {
                         _modeData[mode.id]  = results[i] || defaultData(mode.id);
-                        _savedData[mode.id] = JSON.parse(JSON.stringify(_modeData[mode.id]));
+                        if (_savedData[mode.id] === undefined)
+                            _savedData[mode.id] = JSON.parse(JSON.stringify(_modeData[mode.id]));
                     });
                     el.innerHTML = '';
                     initButtons();
                     switchMode(0);
                     _mapBuilt = true;
+                    _mapLoading = false;
                 });
             })
             .catch(function (err) {
+                if (loadVersion !== _loadVersion) return;
                 console.error('CartoPanel: load failed', err);
                 el.innerHTML = '<div class="map-loading map-loading--error">Impossible de charger les données.</div>';
+                _mapLoading = false;
             });
     }
 
@@ -517,15 +539,19 @@
         if (!wrapper) return;
         const observer = new MutationObserver(function () {
             const panel = document.getElementById('panel-cartographie');
-            if (panel && !panel.classList.contains('hidden') && !_mapBuilt)
-                initCartoPanel();
+            if (!panel) return;
+            if (!panel.classList.contains('hidden')) {
+                if (!_mapBuilt) initCartoPanel();
+            } else if (_mapBuilt || _mapLoading) {
+                releaseCartoPanel();
+            }
         });
         observer.observe(wrapper, { subtree: true, attributes: true, attributeFilter: ['class'] });
     }
 
     document.addEventListener('click', function (e) {
         const item = e.target.closest('[data-panel="cartographie"]');
-        if (item && !_mapBuilt) setTimeout(initCartoPanel, 50);
+        if (item && !_mapBuilt && !_mapLoading) setTimeout(initCartoPanel, 50);
     });
 
     document.addEventListener('DOMContentLoaded', function () {

@@ -9,6 +9,8 @@
     let _currentIdx   = 0;
     let _modeData     = {};
     let _mapInstance  = null;
+    let _renderVersion = 0;
+    let _initialized   = false;
 
     function loadModeData(mode) {
         if (_modeData[mode.id] !== undefined) return Promise.resolve(_modeData[mode.id]);
@@ -22,11 +24,13 @@
         const el      = document.getElementById('map-empire');
         const wrapper = el ? el.closest('.carte-wrapper') : null;
         if (!el || !_geoData) return;
-        if (_mapInstance) { _mapInstance.panZoom.destroy(); _mapInstance = null; }
+        const renderVersion = ++_renderVersion;
+        if (_mapInstance) { _mapInstance.destroy(); _mapInstance = null; }
         el.innerHTML = '';
 
         const mode = MapModes[_currentIdx];
         loadModeData(mode).then(function (data) {
+            if (renderVersion !== _renderVersion) return;
             _modeData[mode.id] = data;
             _mapInstance = MapEngine.build({
                 mapEl:       el,
@@ -67,7 +71,8 @@
 
     function initMap() {
         const el = document.getElementById('map-empire');
-        if (!el) return;
+        if (!el || _initialized) return;
+        _initialized = true;
         el.innerHTML = '<div class="map-loading">Chargement de la carte…</div>';
 
         fetch(GEOJSON_URL)
@@ -89,9 +94,24 @@
             });
     }
 
+    function observeMap() {
+        const el = document.getElementById('map-empire');
+        if (!el) return;
+        if (!('IntersectionObserver' in window)) {
+            initMap();
+            return;
+        }
+        const observer = new IntersectionObserver(function (entries) {
+            if (!entries[0].isIntersecting) return;
+            observer.disconnect();
+            initMap();
+        }, { rootMargin: '300px 0px' });
+        observer.observe(el);
+    }
+
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initMap);
+        document.addEventListener('DOMContentLoaded', observeMap);
     } else {
-        initMap();
+        observeMap();
     }
 }());
