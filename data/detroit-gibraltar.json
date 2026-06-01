@@ -96,11 +96,11 @@
     "continent": "Europe",
     "drapeau": "assets/drapeaux/romain-bcfe0c90.png",
     "taxes": {
-      "matieres_premieres": 30,
-      "produits_manufactures": 30,
+      "matieres_premieres": null,
+      "produits_manufactures": null,
       "materiel_militaire": null,
-      "materiel_industriel": 30,
-      "ressources_energetiques": 30
+      "materiel_industriel": null,
+      "ressources_energetiques": null
     }
   },
   {
