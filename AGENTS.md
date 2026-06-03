@@ -72,6 +72,37 @@ jq empty data/*.json
 
 Vérifier manuellement l'accueil, la carte territoires, les pages Suez et Gibraltar, puis le panneau cartographie du dashboard si l'accès admin est disponible.
 
+## Knowledge graph (graphify)
+
+Un graphe de connaissance du projet est maintenu dans `graphify-out/`. Avant de répondre à des questions sur l'architecture ou les dépendances, consulter `graphify-out/graph.json` ou `graphify-out/GRAPH_REPORT.md`.
+
+Pour mettre à jour le graphe après des modifications :
+
+```sh
+graphify --update .
+```
+
+Pour interroger le graphe :
+
+```sh
+graphify query "ta question ici"
+```
+
+Le dossier `graphify-out/` est ignoré par git (`.gitignore`).
+
 ## Documentation complémentaire
 
 `CLAUDE.md` contient un contexte historique plus détaillé, notamment les règles d'URL propres et la palette.
+
+## graphify
+
+This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
+
+When the user types `/graphify`, invoke the `skill` tool with `skill: "graphify"` before doing anything else.
+
+Rules:
+- For codebase questions, first run `graphify query "<question>"` when graphify-out/graph.json exists. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts. These return a scoped subgraph, usually much smaller than GRAPH_REPORT.md or raw grep output.
+- Dirty graphify-out/ files are expected after hooks or incremental updates; dirty graph files are not a reason to skip graphify. Only skip graphify if the task is about stale or incorrect graph output, or the user explicitly says not to use it.
+- If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
+- Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
+- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
