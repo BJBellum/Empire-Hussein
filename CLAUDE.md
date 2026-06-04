@@ -58,6 +58,15 @@ Fichier : `js/auth.js`
 
 ---
 
+## Organisation militaire — Règles de données (`pages/organisation-armee.html`)
+
+- **Ne jamais hardcoder les totaux d'effectifs ou d'équipements** pour les divisions/brigades dans `EQ_REF`. Tous les totaux doivent être calculés dynamiquement depuis les régiments via `divFlat()` / `brigRegs()` + `sumEq()`.
+- Les divisions (`DIV`) contiennent des régiments directs `['R', code, n]` — pas de brigades intermédiaires. Les QG (QGD, QGB_L, QGB_M, QGB_Mar) sont des entrées dans `c:[]` au même titre que les régiments.
+- Les brigades (`BRIG`) sont des formations autonomes interarmes : régiments de combat + RT (logistique) + RGE (renseignement/GE) + RG (génie) selon mission.
+- Si un équipement manque dans un régiment (ex: APC), choisir le type de régiment qui possède organiquement cet équipement plutôt qu'ajouter une dotation hardcodée.
+
+---
+
 ## Contraintes techniques
 
 - **Site statique GitHub Pages** — pas de backend, pas de Node.js, pas de build step

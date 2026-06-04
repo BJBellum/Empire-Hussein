@@ -15,7 +15,7 @@ const DISCORD_CONFIG = {
     clientId: '1492884020202045480',
 
     // ── REPLACE THIS with your GitHub Pages URL ──
-    redirectUri: window.location.origin + window.location.pathname,
+    redirectUri: window.location.origin + '/',
 
     // Scopes: 'identify' gives us the user's ID, username, avatar
     scope: 'identify',
