@@ -1311,7 +1311,10 @@ const EQ_BASE = {
   RIMa:  {s:950,fa:700,p:250,ml:30,mag:24,hmg:12,pm:50,ugl:60,g:2800,fp:12,lrat:60,atgm:18,mp:8,map:50,mat:40,mol:9,mom:8,moh:4,apc:24,vb:12,vm:4,amb:4,vc:6,cl:30,cll:8},
   RBA:   {s:700,fa:400,p:500,hmg:24,pm:150,g:1000,lrat:24,atgm:18,mp:4,mat:30,mom:8,bl:48,ifv:6,apc:6,vb:6,vrb:4,vm:6,cll:8,amb:3,vc:6},
   RAT:   {s:760,fa:520,p:760,ml:6,pm:34,g:850,c105:18,c155:18,mol:4,mom:2,cl:45,cll:32,amb:4,vc:12,vm:8,vrs:5,vb:7},
+  RAT_L: {s:760,fa:520,p:760,ml:6,pm:34,g:850,c105:24,c155:6,mol:4,mom:2,cl:45,cll:32,amb:4,vc:12,vm:8,vrs:5,vb:7},
+  RAT_A: {s:700,fa:480,p:700,ml:6,pm:30,g:780,c105:18,mol:4,mom:2,cl:36,cll:20,amb:3,vc:10,vm:6,vrs:4,vb:6},
   RAM:   {s:820,fa:520,p:820,hmg:18,pm:90,g:900,spga:18,cl:32,cll:36,amb:5,vc:12,vrb:6,vm:12,vrs:6,vb:6},
+  RAMK:  {s:780,fa:490,p:780,hmg:12,pm:70,g:850,spgc:18,cl:28,cll:32,amb:4,vc:10,vrb:4,vm:10,vrs:5,vb:6},
   RLRM:  {s:480,fa:320,p:480,pm:24,ml:6,g:400,lrm:18,cll:30,cl:18,vc:6,vrs:6,vm:4,vb:4,amb:2},
   RDA:   {s:700,fa:450,p:700,ml:12,mag:6,pm:40,g:600,mp:48,dca_missile_courte:4,dca_missile_moyenne:2,dca_missile_longue:1,dca_canon:12,vrs:12,vc:6,vm:4,vb:6,cl:24,amb:3},
   RG:    {s:500,i:350,fa:650,p:850,ml:12,mag:12,pm:30,ugl:24,g:700,map:300,mat:300,atgm:6,vg:28,apc:8,vb:6,cll:24,cl:30,vrb:4,vm:6,vc:4,amb:3},
@@ -1326,9 +1329,9 @@ const EQ_BASE = {
   CIA:   {s:160,fa:110,p:160,ml:6,mag:3,pm:24,ugl:8,g:320,fp:4,lrat:4,mol:3,cl:12,cll:2,amb:2,vc:4,vb:8},
   CTA:   {s:90,i:12,fa:60,p:90,pm:18,g:120,vc:6,cl:8,cll:2,amb:1,vew:3,vrs:4,vb:4},
   CLA:   {s:130,i:10,fa:75,p:130,ml:4,pm:20,g:180,cl:16,cll:12,amb:3,vc:4,vm:6,vb:4},
-  QGB_L: {s:300,fa:200,p:300,pm:20,vc:8,cl:15,amb:2,vb:4},
-  QGB_M: {s:300,fa:180,p:300,pm:30,vc:10,cl:8,cll:6,amb:2,vb:6,vm:2},
-  QGB_Mar:{s:500,fa:350,p:500,pm:40,vc:12,cl:20,cll:6,amb:3,vb:8},
+  QGT_L:  {s:300,fa:200,p:300,pm:20,vc:8,cl:15,amb:2,vb:4},
+  QGT_M:  {s:300,fa:180,p:300,pm:30,vc:10,cl:8,cll:6,amb:2,vb:6,vm:2},
+  QGT_Mar:{s:500,fa:350,p:500,pm:40,vc:12,cl:20,cll:6,amb:3,vb:8},
   QGD:   {s:500,fa:300,p:500,pm:40,vc:15,cl:15,cll:6,amb:4,vb:10,vew:2}
 };
 
@@ -1343,7 +1346,10 @@ const EQ_REF = {
   RIMa:{s:950,fa:700,p:250,ml:30,mag:24,hmg:12,pm:50,ugl:60,g:2800,map:50,mat:40,fp:12,lrat:60,mp:8,atgm:18,mol:9,mom:8,moh:4,cl:30,cll:8,amb:4,vc:6,vm:4,apc:24,vb:12},
   RBA:{s:700,fa:400,p:500,hmg:24,pm:150,g:1000,mat:30,lrat:24,mp:4,atgm:18,mom:8,cll:8,amb:3,vc:6,vrb:4,vm:6,ifv:6,apc:6,bl:48,vb:6},
   RAT:{s:760,fa:520,p:760,ml:6,pm:34,g:850,c105:18,c155:18,mol:4,mom:2,cl:45,cll:32,amb:4,vc:12,vm:8,vrs:5,vb:7},
+  RAT_L:{s:760,fa:520,p:760,ml:6,pm:34,g:850,c105:24,c155:6,mol:4,mom:2,cl:45,cll:32,amb:4,vc:12,vm:8,vrs:5,vb:7},
+  RAT_A:{s:700,fa:480,p:700,ml:6,pm:30,g:780,c105:18,mol:4,mom:2,cl:36,cll:20,amb:3,vc:10,vm:6,vrs:4,vb:6},
   RAM:{s:820,fa:520,p:820,hmg:18,pm:90,g:900,spga:18,cl:32,cll:36,amb:5,vc:12,vrb:6,vm:12,vrs:6,vb:6},
+  RAMK:{s:780,fa:490,p:780,hmg:12,pm:70,g:850,spgc:18,cl:28,cll:32,amb:4,vc:10,vrb:4,vm:10,vrs:5,vb:6},
   RLRM:{s:480,fa:320,p:480,ml:6,pm:24,g:400,lrm:18,cl:18,cll:30,amb:2,vc:6,vm:4,vrs:6,vb:4},
   RDA:{s:700,fa:450,p:700,ml:12,mag:6,pm:40,g:600,mp:48,cl:24,amb:3,vc:6,vm:4,vrs:12,dca_missile_courte:4,dca_missile_moyenne:2,dca_missile_longue:1,dca_canon:12,vb:6},
   RG:{s:500,i:350,fa:650,p:850,ml:12,mag:12,pm:30,ugl:24,g:700,map:300,mat:300,atgm:6,cl:30,cll:24,amb:3,vc:4,vg:28,vrb:4,vm:6,apc:8,vb:6},
@@ -1404,9 +1410,12 @@ const REG = {
   RPara: {n:"Régiment Parachutiste / Aéromobile", s:'RPara', r:"Assaut héliporté, projection rapide, saisie d'objectif, raid"},
   RIMa:  {n:"Régiment d'Infanterie de Marine",    s:'RIMa',  r:"Débarquement amphibie, projection littorale, opérations côtières"},
   RBA:   {n:"Régiment Blindé Amphibie",           s:'RBA',   r:"Appui blindé au débarquement, exploitation de tête de pont"},
-  RAT:   {n:"Régiment d'Artillerie Tractée 105/155mm", s:'RAT', r:"Appui-feu mixte 105mm et 155mm, soutien rapproché, contre-batterie"},
-  RAM:   {n:"Régiment d'Artillerie Mobile",       s:'RAM',   r:"Artillerie automotrice moderne, appui-feu mobile et projection rapide"},
-  RLRM:  {n:"Régiment Lance-Roquettes Multiples", s:'RLRM',  r:"Frappe en profondeur, interdiction, saturation de zone"},
+  RAT:   {n:"Régiment d'Artillerie Tractée 105/155mm", s:'RAT',   r:"Appui-feu mixte 105mm et 155mm, soutien rapproché, contre-batterie"},
+  RAT_L: {n:"Régiment d'Artillerie Tractée Légère",   s:'RAT-L', r:"Artillerie tractée légère, ratio 105mm dominant, appui motorisé projetable"},
+  RAT_A: {n:"Régiment d'Artillerie Tractée Aéromobile",s:'RAT-A', r:"105mm légers transportables par hélicoptère, appui-feu aéromobile"},
+  RAM:   {n:"Régiment d'Artillerie Mobile",            s:'RAM',   r:"Artillerie automotrice 155mm, appui-feu mobile et projection rapide"},
+  RAMK:  {n:"Régiment d'Artillerie Mobile sur Camion", s:'RAMK',  r:"155mm sur camion, projetable par voie maritime, appui amphibie et littorale"},
+  RLRM:  {n:"Régiment Lance-Roquettes Multiples",      s:'RLRM',  r:"Frappe en profondeur, interdiction, saturation de zone"},
   RDA:   {n:"Régiment de Défense Antiaérienne",   s:'RDA',   r:"Protection antiaérienne courte, moyenne et longue portée, radar"},
   RG:    {n:"Régiment du Génie",                  s:'RG',    r:"Déminage, breaching, franchissement, fortification, contre-mobilité"},
   RT:    {n:"Régiment de Logistique / Train",     s:'RT',    r:"Ravitaillement, maintenance, soutien médical (BSB divisionnaire)"},
@@ -1418,9 +1427,9 @@ const REG = {
   RFST:  {n:"Régiment des Forces Spéciales de Terre",        s:'RFST', r:"Reconnaissance spéciale, action clandestine, sabotage, guidage d'appuis"},
   RFSM:  {n:"Régiment des Forces Spéciales de Marine",       s:'RFSM', r:"Commandos littoraux, raids amphibies, abordage, reconnaissance côtière"},
   QGD:   {n:"Quartier Général de Division",                  s:'QGD',  r:"PC divisionnaire, transmissions, EW, médical avancé, coordination interarmes"},
-  QGB_L: {n:"Quartier Général de Brigade Légère",            s:'QGB-L',r:"PC de brigade légère, transmissions tactiques, soutien immédiat"},
-  QGB_M: {n:"Quartier Général de Brigade Mécanisée",         s:'QGB-M',r:"PC de brigade mécanisée/blindée, transmissions, coordination blindée"},
-  QGB_Mar:{n:"Quartier Général de Brigade Marine",           s:'QGB-MAR',r:"PC de brigade amphibie, coordination débarquement, soutien littoral"}
+  QGT_L: {n:"Quartier Général de Groupement Tactique Léger",      s:'QGT-L',  r:"PC de groupement tactique léger, transmissions, coordination et soutien immédiat"},
+  QGT_M: {n:"Quartier Général de Groupement Tactique Mécanisé",   s:'QGT-M',  r:"PC de groupement tactique mécanisé/blindé, transmissions, coordination blindée"},
+  QGT_Mar:{n:"Quartier Général de Groupement Tactique Marine",    s:'QGT-MAR',r:"PC de groupement tactique amphibie, coordination débarquement, soutien littoral"}
 };
 
 /* ══════════════════════════════════════════
@@ -1445,25 +1454,25 @@ const BAT = {
 ══════════════════════════════════════════ */
 const BRIG = {
   BIL:  {n:"Brigade d'Infanterie",            s:'BIL',   r:"Infanterie légère projetable, contre-insurrection, contrôle de zone, avec soutien interarmes organique",
-         qg:'QGB_L',  c:[['RIL',3],['RG',1],['RT',1],['RGE',1]]},
+         qg:'QGT_L',  c:[['RIL',3],['RG',1],['RT',1],['RGE',1]]},
   BIMo: {n:"Brigade d'Infanterie de Montagne",s:'BIMo',  r:"Infanterie alpine spécialisée, terrain extrême, autonomie tactique élevée, avec soutien interarmes organique",
-         qg:'QGB_L',  c:[['RIMo',3],['RG',1],['RT',1],['RGE',1]]},
+         qg:'QGT_L',  c:[['RIMo',3],['RG',1],['RT',1],['RGE',1]]},
   BIMot:{n:"Brigade d'Infanterie Motorisée",  s:'BIMot', r:"Infanterie sur APC à roues, déploiement rapide, mobilité opérationnelle, avec soutien interarmes organique",
-         qg:'QGB_M',  c:[['RIMot',3],['RG',1],['RT',1],['RGE',1]]},
+         qg:'QGT_M',  c:[['RIMot',3],['RG',1],['RT',1],['RGE',1]]},
   BIMec:{n:"Brigade d'Infanterie Mécanisée",  s:'BIMec', r:"Infanterie sur IFV chenillé, combat de mêlée mécanisée, exploitation, avec soutien interarmes organique",
-         qg:'QGB_M',  c:[['RIMec',3],['RG',1],['RT',1],['RGE',1]]},
+         qg:'QGT_M',  c:[['RIMec',3],['RG',1],['RT',1],['RGE',1]]},
   BB:   {n:"Brigade Blindée",                 s:'BB',    r:"Chars MBT en pointe, soutenus par infanterie mécanisée et génie de combat, avec soutien interarmes organique",
-         qg:'QGB_M',  c:[['RB',2],['RIMec',1],['RG',1],['RT',1],['RGE',1]]},
+         qg:'QGT_M',  c:[['RB',2],['RIMec',1],['RG',1],['RT',1],['RGE',1]]},
   BAM:  {n:"Brigade Aéromobile",              s:'BAM',   r:"Régiments parachutistes et héliportés, projection rapide, saisie d'objectif, avec soutien interarmes organique",
-         qg:'QGB_L',  c:[['RPara',3],['RT',1],['RGE',1]]},
+         qg:'QGT_L',  c:[['RPara',3],['RT',1],['RGE',1]]},
   BAA:  {n:"Brigade d'Assaut Amphibie",       s:'BAA',   r:"Infanterie de marine, première vague d'assaut, conquête de tête de pont, avec soutien interarmes organique",
-         qg:'QGB_Mar', c:[['RIMa',2],['RG',1],['RT',1],['RGE',1]]},
+         qg:'QGT_Mar', c:[['RIMa',2],['RG',1],['RT',1],['RGE',1]]},
   BBA:  {n:"Brigade Blindée Amphibie",        s:'BBA',   r:"Blindé amphibie, exploitation de tête de pont, percée littorale, avec soutien interarmes organique",
-         qg:'QGB_Mar', c:[['RBA',2],['RIMa',1],['RG',1],['RT',1],['RGE',1]]},
+         qg:'QGT_Mar', c:[['RBA',2],['RIMa',1],['RG',1],['RT',1],['RGE',1]]},
   BA:   {n:"Brigade d'Artillerie",            s:'BA',    r:"Artillerie toutes distances, appui-feu réactif, avec logistique et renseignement électronique organiques",
-         qg:'QGB_M',  c:[['RAT',2],['RAM',1],['RLRM',1],['RT',1],['RGE',1]]},
+         qg:'QGT_M',  c:[['RAT',2],['RAM',1],['RLRM',1],['RT',1],['RGE',1]]},
   BS:   {n:"Brigade de Support",              s:'BS',    r:"Soutien interarmes complet : génie, logistique, renseignement, guerre électronique et soutien médical",
-         qg:'QGB_M',  c:[['RG',1],['RT',1],['RGE',1]]}
+         qg:'QGT_M',  c:[['RG',1],['RT',1],['RGE',1]]}
 };
 
 /* ══════════════════════════════════════════
@@ -1471,16 +1480,16 @@ const BRIG = {
    Structure plate : régiments organiques directs, sans brigades intermédiaires
 ══════════════════════════════════════════ */
 const DIV = {
-  DI:   {n:"Division d'Infanterie",           s:'DI',   r:"Projection rapide, contre-insurrection, terrain difficile, contrôle de zone vaste",
-         c:[['R','QGD',1],['R','QGB_L',3],['R','RIMot',9],['R','QGB_M',2],['R','RAT',2],['R','RAM',1],['R','RLRM',1],['R','RG',1],['R','RT',1],['R','RGE',1],['R','RDA',1],['R','RHM',1]]},
+  DIMo: {n:"Division d'Infanterie Motorisée",  s:'DIMo', r:"Projection rapide motorisée, contre-insurrection, terrain difficile, contrôle de zone vaste",
+         c:[['R','QGD',1],['R','QGT_L',3],['R','RIMot',9],['R','QGT_M',2],['R','RAT_L',2],['R','RAM',1],['R','RLRM',1],['R','RG',1],['R','RT',1],['R','RGE',1],['R','RDA',1],['R','RHM',1]]},
   DIM:  {n:"Division d'Infanterie Mécanisée", s:'DIM',  r:"Combat conventionnel équilibré, manœuvre mécanisée avec appui blindé",
-         c:[['R','QGD',1],['R','QGB_M',4],['R','RIMec',7],['R','RB',2],['R','RAT',2],['R','RAM',1],['R','RLRM',1],['R','RG',1],['R','RT',1],['R','RGE',1],['R','RDA',1],['R','RHC',1],['R','RHM',1]]},
+         c:[['R','QGD',1],['R','QGT_M',4],['R','RIMec',7],['R','RB',2],['R','QGT_M',2],['R','RAM',2],['R','RLRM',1],['R','RG',1],['R','RT',1],['R','RGE',1],['R','RDA',1],['R','RHC',1],['R','RHM',1]]},
   DB:   {n:"Division Blindée",                s:'DB',   r:"Percée, exploitation blindée, contre-attaque, choc mécanisé décisif",
-         c:[['R','QGD',1],['R','QGB_M',4],['R','RB',4],['R','RIMec',5],['R','RAT',2],['R','RAM',1],['R','RLRM',1],['R','RG',1],['R','RT',1],['R','RGE',1],['R','RDA',1],['R','RHC',1],['R','RHM',1]]},
+         c:[['R','QGD',1],['R','QGT_M',4],['R','RB',4],['R','RIMec',5],['R','QGT_M',2],['R','RAM',2],['R','RLRM',1],['R','RG',1],['R','RT',1],['R','RGE',1],['R','RDA',1],['R','RHC',1],['R','RHM',1]]},
   DAM:  {n:"Division Aéromobile",             s:'DAM',  r:"Projection héliportée stratégique, saisie aéroportée, opérations à longue portée",
-         c:[['R','QGD',1],['R','QGB_L',3],['R','RPara',9],['R','QGB_M',2],['R','RAT',2],['R','RAM',1],['R','RLRM',1],['R','RG',1],['R','RT',1],['R','RGE',1],['R','RDA',1],['R','RHC',1],['R','RHM',1]]},
+         c:[['R','QGD',1],['R','QGT_L',3],['R','RPara',9],['R','QGT_M',2],['R','RAT_A',2],['R','RAM',1],['R','RG',1],['R','RT',1],['R','RGE',1],['R','RDA',1],['R','RHC',1],['R','RHM',1]]},
   DMar: {n:"Division de Marine",              s:'DMar', r:"Projection littorale, débarquement amphibie, opérations côtières interarmes",
-         c:[['R','QGD',1],['R','QGB_Mar',3],['R','RIMa',5],['R','RBA',2],['R','QGB_M',2],['R','RAT',2],['R','RAM',1],['R','RLRM',1],['R','RG',1],['R','RT',1],['R','RGE',1],['R','RDA',1],['R','RHC',1],['R','RHM',1]]}
+         c:[['R','QGD',1],['R','QGT_Mar',3],['R','RIMa',5],['R','RBA',2],['R','QGT_M',2],['R','RAMK',2],['R','RLRM',1],['R','RG',1],['R','RT',1],['R','RGE',1],['R','RDA',1],['R','RHC',1],['R','RHM',1]]}
 };
 
 /* ══════════════════════════════════════════
@@ -1847,7 +1856,8 @@ const uid = () => 'u' + (++_uid);
 
 function normalizeUnitType(type) {
   const t = String(type || '').trim();
-  return t === 'DIL' ? 'DI' : t;
+  if (t === 'DIL' || t === 'DI') return 'DIMo';
+  return t;
 }
 function loadArmy() {
   try {
@@ -1933,12 +1943,12 @@ function getOverrides() {
   try {
     const o = JSON.parse(localStorage.getItem(LS_EQ)) || {};
     let changed = false;
-    if (o.DIL && !o.DI) {
-      o.DI = o.DIL;
-      delete o.DIL;
+    if ((o.DIL || o.DI) && !o.DIMo) {
+      o.DIMo = o.DIL || o.DI;
+      delete o.DIL; delete o.DI;
       changed = true;
-    } else if (o.DIL) {
-      delete o.DIL;
+    } else if (o.DIL || o.DI) {
+      delete o.DIL; delete o.DI;
       changed = true;
     }
     if (!localStorage.getItem(LS_EQ_MIGRATION)) {
