@@ -328,6 +328,7 @@
             const raw    = _modeData[mode.id] || defaultData(mode.id);
             const toSave = Object.assign({}, raw);
             delete toSave._pendingFlags;
+            delete toSave._claimedSet;
 
             let sha = localStorage.getItem(shaKey);
             try {
