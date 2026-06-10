@@ -126,6 +126,26 @@
       "member_ids": [
         1152
       ]
+    },
+    {
+      "id": 1781004508720,
+      "name": "Riyad",
+      "color": "#4fc74d",
+      "flag_path": null,
+      "slug": "riyad",
+      "member_ids": [
+        1157
+      ]
+    },
+    {
+      "id": 1781006297895,
+      "name": "Tripoli",
+      "color": "#8fdbaa",
+      "flag_path": null,
+      "slug": "tripoli",
+      "member_ids": [
+        81
+      ]
     }
   ]
 }
