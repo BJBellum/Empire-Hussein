@@ -14,8 +14,7 @@ const DISCORD_CONFIG = {
     // ── REPLACE THIS with your Discord Application Client ID ──
     clientId: '1492884020202045480',
 
-    // ── REPLACE THIS with your GitHub Pages URL ──
-    redirectUri: window.location.origin + '/',
+    redirectUri: 'https://bjbellum.github.io/Empire-Hussein/',
 
     // Scopes: 'identify' gives us the user's ID, username, avatar
     scope: 'identify',
